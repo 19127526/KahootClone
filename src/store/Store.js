@@ -1,7 +1,7 @@
 import {applyMiddleware, compose, createStore} from "redux";
 import storage from 'redux-persist/lib/storage';
 import {persistReducer, persistStore} from "redux-persist";
-import rootReducer from "../reduce/Reduce"
+import rootReducer from "../reduces/Reduce"
 import thunk from "redux-thunk";
 const composeEnhancers =
   typeof window === "object" &&

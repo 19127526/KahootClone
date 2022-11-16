@@ -1,16 +1,15 @@
 import {Layout} from "antd";
 import React from "react";
+import RoutesPage from "../routes/Routes";
 
-const {Header, Footer, Content, Sider} = Layout;
+const {Header, Footer, Content} = Layout;
 
 const MainLayout = () => {
   return (
     <Layout>
       <Header>header</Header>
       <Layout>
-        <Sider>left sidebar</Sider>
-        <Content>main content</Content>
-        <Sider>right sidebar</Sider>
+        <Content><RoutesPage/></Content>
       </Layout>
       <Footer>footer</Footer>
     </Layout>
