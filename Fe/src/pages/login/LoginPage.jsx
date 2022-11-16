@@ -1,94 +1,81 @@
-import {Col, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import image from "../../assets/image/Login.png"
 import {Button, Checkbox, Form, Input} from "antd";
 
-const LoginPage=()=>{
+const LoginPage = () => {
   const onFinish = (values) => {
     console.log('Success:', values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  return(
-    <Row>
-      <Col sm={12} xl={6} xs={12} xxl={6} md={6}>
-        <Row>
-          <Col sm={12} xl={12} xs={12} xxl={12}>
-            <h1>Sign in</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={12} xl={12} xs={12} xxl={12} md={6} >
-            <Form
-              name="basic"
-              labelCol={{
-                span: 8,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
+  return (
+    <Container className="mt-2" style={{display: "flex", justifyContent: "space-between",position:"relative"}}>
+      <Row>
+        <Col sm={12} xl={6} xs={12} xxl={12} md={6} style={{position:"absolute"}} >
+          <h1>Sign in</h1>
+          <p>If you don't have an account register</p>
+          <p>You can <b style={{color: "blue"}}>Register here!</b></p>
+          <Form
+            name="basic"
+            wrapperCol={{
+              span: 10,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="on"
+            layout="vertical"
+          >
+            <Form.Item
+              label="Username"
+              name="username"
+
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ]}
             >
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your username!',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              <Input/>
+            </Form.Item>
 
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your password!',
-                  },
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+            >
+              <Input.Password/>
+            </Form.Item>
 
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                wrapperCol={{
-                  offset: 8,
-                  span: 16,
-                }}
-              >
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+            >
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
 
-              <Form.Item
-                wrapperCol={{
-                  offset: 8,
-                  span: 16,
-                }}
-              >
-                <Button type="primary" htmlType="submit">
-                  Login
-                </Button>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
-      </Col>
-      <Col  xl={6}  xxl={6} md={6} className="" >
-        <img src={image}/>
-      </Col>
-    </Row>
+            <Form.Item
+            >
+              <Button type="primary" htmlType="submit">
+                Login
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col xl={6} xxl={6} md={6} xs={12} sm={12} style={{position:"absolute",right:0,display:"flex",justifyContent:"end"}}>
+          <img src={image} style={{height:"100%",width:'calc(100% - 30px)'}}/>
+        </Col>
+      </Row>
+    </Container>
   )
 }
 
