@@ -4,6 +4,7 @@ import Loading from "../components/loading/LoadingComponent";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy=React.lazy(()=>import("../pages/login/LoginPage"))
+const RegisterPageLazy=React.lazy(()=>import("../pages/register/RegisterPage"))
 
 const RoutesPage = () =>{
   return (
@@ -35,6 +36,15 @@ const RoutesPage = () =>{
           </React.Suspense>
         }
       />
+        <Route
+            path="/register"
+            element={
+                <React.Suspense fallback={<Loading />}>
+                    {" "}
+                    <RegisterPageLazy />{" "}
+                </React.Suspense>
+            }
+        />
     </Routes>
   );
 }
