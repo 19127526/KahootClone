@@ -1,7 +1,7 @@
-import {Drawer, Layout} from "antd";
+import {Layout} from "antd";
 import React from "react";
 import RoutesPage from "../routes/Routes";
-import {getWindowHeight, getWindowWidth} from "../utils/utils";
+import {getWindowHeight} from "../utils/utils";
 import {Col, Row} from "react-bootstrap";
 
 const {Header, Footer, Content} = Layout;
@@ -19,6 +19,7 @@ const MainLayout = () => {
             </Row>
             <Content style={{
               minHeight: getWindowHeight().innerHeight,
+                background:"white"
             }}>
               <RoutesPage/>
             </Content>
