@@ -85,7 +85,7 @@ const LoginPage=()=>{
           </Col>
         </Row>
       </Col>
-      <Col  xl={6}  xxl={6}>
+      <Col  xl={6}  xxl={6} md={6} className="" >
         <img src={image}/>
       </Col>
     </Row>
