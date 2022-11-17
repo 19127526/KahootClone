@@ -1,0 +1,19 @@
+.container-profile{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10vh 7vh;
+    justify-content:center;
+    align-items:center;
+}
+
+.wrap-profile{
+    width: 2000px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
+
+
+}

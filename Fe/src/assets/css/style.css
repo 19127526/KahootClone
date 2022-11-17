@@ -2,4 +2,30 @@ body,html{
     overflow-x: hidden;
 }
 
+.container-content{
+    min-width: 100%;
+    min-height: 100vh;
+}
+
+.main-btn{
+    overflow: hidden;
+    font-family: Montserrat-Bold;
+    color: #fff;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    width: fit-content;
+    height: fit-content;
+    float: right;
+    padding: 12px;
+    border-radius: 25px;
+    border: #466ab8;
+    background: #466ab8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    -moz-transition: all .4s;
+}
 
