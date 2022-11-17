@@ -17,7 +17,11 @@ const MainLayout = () => {
           </Header>
           <Content style={{
             minHeight: getWindowHeight().innerHeight,
+<<<<<<< HEAD
             background:"white"
+=======
+            background: "linear-gradient(-135deg,#c850c0,#4158d0)"
+>>>>>>> parent of 7c573bc (fix layout)
           }}>
             <RoutesPage/>
           </Content>

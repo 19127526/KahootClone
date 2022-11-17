@@ -10,7 +10,7 @@ const LoginPage = () => {
     console.log('Failed:', errorInfo);
   };
   return (
-    <div className="container-login"
+    <Container className="container-login"
       /* style={{height: getWindowHeight().innerHeight, width: getWindowWidth().innerWidth}}*/>
       <div className="wrap-login">
         <div className="login_left">
@@ -142,7 +142,7 @@ const LoginPage = () => {
           <img src={image} style={{height:"100%",width:'calc(100% - 70px)'}}/>
         </Col>
       </Row>*/}
-    </div>
+    </Container>
   )
 }
 
