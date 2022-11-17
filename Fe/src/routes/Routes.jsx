@@ -6,6 +6,7 @@ const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy=React.lazy(()=>import("../pages/login/LoginPage"))
 const RegisterPageLazy=React.lazy(()=>import("../pages/register/RegisterPage"))
 const ProfilePageLazy =React.lazy(()=>import("../pages/profile/ProfilePage"))
+const GroupPageLazy =React.lazy(()=>import("../pages/group/GroupPage"))
 
 const RoutesPage = () =>{
   return (
@@ -52,6 +53,15 @@ const RoutesPage = () =>{
                 <React.Suspense fallback={<Loading />}>
                     {" "}
                     <ProfilePageLazy/>{" "}
+                </React.Suspense>
+            }
+        />
+        <Route
+            path="/group"
+            element={
+                <React.Suspense fallback={<Loading />}>
+                    {" "}
+                    <GroupPageLazy/>{" "}
                 </React.Suspense>
             }
         />

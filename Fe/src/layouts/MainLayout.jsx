@@ -2,7 +2,7 @@ import {Layout} from "antd";
 import React from "react";
 import RoutesPage from "../routes/Routes";
 import {getWindowHeight} from "../utils/utils";
-import {Col, Container, Row} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
 import NavBar from "../components/navbar/NavBar";
 
 const {Header, Footer, Content} = Layout;
@@ -16,11 +16,10 @@ const MainLayout = () => {
             <NavBar/>
           </Header>
           <Content style={{
-            background: "linear-gradient(-135deg,#c850c0,#4158d0)"
+            minHeight: getWindowHeight().innerHeight,
+            background:"white"
           }}>
-            <Container className="container-content">
             <RoutesPage/>
-            </Container>
           </Content>
           <Footer style={{textAlign: 'center', background: "linear-gradient(-135deg,#c850c0,#4158d0)", color: "white",border:"1px solid black"}}
                   className=" site-layout-background">
