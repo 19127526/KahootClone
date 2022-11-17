@@ -17,7 +17,7 @@ const MainLayout = () => {
           </Header>
           <Content style={{
             minHeight: getWindowHeight().innerHeight,
-            background: "linear-gradient(-135deg,#c850c0,#4158d0)"
+            background:"white"
           }}>
             <RoutesPage/>
           </Content>
