@@ -17,6 +17,9 @@ const breakPoints = [
 
 =======
 import {DownloadOutlined} from "@ant-design/icons";
+<<<<<<< HEAD
+>>>>>>> parent of 7c573bc (fix layout)
+=======
 >>>>>>> parent of 7c573bc (fix layout)
 
 const ProfilePage = () => {
@@ -33,7 +36,10 @@ const ProfilePage = () => {
                         </text>
                 </Row>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 7c573bc (fix layout)
 
                 <Row className="justify-content-center mt-3">
                     <h3 className="text-center" style={{fontWeight: "350"}}>
@@ -159,8 +165,11 @@ const ProfilePage = () => {
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> parent of 7c573bc (fix layout)
 =======
 >>>>>>> parent of 7c573bc (fix layout)
         </Container>
