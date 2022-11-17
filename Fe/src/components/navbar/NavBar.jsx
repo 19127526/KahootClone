@@ -5,7 +5,7 @@ import image from '../../assets/image/logo.png'
 
 function NavBar() {
     return (
-            <Navbar bg="white">
+            <Navbar bg="white" sticky="top">
                 <Container>
                     <Navbar.Brand href="/home">
                         Kahoot
