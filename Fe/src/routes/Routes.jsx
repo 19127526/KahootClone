@@ -4,6 +4,8 @@ import Loading from "../components/loading/LoadingComponent";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy=React.lazy(()=>import("../pages/login/LoginPage"))
+const RegisterPageLazy=React.lazy(()=>import("../pages/register/RegisterPage"))
+const ProfilePageLazy =React.lazy(()=>import("../pages/profile/ProfilePage"))
 
 const RoutesPage = () =>{
   return (
@@ -35,6 +37,24 @@ const RoutesPage = () =>{
           </React.Suspense>
         }
       />
+        <Route
+            path="/register"
+            element={
+                <React.Suspense fallback={<Loading />}>
+                    {" "}
+                    <RegisterPageLazy />{" "}
+                </React.Suspense>
+            }
+        />
+        <Route
+            path="/profile"
+            element={
+                <React.Suspense fallback={<Loading />}>
+                    {" "}
+                    <ProfilePageLazy/>{" "}
+                </React.Suspense>
+            }
+        />
     </Routes>
   );
 }
