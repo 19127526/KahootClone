@@ -3,6 +3,7 @@ import React from "react";
 import RoutesPage from "../routes/Routes";
 import {getWindowHeight} from "../utils/utils";
 import {Col, Row} from "react-bootstrap";
+import NavBar from "../components/navbar/NavBar";
 
 const {Header, Footer, Content} = Layout;
 
@@ -13,8 +14,7 @@ const MainLayout = () => {
           <Layout>
             <Row xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
               <Col xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
-                <Header>
-                </Header>
+                  <NavBar/>
               </Col>
             </Row>
             <Content style={{
