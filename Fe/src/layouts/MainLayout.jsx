@@ -11,22 +11,21 @@ const MainLayout = () => {
   return (
     <Row xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
       <Col xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
-          <Layout>
-            <Row xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
-              <Col xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
-                  <NavBar/>
-              </Col>
-            </Row>
-            <Content style={{
-              minHeight: getWindowHeight().innerHeight,
-                background:"white"
-            }}>
-              <RoutesPage/>
-            </Content>
-            <Footer style={{textAlign: 'center',background:"black",color:"white"}}
-                    className=" site-layout-background">
-            </Footer >
-          </Layout>
+        <Layout>
+          <Header style={{background:"white",minHeight:"100px"}}>
+            <NavBar/>
+          </Header>
+          <Content style={{
+            minHeight: getWindowHeight().innerHeight,
+            background: "linear-gradient(-135deg,#c850c0,#4158d0)"
+          }}>
+            <RoutesPage/>
+          </Content>
+          <Footer style={{textAlign: 'center', background: "linear-gradient(-135deg,#c850c0,#4158d0)", color: "white",border:"1px solid black"}}
+                  className=" site-layout-background">
+            Footer
+          </Footer>
+        </Layout>
 
       </Col>
     </Row>

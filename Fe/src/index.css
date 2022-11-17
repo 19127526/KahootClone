@@ -5,6 +5,4 @@
 @import "./assets/css/style.css";
 @import "./assets/css/header.css";
 @import "./assets/css/footer.css";
-body{
-    overflow-x: hidden;
-}
+@import "./assets/css/login.css";
