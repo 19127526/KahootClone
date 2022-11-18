@@ -1,6 +1,9 @@
 import Carousel from "react-elastic-carousel";
 import CardComponent from "../card/CardComponent";
-import {Col} from "react-bootstrap";
+import {Col, Row} from "react-bootstrap";
+import React from "react";
+import {Button} from "antd";
+import {Link, useNavigate} from 'react-router-dom';
 
 const items = [
   1, 2, 3, 4, 5
@@ -14,6 +17,7 @@ const breakPoints = [
 ];
 
 const GroupComponent=({title})=>{
+  const navigate = useNavigate();
   return (
     <div className="container mt-3">
       <div className="row justify-content-center">
@@ -28,6 +32,9 @@ const GroupComponent=({title})=>{
         {items.map(item => <CardComponent/>
         )}
       </Carousel>
+      <div className="row justify-content-center mt-3">
+        <Button onClick={()=>navigate('/group')} className="card__description__btn ant-btn ant-btn-primary" style={{padding:"12px 25px"}} >See more</Button>
+      </div>
 
       <div className="m-5 ant-divider"/>
     </div>

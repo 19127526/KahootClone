@@ -6,7 +6,8 @@ const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy=React.lazy(()=>import("../pages/login/LoginPage"))
 const RegisterPageLazy=React.lazy(()=>import("../pages/register/RegisterPage"))
 const ProfilePageLazy =React.lazy(()=>import("../pages/profile/ProfilePage"))
-const GroupPageLazy =React.lazy(()=>import("../pages/group/GroupPage"))
+const ListGroupPageLazy =React.lazy(()=>import("../pages/group/ListGroupPage"))
+const GroupDetailPageLazy =React.lazy(()=>import("../pages/group/GroupDetailPage"))
 
 const RoutesPage = () =>{
   return (
@@ -61,10 +62,19 @@ const RoutesPage = () =>{
             element={
                 <React.Suspense fallback={<Loading />}>
                     {" "}
-                    <GroupPageLazy/>{" "}
+                    <ListGroupPageLazy/>{" "}
                 </React.Suspense>
             }
         />
+      <Route
+        path="/group/detail"
+        element={
+          <React.Suspense fallback={<Loading />}>
+            {" "}
+            <GroupDetailPageLazy />{" "}
+          </React.Suspense>
+        }
+      />
     </Routes>
   );
 }

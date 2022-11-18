@@ -1,9 +1,11 @@
 import React from "react";
 import "./Card.css"
+import {useNavigate} from "react-router-dom";
 
 const CardComponent=({ name, img, id }) =>{
   const detail="the descriptions is the descriptions is the descriptiondsdshe descriptions is the descripdsdsdsdsdt";
-  console.log(detail.length)
+  console.log(detail.length);
+  const navigate = useNavigate();
   return (
     <a href="#" className="card">
       <img src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" className="card__image" alt=""/>
@@ -26,7 +28,7 @@ const CardComponent=({ name, img, id }) =>{
             <span className="card__description__detail">{detail}</span>
           }
           <div style={{padding:"10px"}}>
-            <button className="card__description__btn ant-btn ant-btn-primary">See detail</button>
+            <button className="card__description__btn ant-btn ant-btn-primary" onClick={()=>navigate("/group/detail")}>See detail</button>
           </div>
         </p>
       </div>

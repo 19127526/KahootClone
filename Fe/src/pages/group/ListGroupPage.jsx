@@ -1,6 +1,6 @@
 import {Container, Row} from "react-bootstrap";
 
-const GroupPage = () => {
+const ListGroupPage = () => {
     return (
         <Container>
             <h3>Joined Groups</h3>
@@ -9,4 +9,4 @@ const GroupPage = () => {
     );
 }
 
-export  default GroupPage
+export  default ListGroupPage
