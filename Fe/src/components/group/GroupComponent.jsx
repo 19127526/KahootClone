@@ -28,11 +28,7 @@ const GroupComponent=({title})=>{
         {items.map(item => <CardComponent/>
         )}
       </Carousel>
-      <Col className="d-flex justify-content-center mt-3">
-        <button className="main-btn ant-btn ant-btn-primary">
-          See all groups
-        </button>
-      </Col>
+
       <div className="m-5 ant-divider"/>
     </div>
   )

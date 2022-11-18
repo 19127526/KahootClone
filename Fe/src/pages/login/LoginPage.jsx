@@ -1,6 +1,6 @@
-import {Container} from "react-bootstrap";
 import image from "../../assets/image/Login.png"
 import {Button, Checkbox, Form, Input} from "antd";
+import {FacebookOutlined, GoogleOutlined, TwitterOutlined} from "@ant-design/icons";
 
 const LoginPage = () => {
   const onFinish = (values) => {
@@ -10,138 +10,51 @@ const LoginPage = () => {
     console.log('Failed:', errorInfo);
   };
   return (
-    <div className="container-login"
-      /* style={{height: getWindowHeight().innerHeight, width: getWindowWidth().innerWidth}}*/>
-      <div className="wrap-login">
-        <div className="login_left">
-          <h1>Sign in</h1>
-          <p>If you don't have an account register</p>
-          <p>You can <b style={{color: "blue"}}>Register here!</b></p>
-          <Form
-            name="basic"
-            wrapperCol={{
-              span: 10,
-            }}
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="on"
-            layout="vertical"
-          >
-            <Form.Item
-              label="Username"
-              name="username"
+    <div className="main-container">
+      <div className="login-wrapper">
+        <div className="left-container">
+          <div className="header">
+          </div>
+          <div className="main">
+            <h2>Login</h2>
+            <p>Welcome! Please fill username and password to sign in into your account.</p>
 
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your username!',
-                },
-              ]}
-            >
-              <Input/>
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your password!',
-                },
-              ]}
-            >
-              <Input.Password/>
-            </Form.Item>
-
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-            >
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <Form.Item
-            >
-              <Button type="primary" htmlType="submit">
-                Login
-              </Button>
-            </Form.Item>
-          </Form>
+            <form action="">
+              <input type="email" name="mail" placeholder="Type your email"/>
+                <input type="password" name="password" placeholder="Type your password"/>
+                  <div className="forgotPass" style={{display:"flex",justifyContent:"space-between"}}>
+                    <a href="/register">Sign up</a>
+                    <a href="#">Forgot your password?</a>
+                  </div>
+                  <div className="login-now">
+                    <a href="#">Login Now</a>
+                  </div>
+                  <span className="line"></span>
+            </form>
+          </div>
+          <div className="footer">
+            <div className="social-media">
+              <h3>You can also login with</h3>
+              <div className="links-wrapper">
+                <a href="#"><GoogleOutlined /></a>
+                <a href="#"><FacebookOutlined /></a>
+                <a href="#"><TwitterOutlined /></a>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <div className="login_right">
-          <img src={image} className="login_right_image"/>
+        <div className="side-container">
+          <div className="side-text-container">
+            <div className="short-line">
+              <hr/>
+            </div>
+            <div className="text">
+              <h3 style={{color:"white"}}>Start your Kahoot clone!</h3>
+              <p>start create your amazing website with us! login into your account now</p>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/*<Row className="mt-2" style={{display: "flex", justifyContent: "space-between",position:"relative"}}>
-        <Col sm={6} xl={6} xs={6} xxl={6} md={6} style={{position:"absolute"}} >
-          <h1>Sign in</h1>
-          <p>If you don't have an account register</p>
-          <p>You can <b style={{color: "blue"}}>Register here!</b></p>
-          <Form
-            name="basic"
-            wrapperCol={{
-              span: 10,
-            }}
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="on"
-            layout="vertical"
-          >
-            <Form.Item
-              label="Username"
-              name="username"
-
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your username!',
-                },
-              ]}
-            >
-              <Input/>
-            </Form.Item>
-
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please input your password!',
-                },
-              ]}
-            >
-              <Input.Password/>
-            </Form.Item>
-
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-            >
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <Form.Item
-            >
-              <Button type="primary" htmlType="submit">
-                Login
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-        <Col xl={6} xxl={6} md={6} xs={6} sm={6} style={{position:"absolute",right:0}}>
-          <img src={image} style={{height:"100%",width:'calc(100% - 70px)'}}/>
-        </Col>
-      </Row>*/}
     </div>
   )
 }
