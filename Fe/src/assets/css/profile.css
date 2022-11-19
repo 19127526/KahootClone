@@ -310,11 +310,6 @@ body {
         height: 100%;
     }
 
-    body {
-        min-height: 100%;
-        height: auto;
-        display: block;
-    }
 
     /* ================================================
     Estilos del fondo detras en modo responsive
@@ -342,6 +337,18 @@ body {
         padding-bottom: 40px;
         width: 90%;
         max-width: var(--wd-main-content); /* 1250px */
+    }
+    .user-profile__name{
+        margin-bottom: 1px;
+    }
+    .user-profile__tagline{
+        margin-top: 0;
+    }
+    .user-profile__info{
+        padding:  0 5% 0;
+    }
+    .user-profile__ocupation{
+        margin: 1px;
     }
 
     .main-content__left {

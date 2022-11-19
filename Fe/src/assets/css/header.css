@@ -1,0 +1,9 @@
+.image-header{
+    width:7vh;
+}
+@media (max-width: 768px) {
+    .image-header{
+        width:4vh
+    }
+
+}

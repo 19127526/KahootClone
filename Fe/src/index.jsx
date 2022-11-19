@@ -9,6 +9,8 @@ import {Provider} from "react-redux";
 import {persistor, store} from "./store/Store";
 import {PersistGate} from "redux-persist/integration/react";
 import Loading from "./components/loading/LoadingComponent";
+import customTheme from "./utils/theme";
+import {ChakraProvider} from "@chakra-ui/react";
 
 const queryClient = new QueryClient();
 
@@ -17,9 +19,11 @@ root.render(
   <Provider store={store}>
     <PersistGate loading={<Loading/>} persistor={persistor}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App/>
-        </BrowserRouter>
+        <ChakraProvider theme={customTheme}>
+          <BrowserRouter>
+            <App/>
+          </BrowserRouter>
+        </ChakraProvider>
       </QueryClientProvider>
     </PersistGate>
   </Provider>
