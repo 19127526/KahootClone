@@ -1,16 +1,16 @@
 import React from "react";
-import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
 
 import Logo from "./Logo";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const toggle = () => setIsOpen(!isOpen);
-
+  const navigate=useNavigate();
   return (
     <NavBarContainer {...props}>
-      <img src="https://i.redd.it/lw52r4rntnv71.jpg" className="image-header" />
+      <img src="https://i.redd.it/lw52r4rntnv71.jpg" className="image-header" onClick={()=>navigate("/home")}/>
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} />
     </NavBarContainer>
@@ -48,8 +48,9 @@ const MenuToggle = ({ toggle, isOpen }) => {;
 };
 
 const MenuItem = ({ children, isLast, to = "/", ...rest }) => {
+
   return (
-    <Link href={to}>
+    <Link to={to}>
       <Text display="block" {...rest}>
         {children}
       </Text>
@@ -72,6 +73,7 @@ const MenuLinks = ({ isOpen }) => {
       >
         <MenuItem to="/">Home</MenuItem>
         <MenuItem to="/group">Group</MenuItem>
+        <MenuItem to="/profile">Profile</MenuItem>
         <MenuItem to="/register" isLast>
           <Button
             size="sm"

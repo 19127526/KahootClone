@@ -3,7 +3,7 @@ import {useState} from "react";
 import {connect, useDispatch} from "react-redux";
 import {getUserNameAndPassword} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 const mapStateToProps = state => ({
@@ -58,8 +58,8 @@ const LoginPage = (props) => {
               <input type="email" name="mail" placeholder="Type your email" onChange={handleUsername}/>
               <input type="password" name="password" placeholder="Type your password" onChange={handlePassword}/>
               <div className="forgotPass" style={{display: "flex", justifyContent: "space-between"}}>
-                <a href="/register">Sign up</a>
-                <a href="#">Forgot your password?</a>
+                <a><Link to="/register">Sign up</Link></a>
+                <a>Forgot your password?</a>
               </div>
               <div className="login-now">
                 <a type="submit" onClick={submitLogin}>Login Now</a>
