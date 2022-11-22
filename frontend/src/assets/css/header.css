@@ -1,9 +1,11 @@
 .image-header{
-    width:7vh;
+    width:100px;
+    content: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/fc73ce99-d39e-4878-b836-fcb331173c12/de0jxkr-78b879e8-4ce1-4928-b53e-76783588eb16.png/v1/fill/w_1280,h_720,strp/kahoot_logo_re_imagined_by_kcmplus_de0jxkr-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6IlwvZlwvZmM3M2NlOTktZDM5ZS00ODc4LWI4MzYtZmNiMzMxMTczYzEyXC9kZTBqeGtyLTc4Yjg3OWU4LTRjZTEtNDkyOC1iNTNlLTc2NzgzNTg4ZWIxNi5wbmciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.H22EAJSDWz10EIUvqwXi1JI8jla-ntYbJ5LOyHa7BLY");
 }
 @media (max-width: 768px) {
     .image-header{
-        width:4vh
+        width:4vh;
+        content: url("https://i.redd.it/lw52r4rntnv71.jpg");
     }
 
 }

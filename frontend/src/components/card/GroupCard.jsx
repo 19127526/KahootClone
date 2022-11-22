@@ -1,8 +1,20 @@
 import {Container} from "react-bootstrap";
-import {Avatar, Button, Card, Row} from "antd";
+import {Avatar, Button, Card, Modal, Row} from "antd";
 import {CaretDownOutlined} from "@ant-design/icons";
+import {useState} from "react";
+import EmailComponent from "../email/EmailComponent";
 
 const GroupCard = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
     return (
         <div className="site-card-border-less-wrapper">
             <Card style={{
@@ -48,9 +60,12 @@ const GroupCard = () => {
                     </div>
                 </Container>
                 <Row style={{display: "flex", justifyContent: "space-between"}}>
-                    <Button type="primary" shape="round" size="large">
+                    <Button type="primary" shape="round" size="large" onClick={showModal}>
                         Join
                     </Button>
+                    <Modal  title="Join Group" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered>
+                        <EmailComponent  onSubmit={()=>setIsModalOpen(false)}/>
+                    </Modal>
                     <Avatar src="https://joeschmoe.io/api/v1/random" size={"large"} style={{borderColor: "black"}}/>
                 </Row>
             </Card>

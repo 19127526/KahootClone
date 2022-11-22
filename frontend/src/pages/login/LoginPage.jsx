@@ -4,8 +4,8 @@ import {connect, useDispatch} from "react-redux";
 import {getUserNameAndPassword} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
 import {Link, useNavigate} from "react-router-dom";
-// import Notification from "../../components/notification/Notification";
-// import * as constraintNotification from "../../components/notification/Notification.constraints"
+import * as constraintNotification from "../../components/notification/Notification.constraints";
+import Notification from "../../components/notification/Notification";
 const mapStateToProps = state => ({
 
 })
@@ -31,16 +31,16 @@ const LoginPage = (props) => {
   const submitLogin=(event)=>{
     event.preventDefault();
     if(username===""||password===""){
-      // Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
+      Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
       return;
     }
     const temp=getUserNameAndPassword({username:username,password:password});
     if(temp.type===constraints.LOGIN_SUCCESS){
       navigate("/home");
-      // Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+      Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
     }
     else{
-      // Notification("Thông báo đăng nhập", "Đăng nhập thất bại",constraintNotification.NOTIFICATION_ERROR)
+      Notification("Thông báo đăng nhập", "Đăng nhập thất bại",constraintNotification.NOTIFICATION_ERROR)
     }
   }
 
@@ -53,7 +53,6 @@ const LoginPage = (props) => {
           <div className="main">
             <h2>Login</h2>
             <p>Welcome! Please fill username and password to sign in into your account.</p>
-
             <form onSubmit={submitLogin}>
               <input type="email" name="mail" placeholder="Type your email" onChange={handleUsername}/>
               <input type="password" name="password" placeholder="Type your password" onChange={handlePassword}/>
