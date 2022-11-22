@@ -24,7 +24,7 @@
     box-shadow: -5px 10px 20px rgba(0,0,0,0.30)
 }
 
-.main-container .login-wrapper .left-container{
+.main-container .login-wrapper .left-container .list-group-container{
     background-color:#FAFAF5;
 }
 /*left container HEADER*/
