@@ -10,7 +10,7 @@ const NavBar = (props) => {
   const navigate=useNavigate();
   return (
     <NavBarContainer {...props}>
-      <img src="https://i.redd.it/lw52r4rntnv71.jpg" className="image-header" onClick={()=>navigate("/home")}/>
+      <img  className="image-header" onClick={()=>navigate("/home")}/>
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} />
     </NavBarContainer>
@@ -115,7 +115,10 @@ const NavBarContainer = ({ children, ...props }) => {
       justify="space-between"
       wrap="wrap"
       w="100%"
-      p={6}
+      pt={3}
+      pb={2}
+      ps={4}
+      pe={4}
       bg={["primary.1000", "primary.1000", "white", "white"]}
       color={["white", "white", "primary.1000", "primary.1000"]}
       {...props}
