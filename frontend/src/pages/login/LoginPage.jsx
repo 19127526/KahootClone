@@ -1,26 +1,50 @@
 import {FacebookOutlined, GoogleOutlined, TwitterOutlined} from "@ant-design/icons";
-import {useState} from "react";
-import {connect, useDispatch} from "react-redux";
-import {getUserNameAndPassword} from "./LoginPage.thunk";
+import {useEffect, useState} from "react";
+import {connect} from "react-redux";
+import {loginGoogle, loginNormal} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
 import {Link, useNavigate} from "react-router-dom";
-import * as constraintNotification from "../../components/notification/Notification.constraints";
+import jwt_decode from "jwt-decode";
 import Notification from "../../components/notification/Notification";
+import * as constraintNotification from "../../components/notification/Notification.constraints"
+
 const mapStateToProps = state => ({
 
 })
 const mapDispatchToProps = {
-  getUserNameAndPassword:getUserNameAndPassword
+  loginNormal:loginNormal,
+  loginGoogle:loginGoogle
 }
 
 const connector = connect(mapStateToProps,mapDispatchToProps)
 
 
 const LoginPage = (props) => {
-  const {getUserNameAndPassword}=props
+  const {loginNormal,loginGoogle}=props
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate()
+  const [userGoogle,setUserGoogle]=useState();
+  const navigate=useNavigate();
+
+  const handleCallbackResponse=(response)=>{
+    var decoded = jwt_decode(response.credential);
+    setUserGoogle(decoded);
+    loginGoogle({accessToken:response.credential})
+    navigate("/home");
+    Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+  }
+  useEffect(()=>{
+    /* global google */
+    google.accounts.id.initialize({
+      client_id:"688222432576-k1s9h0gtvv9gpr18fma1gpi1t64vfb7o.apps.googleusercontent.com",
+      callback:handleCallbackResponse
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("signInGoogle"),
+      {theme:"outline",size:"large"}
+    )
+  },[])
   const handleUsername = (event) => {
     setUsername(event.target.value)
   }
@@ -34,8 +58,8 @@ const LoginPage = (props) => {
       Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
       return;
     }
-    const temp=getUserNameAndPassword({username:username,password:password});
-    if(temp.type===constraints.LOGIN_SUCCESS){
+    const temp=loginNormal({username:username,password:password});
+    if(temp.type===constraints.LOGIN_NORMAL_SUCCESS){
       navigate("/home");
       Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
     }
@@ -70,7 +94,7 @@ const LoginPage = (props) => {
             <div className="social-media">
               <h3>You can also login with</h3>
               <div className="links-wrapper">
-                <a href="#"><GoogleOutlined/></a>
+                <a href="#" id="signInGoogle"><GoogleOutlined/></a>
                 <a href="#"><FacebookOutlined/></a>
                 <a href="#"><TwitterOutlined/></a>
               </div>

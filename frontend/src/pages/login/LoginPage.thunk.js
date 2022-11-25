@@ -1,11 +1,17 @@
 import * as actions from "./LoginPages.actions"
 
 
-export const getUserNameAndPassword=(payload)=>dispatch=>{
+export const loginNormal=(payload)=>dispatch=>{
   if(payload.username==="huy"&&payload.password==="mom"){
     localStorage.setItem("accessToken","huymom");
-    return dispatch(actions.loginSuccess(payload));
+    return dispatch(actions.loginNormalSuccess(payload));
   }
-  return dispatch(actions.loginFail());
+  return dispatch(actions.loginNormalFail());
+}
+
+export const loginGoogle=(payload)=>dispatch=>{
+  localStorage.setItem("accessToken",payload.accessToken);
+  return dispatch(actions.loginGoogleSuccess())
+
 }
 
