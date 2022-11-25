@@ -21,6 +21,7 @@ public class AccountEntity extends SuperEntity {
     @Column(unique = true)
     private String email;
     private String password;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
     private Set<UserRoomEntity> userRoomEntities = new HashSet<>();
