@@ -1,96 +1,81 @@
 package com.example.backend.service.impl;
 
+import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.backend.common.exception.TechnicalException;
 import com.example.backend.common.model.AccountStatus;
 import com.example.backend.common.utils.CodeGeneratorUtils;
-import com.example.backend.exception.PasswordException;
 import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.AccountMapper;
 import com.example.backend.model.dto.AccountDto;
+import com.example.backend.model.dto.AuthenticationDto;
 import com.example.backend.model.entity.AccountEntity;
-import com.example.backend.model.entity.ValidateAccount;
+import com.example.backend.model.request.ValidateRequest;
 import com.example.backend.repository.AccountRepository;
 import com.example.backend.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
-import com.cloudinary.Cloudinary;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
-    private static final String KEY = "redis:otp";
-//    @Value("${CLOUDINARY_URL}")
+    private static final String REDIS_KEY_OTP = "redis:otp";
+    private static final String REDIS_KEY_ACCOUNT = "redis:account";
+    //    @Value("${CLOUDINARY_URL}")
     private final String cloudinary_url = "cloudinary://683585168923456:LTr8lMano9zTFAXyzub0VPY08nQ@dscc9chrk";
     private final RedisTemplate<String, Object> template;
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
 
     @Override
-    public Boolean register(AccountDto accountDto) {
+    public AccountEntity accountValidate(ValidateRequest validateRequest) {
         try {
-            if (accountRepository.findAccountEntityByEmail(accountDto.getEmail()).isPresent())
-                throw new ResourceInvalidException(accountDto.getEmail() + " exists");
-            ValidateAccount validateAccount = new ValidateAccount(
-                    accountDto.getEmail(),
-                    CodeGeneratorUtils.invoke(),
-                    accountDto.getUserName(),
-                    accountDto.getPassword(),
-                    AccountStatus.REGISTER);
-            template.opsForHash().put(KEY, accountDto.getEmail(), validateAccount);
-            return true;
+            String otp = Objects.requireNonNull(template.opsForHash().get(REDIS_KEY_OTP, validateRequest.getEmail())).toString();
+            if (!otp.equals(validateRequest.getOtp())) throw new ResourceInvalidException("OTP invalid");
+            else {
+                AccountDto accountDto = (AccountDto) template.opsForHash().get(REDIS_KEY_ACCOUNT, validateRequest.getEmail());
+                if (accountDto == null) throw new ResourceInvalidException("Account invalid");
+                else {
+                    template.opsForHash().delete(REDIS_KEY_OTP, validateRequest.getEmail());
+                    template.opsForHash().delete(REDIS_KEY_ACCOUNT, validateRequest.getEmail());
+                    return accountRepository.save(accountMapper.dtoToEntity(accountDto));
+                }
+            }
         } catch (Exception e) {
             throw new TechnicalException(e.getMessage());
         }
     }
 
     @Override
-    public AccountEntity validateRegister(ValidateAccount validateAccount) {
-        try {
-            ValidateAccount result = validateOTP(validateAccount.getEmail(), validateAccount.getOtp());
-            AccountEntity accountEntity = new AccountEntity();
-            accountEntity.setEmail(result.getEmail());
-            accountEntity.setPassword(result.getPassword());
-            accountEntity.setUserName(result.getUserName());
-            return accountRepository.save(accountEntity);
-        } catch (Exception e) {
-            throw new TechnicalException(e.getMessage());
-        }
+    public AuthenticationDto login(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        AuthenticationDto authenticationDto = new AuthenticationDto();
+        authenticationDto.setAccountStatus(AccountStatus.OLD_USER);
+        AccountDto accountDto = convertOAuthToAccount(oAuth2AuthenticationToken.getPrincipal().getAttributes());
+        Optional<AccountEntity> accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail());
+        if (accountEntity.isEmpty()) {
+            template.opsForHash().put(REDIS_KEY_ACCOUNT, accountDto.getEmail(), accountDto);
+            template.opsForHash().put(REDIS_KEY_OTP, accountDto.getEmail(), CodeGeneratorUtils.invoke());
+            authenticationDto.setEmail(accountDto.getEmail());
+            authenticationDto.setAccountStatus(AccountStatus.NEW_USER);
+        } else authenticationDto.setAccountDto(accountMapper.entityToDto(accountEntity.get()));
+        return authenticationDto;
     }
 
-    private ValidateAccount validateOTP(String email, String otp) {
-        if (template.opsForHash().hasKey(KEY, email))
-            throw new ResourceNotFoundException(email + " invalid");
-        else {
-            ValidateAccount cache = (ValidateAccount) template.opsForHash().get(KEY, email);
-            if (cache != null) {
-                if (cache.getOtp().equals(otp)) {
-                    ValidateAccount result = (ValidateAccount) template.opsForHash().get(KEY, email);
-                    template.opsForHash().delete(KEY, email);
-                    return result;
-                } else throw new ResourceInvalidException("otp is wrong");
-            } else throw new ResourceNotFoundException(email + " invalid");
-        }
+    private AccountDto convertOAuthToAccount(Map<String, Object> data) {
+        AccountDto accountDto = new AccountDto();
+        accountDto.setEmail((String) data.get("email"));
+        accountDto.setUserName((String) data.get("name"));
+        accountDto.setImageURL((String) data.get("picture"));
+        return accountDto;
     }
-
-    @Override
-    public AccountEntity add(AccountDto accountDto) {
-        return accountRepository.save(accountMapper.dtoToEntity(accountDto));
-    }
-
-    @Override
-    public AccountEntity login(AccountDto accountDto) {
-        AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail()).orElseThrow(() -> new ResourceNotFoundException(accountDto.getEmail() + " invalid"));
-        if (accountEntity.getPassword().equals(accountDto.getPassword())) return accountEntity;
-        else throw new ResourceNotFoundException(accountDto.getEmail() + " invalid");
-    }
-
     @Override
     public AccountEntity update(AccountDto accountDto) {
         AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail()).orElseThrow(() -> {
@@ -115,14 +100,5 @@ public class AccountServiceImpl implements AccountService {
         } catch (IOException e) {
             throw new TechnicalException(e.getMessage());
         }
-    }
-
-    @Override
-    public AccountEntity changePassword(AccountDto accountDto) {
-        AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail()).orElseThrow(() -> {throw new ResourceNotFoundException("account not found");});
-        if(accountEntity.getPassword().equals(accountDto.getPassword())) {
-            accountEntity.setPassword(accountDto.getNewPassword());
-            return accountRepository.save(accountEntity);
-        }else throw new PasswordException("password incorrect");
     }
 }
