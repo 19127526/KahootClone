@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.controller.BaseController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -18,7 +19,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 @RequestMapping()
 @Slf4j
 @RequiredArgsConstructor
-public class SendingController {
+public class SendingController extends BaseController {
     private final SimpMessagingTemplate simpMessagingTemplate;
     @GetMapping("socket")
     public void greeting(String message) throws Exception {

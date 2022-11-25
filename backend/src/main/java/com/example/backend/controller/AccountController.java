@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.AccountMapper;
 import com.example.backend.model.dto.AccountDto;
 import com.example.backend.model.entity.ValidateAccount;
@@ -10,11 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @RequestMapping("account")
+@RestController
 @RequiredArgsConstructor
 @Slf4j
-public class AccountController {
+public class AccountController extends BaseController {
     private final AccountService accountService;
     private final AccountMapper accountMapper;
 

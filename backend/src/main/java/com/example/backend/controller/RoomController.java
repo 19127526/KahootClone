@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.controller.BaseController;
 import com.example.backend.common.model.EmailDto;
 import com.example.backend.mapper.RoomMapper;
 import com.example.backend.model.dto.RoomDto;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("room")
 @RequiredArgsConstructor
-public class RoomController {
+public class RoomController extends BaseController {
     private final EmailService emailService;
     private final RoomMapper roomMapper;
     private final RoomService roomService;
