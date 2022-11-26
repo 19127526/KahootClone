@@ -1,55 +1,67 @@
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\AnswerEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QUserRoomEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\RoleEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\exception\ResourceInvalidException.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\repository\AccountRepository.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QQuestionEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\UserQuestionEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\AccountEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\RoomEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\model\EmailDto.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\request\CreateRoomRequest.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\dto\RoomDto.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\BackendApplication.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\request\JoinRequest.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\model\Role.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\service\impl\RoomServiceImpl.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\service\EmailService.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\dto\QuestionDto.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\dto\UserRoomDto.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\GenreQuestionEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\payload\ErrorResponse.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\controller\RoomController.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QRoleEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\cache\RedisConfig.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\dto\UserQuestionDto.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QAnswerEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\service\impl\AuthServiceImpl.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\controller\AuthController.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\mapper\RoomMapper.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\search\BaseSearchCriteria.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\ValidateCache.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\repository\RoomRepository.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\repository\impl\ValidateDao.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\utils\CodeGeneratorUtils.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\exception\EmailException.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QGenreQuestionEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\common\model\QSuperEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\model\GenreQuestion.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\model\GenreRoom.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QAccountEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\repository\UserRoomRepository.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QUserQuestionEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\model\SuperEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\service\impl\EmailServiceImpl.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\exception\GeneralExceptionHandler.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\dto\AnswerDto.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\target\generated-sources\java\com\example\backend\model\entity\QRoomEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\service\RoomService.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\exception\TechnicalException.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\UserRoomEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\request\RemoveRequest.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\exception\ResourceNotFoundException.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\model\entity\QuestionEntity.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\service\AuthService.java
-C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\kahoot-clone\backend\src\main\java\com\example\backend\common\exception\BusinessException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\repository\AccountRepository.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QUserQuestionEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\exception\EmailException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\UserRoomEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\QuestionEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\exception\BusinessException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\controller\RoomController.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\payload\ErrorResponse.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\repository\RoomRepository.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\exception\TechnicalException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\mapper\RoomMapper.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\EmailService.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\dto\UserQuestionDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\request\CreateRoomRequest.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\exception\PasswordException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\configuer\WSConfig.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\configuer\WebSocketConfig.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\dto\RoomDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\request\PlayRequest.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QRoomEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\request\JoinRequest.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\exception\GeneralExceptionHandler.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\RoomEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\configuer\CustomerOAuth2User.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\model\GenreRoom.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\AccountService.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\model\Role.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\impl\AccountServiceImpl.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\impl\CustomerOAuth2UserService.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\request\RemoveRequest.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QRoleEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\exception\ResourceNotFoundException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\dto\UserRoomDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\GenreQuestionEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\common\model\QSuperEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\model\AccountStatus.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\repository\UserRoomRepository.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\AnswerEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\BackendApplication.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\dto\QuestionDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QAnswerEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\controller\PlayingHandler.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\controller\BaseController.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\ValidateAccount.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\AccountEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\search\BaseSearchCriteria.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\RoomService.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\RoleEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QQuestionEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\model\EmailDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QUserRoomEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\model\SuperEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\controller\SendingController.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\controller\AccountController.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\impl\RoomServiceImpl.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QAccountEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\dto\AnswerDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\PlayService.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\entity\UserQuestionEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\configuer\RedisConfig.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\model\dto\AccountDto.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\mapper\AccountMapper.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\model\GenreQuestion.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\exception\ResourceInvalidException.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\service\impl\EmailServiceImpl.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\target\generated-sources\java\com\example\backend\model\entity\QGenreQuestionEntity.java
+C:\Users\Admin\Desktop\Courses\Nam 4 - ki 1\Web nâng cao (2)\KahootClone\backend\src\main\java\com\example\backend\common\utils\CodeGeneratorUtils.java
