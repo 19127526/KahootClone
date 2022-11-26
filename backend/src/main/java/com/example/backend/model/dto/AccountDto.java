@@ -12,8 +12,7 @@ import java.util.Set;
 public class AccountDto {
     private String userName;
     private String email;
-    private String password;
-    private String newPassword;
+    private String imageURL;
     private MultipartFile imageFile;
     private Set<UserRoomEntity> userRoomEntities = new HashSet<>();
     private Set<UserQuestionEntity> userQuestionEntities = new HashSet<>();
