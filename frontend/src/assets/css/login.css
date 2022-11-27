@@ -135,7 +135,7 @@
 }
 .main-container .login-wrapper .left-container .footer .social-media .links-wrapper{
     display:flex;
-    justify-content:space-evenly;
+    justify-content:space-between;
 }
 .main-container .login-wrapper .left-container .footer .social-media .links-wrapper a{
     width:12%;

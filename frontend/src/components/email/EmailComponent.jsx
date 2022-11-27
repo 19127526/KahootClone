@@ -22,7 +22,7 @@ const EmailComponent=({onSubmit})=>{
   };
   const link=`http://localhost:3000/group/detail/${randomCharacter()}`
   return (
-    <form ref={form} onSubmit={sendEmail} style={{display:"flex",flexDirection:"column",padding:"10vh"}}>
+    <form className="form-email" ref={form} onSubmit={sendEmail}>
       <label style={{display:"none"}}>Name</label>
       <input type="text" name="user_name" value="Kahoot Clone" style={{display:"none"}}/>
       <label style={{display:"none"}}>Group</label>
@@ -32,7 +32,7 @@ const EmailComponent=({onSubmit})=>{
       <label>Link</label>
       <Input type="text" name="user_link"  value={link} readOnly={true} />
       <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
-      <button type="submit"  className="mt-2 email-btn">Send Invite</button>
+      <button type="submit"  className="mt-3 email-btn">Send Invite</button>
       </div>
     </form>
   );

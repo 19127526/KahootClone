@@ -1,5 +1,5 @@
 import {FacebookOutlined, GoogleOutlined, TwitterOutlined} from "@ant-design/icons";
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useState} from "react";
 import {connect} from "react-redux";
 import {loginGoogle, loginNormal} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
@@ -7,6 +7,8 @@ import {Link, useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
+import {Modal} from "antd";
+import OtpComponent from "../../components/otp/OtpComponent";
 
 const mapStateToProps = state => ({
 
@@ -25,24 +27,38 @@ const LoginPage = (props) => {
   const [password, setPassword] = useState("");
   const [userGoogle,setUserGoogle]=useState();
   const navigate=useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   const handleCallbackResponse=(response)=>{
-    var decoded = jwt_decode(response.credential);
+    const decoded = jwt_decode(response.credential);
     setUserGoogle(decoded);
+    console.log(decoded)
     loginGoogle({accessToken:response.credential})
-    navigate("/home");
-    Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+    if(response.credential){
+      showModal();
+    }
+    /* navigate("/home");
+    Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)*/
   }
-  useEffect(()=>{
+  useLayoutEffect(()=>{
     /* global google */
     google.accounts.id.initialize({
       client_id:"688222432576-k1s9h0gtvv9gpr18fma1gpi1t64vfb7o.apps.googleusercontent.com",
-      callback:handleCallbackResponse
+      callback:handleCallbackResponse,
     });
 
     google.accounts.id.renderButton(
       document.getElementById("signInGoogle"),
-      {theme:"outline",size:"large"}
+      {}
     )
   },[])
   const handleUsername = (event) => {
@@ -54,7 +70,8 @@ const LoginPage = (props) => {
   }
   const submitLogin=(event)=>{
     event.preventDefault();
-    if(username===""||password===""){
+    showModal();
+    /*if(username===""||password===""){
       Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
       return;
     }
@@ -65,7 +82,7 @@ const LoginPage = (props) => {
     }
     else{
       Notification("Thông báo đăng nhập", "Đăng nhập thất bại",constraintNotification.NOTIFICATION_ERROR)
-    }
+    }*/
   }
 
   return (
@@ -77,7 +94,7 @@ const LoginPage = (props) => {
           <div className="main">
             <h2>Login</h2>
             <p>Welcome! Please fill username and password to sign in into your account.</p>
-            <form onSubmit={submitLogin}>
+            <form onSubmit={submitLogin} >
               <input type="email" name="mail" placeholder="Type your email" onChange={handleUsername}/>
               <input type="password" name="password" placeholder="Type your password" onChange={handlePassword}/>
               <div className="forgotPass" style={{display: "flex", justifyContent: "space-between"}}>
@@ -86,6 +103,9 @@ const LoginPage = (props) => {
               </div>
               <div className="login-now">
                 <a type="submit" onClick={submitLogin}>Login Now</a>
+                <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
+                  <OtpComponent onSubmit={()=>setIsModalOpen(false)}/>
+                </Modal>
               </div>
               <span className="line"></span>
             </form>
@@ -94,9 +114,9 @@ const LoginPage = (props) => {
             <div className="social-media">
               <h3>You can also login with</h3>
               <div className="links-wrapper">
-                <a href="#" id="signInGoogle"><GoogleOutlined/></a>
-                <a href="#"><FacebookOutlined/></a>
-                <a href="#"><TwitterOutlined/></a>
+                <a id="signInGoogle"><GoogleOutlined/></a>
+                {/*<a href="#"><FacebookOutlined/></a>
+                <a href="#"><TwitterOutlined/></a>*/}
               </div>
             </div>
           </div>

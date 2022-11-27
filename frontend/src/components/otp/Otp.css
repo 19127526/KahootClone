@@ -1,0 +1,64 @@
+.userInput{
+    display: flex;
+    justify-content: center;
+}
+
+.input-otp{
+    margin: 10px;
+    height: 35px;
+    width: 10%;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    font-family: arimo;
+    font-size: 1.2rem;
+    background: #eef2f3;
+
+}
+
+h1{
+    margin: 10px 0 0 0;
+    text-align: center;
+    color: honeydew;
+    font-size: 5vh;
+}
+.container-otp{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: 100%;
+    align-items: space-around;
+    justify-content: center;
+    background: linear-gradient(-135deg,#c850c0,#4158d0);
+}
+
+.button-otp{
+    width: 150px;
+    height: 40px;
+    margin: 10px auto 10px auto;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 2rem;
+    letter-spacing: 2px;
+    cursor: pointer;
+    background-color:#4FA7D6;
+    color: white;
+}
+.ant-modal-footer .ant-btn + .ant-btn:not(.ant-dropdown-trigger) {
+    display: none;
+}
+.ant-btn-default{
+    cursor: pointer;
+    background-color:#4FA7D6;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    letter-spacing: 2px;
+}
+.ant-modal-title{
+    text-align: center;
+    font-size: 2.3vh;
+}
+.ant-modal-body{
+    padding:0
+}

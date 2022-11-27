@@ -1,13 +1,3 @@
-import {Col, Container, Row} from "react-bootstrap";
-import {
-    FacebookOutlined,
-    GoogleOutlined,
-    LockOutlined,
-    MailOutlined,
-    TwitterOutlined,
-    UserOutlined
-} from '@ant-design/icons';
-import image from "../../assets/image/background.svg"
 import {Button, Form, Input} from "antd";
 import {Link} from "react-router-dom";
 
@@ -27,7 +17,6 @@ const RegisterPage = () => {
                   <div className="main">
                       <h2>Register</h2>
                       <p>Welcome! Please fill information to sign up account. you can sign in <a  style={{textDecorationLine: "underline"}}><Link to="/login">here</Link></a></p>
-
                       <form action="">
                           <Input type="email" name="mail" placeholder="Type your email"/>
                           <Input type="username" name="username" placeholder="Type your username"/>
@@ -39,6 +28,7 @@ const RegisterPage = () => {
                               <a>Register</a>
                           </div>
                           <span className="line"> </span>
+
                       </form>
                   </div>
               </div>
