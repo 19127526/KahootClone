@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +60,7 @@ public class RoomServiceImpl implements RoomService {
             UserRoomEntity userRoomEntity = new UserRoomEntity();
             userRoomEntity.setRole(Role.OWNER);
             accountEntity.addUserRoom(userRoomEntity);
+            accountEntity.addRoomEntity(roomEntity);
             roomEntity.addUserRoom(userRoomEntity);
             entityManager.persist(accountEntity);
             entityManager.persist(roomEntity);
@@ -73,8 +75,8 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
-//    @Override
-//    public UserRoomEntity update(UserRoomDto userRoomDto) {
-//        return null;
-//    }
+    @Override
+    public List<RoomEntity> getListRoom(String email) {
+        return roomRepository.findRoomEntitiesByAccountEntity_Email(email);
+    }
 }

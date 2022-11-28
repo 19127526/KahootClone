@@ -2,17 +2,22 @@ package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.AccountMapper;
+import com.example.backend.mapper.RoomMapper;
 import com.example.backend.model.dto.AccountDto;
 import com.example.backend.model.dto.AuthenticationDto;
 import com.example.backend.model.dto.JsonWebToken;
+import com.example.backend.model.dto.RoomDto;
 import com.example.backend.model.request.ValidateRequest;
 import com.example.backend.service.AccountService;
+import com.example.backend.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("account")
 @RestController
@@ -21,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController extends BaseController {
     private final AccountService accountService;
     private final AccountMapper accountMapper;
+    private final RoomMapper roomMapper;
+    private final RoomService roomService;
 
     @GetMapping("login")
     public ResponseEntity<AuthenticationDto> authentication(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -34,13 +41,16 @@ public class AccountController extends BaseController {
 
     @PostMapping("validate/otp")
     public ResponseEntity<AccountDto> validateAccount(@RequestBody ValidateRequest validateRequest) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(accountMapper.entityToDto(accountService.accountValidate(validateRequest)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountMapper.entityToDto(accountService.accountValidate(validateRequest)));
     }
 
     @PostMapping("update")
     public ResponseEntity<AccountDto> updateAccount(@ModelAttribute("value") AccountDto accountDto) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(accountMapper.entityToDto(accountService.update(accountDto)));
+    }
+
+    @GetMapping("listRoom")
+    public ResponseEntity<List<RoomDto>> getListRoom(String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(roomService.getListRoom(email).stream().map(roomMapper::entityToDto).toList());
     }
 }

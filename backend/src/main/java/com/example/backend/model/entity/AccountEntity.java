@@ -44,4 +44,15 @@ public class AccountEntity extends SuperEntity {
         this.userQuestionEntities.remove(userQuestionEntity);
         userQuestionEntity.setUserId(null);
     }
+
+    @OneToMany(mappedBy = "accountEntity")
+    private Set<RoomEntity> roomEntities = new HashSet<>();
+    public void addRoomEntity(RoomEntity roomEntity) {
+        this.roomEntities.add(roomEntity);
+        roomEntity.setAccountEntity(this);
+    }
+    public void removeRoomEntity(RoomEntity roomEntity) {
+        this.roomEntities.remove(roomEntity);
+        roomEntity.setAccountEntity(null);
+    }
 }
