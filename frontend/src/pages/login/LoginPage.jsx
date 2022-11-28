@@ -49,7 +49,7 @@ const LoginPage = (props) => {
       showModal();
     }
     /* navigate("/home");
-    Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)*/
+    // Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)*/
   }
   useLayoutEffect(()=>{
     /* global google */

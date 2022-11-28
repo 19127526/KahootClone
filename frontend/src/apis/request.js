@@ -8,6 +8,7 @@ const request = axios.create({
   }
 });
 
+
 request.interceptors.response.use(
   async (response) => {
     return response;
@@ -25,3 +26,4 @@ request.interceptors.request.use((index) => {
 });
 
 export default request;
+
