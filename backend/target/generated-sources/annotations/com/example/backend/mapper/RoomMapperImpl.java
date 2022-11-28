@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-26T00:12:39+0700",
-    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 18.0.1.1 (Oracle Corporation)"
+    date = "2022-11-28T17:07:49+0700",
+    comments = "version: 1.5.2.Final, compiler: javac, environment: Java 19 (Oracle Corporation)"
 )
 @Component
 public class RoomMapperImpl implements RoomMapper {

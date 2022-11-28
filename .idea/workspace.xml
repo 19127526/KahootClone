@@ -1,98 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.idea/libraries/maven_wrapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/backend/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/backend/BackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/backend-0.0.1-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/BackendApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/exception/BusinessException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/exception/GeneralExceptionHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/exception/TechnicalException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/model/EmailDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/model/GenreQuestion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/model/GenreRoom.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/model/QSuperEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/model/Role.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/model/SuperEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/search/BaseSearchCriteria.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/common/utils/CodeGeneratorUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/controller/AuthController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/controller/RoomController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/exception/EmailException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/exception/ResourceInvalidException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/exception/ResourceNotFoundException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/mapper/RoomMapper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/mapper/RoomMapperImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/dto/AnswerDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/dto/QuestionDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/dto/RoomDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/dto/UserQuestionDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/dto/UserRoomDto.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/AccountEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/AnswerEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/GenreQuestionEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QAccountEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QAnswerEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QGenreQuestionEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QQuestionEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QRoleEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QRoomEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QUserQuestionEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QUserRoomEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/QuestionEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/RoleEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/RoomEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/UserQuestionEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/UserRoomEntity$UserRoomEntityBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/entity/UserRoomEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/payload/ErrorResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/request/CreateRoomRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/request/JoinRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/model/request/RemoveRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/repository/AccountRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/repository/RoomRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/repository/UserRoomRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/service/AuthService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/service/EmailService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/service/RoomService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/service/impl/EmailServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/classes/com/example/backend/service/impl/RoomServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/backend/service/impl/AccountServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/backend/service/impl/AccountServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/main.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/target/generated-sources/annotations/com/example/backend/mapper/RoomMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/generated-sources/annotations/com/example/backend/mapper/RoomMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/surefire-reports/TEST-com.example.backend.BackendApplicationTests.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/surefire-reports/com.example.backend.BackendApplicationTests.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/target/test-classes/com/example/backend/BackendApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/CardComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/CardComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/GroupCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/GroupCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/ListGroupPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/ListGroupPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2HuU8EPsllycZQW2130sjGCTW1W" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/backend" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Facets" />
-    <property name="project.structure.proportion" value="0.15429688" />
-    <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.fileTypes" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -105,10 +81,24 @@
       <workItem from="1669134302552" duration="62000" />
       <workItem from="1669386483306" duration="1373000" />
       <workItem from="1669396102497" duration="35000" />
+      <workItem from="1669628979324" duration="652000" />
+      <workItem from="1669629635156" duration="83000" />
+      <workItem from="1669629720531" duration="4563000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

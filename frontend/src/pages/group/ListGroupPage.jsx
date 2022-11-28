@@ -1,9 +1,11 @@
 import {Col, Container} from "react-bootstrap";
-import {Button, Divider, List, Row, Skeleton, Tabs} from "antd";
+import {Button, Divider, List, Modal, Row, Skeleton, Tabs} from "antd";
 import Search from "antd/es/input/Search";
 import GroupCard from "../../components/card/GroupCard";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {PlusCircleFilled} from "@ant-design/icons";
+import OTPCreateGroup from "../../components/card/OTPCreateGroup";
+import {useState} from "react";
 
 const contents = [1,2,3,4,5];
 
@@ -46,11 +48,15 @@ const pages = [
     }
 ];
 
-const operations = <Button type="primary" shape="round" icon = {<PlusCircleFilled />}/>;
 
 
 
 const ListGroupPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
 
     return (
 
@@ -66,13 +72,17 @@ const ListGroupPage = () => {
                     />
                     <div style={{height: 10}}/>
                         <Tabs
-                            tabBarExtraContent={operations}
+                            tabBarExtraContent={
+                                <Button type="primary" shape="round" icon = {<PlusCircleFilled />} onClick={showModal}/>
+                            }
                             defaultActiveKey="1"
                             type="card"
                             size={"large"}
                             items={pages}
                         />
                 </Container>
+
+                <OTPCreateGroup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             </div>
         </div>
     );

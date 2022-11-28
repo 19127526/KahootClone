@@ -36,4 +36,6 @@ const CardComponent=({ name, img, id }) =>{
   )
 }
 
+
+
 export default CardComponent;
