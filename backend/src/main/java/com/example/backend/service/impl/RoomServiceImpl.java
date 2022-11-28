@@ -14,6 +14,7 @@ import com.example.backend.repository.AccountRepository;
 import com.example.backend.repository.RoomRepository;
 import com.example.backend.repository.UserRoomRepository;
 import com.example.backend.service.RoomService;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +63,9 @@ public class RoomServiceImpl implements RoomService {
             accountEntity.addUserRoom(userRoomEntity);
             accountEntity.addRoomEntity(roomEntity);
             roomEntity.addUserRoom(userRoomEntity);
-            entityManager.persist(accountEntity);
-            entityManager.persist(roomEntity);
-            entityManager.persist(userRoomEntity);
+            accountRepository.save(accountEntity);
+            roomRepository.save(roomEntity);
+            userRoomRepository.save(userRoomEntity);
             return roomEntity;
         }else throw new ResourceInvalidException("name room {%s} exists");
     }
@@ -78,5 +79,10 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomEntity> getListRoom(String email) {
         return roomRepository.findRoomEntitiesByAccountEntity_Email(email);
+    }
+
+    @Override
+    public List<Tuple> getDetail(String name) {
+        return roomRepository.getGroupDetail(name);
     }
 }
