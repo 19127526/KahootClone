@@ -7,5 +7,6 @@ import lombok.Data;
 public class AuthenticationDto {
     private AccountDto accountDto;
     private AccountStatus accountStatus;
+    private JsonWebToken jsonWebToken;
     private String email;
 }

@@ -4,6 +4,7 @@ import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.AccountMapper;
 import com.example.backend.model.dto.AccountDto;
 import com.example.backend.model.dto.AuthenticationDto;
+import com.example.backend.model.dto.JsonWebToken;
 import com.example.backend.model.request.ValidateRequest;
 import com.example.backend.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +22,14 @@ public class AccountController extends BaseController {
     private final AccountService accountService;
     private final AccountMapper accountMapper;
 
-    @PostMapping("authentication")
+    @GetMapping("login")
     public ResponseEntity<AuthenticationDto> authentication(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.login(oAuth2AuthenticationToken));
+    }
+
+    @GetMapping("refreshToken")
+    public ResponseEntity<JsonWebToken> refreshToken() {
+        return null;
     }
 
     @PostMapping("validate/otp")
