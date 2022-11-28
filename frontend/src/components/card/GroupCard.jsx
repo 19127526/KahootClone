@@ -3,9 +3,11 @@ import {Avatar, Button, Card, Modal, Row} from "antd";
 import {CaretDownOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import EmailComponent from "../email/EmailComponent";
+import DropdownCustom from "./DropdownCustom";
 
 const GroupCard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -15,6 +17,7 @@ const GroupCard = () => {
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+
     return (
         <div className="site-card-border-less-wrapper">
             <Card style={{
@@ -33,8 +36,7 @@ const GroupCard = () => {
                     }}>
                         Public group
                     </text>
-                    <Button type="primary" icon={<CaretDownOutlined/>} size={20}
-                            style={{border: "none", boxShadow: "none"}}/>
+                    <DropdownCustom/>
                 </Row>
                 <div style={{color: "#444", fontSize: "18px", fontWeight: 600, overflow: "clip"}}>
                     XXX
@@ -72,5 +74,6 @@ const GroupCard = () => {
         </div>
     );
 }
+
 
 export default GroupCard

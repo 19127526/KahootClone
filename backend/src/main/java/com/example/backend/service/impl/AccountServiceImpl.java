@@ -94,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
                                     "unique_filename", false,
                                     "overwrite", true)
                     );
-            accountEntity.setImageUrl(cloudinary_response.get("url").toString());
+//            accountEntity.setImageUrl(cloudinary_response.get("url").toString());
             accountEntity.setUserName(accountDto.getUserName());
             return accountRepository.save(accountEntity);
         } catch (IOException e) {
