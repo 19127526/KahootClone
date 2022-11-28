@@ -5,21 +5,28 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.backend.common.exception.TechnicalException;
 import com.example.backend.common.model.AccountStatus;
 import com.example.backend.common.utils.CodeGeneratorUtils;
+import com.example.backend.common.utils.JwtTokenUtil;
 import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.AccountMapper;
 import com.example.backend.model.dto.AccountDto;
 import com.example.backend.model.dto.AuthenticationDto;
+import com.example.backend.model.dto.JsonWebToken;
 import com.example.backend.model.entity.AccountEntity;
 import com.example.backend.model.request.ValidateRequest;
 import com.example.backend.repository.AccountRepository;
 import com.example.backend.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +41,7 @@ public class AccountServiceImpl implements AccountService {
     private final RedisTemplate<String, Object> template;
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Override
     public AccountEntity accountValidate(ValidateRequest validateRequest) {
@@ -65,7 +73,12 @@ public class AccountServiceImpl implements AccountService {
             template.opsForHash().put(REDIS_KEY_OTP, accountDto.getEmail(), CodeGeneratorUtils.invoke());
             authenticationDto.setEmail(accountDto.getEmail());
             authenticationDto.setAccountStatus(AccountStatus.NEW_USER);
-        } else authenticationDto.setAccountDto(accountMapper.entityToDto(accountEntity.get()));
+        } else {
+            authenticationDto.setAccountDto(accountMapper.entityToDto(accountEntity.get()));
+            String at = jwtTokenUtil.generateToken(accountEntity.get().getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
+            String rt = jwtTokenUtil.generateToken(accountEntity.get().getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY);
+            authenticationDto.setJsonWebToken(new JsonWebToken(at, rt));
+        }
         return authenticationDto;
     }
 
@@ -76,6 +89,7 @@ public class AccountServiceImpl implements AccountService {
         accountDto.setImageURL((String) data.get("picture"));
         return accountDto;
     }
+
     @Override
     public AccountEntity update(AccountDto accountDto) {
         AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail()).orElseThrow(() -> {
@@ -94,11 +108,21 @@ public class AccountServiceImpl implements AccountService {
                                     "unique_filename", false,
                                     "overwrite", true)
                     );
-            accountEntity.setImageUrl(cloudinary_response.get("url").toString());
+            accountEntity.setImageURL(cloudinary_response.get("url").toString());
             accountEntity.setUserName(accountDto.getUserName());
             return accountRepository.save(accountEntity);
         } catch (IOException e) {
             throw new TechnicalException(e.getMessage());
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<AccountEntity> accountEntity = accountRepository.findAccountEntityByEmail(username);
+        if(accountEntity.isPresent()) {
+            return new User(accountEntity.get().getEmail(),"",new ArrayList<>());
+        }else {
+            throw new ResourceNotFoundException(username + " invalid");
         }
     }
 }
