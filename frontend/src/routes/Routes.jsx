@@ -2,6 +2,8 @@ import {Route, Routes} from "react-router-dom";
 import React from "react";
 import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
+import {REDIRECT_URI} from "../configs/url";
+import Oauth2Page from "../pages/oauth2/Oauth2Page";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy = React.lazy(() => import("../pages/login/LoginPage"))
@@ -89,6 +91,15 @@ const RoutesPage = () => {
             <Authenticate>
               <GroupDetailPageLazy/>
             </Authenticate>
+          </React.Suspense>
+        }
+      />
+      <Route
+        path={REDIRECT_URI}
+        element={
+          <React.Suspense fallback={<Loading/>}>
+            {" "}
+            <Oauth2Page/>
           </React.Suspense>
         }
       />

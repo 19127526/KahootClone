@@ -5,4 +5,4 @@ export const four="3"
 export const five="4"
 export const six="5"
 
-
+export const SEND_OTP_SUCCESS="SEND_OTP_SUCCESS"

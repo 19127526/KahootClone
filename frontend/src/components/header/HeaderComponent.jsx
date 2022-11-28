@@ -98,6 +98,7 @@ const MenuLinks = ({ isOpen }) => {
             }}
             ps={8}
             pe={8}
+
           >
             Sign in
           </Button>

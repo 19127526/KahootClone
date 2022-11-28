@@ -1,7 +1,11 @@
 import axios from "axios";
+import {SERVER_URL} from "../configs/url";
 
 const request = axios.create({
-  /* baseURL: "" */
+   baseURL: SERVER_URL,
+  headers:{
+    "Content-Type": "application/json",
+  }
 });
 
 request.interceptors.response.use(
@@ -9,6 +13,9 @@ request.interceptors.response.use(
     return response;
   },
   async (error) => {
+    if(error.response.status===404){
+      return error.response;
+    }
     return error;
   }
 );

@@ -1,4 +1,5 @@
 import * as actions from "./LoginPages.actions"
+import request from "../../apis/request";
 
 
 export const loginNormal=(payload)=>dispatch=>{
@@ -11,7 +12,7 @@ export const loginNormal=(payload)=>dispatch=>{
 
 export const loginGoogle=(payload)=>dispatch=>{
   localStorage.setItem("accessToken",payload.accessToken);
-  return dispatch(actions.loginGoogleSuccess())
+  return dispatch(actions.loginGoogleSuccess(payload.decoded))
 
 }
 

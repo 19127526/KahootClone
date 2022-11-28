@@ -5,6 +5,7 @@ const initialState= {
   username:null,
   password:null,
   isLogin:false,
+  profile: {}
 }
 export const LoginPageReducer=(state=initialState,action)=>
   produce(state, draft => {
@@ -18,6 +19,7 @@ export const LoginPageReducer=(state=initialState,action)=>
        break;
       case types.LOGIN_GOOGLE_SUCCESS:
         draft.isLogin=true;
+        draft.profile=action.payload;
         break;
       case types.LOGIN_GOOGLE_FAIL:
         break;

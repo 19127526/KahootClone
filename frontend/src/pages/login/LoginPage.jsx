@@ -9,6 +9,8 @@ import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
+import request from "../../apis/request";
+import {CLIENT_URL_REDIRECT} from "../../configs/url";
 
 const mapStateToProps = state => ({
 
@@ -41,8 +43,8 @@ const LoginPage = (props) => {
   const handleCallbackResponse=(response)=>{
     const decoded = jwt_decode(response.credential);
     setUserGoogle(decoded);
-    console.log(decoded)
-    loginGoogle({accessToken:response.credential})
+    console.log(decoded);
+    loginGoogle({accessToken:response.credential,decoded:decoded})
     if(response.credential){
       showModal();
     }
@@ -51,16 +53,23 @@ const LoginPage = (props) => {
   }
   useLayoutEffect(()=>{
     /* global google */
-    google.accounts.id.initialize({
-      client_id:"688222432576-k1s9h0gtvv9gpr18fma1gpi1t64vfb7o.apps.googleusercontent.com",
+   /* google.accounts.id.initialize({
+      client_id:"596589929405-vph8vt5071m8lum3t0mcio71iubciu7e.apps.googleusercontent.com",
       callback:handleCallbackResponse,
     });
 
     google.accounts.id.renderButton(
       document.getElementById("signInGoogle"),
       {}
-    )
-  },[])
+    )*/
+  },[]);
+ /* const loginByGoogle=()=>{
+    console.log("haha")
+    request.get('/login/oauth2/code/google')
+      .then(response=>{response.data.includes("Login with OAuth 2.0")?("http://localhost:8080/oauth2/authorization/google?redirect_uri=http://localhost:3000/login/google/redirect"):console.log("huhu")})
+      .catch(error=>{console.log(error)})
+  }*/
+
   const handleUsername = (event) => {
     setUsername(event.target.value)
   }
@@ -70,6 +79,7 @@ const LoginPage = (props) => {
   }
   const submitLogin=(event)=>{
     event.preventDefault();
+    const temp=loginNormal({username:username,password:password});
     showModal();
     /*if(username===""||password===""){
       Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
@@ -84,6 +94,7 @@ const LoginPage = (props) => {
       Notification("Thông báo đăng nhập", "Đăng nhập thất bại",constraintNotification.NOTIFICATION_ERROR)
     }*/
   }
+  const redirect_url=`http://localhost:8080/oauth2/authorization/google?redirect_uri=${CLIENT_URL_REDIRECT}&client_id=596589929405-vph8vt5071m8lum3t0mcio71iubciu7e.apps.googleusercontent.com`
 
   return (
     <div className="main-container">
@@ -114,9 +125,9 @@ const LoginPage = (props) => {
             <div className="social-media">
               <h3>You can also login with</h3>
               <div className="links-wrapper">
-                <a id="signInGoogle"><GoogleOutlined/></a>
-                {/*<a href="#"><FacebookOutlined/></a>
-                <a href="#"><TwitterOutlined/></a>*/}
+                <a id="signInGoogle"  href={redirect_url}><GoogleOutlined/></a>
+                <a href="#"><FacebookOutlined/></a>
+                <a href="#"><TwitterOutlined/></a>
               </div>
             </div>
           </div>

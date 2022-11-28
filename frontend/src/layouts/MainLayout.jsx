@@ -3,8 +3,8 @@ import React from "react";
 import RoutesPage from "../routes/Routes";
 import {getWindowHeight} from "../utils/utils";
 import {Col, Container, Row} from "react-bootstrap";
-import NavBar from "../components/navbar/NavBar";
 import HeaderComponent from "../components/header/HeaderComponent";
+
 
 const {Header, Footer, Content} = Layout;
 
