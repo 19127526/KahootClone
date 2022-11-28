@@ -53,7 +53,7 @@ const LoginPage = (props) => {
   }
   useLayoutEffect(()=>{
     /* global google */
-   /* google.accounts.id.initialize({
+    google.accounts.id.initialize({
       client_id:"596589929405-vph8vt5071m8lum3t0mcio71iubciu7e.apps.googleusercontent.com",
       callback:handleCallbackResponse,
     });
@@ -61,7 +61,7 @@ const LoginPage = (props) => {
     google.accounts.id.renderButton(
       document.getElementById("signInGoogle"),
       {}
-    )*/
+    )
   },[]);
  /* const loginByGoogle=()=>{
     console.log("haha")
@@ -125,7 +125,7 @@ const LoginPage = (props) => {
             <div className="social-media">
               <h3>You can also login with</h3>
               <div className="links-wrapper">
-                <a id="signInGoogle"  href={redirect_url}><GoogleOutlined/></a>
+                <a href={redirect_url}><GoogleOutlined/></a>
                 <a href="#"><FacebookOutlined/></a>
                 <a href="#"><TwitterOutlined/></a>
               </div>

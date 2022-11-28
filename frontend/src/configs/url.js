@@ -9,6 +9,10 @@ export const CLIENT_URL_REDIRECT=CLIENT_URL+REDIRECT_URI;
 
 
 
+export const GET_LOGIN_OAUTH2="/account/login";
+
+
+
 
 
 
