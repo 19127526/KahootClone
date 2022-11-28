@@ -56,7 +56,7 @@ public class QUserQuestionEntity extends EntityPathBase<UserQuestionEntity> {
     public QUserQuestionEntity(Class<? extends UserQuestionEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.questionId = inits.isInitialized("questionId") ? new QQuestionEntity(forProperty("questionId"), inits.get("questionId")) : null;
-        this.roomId = inits.isInitialized("roomId") ? new QRoomEntity(forProperty("roomId")) : null;
+        this.roomId = inits.isInitialized("roomId") ? new QRoomEntity(forProperty("roomId"), inits.get("roomId")) : null;
         this.userId = inits.isInitialized("userId") ? new QAccountEntity(forProperty("userId")) : null;
     }
 

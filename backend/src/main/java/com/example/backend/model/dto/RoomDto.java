@@ -13,6 +13,6 @@ public class RoomDto {
     private String url;
     private String code;
     private List<QuestionDto> questionEntitySet;
-//    private List<UserRoomDto> userRoomEntitySet;
+    private List<UserRoomDto> users;
 //    private List<UserQuestionDto> userQuestionEntities;
 }

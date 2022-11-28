@@ -55,7 +55,7 @@ public class QUserRoomEntity extends EntityPathBase<UserRoomEntity> {
 
     public QUserRoomEntity(Class<? extends UserRoomEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.roomId = inits.isInitialized("roomId") ? new QRoomEntity(forProperty("roomId")) : null;
+        this.roomId = inits.isInitialized("roomId") ? new QRoomEntity(forProperty("roomId"), inits.get("roomId")) : null;
         this.userId = inits.isInitialized("userId") ? new QAccountEntity(forProperty("userId")) : null;
     }
 

@@ -28,6 +28,8 @@ public class QAccountEntity extends EntityPathBase<AccountEntity> {
 
     public final StringPath imageURL = createString("imageURL");
 
+    public final SetPath<RoomEntity, QRoomEntity> roomEntities = this.<RoomEntity, QRoomEntity>createSet("roomEntities", RoomEntity.class, QRoomEntity.class, PathInits.DIRECT2);
+
     public final StringPath userName = createString("userName");
 
     public final SetPath<UserQuestionEntity, QUserQuestionEntity> userQuestionEntities = this.<UserQuestionEntity, QUserQuestionEntity>createSet("userQuestionEntities", UserQuestionEntity.class, QUserQuestionEntity.class, PathInits.DIRECT2);
