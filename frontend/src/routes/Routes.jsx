@@ -2,7 +2,7 @@ import {Route, Routes} from "react-router-dom";
 import React from "react";
 import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
-import {REDIRECT_URI} from "../configs/url";
+import {HOME_URI, REDIRECT_URI} from "../configs/url";
 import Oauth2Page from "../pages/oauth2/Oauth2Page";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
@@ -15,7 +15,7 @@ const RoutesPage = () => {
   return (
     <Routes>
       <Route
-        path="/home"
+        path={HOME_URI}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
