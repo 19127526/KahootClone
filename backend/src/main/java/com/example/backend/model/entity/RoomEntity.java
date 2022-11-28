@@ -27,6 +27,8 @@ public class RoomEntity extends SuperEntity {
     private GenreRoom type = GenreRoom.CLASSIC;
     private String url;
     private String code;
+    @ManyToOne
+    private AccountEntity accountEntity;
 
 
 
