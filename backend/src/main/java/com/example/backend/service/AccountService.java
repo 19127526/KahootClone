@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.model.dto.AccountDto;
 import com.example.backend.model.dto.AuthenticationDto;
+import com.example.backend.model.dto.JsonWebToken;
 import com.example.backend.model.entity.AccountEntity;
 import com.example.backend.model.request.ValidateRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,4 +15,5 @@ public interface AccountService extends UserDetailsService {
     AuthenticationDto register(AccountDto accountDto);
     Boolean validateAccount(ValidateRequest validateRequest);
     AuthenticationDto loginTraditional(AccountDto accountDto);
+    JsonWebToken refreshToken(JsonWebToken jsonWebToken);
 }
