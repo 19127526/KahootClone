@@ -1,6 +1,9 @@
+import {useParams} from "react-router-dom";
 
-const InvitePage=()=> {
+const invitePage=()=>{
+  let {name,code,email}=useParams();
+  console.log(name,code,email)
+
   return null
 }
-
-export default InvitePage
+export default invitePage
