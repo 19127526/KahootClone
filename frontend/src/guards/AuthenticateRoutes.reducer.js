@@ -2,7 +2,7 @@ import * as types from "./AuthenticateRoutes.constraints"
 import produce from "immer"
 
 const initialState= {
-  url:null,
+  url:"/",
 
 }
 export const AuthenticateRoutesReducer=(state=initialState, action)=>
@@ -12,7 +12,7 @@ export const AuthenticateRoutesReducer=(state=initialState, action)=>
         draft.url=action.payload.url;
         break;
       case types.REMOVE_URL:
-        draft.url=null
+        draft.url="/"
        break;
       default:
         return state;

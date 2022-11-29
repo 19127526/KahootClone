@@ -45,7 +45,12 @@ h1{
     color: white;
 }
 .ant-modal-footer .ant-btn + .ant-btn:not(.ant-dropdown-trigger) {
-    display: none;
+    cursor: pointer;
+    background-color:#4FA7D6;
+    color: white;
+    border: none;
+    border-radius: 2rem;
+    letter-spacing: 2px;
 }
 .ant-btn-default{
     cursor: pointer;

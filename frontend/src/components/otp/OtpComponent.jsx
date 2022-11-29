@@ -26,9 +26,6 @@ const OtpComponent = (props) => {
   const dispatch=useDispatch()
   const navigate=useNavigate();
   let dataUrl=useSelector(state=>state.authenticateRoutes);
-  if(dataUrl.url===null){
-    dataUrl.url="/"
-  }
   const handleUsername = (event) => {
     const e = otpValue.map((item,position)=> { console.log(position,event.target.id); return ((position == event.target.id) ? event.target.value : item) });
     setOtpValue(e)
@@ -41,10 +38,12 @@ const OtpComponent = (props) => {
     else{
       postOtp(otpValue)
       if(data.isLogin===true){
+        console.log(dataUrl.url)
         navigate(dataUrl.url);
         dispatch(removeUrlGuard());
-      }
-      Notification("Thông báo otp","Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+        Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+      }/*
+      Notification("Thông báo otp","Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)*/
     }
   }
 

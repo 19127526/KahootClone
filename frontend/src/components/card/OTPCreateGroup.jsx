@@ -29,7 +29,7 @@ const OTPCreateGroup = ({isModalOpen, setIsModalOpen}) => {
             CREATE_GROUP,
             {
                 "name": groupName,
-                "email": "huylol"
+                "email": "phamtienquan200122@gmail.com"
             }
         );
         if(response.status == 202){

@@ -30,7 +30,6 @@ const LoginPage = (props) => {
   const [userGoogle,setUserGoogle]=useState();
   const navigate=useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const urlData=useSelector(state=>state.authenticateRoutes);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -80,20 +79,17 @@ const LoginPage = (props) => {
   }
   const submitLogin=(event)=>{
     event.preventDefault();
-    const temp=loginNormal({username:username,password:password});
-    showModal();
-    /*if(username===""||password===""){
+    if(username===""||password===""){
       Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
       return;
     }
     const temp=loginNormal({username:username,password:password});
     if(temp.type===constraints.LOGIN_NORMAL_SUCCESS){
-      navigate("/home");
-      Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+      showModal();
     }
     else{
-      Notification("Thông báo đăng nhập", "Đăng nhập thất bại",constraintNotification.NOTIFICATION_ERROR)
-    }*/
+      Notification("Thông báo đăng nhập", "Đăng nhập thất bại (Tài khoản và mật khẩu không đúng)",constraintNotification.NOTIFICATION_ERROR)
+    }
   }
   const redirect_url=`http://localhost:8080/oauth2/authorization/google?redirect_uri=${CLIENT_URL_REDIRECT}&client_id=596589929405-vph8vt5071m8lum3t0mcio71iubciu7e.apps.googleusercontent.com`
 
