@@ -2,7 +2,6 @@ import React, {useRef} from "react";
 import emailjs from "@emailjs/browser";
 import "./Email.css"
 import {Input} from "antd";
-import {randomCharacter} from "../../utils/utils";
 import Notification from "../notification/Notification";
 import * as constraintNotification from "../notification/Notification.constraints";
 import {INVITE_URL_REDIRECT} from "../../configs/url";
