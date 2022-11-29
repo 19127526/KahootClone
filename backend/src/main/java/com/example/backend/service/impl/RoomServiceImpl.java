@@ -14,6 +14,7 @@ import com.example.backend.repository.AccountRepository;
 import com.example.backend.repository.RoomRepository;
 import com.example.backend.repository.UserRoomRepository;
 import com.example.backend.service.RoomService;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
     private final AccountRepository accountRepository;
     private final RoomRepository roomRepository;
     private final UserRoomRepository userRoomRepository;
-    public UserRoomEntity addMember(JoinRequest joinRequest) {
+    public UserRoomEntity join(JoinRequest joinRequest) {
         AccountEntity accountEntity = accountRepository
                 .findAccountEntityByEmail(joinRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("account {%s} not found".formatted(joinRequest.getEmail())));
@@ -40,9 +41,8 @@ public class RoomServiceImpl implements RoomService {
             UserRoomEntity userRoomEntity = new UserRoomEntity(0,null,null, Role.MEMBER,0);
             accountEntity.addUserRoom(userRoomEntity);
             roomEntity.addUserRoom(userRoomEntity);
-            entityManager.persist(accountEntity);
+            accountRepository.save(accountEntity);
             roomRepository.save(roomEntity);
-//            entityManager.persist(roomEntity);
             return userRoomRepository.save(userRoomEntity);
         }else throw new ResourceNotFoundException("code invalid");
     }
@@ -60,11 +60,11 @@ public class RoomServiceImpl implements RoomService {
             UserRoomEntity userRoomEntity = new UserRoomEntity();
             userRoomEntity.setRole(Role.OWNER);
             accountEntity.addUserRoom(userRoomEntity);
-            accountEntity.addRoomEntity(roomEntity);
+            accountEntity.addRoom(roomEntity);
             roomEntity.addUserRoom(userRoomEntity);
-            entityManager.persist(accountEntity);
-            entityManager.persist(roomEntity);
-            entityManager.persist(userRoomEntity);
+            accountRepository.save(accountEntity);
+            roomRepository.save(roomEntity);
+            userRoomRepository.save(userRoomEntity);
             return roomEntity;
         }else throw new ResourceInvalidException("name room {%s} exists");
     }
@@ -76,7 +76,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomEntity> getListRoom(String email) {
+    public List<RoomEntity> getListRoomCreated(String email) {
         return roomRepository.findRoomEntitiesByAccountEntity_Email(email);
+    }
+
+    @Override
+    public List<RoomEntity> fetchRoomsJoined(String email) {
+        if(email.isEmpty()) throw new ResourceInvalidException("email invalid");
+        return roomRepository.getListRoomJoined(email);
+    }
+
+    @Override
+    public List<Tuple> getDetail(String name) {
+        return roomRepository.getGroupDetail(name);
     }
 }

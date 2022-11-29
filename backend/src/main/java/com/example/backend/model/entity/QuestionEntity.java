@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -29,7 +31,7 @@ public class QuestionEntity extends SuperEntity {
 
 
     @OneToMany(mappedBy = "questionId", cascade = CascadeType.REMOVE)
-    private Set<AnswerEntity> answer;
+    private List<AnswerEntity> answer = new ArrayList<>();
     @OneToMany(mappedBy = "questionId")
-    private Set<UserQuestionEntity> userQuestionEntitySet;
+    private List<UserQuestionEntity> userQuestionEntitySet = new ArrayList<>();
 }

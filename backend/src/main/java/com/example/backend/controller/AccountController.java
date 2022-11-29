@@ -49,8 +49,17 @@ public class AccountController extends BaseController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(accountMapper.entityToDto(accountService.update(accountDto)));
     }
 
-    @GetMapping("listRoom")
-    public ResponseEntity<List<RoomDto>> getListRoom(String email) {
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.getListRoom(email).stream().map(roomMapper::entityToDto).toList());
+    @GetMapping("listRoomCreated")
+    public ResponseEntity<List<RoomDto>> getListRoomCreated(String email) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(roomService.getListRoomCreated(email).stream().map(roomMapper::entityToDto).toList());
+    }
+
+    @GetMapping("listRoomJoined")
+    public ResponseEntity<List<RoomDto>> getListRoomJoined(String email) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(roomService.fetchRoomsJoined(email).stream().map(roomMapper::entityToDto).toList());
     }
 }

@@ -4,9 +4,8 @@ import com.example.backend.common.model.SuperEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -23,36 +22,36 @@ public class AccountEntity extends SuperEntity {
     private String imageURL;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
-    private Set<UserRoomEntity> userRoomEntities = new HashSet<>();
+    private List<UserRoomEntity> userRoom = new ArrayList<>();
     public void addUserRoom(UserRoomEntity userRoomEntity) {
-        this.userRoomEntities.add(userRoomEntity);
+        this.userRoom.add(userRoomEntity);
         userRoomEntity.setUserId(this);
     }
     public void removeUserRoom(UserRoomEntity userRoomEntity) {
-        this.userRoomEntities.remove(userRoomEntity);
+        this.userRoom.remove(userRoomEntity);
         userRoomEntity.setUserId(null);
     }
 
 
     @OneToMany(mappedBy = "userId")
-    private Set<UserQuestionEntity> userQuestionEntities = new HashSet<>();
+    private List<UserQuestionEntity> userQuestion = new ArrayList<>();
     public void addUserQuestion(List<UserQuestionEntity> userQuestionEntityList) {
-        this.userQuestionEntities.addAll(userQuestionEntityList);
-        userQuestionEntities.forEach(it -> it.setUserId(this));
+        this.userQuestion.addAll(userQuestionEntityList);
+        userQuestion.forEach(it -> it.setUserId(this));
     }
     public void removeUserQuestion(UserQuestionEntity userQuestionEntity) {
-        this.userQuestionEntities.remove(userQuestionEntity);
+        this.userQuestion.remove(userQuestionEntity);
         userQuestionEntity.setUserId(null);
     }
 
     @OneToMany(mappedBy = "accountEntity")
-    private Set<RoomEntity> roomEntities = new HashSet<>();
-    public void addRoomEntity(RoomEntity roomEntity) {
-        this.roomEntities.add(roomEntity);
+    private List<RoomEntity> rooms = new ArrayList<>();
+    public void addRoom(RoomEntity roomEntity) {
+        this.rooms.add(roomEntity);
         roomEntity.setAccountEntity(this);
     }
-    public void removeRoomEntity(RoomEntity roomEntity) {
-        this.roomEntities.remove(roomEntity);
+    public void removeRoom(RoomEntity roomEntity) {
+        this.rooms.remove(roomEntity);
         roomEntity.setAccountEntity(null);
     }
 }

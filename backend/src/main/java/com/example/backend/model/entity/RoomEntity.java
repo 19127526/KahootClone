@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -33,35 +35,35 @@ public class RoomEntity extends SuperEntity {
 
 
     @OneToMany(mappedBy = "roomId")
-    private Set<QuestionEntity> questionEntitySet = new HashSet<>();
+    private List<QuestionEntity> questions = new ArrayList<>();
     public void addQuestion(QuestionEntity questionEntity) {
-        this.questionEntitySet.add(questionEntity);
+        this.questions.add(questionEntity);
         questionEntity.setRoomId(this);
     }
     public void removeQuestion(QuestionEntity questionEntity) {
-        this.questionEntitySet.remove(questionEntity);
+        this.questions.remove(questionEntity);
         questionEntity.setRoomId(null);
     }
 
     @OneToMany(mappedBy = "roomId")
-    private Set<UserRoomEntity> userRoomEntities = new HashSet<>();
+    private List<UserRoomEntity> userRoom = new ArrayList<>();
     public void addUserRoom(UserRoomEntity userRoomEntity) {
-        this.userRoomEntities.add(userRoomEntity);
+        this.userRoom.add(userRoomEntity);
         userRoomEntity.setRoomId(this);
     }
     public void removeUserRoom(UserRoomEntity userRoomEntity) {
-        this.userRoomEntities.remove(userRoomEntity);
+        this.userRoom.remove(userRoomEntity);
         userRoomEntity.setRoomId(null);
     }
 
     @OneToMany(mappedBy = "roomId")
-    private Set<UserQuestionEntity> userQuestionEntities = new HashSet<>();
+    private List<UserQuestionEntity> userQuestion = new ArrayList<>();
     public void addQuestion(UserQuestionEntity userQuestionEntity) {
-        this.userQuestionEntities.add(userQuestionEntity);
+        this.userQuestion.add(userQuestionEntity);
         userQuestionEntity.setRoomId(this);
     }
     public void removeQuestion(UserQuestionEntity userQuestionEntity) {
-        this.userQuestionEntities.remove(userQuestionEntity);
+        this.userQuestion.remove(userQuestionEntity);
         userQuestionEntity.setRoomId(null);
     }
 }

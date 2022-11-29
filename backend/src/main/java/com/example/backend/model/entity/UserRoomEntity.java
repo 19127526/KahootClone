@@ -26,5 +26,5 @@ public class UserRoomEntity extends SuperEntity {
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "role")
     private Role role;
-    private Integer score;
+    private Integer score = 0;
 }
