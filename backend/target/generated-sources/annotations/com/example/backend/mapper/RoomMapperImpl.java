@@ -10,15 +10,13 @@ import com.example.backend.model.entity.QuestionEntity;
 import com.example.backend.model.entity.RoomEntity;
 import com.example.backend.model.entity.UserRoomEntity;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-29T13:08:12+0700",
+    date = "2022-11-29T13:24:43+0700",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 18.0.2 (Amazon.com Inc.)"
 )
 @Component
@@ -78,17 +76,17 @@ public class RoomMapperImpl implements RoomMapper {
         return answerEntity;
     }
 
-    protected Set<AnswerEntity> answerDtoListToAnswerEntitySet(List<AnswerDto> list) {
+    protected List<AnswerEntity> answerDtoListToAnswerEntityList(List<AnswerDto> list) {
         if ( list == null ) {
             return null;
         }
 
-        Set<AnswerEntity> set = new LinkedHashSet<AnswerEntity>( Math.max( (int) ( list.size() / .75f ) + 1, 16 ) );
+        List<AnswerEntity> list1 = new ArrayList<AnswerEntity>( list.size() );
         for ( AnswerDto answerDto : list ) {
-            set.add( answerDtoToAnswerEntity( answerDto ) );
+            list1.add( answerDtoToAnswerEntity( answerDto ) );
         }
 
-        return set;
+        return list1;
     }
 
     protected QuestionEntity questionDtoToQuestionEntity(QuestionDto questionDto) {
@@ -101,7 +99,7 @@ public class RoomMapperImpl implements RoomMapper {
         questionEntity.setGenreQuestion( questionDto.getGenreQuestion() );
         questionEntity.setText( questionDto.getText() );
         questionEntity.setScore( questionDto.getScore() );
-        questionEntity.setAnswer( answerDtoListToAnswerEntitySet( questionDto.getAnswer() ) );
+        questionEntity.setAnswer( answerDtoListToAnswerEntityList( questionDto.getAnswer() ) );
 
         return questionEntity;
     }
@@ -158,17 +156,17 @@ public class RoomMapperImpl implements RoomMapper {
         return answerDto;
     }
 
-    protected List<AnswerDto> answerEntitySetToAnswerDtoList(Set<AnswerEntity> set) {
-        if ( set == null ) {
+    protected List<AnswerDto> answerEntityListToAnswerDtoList(List<AnswerEntity> list) {
+        if ( list == null ) {
             return null;
         }
 
-        List<AnswerDto> list = new ArrayList<AnswerDto>( set.size() );
-        for ( AnswerEntity answerEntity : set ) {
-            list.add( answerEntityToAnswerDto( answerEntity ) );
+        List<AnswerDto> list1 = new ArrayList<AnswerDto>( list.size() );
+        for ( AnswerEntity answerEntity : list ) {
+            list1.add( answerEntityToAnswerDto( answerEntity ) );
         }
 
-        return list;
+        return list1;
     }
 
     protected QuestionDto questionEntityToQuestionDto(QuestionEntity questionEntity) {
@@ -181,7 +179,7 @@ public class RoomMapperImpl implements RoomMapper {
         questionDto.setGenreQuestion( questionEntity.getGenreQuestion() );
         questionDto.setText( questionEntity.getText() );
         questionDto.setScore( questionEntity.getScore() );
-        questionDto.setAnswer( answerEntitySetToAnswerDtoList( questionEntity.getAnswer() ) );
+        questionDto.setAnswer( answerEntityListToAnswerDtoList( questionEntity.getAnswer() ) );
 
         return questionDto;
     }

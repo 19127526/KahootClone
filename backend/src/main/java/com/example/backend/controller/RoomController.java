@@ -4,12 +4,15 @@ import com.example.backend.common.controller.BaseController;
 import com.example.backend.common.model.EmailDto;
 import com.example.backend.common.model.Role;
 import com.example.backend.mapper.RoomMapper;
+import com.example.backend.mapper.UserRoomMapper;
 import com.example.backend.model.dto.RoomDto;
 import com.example.backend.model.dto.UserRoomDto;
 import com.example.backend.model.entity.AccountEntity;
 import com.example.backend.model.entity.QuestionEntity;
 import com.example.backend.model.entity.RoomEntity;
+import com.example.backend.model.entity.UserRoomEntity;
 import com.example.backend.model.request.CreateRoomRequest;
+import com.example.backend.model.request.JoinRequest;
 import com.example.backend.service.EmailService;
 import com.example.backend.service.RoomService;
 import com.querydsl.core.Tuple;
@@ -29,6 +32,7 @@ public class RoomController extends BaseController {
     private final EmailService emailService;
     private final RoomMapper roomMapper;
     private final RoomService roomService;
+    private final UserRoomMapper userRoomMapper;
     @GetMapping("invite/sendEmail")
     public ResponseEntity<String> sendEmail(String email) {
         return new ResponseEntity<>(emailService.sendEmailInviteToRoom(new EmailDto("hello world",email)), HttpStatus.OK);
@@ -59,8 +63,11 @@ public class RoomController extends BaseController {
         return ResponseEntity.status(HttpStatus.OK).body(roomDto);
     }
 
-//    public ResponseEntity<UserRoomDto> join(@RequestBody JoinRequest joinRequest) {
-//
-//    }
+    @PostMapping("join")
+    public ResponseEntity<UserRoomDto> join(@RequestBody JoinRequest joinRequest) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(userRoomMapper.entityToDto(roomService.join(joinRequest)));
+    }
 
 }

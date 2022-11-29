@@ -30,7 +30,7 @@ public class RoomServiceImpl implements RoomService {
     private final AccountRepository accountRepository;
     private final RoomRepository roomRepository;
     private final UserRoomRepository userRoomRepository;
-    public UserRoomEntity addMember(JoinRequest joinRequest) {
+    public UserRoomEntity join(JoinRequest joinRequest) {
         AccountEntity accountEntity = accountRepository
                 .findAccountEntityByEmail(joinRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("account {%s} not found".formatted(joinRequest.getEmail())));
@@ -41,9 +41,8 @@ public class RoomServiceImpl implements RoomService {
             UserRoomEntity userRoomEntity = new UserRoomEntity(0,null,null, Role.MEMBER,0);
             accountEntity.addUserRoom(userRoomEntity);
             roomEntity.addUserRoom(userRoomEntity);
-            entityManager.persist(accountEntity);
+            accountRepository.save(accountEntity);
             roomRepository.save(roomEntity);
-//            entityManager.persist(roomEntity);
             return userRoomRepository.save(userRoomEntity);
         }else throw new ResourceNotFoundException("code invalid");
     }
