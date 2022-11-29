@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,9 +43,6 @@ public class RoomController extends BaseController {
     public ResponseEntity<RoomDto> getDetail(String name) {
         List<Tuple> data = roomService.getDetail(name);
         RoomEntity roomEntity = (RoomEntity) data.get(0).toArray()[0];
-        Arrays.stream(roomEntity.getQuestionEntitySet().toArray()).toList().forEach(it -> {
-            System.out.println("===" + ((QuestionEntity) it).getId());
-        });
         RoomDto roomDto = roomMapper.entityToDto(roomEntity);
         LinkedList<UserRoomDto> users = new LinkedList<>();
         data.forEach(it -> {
@@ -59,7 +55,7 @@ public class RoomController extends BaseController {
             temp.setRole((Role) it.toArray()[3]);
             users.add(temp);
         });
-        roomDto.setUsers(users);
+        roomDto.setUserRoom(users);
         return ResponseEntity.status(HttpStatus.OK).body(roomDto);
     }
 

@@ -61,7 +61,7 @@ public class RoomServiceImpl implements RoomService {
             UserRoomEntity userRoomEntity = new UserRoomEntity();
             userRoomEntity.setRole(Role.OWNER);
             accountEntity.addUserRoom(userRoomEntity);
-            accountEntity.addRoomEntity(roomEntity);
+            accountEntity.addRoom(roomEntity);
             roomEntity.addUserRoom(userRoomEntity);
             accountRepository.save(accountEntity);
             roomRepository.save(roomEntity);
