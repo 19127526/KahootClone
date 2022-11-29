@@ -13,6 +13,7 @@ import java.util.Set;
 public class AccountDto implements Serializable {
     private String userName;
     private String email;
+    private String password;
     private String imageURL;
     private MultipartFile imageFile;
     private Set<UserRoomEntity> userRoomEntities = new HashSet<>();
