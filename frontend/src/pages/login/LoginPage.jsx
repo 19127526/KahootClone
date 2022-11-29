@@ -1,6 +1,6 @@
 import {FacebookOutlined, GoogleOutlined, TwitterOutlined} from "@ant-design/icons";
 import {useEffect, useLayoutEffect, useState} from "react";
-import {connect} from "react-redux";
+import {connect, useSelector} from "react-redux";
 import {loginGoogle, loginNormal} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
 import {Link, useNavigate} from "react-router-dom";
@@ -30,6 +30,7 @@ const LoginPage = (props) => {
   const [userGoogle,setUserGoogle]=useState();
   const navigate=useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const urlData=useSelector(state=>state.authenticateRoutes);
   const showModal = () => {
     setIsModalOpen(true);
   };

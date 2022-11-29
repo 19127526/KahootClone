@@ -55,7 +55,7 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate>
+            <Authenticate  path={"/profile"}>
               <ProfilePageLazy/>
             </Authenticate>
           </React.Suspense>
@@ -66,7 +66,7 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate>
+            <Authenticate  path={"/group"}>
               <ListGroupPageLazy/>
             </Authenticate>
           </React.Suspense>
@@ -77,7 +77,7 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate>
+            <Authenticate path={"/group/detail/:id"}>
               <GroupDetailPageLazy/>
             </Authenticate>
           </React.Suspense>
@@ -88,7 +88,7 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate>
+            <Authenticate path={"/group/detail"}>
               <GroupDetailPageLazy/>
             </Authenticate>
           </React.Suspense>

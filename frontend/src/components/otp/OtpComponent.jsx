@@ -5,8 +5,9 @@ import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import {loginGoogle, loginNormal} from "../../pages/login/LoginPage.thunk";
 import {postOtp} from "./OtpComponent.thunk";
-import {connect, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 
 
 const mapStateToProps = state => ({
@@ -22,7 +23,12 @@ const OtpComponent = (props) => {
   const{postOtp,onSubmit}=props;
   const [otpValue,setOtpValue]=useState([null,null,null,null,null,null]);
   const data=useSelector(state=>state.loginPage);
+  const dispatch=useDispatch()
   const navigate=useNavigate();
+  let dataUrl=useSelector(state=>state.authenticateRoutes);
+  if(dataUrl.url===null){
+    dataUrl.url="/"
+  }
   const handleUsername = (event) => {
     const e = otpValue.map((item,position)=> { console.log(position,event.target.id); return ((position == event.target.id) ? event.target.value : item) });
     setOtpValue(e)
@@ -35,7 +41,8 @@ const OtpComponent = (props) => {
     else{
       postOtp(otpValue)
       if(data.isLogin===true){
-        navigate("/profile")
+        navigate(dataUrl.url);
+        dispatch(removeUrlGuard());
       }
       Notification("Thông báo otp","Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
     }
