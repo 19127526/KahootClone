@@ -77,8 +77,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomEntity> getListRoom(String email) {
+    public List<RoomEntity> getListRoomCreated(String email) {
         return roomRepository.findRoomEntitiesByAccountEntity_Email(email);
+    }
+
+    @Override
+    public List<RoomEntity> fetchRoomsJoined(String email) {
+        if(email.isEmpty()) throw new ResourceInvalidException("email invalid");
+        return roomRepository.getListRoomJoined(email);
     }
 
     @Override

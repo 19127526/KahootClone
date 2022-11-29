@@ -14,8 +14,8 @@ public interface RoomService {
     UserRoomEntity addMember(JoinRequest joinRequest);
     RoomEntity createRoom(CreateRoomRequest createRoomRequest);
     AccountEntity removeMember(RemoveRequest removeRequest);
-
-    List<RoomEntity> getListRoom(String email);
+    List<RoomEntity> getListRoomCreated(String email);
+    List<RoomEntity> fetchRoomsJoined(String email);
 //    UserRoomEntity update(UserRoomDto userRoomDto);
     List<Tuple> getDetail(String name);
 }
