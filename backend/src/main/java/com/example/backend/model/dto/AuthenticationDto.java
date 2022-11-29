@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 public class AuthenticationDto {
-    private AccountDto accountDto;
     private AccountStatus accountStatus;
-    private JsonWebToken jsonWebToken;
     private String email;
+    //    having account
+    private AccountDto accountDto;
+    private JsonWebToken jsonWebToken;
 }

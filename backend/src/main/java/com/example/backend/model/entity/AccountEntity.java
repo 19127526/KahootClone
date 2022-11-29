@@ -19,6 +19,7 @@ public class AccountEntity extends SuperEntity {
     private String userName;
     @Column(unique = true)
     private String email;
+    private String password;
     private String imageURL;
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
