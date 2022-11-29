@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
+import com.example.backend.common.utils.JwtTokenUtil;
 import com.example.backend.mapper.AccountMapper;
 import com.example.backend.mapper.RoomMapper;
 import com.example.backend.model.dto.AccountDto;
@@ -50,10 +51,10 @@ public class AccountController extends BaseController {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.loginTraditional(accountDto));
     }
 
-    @GetMapping("refreshToken")
-    public ResponseEntity<JsonWebToken> refreshToken() {
-        return null;
-    }
+//    @GetMapping("refreshToken")
+//    public ResponseEntity<JsonWebToken> refreshToken(@RequestBody JsonWebToken jsonWebToken) {
+//
+//    }
 
     @PostMapping("update")
     public ResponseEntity<AccountDto> updateAccount(@ModelAttribute("value") AccountDto accountDto) {
