@@ -16,6 +16,7 @@ export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 
 export const INVITE_URL_REDIRECT=CLIENT_URL+"/verify";
 export const CLIENT_URL_REDIRECT=CLIENT_URL+REDIRECT_URI;
+export const CLIENT_LOGIN_GOOGLE=SERVER_URL+"/login";
 
 
 

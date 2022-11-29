@@ -10,7 +10,7 @@ import * as constraintNotification from "../../components/notification/Notificat
 import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
 import request from "../../apis/request";
-import {CLIENT_URL_REDIRECT} from "../../configs/url";
+import {CLIENT_LOGIN_GOOGLE, CLIENT_URL_REDIRECT} from "../../configs/url";
 
 const mapStateToProps = state => ({
 
@@ -122,7 +122,7 @@ const LoginPage = (props) => {
             <div className="social-media">
               <h3>You can also login with</h3>
               <div className="links-wrapper">
-                <a href={redirect_url}><GoogleOutlined/></a>
+                <a href={CLIENT_LOGIN_GOOGLE}><GoogleOutlined/></a>
                 <a href="#"><FacebookOutlined/></a>
                 <a href="#"><TwitterOutlined/></a>
               </div>
