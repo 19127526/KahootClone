@@ -73,11 +73,11 @@ const RoutesPage = () => {
         }
       />
       <Route
-        path={"/group/detail/:id"}
+        path={"/group/detail/:name"}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate path={"/group/detail/:id"}>
+            <Authenticate path={"/group/detail/:name"}>
               <GroupDetailPageLazy/>
             </Authenticate>
           </React.Suspense>

@@ -4,8 +4,10 @@ import {CaretDownOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import EmailComponent from "../email/EmailComponent";
 import DropdownCustom from "./DropdownCustom";
+import {useNavigate} from "react-router-dom";
 
 const GroupCard = ({name,capacity,type,url,code,question,userRoom}) => {
+    const navigate=useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
@@ -20,7 +22,7 @@ const GroupCard = ({name,capacity,type,url,code,question,userRoom}) => {
 
     const handleDetailButton = (e) => {
         e.preventDefault();
-        window.location.href=url;
+        navigate("/group/detail/"+name)
     }
     return (
         <div className="site-card-border-less-wrapper">

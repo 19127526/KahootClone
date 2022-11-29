@@ -2,10 +2,13 @@ import React, {useEffect, useState} from "react";
 import {Avatar, BackTop, Divider, List, Skeleton} from "antd";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Row} from "react-bootstrap";
+import {getDetailGroup} from "../../apis/group/groupApi";
+import {useLocation, useParams} from "react-router-dom";
 
 const ListGroupPage = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const {name}=useParams();
   const loadMoreData = () => {
     if (loading) {
       return;
@@ -22,14 +25,28 @@ const ListGroupPage = () => {
       });
   };
   useEffect(() => {
-    loadMoreData();
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    getDetailGroup({name:name})
+      .then(res=>{
+        console.log(res.data);
+        setData(res.data.userRoom);
+        setLoading(false);
+      })
+      .catch(err=>{
+        setLoading(false);
+        console.log(err)
+      })
+
   }, []);
   return (
     <div className="container-group-detail">
       <div className="group-detail-wrap">
           <Divider plain style={{fontSize:"30px"}}>Detail Group</Divider>
         <Row style={{textAlign: "center", marginBottom: "15px"}}>
-          <span className="card__description__detail" style={{padding:"0 2vh"}}>the descriptions If you’ve been reading this blog for a while, you’ve probably seen at least one of our customer spotlights. We love our customers! As a former small business marketer myself, I love our passionate dedication to empowering and supporting small business growth.</span>
+          <span className="card__description__detail" style={{padding:"0 4vh"}}>the descriptions If you’ve been reading this blog for a while, you’ve probably seen at least one of our customer spotlights. We love our customers! As a former small business marketer myself, I love our passionate dedication to empowering and supporting small business growth.</span>
         </Row>
         <div className=" ant-divider"/>
         <Row style={{width: "100%"}} className="mb-5">
@@ -42,7 +59,7 @@ const ListGroupPage = () => {
             <InfiniteScroll
               dataLength={data.length}
               next={loadMoreData}
-              hasMore={data.length < 50}
+              hasMore={data.length < data.length}
               loader={
                 <Skeleton
                   avatar
@@ -61,12 +78,11 @@ const ListGroupPage = () => {
                   <>
                   <List.Item key={item.email}>
                     <List.Item.Meta
-                      avatar={<Avatar src={item.picture.large}/>}
-                      title={<a href="https://ant.design">{item.name.last}</a>}
+                      avatar={<Avatar src={item.imageURL}/>}
+                      title={<a href="https://ant.design">{item.userName}</a>}
                       description={item.email}
                     />
-                    <div className="role">Member</div>
-
+                    <div className="role">{item.role}</div>
                   </List.Item>
                   </>
                 )}

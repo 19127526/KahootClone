@@ -1,6 +1,6 @@
 import {Navigate } from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getLogin} from "../../apis/login/login";
+import {getLogin} from "../../apis/login/loginApi";
 
 const Oauth2Page=()=>{
   const [flag,setFlag]=useState(false)
