@@ -1,5 +1,6 @@
 package com.example.backend.repository.impl;
 
+import com.example.backend.model.entity.RoomEntity;
 import com.example.backend.repository.RoomRepositoryCustom;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,6 +28,15 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
                 .rightJoin(userRoomEntity).on(roomEntity.id.eq(userRoomEntity.roomId.id))
                 .innerJoin(accountEntity).on(accountEntity.id.eq(userRoomEntity.userId.id))
                 .select(roomEntity,accountEntity,userRoomEntity.score,userRoomEntity.role)
+                .fetch();
+    }
+
+    @Override
+    public List<RoomEntity> getListRoomJoined(String email) {
+        return new JPAQueryFactory(entityManager)
+                .from(userRoomEntity).where(userRoomEntity.userId.email.eq(email))
+                .join(roomEntity).on(roomEntity.id.eq(userRoomEntity.roomId.id))
+                .select(roomEntity)
                 .fetch();
     }
 }
