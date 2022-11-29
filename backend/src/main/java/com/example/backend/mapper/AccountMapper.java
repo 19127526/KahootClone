@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
     AccountDto entityToDto(AccountEntity accountEntity);
-    @Mapping(target = "userRoomEntities", ignore = true)
-    @Mapping(target = "userQuestionEntities", ignore = true)
+    @Mapping(target = "userRoom", ignore = true)
+    @Mapping(target = "userQuestion", ignore = true)
     AccountEntity dtoToEntity(AccountDto accountDto);
 }

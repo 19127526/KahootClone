@@ -4,19 +4,19 @@ import com.example.backend.common.model.GenreRoom;
 import com.example.backend.model.dto.AnswerDto;
 import com.example.backend.model.dto.QuestionDto;
 import com.example.backend.model.dto.RoomDto;
+import com.example.backend.model.dto.UserRoomDto;
 import com.example.backend.model.entity.AnswerEntity;
 import com.example.backend.model.entity.QuestionEntity;
 import com.example.backend.model.entity.RoomEntity;
+import com.example.backend.model.entity.UserRoomEntity;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-29T02:35:05+0700",
+    date = "2022-11-29T13:24:43+0700",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 18.0.2 (Amazon.com Inc.)"
 )
 @Component
@@ -37,7 +37,8 @@ public class RoomMapperImpl implements RoomMapper {
         }
         roomEntity.setUrl( roomDto.getUrl() );
         roomEntity.setCode( roomDto.getCode() );
-        roomEntity.setQuestionEntitySet( questionDtoListToQuestionEntitySet( roomDto.getQuestionEntitySet() ) );
+        roomEntity.setQuestions( questionDtoListToQuestionEntityList( roomDto.getQuestions() ) );
+        roomEntity.setUserRoom( userRoomDtoListToUserRoomEntityList( roomDto.getUserRoom() ) );
 
         return roomEntity;
     }
@@ -57,7 +58,7 @@ public class RoomMapperImpl implements RoomMapper {
         }
         roomDto.setUrl( roomEntity.getUrl() );
         roomDto.setCode( roomEntity.getCode() );
-        roomDto.setQuestionEntitySet( questionEntitySetToQuestionDtoList( roomEntity.getQuestionEntitySet() ) );
+        roomDto.setQuestions( questionEntityListToQuestionDtoList( roomEntity.getQuestions() ) );
 
         return roomDto;
     }
@@ -75,17 +76,17 @@ public class RoomMapperImpl implements RoomMapper {
         return answerEntity;
     }
 
-    protected Set<AnswerEntity> answerDtoListToAnswerEntitySet(List<AnswerDto> list) {
+    protected List<AnswerEntity> answerDtoListToAnswerEntityList(List<AnswerDto> list) {
         if ( list == null ) {
             return null;
         }
 
-        Set<AnswerEntity> set = new LinkedHashSet<AnswerEntity>( Math.max( (int) ( list.size() / .75f ) + 1, 16 ) );
+        List<AnswerEntity> list1 = new ArrayList<AnswerEntity>( list.size() );
         for ( AnswerDto answerDto : list ) {
-            set.add( answerDtoToAnswerEntity( answerDto ) );
+            list1.add( answerDtoToAnswerEntity( answerDto ) );
         }
 
-        return set;
+        return list1;
     }
 
     protected QuestionEntity questionDtoToQuestionEntity(QuestionDto questionDto) {
@@ -98,22 +99,48 @@ public class RoomMapperImpl implements RoomMapper {
         questionEntity.setGenreQuestion( questionDto.getGenreQuestion() );
         questionEntity.setText( questionDto.getText() );
         questionEntity.setScore( questionDto.getScore() );
-        questionEntity.setAnswer( answerDtoListToAnswerEntitySet( questionDto.getAnswer() ) );
+        questionEntity.setAnswer( answerDtoListToAnswerEntityList( questionDto.getAnswer() ) );
 
         return questionEntity;
     }
 
-    protected Set<QuestionEntity> questionDtoListToQuestionEntitySet(List<QuestionDto> list) {
+    protected List<QuestionEntity> questionDtoListToQuestionEntityList(List<QuestionDto> list) {
         if ( list == null ) {
             return null;
         }
 
-        Set<QuestionEntity> set = new LinkedHashSet<QuestionEntity>( Math.max( (int) ( list.size() / .75f ) + 1, 16 ) );
+        List<QuestionEntity> list1 = new ArrayList<QuestionEntity>( list.size() );
         for ( QuestionDto questionDto : list ) {
-            set.add( questionDtoToQuestionEntity( questionDto ) );
+            list1.add( questionDtoToQuestionEntity( questionDto ) );
         }
 
-        return set;
+        return list1;
+    }
+
+    protected UserRoomEntity userRoomDtoToUserRoomEntity(UserRoomDto userRoomDto) {
+        if ( userRoomDto == null ) {
+            return null;
+        }
+
+        UserRoomEntity.UserRoomEntityBuilder userRoomEntity = UserRoomEntity.builder();
+
+        userRoomEntity.role( userRoomDto.getRole() );
+        userRoomEntity.score( userRoomDto.getScore() );
+
+        return userRoomEntity.build();
+    }
+
+    protected List<UserRoomEntity> userRoomDtoListToUserRoomEntityList(List<UserRoomDto> list) {
+        if ( list == null ) {
+            return null;
+        }
+
+        List<UserRoomEntity> list1 = new ArrayList<UserRoomEntity>( list.size() );
+        for ( UserRoomDto userRoomDto : list ) {
+            list1.add( userRoomDtoToUserRoomEntity( userRoomDto ) );
+        }
+
+        return list1;
     }
 
     protected AnswerDto answerEntityToAnswerDto(AnswerEntity answerEntity) {
@@ -129,17 +156,17 @@ public class RoomMapperImpl implements RoomMapper {
         return answerDto;
     }
 
-    protected List<AnswerDto> answerEntitySetToAnswerDtoList(Set<AnswerEntity> set) {
-        if ( set == null ) {
+    protected List<AnswerDto> answerEntityListToAnswerDtoList(List<AnswerEntity> list) {
+        if ( list == null ) {
             return null;
         }
 
-        List<AnswerDto> list = new ArrayList<AnswerDto>( set.size() );
-        for ( AnswerEntity answerEntity : set ) {
-            list.add( answerEntityToAnswerDto( answerEntity ) );
+        List<AnswerDto> list1 = new ArrayList<AnswerDto>( list.size() );
+        for ( AnswerEntity answerEntity : list ) {
+            list1.add( answerEntityToAnswerDto( answerEntity ) );
         }
 
-        return list;
+        return list1;
     }
 
     protected QuestionDto questionEntityToQuestionDto(QuestionEntity questionEntity) {
@@ -152,21 +179,21 @@ public class RoomMapperImpl implements RoomMapper {
         questionDto.setGenreQuestion( questionEntity.getGenreQuestion() );
         questionDto.setText( questionEntity.getText() );
         questionDto.setScore( questionEntity.getScore() );
-        questionDto.setAnswer( answerEntitySetToAnswerDtoList( questionEntity.getAnswer() ) );
+        questionDto.setAnswer( answerEntityListToAnswerDtoList( questionEntity.getAnswer() ) );
 
         return questionDto;
     }
 
-    protected List<QuestionDto> questionEntitySetToQuestionDtoList(Set<QuestionEntity> set) {
-        if ( set == null ) {
+    protected List<QuestionDto> questionEntityListToQuestionDtoList(List<QuestionEntity> list) {
+        if ( list == null ) {
             return null;
         }
 
-        List<QuestionDto> list = new ArrayList<QuestionDto>( set.size() );
-        for ( QuestionEntity questionEntity : set ) {
-            list.add( questionEntityToQuestionDto( questionEntity ) );
+        List<QuestionDto> list1 = new ArrayList<QuestionDto>( list.size() );
+        for ( QuestionEntity questionEntity : list ) {
+            list1.add( questionEntityToQuestionDto( questionEntity ) );
         }
 
-        return list;
+        return list1;
     }
 }
