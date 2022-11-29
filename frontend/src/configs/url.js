@@ -11,8 +11,10 @@ export const INVITE_MEMBER_INTO_GROUP="/room/join"
 export const REDIRECT_URI="/login/google/redirect"
 export const HOME_URI="/home"
 export const GROUP_URI = "/group"
+export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 
 
+export const INVITE_URL_REDIRECT=CLIENT_URL+"/verify";
 export const CLIENT_URL_REDIRECT=CLIENT_URL+REDIRECT_URI;
 
 

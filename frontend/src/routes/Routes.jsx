@@ -2,8 +2,8 @@ import {Route, Routes} from "react-router-dom";
 import React from "react";
 import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
-import {HOME_URI, REDIRECT_URI} from "../configs/url";
-import Oauth2Page from "../pages/oauth2/Oauth2Page";
+import {HOME_URI, REDIRECT_URI, VERIFY_INVITE_URI} from "../configs/url";
+import Oauth2Page from "../authors/oauth2/Oauth2Page";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy = React.lazy(() => import("../pages/login/LoginPage"))
@@ -11,6 +11,7 @@ const RegisterPageLazy = React.lazy(() => import("../pages/register/RegisterPage
 const ProfilePageLazy = React.lazy(() => import("../pages/profile/ProfilePage"))
 const ListGroupPageLazy = React.lazy(() => import("../pages/group/ListGroupPage"))
 const GroupDetailPageLazy = React.lazy(() => import("../pages/group/GroupDetailPage"))
+const InvitePageLazy=React.lazy(()=>import("../authors/invite/InvitePage"))
 const RoutesPage = () => {
   return (
     <Routes>
@@ -103,7 +104,17 @@ const RoutesPage = () => {
           </React.Suspense>
         }
       />
-
+      <Route
+        path={VERIFY_INVITE_URI}
+        element={
+          <React.Suspense fallback={<Loading/>}>
+            {" "}
+            <Authenticate path={VERIFY_INVITE_URI}>
+              <InvitePageLazy/>
+            </Authenticate>
+          </React.Suspense>
+        }
+      />
     </Routes>
   );
 }
