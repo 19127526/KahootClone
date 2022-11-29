@@ -122,7 +122,8 @@ const LoginPage = (props) => {
             <div className="social-media">
               <h3>You can also login with</h3>
               <div className="links-wrapper">
-                <a href={CLIENT_LOGIN_GOOGLE}><GoogleOutlined/></a>
+                {/*CLIENT_LOGIN_GOOGLE*/}
+                <a href={redirect_url}><GoogleOutlined/></a>
                 <a href="#"><FacebookOutlined/></a>
                 <a href="#"><TwitterOutlined/></a>
               </div>
