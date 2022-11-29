@@ -56,7 +56,7 @@ public class RoomServiceImpl implements RoomService {
             RoomEntity roomEntity = new RoomEntity();
             roomEntity.setName(createRoomRequest.getName());
             roomEntity.setCode(CodeGeneratorUtils.invoke());
-            roomEntity.setUrl("https://www.google.com/" + createRoomRequest.getName());
+            roomEntity.setUrl("http://localhost:3000/group/detail/" + createRoomRequest.getName());
             UserRoomEntity userRoomEntity = new UserRoomEntity();
             userRoomEntity.setRole(Role.OWNER);
             accountEntity.addUserRoom(userRoomEntity);
