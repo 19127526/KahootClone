@@ -4,8 +4,8 @@ import {Text} from "@chakra-ui/react";
 import {useState} from "react";
 import request from "../../apis/request";
 import {CREATE_GROUP} from "../../configs/url";
-import Notification from "../../components/notification/Notification";
-import * as constraintNotification from "../../components/notification/Notification.constraints"
+import Notification from "../notification/Notification";
+import * as constraintNotification from "../notification/Notification.constraints"
 
 
 const OTPCreateGroup = ({isModalOpen, setIsModalOpen}) => {

@@ -5,6 +5,8 @@ export const CREATE_GROUP = "/room/generate"
 export const LIST_GROUP_CREATED_API = "account/listRoomCreated"
 export const LIST_GROUP_JOINED_API = "account/listRoomJoined"
 export const DETAIL_GROUP_API="/room/detail?name="
+export const INVITE_MEMBER_INTO_GROUP="/room/join"
+
 
 export const REDIRECT_URI="/login/google/redirect"
 export const HOME_URI="/home"

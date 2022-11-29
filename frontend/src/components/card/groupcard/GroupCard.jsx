@@ -1,12 +1,11 @@
 import {Container} from "react-bootstrap";
 import {Avatar, Button, Card, Modal, Row} from "antd";
-import {CaretDownOutlined} from "@ant-design/icons";
 import {useState} from "react";
-import EmailComponent from "../email/EmailComponent";
-import DropdownCustom from "./DropdownCustom";
+import DropdownCustom from "../../dropdowncustom/DropdownCustom";
 import {useNavigate} from "react-router-dom";
 
 const GroupCard = ({name,capacity,type,url,code,question,userRoom}) => {
+    console.log(userRoom)
     const navigate=useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
 

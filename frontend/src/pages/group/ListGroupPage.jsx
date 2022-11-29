@@ -2,7 +2,7 @@ import {Col, Container} from "react-bootstrap";
 import {Button, Divider, List, Modal, Row, Skeleton, Tabs} from "antd";
 import Search from "antd/es/input/Search";
 import {PlusCircleFilled} from "@ant-design/icons";
-import OTPCreateGroup from "../../components/card/OTPCreateGroup";
+import OTPCreateGroup from "../../components/otpcreategroup/OTPCreateGroup";
 import {useState, useEffect} from "react";
 import GroupContent from "./GroupContent";
 

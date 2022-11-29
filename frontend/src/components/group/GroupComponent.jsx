@@ -1,5 +1,5 @@
 import Carousel from "react-elastic-carousel";
-import CardComponent from "../card/CardComponent";
+import CardComponent from "../card/cardcomponent/CardComponent";
 import {Col, Row} from "react-bootstrap";
 import React from "react";
 import {Button} from "antd";
