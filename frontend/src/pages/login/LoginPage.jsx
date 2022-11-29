@@ -1,6 +1,6 @@
 import {FacebookOutlined, GoogleOutlined, TwitterOutlined} from "@ant-design/icons";
 import {useEffect, useLayoutEffect, useState} from "react";
-import {connect, useSelector} from "react-redux";
+import {connect, useDispatch, useSelector} from "react-redux";
 import {loginGoogle, loginNormal} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
 import {Link, useNavigate} from "react-router-dom";
@@ -11,6 +11,7 @@ import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
 import request from "../../apis/request";
 import {CLIENT_LOGIN_GOOGLE, CLIENT_URL_REDIRECT} from "../../configs/url";
+import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 
 const mapStateToProps = state => ({
 
@@ -30,6 +31,8 @@ const LoginPage = (props) => {
   const [userGoogle,setUserGoogle]=useState();
   const navigate=useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dataUrl=useSelector((state)=>state.authenticateRoutes);
+  const dispatch=useDispatch();
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -77,15 +80,17 @@ const LoginPage = (props) => {
   const handlePassword = (event) => {
     setPassword(event.target.value)
   }
-  const submitLogin=(event)=>{
+  const submitLogin= async (event)=>{
     event.preventDefault();
     if(username===""||password===""){
       Notification("Thông báo đăng nhập", "Vui lòng điền đầy đủ tài khoản và mật khẩu",constraintNotification.NOTIFICATION_WARN)
       return;
     }
-    const temp=loginNormal({username:username,password:password});
+    const temp= await loginNormal({username:username,password:password});
     if(temp.type===constraints.LOGIN_NORMAL_SUCCESS){
-      showModal();
+      Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)
+      navigate(dataUrl.url);
+        dispatch(removeUrlGuard());
     }
     else{
       Notification("Thông báo đăng nhập", "Đăng nhập thất bại (Tài khoản và mật khẩu không đúng)",constraintNotification.NOTIFICATION_ERROR)
