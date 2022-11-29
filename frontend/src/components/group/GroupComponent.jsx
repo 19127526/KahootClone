@@ -1,9 +1,11 @@
 import Carousel from "react-elastic-carousel";
 import CardComponent from "../card/cardcomponent/CardComponent";
 import {Col, Row} from "react-bootstrap";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "antd";
 import {Link, useNavigate} from 'react-router-dom';
+import request from "../../apis/request";
+import {LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../configs/url";
 
 const items = [
   1, 2, 3, 4, 5
@@ -17,6 +19,31 @@ const breakPoints = [
 ];
 
 const GroupComponent=({title})=>{
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+
+    const loadMoreData = () => {
+        if (loading) {
+            return;
+        }
+
+        setLoading(true);
+        request.get(title == "Joined Groups" ? LIST_GROUP_JOINED_API : LIST_GROUP_CREATED_API  + "?email=huylol").then((response) => {
+            if (response.status == 200) {
+                setData(response.data)
+            }
+            setLoading(false)
+        })
+
+    };
+
+    useEffect(() => {
+        loadMoreData()
+
+    }, []);
+
+
   const navigate = useNavigate();
   return (
     <div className="container mt-3">
@@ -28,12 +55,13 @@ const GroupComponent=({title})=>{
           The more groups you join the more you can explore
         </text>
       </div>
+        {data.length > 0 ?
       <Carousel breakPoints={breakPoints}>
-        {items.map(item => <CardComponent/>
+        {data.map(item => <CardComponent name={item.name} url={item.url}/>
         )}
-      </Carousel>
+      </Carousel> : <div></div>}
       <div className="row justify-content-center mt-3">
-        <Button onClick={()=>navigate('/group')} className="card__description__btn ant-btn ant-btn-primary" style={{padding:"12px 25px"}} >See more</Button>
+        <Button onClick={()=>navigate('/group')} className="card__description__btn ant-btn ant-btn-primary" style={{padding:"12px 25px"}} >{data.length > 0 ? "See more" : "Create group"}</Button>
       </div>
 
       <div className="m-5 ant-divider"/>

@@ -18,8 +18,7 @@ const GroupContent = (type) => {
         }
 
         setLoading(true);
-        request.get(type == "joined" ? LIST_GROUP_JOINED_API + "?email=phamtienquan2001@gmail.com" : LIST_GROUP_CREATED_API  + "?email=phamtienquan2001@gmail.com").then((response) => {
-            // console.log(response)
+        request.get(type == "joined" ? LIST_GROUP_JOINED_API : LIST_GROUP_CREATED_API  + "?email=huylol").then((response) => {
             if (response.status == 200) {
                 setData(response.data)
                 console.log(response.data)

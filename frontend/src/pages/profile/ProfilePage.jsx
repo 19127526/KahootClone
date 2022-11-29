@@ -4,6 +4,7 @@ import {Row} from "react-bootstrap";
 import GroupComponent from "../../components/group/GroupComponent";
 
 const ProfilePage = () => {
+
   return (
 
     <div className="container-profile">
