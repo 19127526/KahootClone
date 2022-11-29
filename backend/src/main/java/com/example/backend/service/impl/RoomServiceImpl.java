@@ -30,21 +30,24 @@ public class RoomServiceImpl implements RoomService {
     private final AccountRepository accountRepository;
     private final RoomRepository roomRepository;
     private final UserRoomRepository userRoomRepository;
+
     public UserRoomEntity join(JoinRequest joinRequest) {
         AccountEntity accountEntity = accountRepository
                 .findAccountEntityByEmail(joinRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("account {%s} not found".formatted(joinRequest.getEmail())));
+                .orElseThrow(() -> new ResourceNotFoundException("account " + joinRequest.getEmail() + " not found"));
         RoomEntity roomEntity = roomRepository
                 .findRoomEntityByUrl(joinRequest.getUrl())
                 .orElseThrow(() -> new ResourceNotFoundException("Room not found"));
-        if(roomEntity.getCode().equals(joinRequest.getCode())) {
-            UserRoomEntity userRoomEntity = new UserRoomEntity(0,null,null, Role.MEMBER,0);
+        List<UserRoomEntity> checking = userRoomRepository.fetchDataFromAccountAndRoom(accountEntity.getId(), roomEntity.getId());
+        if(!checking.isEmpty()) throw new ResourceInvalidException("account " + joinRequest.getEmail() + " exists in room");
+        if (roomEntity.getCode().equals(joinRequest.getCode())) {
+            UserRoomEntity userRoomEntity = new UserRoomEntity(0, null, null, Role.MEMBER, 0);
             accountEntity.addUserRoom(userRoomEntity);
             roomEntity.addUserRoom(userRoomEntity);
             accountRepository.save(accountEntity);
             roomRepository.save(roomEntity);
             return userRoomRepository.save(userRoomEntity);
-        }else throw new ResourceNotFoundException("code invalid");
+        } else throw new ResourceNotFoundException("code invalid");
     }
 
     @Override
@@ -52,7 +55,7 @@ public class RoomServiceImpl implements RoomService {
         AccountEntity accountEntity = accountRepository
                 .findAccountEntityByEmail(createRoomRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("%s invalid".formatted(createRoomRequest.getEmail())));
-        if(roomRepository.findRoomEntityByName(createRoomRequest.getName()).isEmpty()) {
+        if (roomRepository.findRoomEntityByName(createRoomRequest.getName()).isEmpty()) {
             RoomEntity roomEntity = new RoomEntity();
             roomEntity.setName(createRoomRequest.getName());
             roomEntity.setCode(CodeGeneratorUtils.invoke());
@@ -66,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
             roomRepository.save(roomEntity);
             userRoomRepository.save(userRoomEntity);
             return roomEntity;
-        }else throw new ResourceInvalidException("name room {%s} exists");
+        } else throw new ResourceInvalidException("name room {%s} exists");
     }
 
 
@@ -82,7 +85,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomEntity> fetchRoomsJoined(String email) {
-        if(email.isEmpty()) throw new ResourceInvalidException("email invalid");
+        if (email.isEmpty()) throw new ResourceInvalidException("email invalid");
         return roomRepository.getListRoomJoined(email);
     }
 
