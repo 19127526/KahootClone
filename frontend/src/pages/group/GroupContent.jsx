@@ -21,6 +21,7 @@ const GroupContent = (type) => {
         setLoading(true);
         getListGroup({type:type,email:profile.email}).then((response) => {
             if (response.status == 200) {
+                console.log(response.data)
                 setData(response.data)
             }
             setLoading(false)

@@ -7,9 +7,12 @@ import * as constraintNotification from "../../components/notification/Notificat
 import Loading from "../../components/loading/LoadingComponent";
 
 const invitePage = () => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   let {name, code, email} = useParams();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
   const url = CLIENT_JOIN_GROUP_URL + name;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     postInviteInMember({email: email, code: code, url: url})
       .then(response => {
