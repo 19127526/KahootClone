@@ -1,4 +1,4 @@
-package com.example.backend.common.configuer;
+package com.example.backend.common.configure;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

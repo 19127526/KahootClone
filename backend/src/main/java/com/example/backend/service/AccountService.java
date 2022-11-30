@@ -15,5 +15,5 @@ public interface AccountService extends UserDetailsService {
     AuthenticationDto register(AccountDto accountDto);
     Boolean validateAccount(ValidateRequest validateRequest);
     AuthenticationDto loginTraditional(AccountDto accountDto);
-    JsonWebToken refreshToken(JsonWebToken jsonWebToken);
+    JsonWebToken refreshToken(String refreshToken);
 }

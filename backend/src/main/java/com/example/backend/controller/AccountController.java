@@ -51,10 +51,13 @@ public class AccountController extends BaseController {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.loginTraditional(accountDto));
     }
 
-//    @GetMapping("refreshToken")
-//    public ResponseEntity<JsonWebToken> refreshToken(@RequestBody JsonWebToken jsonWebToken) {
-//
-//    }
+    @PostMapping("refreshToken")
+    public ResponseEntity<JsonWebToken> refreshToken(@RequestBody JsonWebToken jsonWebToken) {
+        log.error("======= " + jsonWebToken.getRefreshToken());
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(accountService.refreshToken(jsonWebToken.getRefreshToken()));
+    }
 
     @PostMapping("update")
     public ResponseEntity<AccountDto> updateAccount(@ModelAttribute("value") AccountDto accountDto) {
