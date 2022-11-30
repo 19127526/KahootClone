@@ -8,4 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface UserRoomRepository extends JpaRepository<UserRoomEntity,Long>, UserRoomRepositoryCustom {
+    Optional<UserRoomEntity> findUserRoomEntityByUserId_IdAndRoomId_Id(Long user, Long room);
 }
