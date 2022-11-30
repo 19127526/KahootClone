@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/group/GroupComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/GroupComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/header/HeaderComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/header/HeaderComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/otpcreategroup/OTPCreateGroup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/otpcreategroup/OTPCreateGroup.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/GroupContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/GroupContent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/profile/ProfilePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/profile/ProfilePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/reduces/Reduce.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/reduces/Reduce.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/GroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/GroupDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/ListGroupPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/ListGroupPage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

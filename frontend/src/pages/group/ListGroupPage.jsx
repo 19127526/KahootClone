@@ -5,11 +5,14 @@ import {PlusCircleFilled} from "@ant-design/icons";
 import OTPCreateGroup from "../../components/otpcreategroup/OTPCreateGroup";
 import {useState, useEffect} from "react";
 import GroupContent from "./GroupContent";
+import {useSelector} from "react-redux";
 
 
 
 const ListGroupPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const {profile} = useSelector(state => state.loginPage);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -52,7 +55,7 @@ const ListGroupPage = () => {
                         />
                 </Container>
 
-                <OTPCreateGroup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <OTPCreateGroup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} profile = {profile}/>
             </div>
         </div>
     );

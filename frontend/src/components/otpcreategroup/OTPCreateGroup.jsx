@@ -8,7 +8,7 @@ import Notification from "../notification/Notification";
 import * as constraintNotification from "../notification/Notification.constraints"
 
 
-const OTPCreateGroup = ({isModalOpen, setIsModalOpen}) => {
+const OTPCreateGroup = ({isModalOpen, setIsModalOpen, profile}) => {
     const [groupName, setGroupName] = useState("");
     const [isVisible, setVisible] = useState(false);
     const [validator, setValidator] = useState("");
@@ -29,7 +29,7 @@ const OTPCreateGroup = ({isModalOpen, setIsModalOpen}) => {
             CREATE_GROUP,
             {
                 "name": groupName,
-                "email": "phamtienquan200122@gmail.com"
+                "email": profile.email
             }
         );
         if(response.status == 202){

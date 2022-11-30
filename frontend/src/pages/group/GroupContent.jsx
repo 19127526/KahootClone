@@ -9,8 +9,6 @@ import {LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../configs/url";
 import {getListGroup} from "../../apis/group/groupApi";
 import {useSelector} from "react-redux";
 
-const contents = [1, 2, 3, 4, 5];
-
 const GroupContent = (type) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
