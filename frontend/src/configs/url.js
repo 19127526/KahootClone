@@ -6,9 +6,9 @@ export const LIST_GROUP_CREATED_API = "account/listRoomCreated"
 export const LIST_GROUP_JOINED_API = "account/listRoomJoined"
 export const DETAIL_GROUP_API="/room/detail?name="
 export const INVITE_MEMBER_INTO_GROUP="/room/join"
-export const REGISTER_URi="/account/register"
-export const VALIDATE_OTP_URI="/account/validate/otp"
-export const LOGIN_NORMAL="/account/loginTraditional"
+export const REGISTER_URi="/account/auth/register"
+export const VALIDATE_OTP_URI="/account/auth/validate/otp"
+export const LOGIN_NORMAL="/account/auth/loginTraditional"
 
 
 export const REDIRECT_URI="/login/google/redirect"
@@ -27,7 +27,7 @@ export const CLIENT_LOGIN_GOOGLE=SERVER_URL+"/login";
 export const CLIENT_JOIN_GROUP_URL=CLIENT_URL+DETAIL_GROUP_URI;
 
 
-export const GET_LOGIN_OAUTH2="/account/login";
+export const GET_LOGIN_OAUTH2="/account/auth/loginSocial";
 
 
 

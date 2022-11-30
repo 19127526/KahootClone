@@ -5,6 +5,7 @@ const request = axios.create({
    baseURL: SERVER_URL,
   headers:{
     "Content-Type": "application/json",
+    "Authorization": "Bearer " + localStorage.getItem("accessToken")
   }
 });
 
