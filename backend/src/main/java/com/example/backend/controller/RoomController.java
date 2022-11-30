@@ -13,6 +13,7 @@ import com.example.backend.model.entity.RoomEntity;
 import com.example.backend.model.entity.UserRoomEntity;
 import com.example.backend.model.request.CreateRoomRequest;
 import com.example.backend.model.request.JoinRequest;
+import com.example.backend.model.request.RemoveMemberRequest;
 import com.example.backend.service.EmailService;
 import com.example.backend.service.RoomService;
 import com.querydsl.core.Tuple;
@@ -68,6 +69,13 @@ public class RoomController extends BaseController {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(userRoomMapper.entityToDto(roomService.join(joinRequest)));
+    }
+
+    @PostMapping("remove")
+    public ResponseEntity<Boolean> removeMember(@RequestBody RemoveMemberRequest removeMemberRequest) {
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(roomService.removeMember(removeMemberRequest));
     }
 
 }
