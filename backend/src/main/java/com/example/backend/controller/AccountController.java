@@ -32,6 +32,7 @@ public class AccountController extends BaseController {
 
     @GetMapping("auth/loginSocial")
     public ResponseEntity<AuthenticationDto> authentication(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        System.out.println(oAuth2AuthenticationToken);
         return ResponseEntity.status(HttpStatus.OK).body(accountService.loginSocial(oAuth2AuthenticationToken));
     }
 
