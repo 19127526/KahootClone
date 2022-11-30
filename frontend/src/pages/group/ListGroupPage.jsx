@@ -11,7 +11,6 @@ import {useSelector} from "react-redux";
 
 const ListGroupPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const {profile} = useSelector(state => state.loginPage);
     const showModal = () => {
         setIsModalOpen(true);

@@ -68,7 +68,6 @@ const OTPCreateGroup = ({isModalOpen, setIsModalOpen, profile}) => {
                     {validator}
                 </p>
             </Container>
-
         </Modal>
     );
 }

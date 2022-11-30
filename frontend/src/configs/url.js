@@ -15,6 +15,7 @@ export const REDIRECT_URI="/login/oauth2/redirect"
 export const HOME_URI="/home"
 export const GROUP_URI = "/group"
 export const DETAIL_GROUP_URI="/group/detail/"
+export const KICK_MEMBER_IN_GROUP_URI="/room/remove"
 export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 
