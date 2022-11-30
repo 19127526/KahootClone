@@ -63,17 +63,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
-//                catch (IllegalArgumentException e) {
-//                    System.out.println("Unable to get JWT Token");
-//                    // check
-//                    getError(response, e.getMessage());
-//                } catch (ExpiredJwtException e) {
-//                    System.out.println("JWT Token has expired");
-//                    // check
-//                    getError(response, e.getMessage());
-//                }
             }else {
-                getError(response, "JWT Token does not begin with Bearer String");
+                response.setHeader("error", e.getMessage());
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                ResourceInvalidException error = new ResourceInvalidException("Token invalid or format invalid");
+                response.setContentType(APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
         }else {
             filterChain.doFilter(request, response);
@@ -82,8 +77,5 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private boolean isRestrict(HttpServletRequest request) {
         return !(request.getServletPath().contains("/anonymous") || request.getServletPath().contains("/refreshToken") || request.getServletPath().contains("/auth/"));
-    }
-
-    private void getError(HttpServletResponse response, String message) throws IOException {
     }
 }
