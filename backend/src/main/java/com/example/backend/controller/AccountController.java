@@ -30,23 +30,23 @@ public class AccountController extends BaseController {
     private final RoomMapper roomMapper;
     private final RoomService roomService;
 
-    @GetMapping("login")
+    @GetMapping("auth/loginSocial")
     public ResponseEntity<AuthenticationDto> authentication(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.loginSocial(oAuth2AuthenticationToken));
     }
 
-    @PostMapping("register")
+    @PostMapping("auth/register")
     public ResponseEntity<AuthenticationDto> register(@RequestBody AccountDto accountDto) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(accountService.register(accountDto));
     }
-    @PostMapping("validate/otp")
+    @PostMapping("auth/validate/otp")
     public ResponseEntity<Boolean> validateAccount(@RequestBody ValidateRequest validateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.validateAccount(validateRequest));
     }
 
-    @PostMapping("loginTraditional")
+    @PostMapping("auth/loginTraditional")
     public ResponseEntity<AuthenticationDto> login(@RequestBody AccountDto accountDto) {
         return ResponseEntity.status(HttpStatus.OK).body(accountService.loginTraditional(accountDto));
     }
