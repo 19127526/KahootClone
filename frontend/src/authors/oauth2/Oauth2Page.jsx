@@ -1,11 +1,11 @@
 import {Navigate } from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getLogin} from "../../apis/login/loginApi";
+import {getInformationLoginGoogle, getLogin} from "../../apis/login/loginApi";
 
 const Oauth2Page=()=>{
-  const [flag,setFlag]=useState(false)
+  const [flag,setFlag]=useState(false);
   useEffect(()=>{
-    getLogin()
+    getInformationLoginGoogle()
       .then(response=>console.log(response))
       .catch(error=>console.log(error))
   },[])

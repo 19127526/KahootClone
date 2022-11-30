@@ -10,7 +10,7 @@ import * as constraintNotification from "../../components/notification/Notificat
 import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
 import request from "../../apis/request";
-import {CLIENT_LOGIN_GOOGLE, CLIENT_URL_REDIRECT} from "../../configs/url";
+import {CLIENT_LOGIN_GOOGLE, CLIENT_URL_REDIRECT, GET_LOGIN_OAUTH2} from "../../configs/url";
 import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 
 const mapStateToProps = state => ({
@@ -96,7 +96,7 @@ const LoginPage = (props) => {
       Notification("Thông báo đăng nhập", "Đăng nhập thất bại (Tài khoản và mật khẩu không đúng)",constraintNotification.NOTIFICATION_ERROR)
     }
   }
-  const redirect_url=`http://localhost:8080/oauth2/authorization/google?redirect_uri=${CLIENT_URL_REDIRECT}&client_id=596589929405-vph8vt5071m8lum3t0mcio71iubciu7e.apps.googleusercontent.com`
+  const redirect_url=`http://localhost:8080/oauth2/authorization/google?redirect_uri=${CLIENT_URL_REDIRECT}`
 
   return (
     <div className="main-container">

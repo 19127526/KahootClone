@@ -23,6 +23,10 @@ export const LoginPageReducer=(state=initialState,action)=>
       case types.CHANGE_IS_LOGIN:
         draft.isLogin=false;
         break;
+      case types.LOGOUT_ACCOUNT:
+        draft.isLogin=false;
+        localStorage.removeItem("accessToken");
+        break;
       default:
         return state;
     }

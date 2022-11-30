@@ -11,6 +11,10 @@ export const loginNormalFail=()=>({
   type: types.LOGIN_NORMAL_FAIL,
 })
 
+export const logoutAccount=()=>({
+  type: types.LOGOUT_ACCOUNT
+})
+
 export const loginGoogleSuccess=(payload)=>({
   type: types.LOGIN_GOOGLE_SUCCESS,
   payload

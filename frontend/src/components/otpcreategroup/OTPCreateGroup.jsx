@@ -32,6 +32,7 @@ const OTPCreateGroup = ({isModalOpen, setIsModalOpen, profile}) => {
                 "email": profile.email
             }
         );
+        console.log(response)
         if(response.status == 202){
             setIsModalOpen(false);
             setVisible(false);

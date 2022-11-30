@@ -2,9 +2,11 @@ import React from "react";
 import {Box, Flex, Text, Button, Stack} from "@chakra-ui/react";
 
 import {Link, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Avatar, Dropdown, message} from "antd";
-
+import {logoutAccount} from "../../pages/login/LoginPages.actions";
+import Notification from "../notification/Notification";
+import * as constraintNotification from "../notification/Notification.constraints"
 const NavBar = (props) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const data = useSelector(state => state.loginPage);
@@ -72,18 +74,25 @@ const items = [
     }
 ]
 
-const handleMenuClick = (e) => {
-    message.info('Success');
-    // console.log('click', e);
-};
 
-const menuProps = {
-    items,
-    onClick: handleMenuClick,
-};
+
+
 
 
 const MenuLinks = ({data, isOpen}) => {
+    const dispatch=useDispatch();
+    const handleMenuClick = (e) => {
+        if(e.key==0){
+            dispatch(logoutAccount());
+            Notification("Thông báo đăng xuất", "Đăng xuất thành công",constraintNotification.NOTIFICATION_SUCCESS)
+        }
+        // console.log('click', e);
+    };
+
+    const menuProps = {
+        items,
+        onClick: handleMenuClick,
+    };
     return (
         <Box
             display={{base: isOpen ? "block" : "none", md: "block"}}
@@ -99,7 +108,7 @@ const MenuLinks = ({data, isOpen}) => {
                 <MenuItem to="/">Home</MenuItem>
                 <MenuItem to="/group">Group</MenuItem>
                 <MenuItem to="/profile">Profile</MenuItem>
-                {data.isLogin ? <div>
+                {data.isLogin &&localStorage.getItem("accessToken") ? <div>
                         <Dropdown menu={menuProps}>
                             {data.profile["imageUrl"] != null ?
                                 <Avatar src={data.profile["imageUrl"]} size={"large"}/> :
