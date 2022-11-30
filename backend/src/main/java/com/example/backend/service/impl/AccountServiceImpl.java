@@ -35,15 +35,16 @@ import java.util.*;
 public class AccountServiceImpl implements AccountService {
     private static final String REDIS_KEY_OTP = "redis:otp";
     private static final String REDIS_KEY_ACCOUNT = "redis:account";
-    //    @Value("${CLOUDINARY_URL}")
-    @Value("${spring.cloudinary.url}") private String cloudinary_url;
-//    private final RedisTemplate<String, Object> cache;
-    private Map<String, AccountDto> cacheAccount = new HashMap<>();
-    private Map<String, String> cacheOTP = new HashMap<>();
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final JwtTokenUtil jwtTokenUtil;
     private final EmailUtils emailUtils;
+    //    @Value("${CLOUDINARY_URL}")
+    @Value("${spring.cloudinary.url}")
+    private String cloudinary_url;
+    //    private final RedisTemplate<String, Object> cache;
+    private Map<String, AccountDto> cacheAccount = new HashMap<>();
+    private Map<String, String> cacheOTP = new HashMap<>();
 
 //    @Override
 //    public AccountEntity accountValidate(ValidateRequest validateRequest) {
@@ -76,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
             cacheOTP.put(accountDto.getEmail(), otp);
             authenticationDto.setEmail(accountDto.getEmail());
             authenticationDto.setAccountStatus(AccountStatus.NEW_USER);
-            emailUtils.sendEmailInviteToRoom(otp,accountDto.getEmail(),"REGISTER");
+            emailUtils.sendEmailInviteToRoom(otp, accountDto.getEmail(), "REGISTER");
         } else {
             authenticationDto.setAccountDto(accountMapper.entityToDto(accountEntity.get()));
             String at = jwtTokenUtil.generateToken(accountEntity.get().getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
@@ -102,16 +103,7 @@ public class AccountServiceImpl implements AccountService {
         Cloudinary cloudinary = new Cloudinary(cloudinary_url);
         cloudinary.config.secure = true;
         try {
-            Map cloudinary_response = cloudinary
-                    .uploader()
-                    .upload(
-                            accountDto.getImageFile().getBytes(),
-                            ObjectUtils.asMap(
-                                    "use_filename", true,
-                                    "filename_override", accountDto.getImageFile().getOriginalFilename(),
-                                    "unique_filename", false,
-                                    "overwrite", true)
-                    );
+            Map cloudinary_response = cloudinary.uploader().upload(accountDto.getImageFile().getBytes(), ObjectUtils.asMap("use_filename", true, "filename_override", accountDto.getImageFile().getOriginalFilename(), "unique_filename", false, "overwrite", true));
             accountEntity.setImageURL(cloudinary_response.get("url").toString());
             accountEntity.setUserName(accountDto.getUserName());
             return accountRepository.save(accountEntity);
@@ -145,7 +137,7 @@ public class AccountServiceImpl implements AccountService {
         }
         AccountDto accountDto = (AccountDto) cacheAccount.get(validateRequest.getEmail());
         String otp = (String) cacheOTP.get(validateRequest.getEmail());
-        if(!Objects.equals(otp, validateRequest.getOtp())) throw new ResourceInvalidException("otp invalid");
+        if (!Objects.equals(otp, validateRequest.getOtp())) throw new ResourceInvalidException("otp invalid");
         else {
             AccountEntity accountEntity = accountMapper.dtoToEntity(accountDto);
             accountRepository.save(accountEntity);
@@ -157,15 +149,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AuthenticationDto loginTraditional(AccountDto accountDto) {
-        AccountEntity accountEntity = accountRepository
-                .findAccountEntityByEmailAndPassword(accountDto.getEmail(), accountDto.getPassword())
-                .orElseThrow(() -> {
-                    throw new ResourceNotFoundException("email or password invalid");
-                });
-        JsonWebToken jsonWebToken =
-                new JsonWebToken(
-                        jwtTokenUtil.generateToken(accountDto.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY),
-                        jwtTokenUtil.generateToken(accountDto.getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY));
+        AccountEntity accountEntity = accountRepository.findAccountEntityByEmailAndPassword(accountDto.getEmail(), accountDto.getPassword()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("email or password invalid");
+        });
+        JsonWebToken jsonWebToken = new JsonWebToken(jwtTokenUtil.generateToken(accountDto.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY), jwtTokenUtil.generateToken(accountDto.getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY));
         AuthenticationDto authenticationDto = new AuthenticationDto();
         authenticationDto.setJsonWebToken(jsonWebToken);
         authenticationDto.setAccountStatus(AccountStatus.OLD_USER);
@@ -174,8 +161,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public JsonWebToken refreshToken(JsonWebToken jsonWebToken) {
-        return null;
+    public JsonWebToken refreshToken(String refreshToken) {
+        try {
+            String email = jwtTokenUtil.getEmailFromToken(refreshToken);
+            AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(email).orElseThrow(() -> {
+                throw new ResourceNotFoundException("refreshToken invalid");
+            });
+            if (jwtTokenUtil.validateToken(refreshToken, accountEntity.getEmail())) {
+                String accessToken = jwtTokenUtil.generateToken(accountEntity.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
+                return new JsonWebToken(accessToken, refreshToken);
+            } else {
+                throw new ResourceInvalidException("refreshToken invalid");
+            }
+        } catch (Exception e) {
+            throw new ResourceInvalidException(e.getMessage());
+        }
     }
 
     @Override

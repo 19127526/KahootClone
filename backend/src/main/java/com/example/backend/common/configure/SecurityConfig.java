@@ -1,4 +1,4 @@
-package com.example.backend.common.configuer;
+package com.example.backend.common.configure;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests().anyRequest().permitAll();
-        http.oauth2Login().defaultSuccessUrl("/account/login");
+        http.oauth2Login().defaultSuccessUrl("/account/auth/loginSocial");
         http.addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

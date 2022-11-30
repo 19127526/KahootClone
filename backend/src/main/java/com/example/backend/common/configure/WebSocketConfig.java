@@ -1,4 +1,4 @@
-package com.example.backend.common.configuer;
+package com.example.backend.common.configure;
 
 import com.example.backend.controller.PlayingHandler;
 import org.springframework.context.annotation.Configuration;
