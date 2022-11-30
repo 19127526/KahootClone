@@ -7,18 +7,21 @@ import GroupCard from "../../components/card/groupcard/GroupCard";
 import request from "../../apis/request";
 import {LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../configs/url";
 import {getListGroup} from "../../apis/group/groupApi";
+import {useSelector} from "react-redux";
 
 const contents = [1, 2, 3, 4, 5];
 
 const GroupContent = (type) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
+    const {profile} = useSelector(state => state.loginPage);
+
     const loadMoreData = () => {
         if (loading) {
             return;
         }
         setLoading(true);
-        getListGroup({type:type,email:"phamtienquan200122@gmail.com"}).then((response) => {
+        getListGroup({type:type,email:profile.email}).then((response) => {
             if (response.status == 200) {
                 setData(response.data)
             }

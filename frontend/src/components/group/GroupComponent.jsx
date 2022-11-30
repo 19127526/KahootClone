@@ -6,6 +6,8 @@ import {Button} from "antd";
 import {Link, useNavigate} from 'react-router-dom';
 import request from "../../apis/request";
 import {LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../configs/url";
+import {useSelector} from "react-redux";
+import {getListGroup} from "../../apis/group/groupApi";
 
 const items = [
   1, 2, 3, 4, 5
@@ -18,7 +20,7 @@ const breakPoints = [
   {width: 1200, itemsToShow: 4}
 ];
 
-const GroupComponent=({title})=>{
+const GroupComponent=({title, type, profile})=>{
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -29,7 +31,7 @@ const GroupComponent=({title})=>{
         }
 
         setLoading(true);
-        request.get(title == "Joined Groups" ? LIST_GROUP_JOINED_API : LIST_GROUP_CREATED_API  + "?email=huylol").then((response) => {
+        getListGroup({type: type, email: profile.email}).then((response) => {
             if (response.status == 200) {
                 setData(response.data)
             }
