@@ -13,10 +13,10 @@ const ListGroupPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const {profile} = useSelector(state => state.loginPage);
-
     const showModal = () => {
         setIsModalOpen(true);
     };
+
 
     const pages = [
         {
@@ -31,6 +31,10 @@ const ListGroupPage = () => {
         }
     ];
 
+    const onChange=(key)=>{
+        console.log(key)
+
+    }
 
     return (
 
@@ -49,10 +53,11 @@ const ListGroupPage = () => {
                             tabBarExtraContent={
                                 <Button type="primary" shape="round" icon = {<PlusCircleFilled />} onClick={showModal}/>
                             }
-                            defaultActiveKey="1"
+                            defaultActiveKey={1}
                             type="card"
                             size={"large"}
                             items={pages}
+                            onChange={onChange}
                         />
                 </Container>
 

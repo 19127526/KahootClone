@@ -4,7 +4,7 @@ import {SERVER_URL} from "../configs/url";
 const request = axios.create({
    baseURL: SERVER_URL,
   headers:{
-    "Content-Type": "application/json",
+
     "Authorization": "Bearer " + localStorage.getItem("accessToken")
   }
 });
@@ -22,9 +22,18 @@ request.interceptors.response.use(
   }
 );
 
-request.interceptors.request.use((index) => {
-  return index;
-});
+request.interceptors.request.use(
+  async config => {
+    config.headers = {
+      'Authorization': `Bearer ${localStorage.getItem("accessToken")}`,
+      'Accept': 'application/json',
+      "Content-Type": "application/json",
+    }
+    return config;
+  },
+  error => {
+    Promise.reject(error)
+  });
 
 export default request;
 

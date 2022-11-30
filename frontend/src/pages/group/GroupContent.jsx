@@ -13,7 +13,6 @@ const GroupContent = (type) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const {profile} = useSelector(state => state.loginPage);
-
     const loadMoreData = () => {
         if (loading) {
             return;
@@ -31,7 +30,6 @@ const GroupContent = (type) => {
 
     useEffect(() => {
         loadMoreData()
-
     }, []);
 
     return (

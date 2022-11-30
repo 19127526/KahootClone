@@ -10,7 +10,6 @@ import * as constraintNotification from "../notification/Notification.constraint
 const NavBar = (props) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const data = useSelector(state => state.loginPage);
-    console.log(data.profile)
     const toggle = () => setIsOpen(!isOpen);
     const navigate = useNavigate();
     return (

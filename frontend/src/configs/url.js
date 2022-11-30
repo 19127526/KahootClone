@@ -11,7 +11,7 @@ export const VALIDATE_OTP_URI="/account/auth/validate/otp"
 export const LOGIN_NORMAL="/account/auth/loginTraditional"
 
 
-export const REDIRECT_URI="/login/google/redirect"
+export const REDIRECT_URI="/login/oauth2/redirect"
 export const HOME_URI="/home"
 export const GROUP_URI = "/group"
 export const DETAIL_GROUP_URI="/group/detail/"
