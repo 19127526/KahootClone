@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
-    "@chakra-ui/react": "^2.4.1",
+    "@chakra-ui/react": "^2.4.2",
+    "@chakra-ui/toast": "^4.0.4",
     "@emailjs/browser": "^3.9.1",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
@@ -19,6 +20,7 @@
     "crypto-js": "^4.1.1",
     "crypto-random-string": "^5.0.0",
     "emailjs-com": "^3.2.0",
+    "framer-motion": "^7.6.15",
     "immer": "^9.0.16",
     "jwt-decode": "^3.1.2",
     "react": "^18.2.0",

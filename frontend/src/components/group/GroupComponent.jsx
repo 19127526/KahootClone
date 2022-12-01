@@ -1,12 +1,8 @@
 import Carousel from "react-elastic-carousel";
 import CardComponent from "../card/cardcomponent/CardComponent";
-import {Col, Row} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {Button} from "antd";
 import {Link, useNavigate} from 'react-router-dom';
-import request from "../../apis/request";
-import {LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../configs/url";
-import {useSelector} from "react-redux";
 import {getListGroup} from "../../apis/group/groupApi";
 
 const items = [
