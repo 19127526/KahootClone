@@ -12,6 +12,8 @@ const ProfilePageLazy = React.lazy(() => import("../pages/profile/ProfilePage"))
 const ListGroupPageLazy = React.lazy(() => import("../pages/group/ListGroupPage"))
 const GroupDetailPageLazy = React.lazy(() => import("../pages/group/GroupDetailPage"))
 const InvitePageLazy=React.lazy(()=>import("../authors/invite/InvitePage"))
+const PresentationPageLazy =React.lazy(()=>import("../pages/presentation/Presentation"))
+
 const RoutesPage = () => {
   return (
     <Routes>
@@ -115,6 +117,15 @@ const RoutesPage = () => {
           </React.Suspense>
         }
       />
+        <Route
+            path={"/presentation"}
+            element={
+                <React.Suspense fallback={<Loading/>}>
+                    {" "}
+                        <PresentationPageLazy/>
+                </React.Suspense>
+            }
+        />
     </Routes>
   );
 }

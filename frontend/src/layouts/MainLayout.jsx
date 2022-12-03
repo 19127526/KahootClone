@@ -18,7 +18,7 @@ const MainLayout = () => {
             <NavBar/>
           </Header>*/}
           <Content style={{
-            background: "linear-gradient(-135deg,#c850c0,#4158d0)",
+            // background: "linear-gradient(-135deg,#c850c0,#4158d0)",
             animation:"gradient 15s ease infinite"
           }}>
             <Container className="container-content">
