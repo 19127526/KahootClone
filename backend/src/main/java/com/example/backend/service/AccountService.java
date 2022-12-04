@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 public interface AccountService extends UserDetailsService {
-//    AccountEntity accountValidate(ValidateRequest validateRequest);
     AuthenticationDto loginSocial(OAuth2AuthenticationToken oAuth2AuthenticationToken);
     AccountEntity update(AccountDto accountDto);
     AuthenticationDto register(AccountDto accountDto);

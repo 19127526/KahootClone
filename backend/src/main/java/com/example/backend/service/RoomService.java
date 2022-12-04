@@ -1,10 +1,10 @@
 package com.example.backend.service;
 
-import com.example.backend.model.entity.AccountEntity;
-import com.example.backend.model.entity.RoomEntity;
+import com.example.backend.model.dto.AnswerDto;
+import com.example.backend.model.dto.QuestionDto;
+import com.example.backend.model.entity.*;
 import com.example.backend.model.request.CreateRoomRequest;
 import com.example.backend.model.request.JoinRequest;
-import com.example.backend.model.entity.UserRoomEntity;
 import com.example.backend.model.request.RemoveRequest;
 import com.querydsl.core.Tuple;
 
@@ -18,4 +18,8 @@ public interface RoomService {
     List<RoomEntity> fetchRoomsJoined(String email);
 //    UserRoomEntity update(UserRoomDto userRoomDto);
     List<Tuple> getDetail(String name);
+    QuestionEntity createSlide(QuestionDto questionDto);
+    AnswerEntity createAnswer(AnswerDto answer);
+    void deleteAnswer(AnswerDto answers);
+    AnswerEntity updateAnswer(AnswerDto answer);
 }

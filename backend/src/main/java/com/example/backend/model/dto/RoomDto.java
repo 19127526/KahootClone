@@ -1,5 +1,6 @@
 package com.example.backend.model.dto;
 
+import com.example.backend.common.model.GenreRoom;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 public class RoomDto {
     private String name;
     private Integer capacity;
-    private String type;
+    private GenreRoom type;
     private String url;
     private String code;
     private List<QuestionDto> questions;

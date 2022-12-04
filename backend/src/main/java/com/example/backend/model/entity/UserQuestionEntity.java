@@ -13,16 +13,20 @@ import javax.persistence.*;
 public class UserQuestionEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room")
-    private RoomEntity roomId;
+    private long id;
+    private Integer score;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "room")
+//    private RoomEntity roomId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question")
-    private QuestionEntity questionId;
+    private QuestionEntity question;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_question")
-    private AccountEntity userId;
-    private Integer scores;
+    private AccountEntity user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "answer")
+    private AnswerEntity answer;
 }
