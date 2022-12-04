@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/header/HeaderComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/header/HeaderComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/layouts/MainLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/layouts/MainLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +88,7 @@
       <workItem from="1669628979324" duration="652000" />
       <workItem from="1669629635156" duration="83000" />
       <workItem from="1669629720531" duration="4563000" />
-      <workItem from="1670030282838" duration="25159000" />
+      <workItem from="1670030282838" duration="33250000" />
     </task>
     <servers />
   </component>
