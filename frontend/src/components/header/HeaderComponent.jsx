@@ -130,7 +130,7 @@ const MenuLinks = ({data, isOpen}) => {
                     {/*    Create Account*/}
                     {/*  </Button>*/}
                     {/*</MenuItem>*/}
-                    <MenuItem to="/login" isLast>
+                    <MenuItem to="/presentation" isLast>
                         <Button
                             size="sm"
                             rounded="md"
