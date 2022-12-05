@@ -117,19 +117,19 @@ const MenuLinks = ({data, isOpen}) => {
                         </Dropdown>
 
                 </div> : <div>
-                    {/*<MenuItem to="/register" isLast >*/}
-                    {/*  <Button*/}
-                    {/*      size="sm"*/}
-                    {/*      rounded="md"*/}
-                    {/*      color={["primary.1000", "primary.1000", "white", "white"]}*/}
-                    {/*      bg={["primary.1001", "primary.1001", "primary.1000", "primary.1000"]}*/}
-                    {/*      _hover={{*/}
-                    {/*        bg: ["primary.100", "primary.100", "primary.600", "primary.600"]*/}
-                    {/*      }}*/}
-                    {/*  >*/}
-                    {/*    Create Account*/}
-                    {/*  </Button>*/}
-                    {/*</MenuItem>*/}
+                    <MenuItem to="/presentation/user" isLast >
+                      <Button
+                          size="sm"
+                          rounded="md"
+                          color={["primary.1000", "primary.1000", "white", "white"]}
+                          bg={["primary.1001", "primary.1001", "primary.1000", "primary.1000"]}
+                          _hover={{
+                            bg: ["primary.100", "primary.100", "primary.600", "primary.600"]
+                          }}
+                      >
+                        Create Account
+                      </Button>
+                    </MenuItem>
                     <MenuItem to="/presentation" isLast>
                         <Button
                             size="sm"
