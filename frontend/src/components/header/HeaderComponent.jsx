@@ -112,7 +112,7 @@ const MenuLinks = ({data, isOpen}) => {
                             {data.profile["imageUrl"] != null ?
                                 <Avatar src={data.profile["imageUrl"]} size={"large"}/> :
                                 <Avatar size={"large"} style={{backgroundColor: '#87d068'}}>
-                                    {data.profile["userName"][0]}
+                                    {data.profile.picture}
                                 </Avatar>}
                         </Dropdown>
 

@@ -47,7 +47,7 @@ const LoginPage = (props) => {
     const decoded = jwt_decode(response.credential);
     setUserGoogle(decoded);
     console.log(decoded);
-    loginGoogle({accessToken:response.credential,decoded:decoded})
+  /*  loginGoogle({accessToken:response.credential,decoded:decoded})*/
     if(response.credential){
       showModal();
     }
@@ -63,7 +63,8 @@ const LoginPage = (props) => {
 
     google.accounts.id.renderButton(
       document.getElementById("signInGoogle"),
-      {}
+      { theme: 'outline',
+        size: 'large'}
     )
   },[]);
  /* const loginByGoogle=()=>{
@@ -128,6 +129,7 @@ const LoginPage = (props) => {
               <h3>You can also login with</h3>
               <div className="links-wrapper">
                 {/*CLIENT_LOGIN_GOOGLE*/}
+                <a id="signInGoogle"><GoogleOutlined/></a>
                 <a href={redirect_url}><GoogleOutlined/></a>
                 <a href="#"><FacebookOutlined/></a>
                 <a href="#"><TwitterOutlined/></a>
