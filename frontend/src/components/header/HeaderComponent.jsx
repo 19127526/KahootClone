@@ -7,6 +7,58 @@ import {Avatar, Dropdown, message} from "antd";
 import {logoutAccount} from "../../pages/login/LoginPages.actions";
 import Notification from "../notification/Notification";
 import * as constraintNotification from "../notification/Notification.constraints"
+
+const HeaderComponent=()=>{
+    const dispatch=useDispatch();
+    const handleMenuClick = (e) => {
+        if(e.key==0){
+            dispatch(logoutAccount());
+            Notification("Thông báo đăng xuất", "Đăng xuất thành công",constraintNotification.NOTIFICATION_SUCCESS)
+        }
+        // console.log('click', e);
+    };
+
+    return (
+      <header className="header">
+          <div className="header-block header-block-collapse d-lg-none d-xl-none">
+              <button className="collapse-btn" id="sidebar-collapse-btn">
+                  <i className="fa fa-bars"></i>
+              </button>
+          </div>
+          <div className="header-block header-block-nav">
+              <ul className="nav-profile">
+
+                  <li className="profile dropdown">
+                      <a className="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                         aria-expanded="true">
+                          <div className="img" style={{backgroundImage: ""}}></div>
+                          <span className="name">Sơn thanh </span>
+                      </a>
+                      <div className="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1"
+                           x-placement="bottom-start"
+                           style={{
+                               position: "absolute",
+                               transform: "translate3d(-72px, 30px, 0px)",
+                               top: "0px",
+                               left: "0px",
+                               willChange: "transform"
+                           }}>
+                          <a className="dropdown-item" href="#">
+                              <i className="fa fa-user icon"></i> Profile </a>
+                          <a className="dropdown-item" href="#">
+                              <i className="fa fa-bell icon"></i> Notifications </a>
+                          <a className="dropdown-item" href="#">
+                              <i className="fa fa-gear icon"></i> Settings </a>
+                          <div className="dropdown-divider"></div>
+                          <a className="dropdown-item" href="login.html">
+                              <i className="fa fa-power-off icon"></i> Logout </a>
+                      </div>
+                  </li>
+              </ul>
+          </div>
+      </header>
+    )
+}
 const NavBar = (props) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const data = useSelector(state => state.loginPage);
@@ -174,4 +226,4 @@ const NavBarContainer = ({children, ...props}) => {
     );
 };
 
-export default NavBar;
+export default HeaderComponent;
