@@ -1,64 +1,16 @@
 import barchart from "../../assets/image/chart.png"
 import slide from "../../assets/image/slide.png"
-import {Input, List, Space, Typography} from "antd"
+import {Input, List, Popover, Space} from "antd"
 import React, {useState} from 'react';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import {Bar} from 'react-chartjs-2';
 import {Button, Card, Col, Divider, Dropdown, Layout, Row} from "antd";
 import {CloseOutlined, PlusOutlined} from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
 import {Content, Footer, Header} from "antd/es/layout/layout";
-import {Container} from "react-bootstrap";
-import Paragraph from "antd/lib/typography/Paragraph";
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-    ChartDataLabels
-);
-
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top',
-        },
-        title: {
-            display: false,
-            text: 'Chart.js Bar Chart',
-        },
-        datalabels: {
-            display: true,
-            color: 'black'
-        }
-    },
-
-    scales: {
-        x: {
-            grid: {
-                display: false
-            },
-        },
-        y: {
-            display: false,
-            grid: {
-                display: false
-            },
-            ticks: {
-                display: false
-            },
-        }
-    }
-};
+import ChartPresentation from "../../components/chart/ChartPresentation";
+import ChartSider from "../../components/chart/ChartSider";
+import SlidePresentation from "../../components/normal_slide/SlidePresentation";
+import SlideSider from "../../components/normal_slide/SlideSider";
+import {hover} from "@testing-library/user-event/dist/hover";
 
 
 const items = [
@@ -72,13 +24,20 @@ const items = [
     },
 ];
 
+const options = [
+    {
+        label: <div>Remove</div>,
+        key: '0',
+    },
+];
+
 
 
 const Presentation = () => {
     const [selectedItem, setSelectedItem] = useState(0);
+    const [hoverItem, setHoverItem] = useState(0)
     const [slideList, setListSlide] = useState([
         {
-            "key": 0,
             "question": "Your question",
             "type": "chart",
             "preview": barchart,
@@ -94,6 +53,7 @@ const Presentation = () => {
             }
         }
     ]);
+
     const handleClickItem = (index) => {
         setSelectedItem(index)
     }
@@ -101,7 +61,6 @@ const Presentation = () => {
         switch (e.key) {
             case "0":
                 let list = slideList.concat([{
-                    "key": slideList.length,
                     "type": "chart",
                     "preview": barchart,
                     "question": "Your question",
@@ -121,7 +80,6 @@ const Presentation = () => {
             default:
                 let temp = slideList.concat([
                     {
-                        "key": slideList.length,
                         "type": "slide",
                         "preview": slide,
                         "content": {
@@ -141,6 +99,19 @@ const Presentation = () => {
         onClick: handleMenuClick,
     };
 
+    const removeSlide = () => {
+        let list = [...slideList]
+        list.splice(hoverItem, 1)
+        setListSlide(list)
+        console.log(list)
+        console.log(hoverItem)
+        if(hoverItem === 1 && list.length <= 1){
+            setSelectedItem(0)
+        } else {
+            setSelectedItem(hoverItem < selectedItem ? selectedItem-1 : selectedItem)
+        }
+    }
+
     const handleAddButton = () => {
         slideList[selectedItem]["content"]["labels"] = [...slideList[selectedItem]["content"]["labels"], "New option"]
         let datasets = slideList[selectedItem]["content"]["datasets"];
@@ -151,40 +122,14 @@ const Presentation = () => {
         setListSlide(tempList)
     }
 
-    const handleRemoveButton = (index) => {
-        let lable = slideList[selectedItem]["content"]["labels"]
-        let data = slideList[selectedItem]["content"]["datasets"][0]["data"]
-        slideList[selectedItem]["content"]["labels"] = lable.filter((_, i) => i !== index)
-        slideList[selectedItem]["content"]["datasets"][0]["data"] = data.filter((_, i) => i !== index)
-        let tempList = slideList.concat()
-        setListSlide(tempList)
-    }
+    const content = (
+        <>
+            <Button size={"large"} onClick={removeSlide} disabled={slideList.length === 1}>
+                Remove
+            </Button>
+        </>
+    );
 
-    const onChangeOption = (index) => (e) => {
-        let lable = [...slideList[selectedItem]["content"]["labels"]]
-        lable[index] = e.target.value
-        slideList[selectedItem]["content"]["labels"] = lable
-        let tempList = slideList.concat()
-        setListSlide(tempList)
-    }
-
-    const onChangeQuestion = (e) => {
-        slideList[selectedItem]["question"] = e.target.value
-        let tempList = slideList.concat()
-        setListSlide(tempList)
-    }
-
-    const onChangeHeader = (e) => {
-        slideList[selectedItem]["content"]["heading"] = e.target.value
-        let tempList = slideList.concat()
-        setListSlide(tempList)
-    }
-
-    const onChangeParagraph = (e) => {
-        slideList[selectedItem]["content"]["paragraph"] = e.target.value
-        let tempList = slideList.concat()
-        setListSlide(tempList)
-    }
 
     return (
         <>
@@ -207,128 +152,54 @@ const Presentation = () => {
                             itemLayout="vertical"
                             size="large"
                             dataSource={slideList}
-                            renderItem={(item) => (
-                              <Dropdown menu={menuProps} trigger={["contextMenu"]}>
-                                  <Card onClick={() => handleClickItem(item.key)} style={{
-                                      backgroundColor: item.key === selectedItem ? "lightblue" : "white",
-                                      margin: "10px",
-                                      border: "solid"
-                                  }}>
-                                      <List.Item
-                                          key={item.key}
-                                      >
-                                          <Row>
-                                              <Col>
-                                                  <text>
-                                                      {item.key + 1}
-                                                  </text>
-                                              </Col>
-                                              <Col>
-                                                  <img src={item.preview} alt={""}/>
-                                                  <text>
-                                                      {item.type}
-                                                  </text>
-                                              </Col>
-                                          </Row>
-                                      </List.Item>
-                                  </Card>
-                              </Dropdown>
+                            renderItem={(item, index) => (
+                                <Popover placement="right" title="Menu" content={content} trigger={"contextMenu"} onOpenChange={(visible) =>{
+                                    if(visible){
+                                        setHoverItem(index)
+                                    }
+                                }}>
+                                    <Card onClick={() => handleClickItem(index)} style={{
+                                        backgroundColor: index === selectedItem ? "lightblue" : "white",
+                                        margin: "10px",
+                                        border: "solid"
+                                    }}>
+                                        <List.Item
+                                            key={item.key}
+                                        >
+                                            <Row>
+                                                <Col>
+                                                    <text>
+                                                        {index + 1}
+                                                    </text>
+                                                </Col>
+                                                <Col>
+                                                    <img src={item.preview} alt={""}/>
+                                                    <text>
+                                                        {item.type}
+                                                    </text>
+                                                </Col>
+                                            </Row>
+                                        </List.Item>
+                                    </Card>
+                                </Popover>
+
                             )}
                         />
                     </Sider>
                     <Content style={{backgroundColor: "white", margin: "10px", padding: "10px"}}>
-
                         {
                             slideList[selectedItem].type === "chart" ?
-                                <Space direction={"vertical"} align={"center"} size={"large"}  style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    height: "100%",
-                                    width:"100%",
-                                }}>
-                                    <Typography style={{fontSize: 25}}>
-                                        {slideList[selectedItem].question == "" ? "Your question" : slideList[selectedItem].question}
-                                    </Typography>
-
-                                    <Bar options={options} data={slideList[selectedItem].content}
-                                         style={{minWidth: "80vh"}}
-                                    />
-                                </Space>
-                                : <Space
-                                    direction={slideList[selectedItem].content["image"] == "" ? "vertical" : "horizontal"}
-                                    style={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    height: "100%",
-                                    width:"100%"
-                                }}>
-
-                                    <div>
-                                        <Paragraph style={{fontSize: 25, textAlign: "center", fontWeight: "bold"}}>
-                                            {slideList[selectedItem].content["heading"]}
-                                        </Paragraph>
-                                        <Paragraph style={{textAlign: "center"}}>
-                                            {slideList[selectedItem].content["paragraph"]}
-                                        </Paragraph>
-                                    </div>
-                                </Space>
+                                <ChartPresentation item={slideList[selectedItem]}/>
+                                : <SlidePresentation item={slideList[selectedItem]}/>
 
                         }
-
-
                     </Content>
                     <Sider style={{backgroundColor: "white", padding: "20px", overflowY: "scroll"}} width={"400px"}>
                         {slideList[selectedItem].type === "chart" ?
-                            <Space direction={"vertical"} size={"small"}>
-
-                                <text>
-                                    Question
-                                </text>
-                                <Input size={"large"} allowClear placeholder={"Type your question"} maxLength={150}
-                                       showCount
-                                       onChange={onChangeQuestion}/>
-
-                                <div style={{height: "10px"}}/>
-
-                                <text>
-                                    Options
-                                </text>
-
-                                {
-                                    slideList[selectedItem].content.labels.map((value, index) => {
-                                        return (
-                                            <List.Item key={index}>
-                                                <List.Item.Meta
-                                                    title={<Input size={"large"} defaultValue={value}
-                                                                  onChange={onChangeOption(index)}/>}
-                                                    style={{marginRight: "5px"}}
-                                                />
-                                                <Button icon={<CloseOutlined/>}
-                                                        onClick={() => handleRemoveButton(index)}/>
-                                            </List.Item>
-                                        )
-                                    })
-                                }
-
-
-                                {/*<div/>*/}
-
-                                <Button icon={<PlusOutlined/>} onClick={handleAddButton}> Add option</Button>
-                            </Space> : <Space direction={"vertical"} style={{width: "100%"}}>
-                                <b>
-                                    Heading
-                                </b>
-                                <Input size={"large"}
-                                       allowClear placeholder={"Type your header"} maxLength={150}
-                                       showCount onChange={onChangeHeader}/>
-                                <b>
-                                    Paragraph
-                                </b>
-                                <Input size={"large"} allowClear placeholder={"Type your paragraph"} maxLength={800}
-                                       showCount onChange={onChangeParagraph}/>
-                            </Space>}
+                            <ChartSider selectedItem={selectedItem} list={slideList} setListSlide={setListSlide}/>
+                            :
+                            <SlideSider item={slideList[selectedItem]} list={slideList} setListSlide={setListSlide}/>
+                        }
 
                     </Sider>
                 </Layout>
