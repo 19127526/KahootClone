@@ -1,7 +1,7 @@
 package com.example.backend.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+import com.example.backend.common.configure.CloudinaryConfig;
 import com.example.backend.common.exception.TechnicalException;
 import com.example.backend.common.model.AccountStatus;
 import com.example.backend.common.utils.CodeGeneratorUtils;
@@ -46,25 +46,6 @@ public class AccountServiceImpl implements AccountService {
     private Map<String, AccountDto> cacheAccount = new HashMap<>();
     private Map<String, String> cacheOTP = new HashMap<>();
 
-//    @Override
-//    public AccountEntity accountValidate(ValidateRequest validateRequest) {
-//        try {
-//            String otp = Objects.requireNonNull(cache.opsForHash().get(REDIS_KEY_OTP, validateRequest.getEmail())).toString();
-//            if (!otp.equals(validateRequest.getOtp())) throw new ResourceInvalidException("OTP invalid");
-//            else {
-//                AccountDto accountDto = (AccountDto) cache.opsForHash().get(REDIS_KEY_ACCOUNT, validateRequest.getEmail());
-//                if (accountDto == null) throw new ResourceInvalidException("Account invalid");
-//                else {
-//                    cache.opsForHash().delete(REDIS_KEY_OTP, validateRequest.getEmail());
-//                    cache.opsForHash().delete(REDIS_KEY_ACCOUNT, validateRequest.getEmail());
-//                    return accountRepository.save(accountMapper.dtoToEntity(accountDto));
-//                }
-//            }
-//        } catch (Exception e) {
-//            throw new TechnicalException(e.getMessage());
-//        }
-//    }
-
     @Override
     public AuthenticationDto loginSocial(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         AuthenticationDto authenticationDto = new AuthenticationDto();
@@ -100,10 +81,9 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail()).orElseThrow(() -> {
             throw new ResourceNotFoundException("account not exist");
         });
-        Cloudinary cloudinary = new Cloudinary(cloudinary_url);
-        cloudinary.config.secure = true;
+        Cloudinary cloudinary = CloudinaryConfig.getInstance();
         try {
-            Map cloudinary_response = cloudinary.uploader().upload(accountDto.getImageFile().getBytes(), ObjectUtils.asMap("use_filename", true, "filename_override", accountDto.getImageFile().getOriginalFilename(), "unique_filename", false, "overwrite", true));
+            Map cloudinary_response = cloudinary.uploader().upload(accountDto.getImageFile().getBytes(), CloudinaryConfig.options(accountDto.getImageFile().getOriginalFilename()));
             accountEntity.setImageURL(cloudinary_response.get("url").toString());
             accountEntity.setUserName(accountDto.getUserName());
             return accountRepository.save(accountEntity);

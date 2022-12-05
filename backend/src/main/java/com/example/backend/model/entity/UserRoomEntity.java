@@ -19,10 +19,10 @@ public class UserRoomEntity extends SuperEntity {
     private long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_room")
-    private AccountEntity userId;
+    private AccountEntity user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room")
-    private RoomEntity roomId;
+    private RoomEntity room;
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "role")
     private Role role;

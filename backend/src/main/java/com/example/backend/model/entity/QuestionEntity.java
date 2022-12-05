@@ -20,18 +20,35 @@ public class QuestionEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "genre_question")
     private GenreQuestion genreQuestion;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room")
-    private RoomEntity roomId;
+    private RoomEntity room;
     private String text;
+    private String imageUrl;
     private Integer score;
 
 
     @OneToMany(mappedBy = "questionId", cascade = CascadeType.REMOVE)
-    private List<AnswerEntity> answer = new ArrayList<>();
-    @OneToMany(mappedBy = "questionId")
-    private List<UserQuestionEntity> userQuestionEntitySet = new ArrayList<>();
+    private List<AnswerEntity> answers = new ArrayList<>();
+    public void addAnswer(AnswerEntity answerEntity) {
+        answers.add(answerEntity);
+        answerEntity.setQuestionId(this);
+    }
+    public void removeAnswer(AnswerEntity answerEntity) {
+        answers.remove(answerEntity);
+        answerEntity.setQuestionId(null);
+    }
+
+
+    @OneToMany(mappedBy = "question")
+    private List<UserQuestionEntity> userQuestions = new ArrayList<>();
+    public void addUserQuestion(List<UserQuestionEntity> userQuestionEntities) {
+        userQuestions.addAll(userQuestionEntities);
+        userQuestionEntities.forEach(it -> it.setQuestion(this));
+    }
+    public void removeUserQuestion(UserQuestionEntity userQuestionEntity) {
+        userQuestions.remove(userQuestionEntity);
+        userQuestionEntity.setQuestion(null);
+    }
 }

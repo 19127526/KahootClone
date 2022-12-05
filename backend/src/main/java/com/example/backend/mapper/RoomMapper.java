@@ -5,7 +5,7 @@ import com.example.backend.model.entity.RoomEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {QuestionMapper.class, UserRoomMapper.class})
 public interface RoomMapper {
     RoomEntity dtoToEntity(RoomDto roomDto);
     @Mapping(target = "userRoom", ignore = true)

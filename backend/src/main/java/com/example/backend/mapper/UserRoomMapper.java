@@ -7,8 +7,10 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserRoomMapper {
-    @Mapping(target = "userName", source = "userId.userName")
-    @Mapping(target = "email", source = "userId.email")
-    @Mapping(target = "imageURL", source = "userId.imageURL")
+    @Mapping(target = "userName", source = "user.userName")
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "imageURL", source = "user.imageURL")
     UserRoomDto entityToDto(UserRoomEntity userRoomEntity);
+
+//    UserRoomEntity dtoToEntity(UserRoomDto userRoomDto);
 }
