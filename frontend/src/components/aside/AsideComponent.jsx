@@ -28,38 +28,32 @@ function AsideComponent({ onClose }) {
               <a onClick={()=>navigate("/")}>
                 <i className="fa fa-home"></i> Dashboard </a>
             </li>
-            {/*<li id="managementProduct">
-              <a href="#">
+            <li id="managementProduct">
+              <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>
                 <i className="fa fa-th-large">
-                </i> Quản lí sản phẩm
+                </i> Group
                 <i className="fa arrow"></i>
               </a>
               <ul className="sidebar-nav">
-                <li  >
-                  <a> áo </a>
-                </li>
-                <li  >
-                  <a> áo </a>
-                </li>
-                <li  >
-                  <a> áo </a>
+                <li onClick={()=>navigate("/group/member")} >
+                  <a> Member </a>
                 </li>
               </ul>
             </li>
             <li>
               <a href="#">
-                <i className="fa fa-area-chart"></i> Quản lí danh mục
+                <i className="fa fa-area-chart"></i> Present
                 &nbsp;&nbsp; &nbsp;
-                <i className="fa fa-plus" aria-hidden="true" data-toggle="modal" data-target="#addCategory"></i>
                 <i className="fa arrow"></i>
               </a>
               <ul className="sidebar-nav">
+                <li  onClick={()=>navigate("/present/public")}>
+                  <a> Public </a>
+                </li>
+                <li  onClick={()=>navigate("/present/private")}>
+                  <a> Private </a>
+                </li>
               </ul>
-            </li>*/}
-            <li>
-              <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>
-                <i className="fa fa-pencil-square-o"></i> Public Present
-              </a>
             </li>
           </ul>
         </nav>

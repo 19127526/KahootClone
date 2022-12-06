@@ -10,7 +10,13 @@ import * as constraintNotification from "../../components/notification/Notificat
 import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
 import request from "../../apis/request";
-import {CLIENT_LOGIN_GOOGLE, CLIENT_URL_REDIRECT, GET_LOGIN_OAUTH2} from "../../configs/url";
+import {
+  CLIENT_LOGIN_GOOGLE,
+  CLIENT_URL_REDIRECT,
+  GET_LOGIN_OAUTH2,
+  REGISTER_URI,
+  REGISTER_URi
+} from "../../configs/url";
 import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 
 const mapStateToProps = state => ({
@@ -170,7 +176,7 @@ const LoginPage = (props) => {
               <p className="text-center">LOGIN TO CONTINUE</p>
               <form id="login-form" action="https://modularcode.io/index.html" method="GET" noValidate="">
                 <div className="form-group">
-                  <label htmlFor="username">Username</label>
+                  <label htmlFor="username">Email</label>
                   <input type="email" className="form-control underlined" name="username" id="username"
                          placeholder="Your email address" required /></div>
                 <div className="form-group">
@@ -192,7 +198,7 @@ const LoginPage = (props) => {
                 </div>
                 <div className="form-group">
                   <p className="text-muted text-center">Do not have an account?
-                    <a href="signup.html">Sign Up!</a>
+                    <a onClick={()=>navigate(REGISTER_URI)}>Sign Up!</a>
                   </p>
                 </div>
                 <div className="form-group">

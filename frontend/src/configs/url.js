@@ -23,11 +23,13 @@ export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const PUBLIC_GROUP_URI="/group/public";
 export const PRESENTATION_URI="/presentation"
-
-
+export const PRESENTATION_PUBLIC="/present/public"
+export const PRESENTATION_PRIVATE="/present/private"
+export const REGISTER_URI="/register"
+export const LOGIN_URI="/login"
+export const MEMBER_URI="/group/member"
 export const INVITE_URL_REDIRECT=CLIENT_URL+"/verify";
 export const CLIENT_URL_REDIRECT=CLIENT_URL+REDIRECT_URI;
-
 export const CLIENT_LOGIN_GOOGLE=SERVER_URL+"/login";
 export const CLIENT_JOIN_GROUP_URL=CLIENT_URL+DETAIL_GROUP_URI;
 
