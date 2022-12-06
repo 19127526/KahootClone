@@ -1,11 +1,12 @@
 import {Space} from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 import React from "react";
+import Title from "antd/es/typography/Title";
 
 const SlidePresentation = ({item}) => {
     return (
         <Space
-            direction={item.content["image"] == "" ? "vertical" : "horizontal"}
+            direction={"vertical"}
             style={{
                 display: "flex",
                 justifyContent: "center",
@@ -15,9 +16,9 @@ const SlidePresentation = ({item}) => {
             }}>
 
             <div>
-                <Paragraph style={{fontSize: 25, textAlign: "center", fontWeight: "bold"}}>
+                <Title>
                     {item.content["heading"]}
-                </Paragraph>
+                </Title>
                 <Paragraph style={{textAlign: "center"}}>
                     {item.content["paragraph"]}
                 </Paragraph>

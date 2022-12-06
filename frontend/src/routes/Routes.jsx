@@ -13,7 +13,8 @@ const ListGroupPageLazy = React.lazy(() => import("../pages/group/ListGroupPage"
 const GroupDetailPageLazy = React.lazy(() => import("../pages/group/GroupDetailPage"))
 const InvitePageLazy=React.lazy(()=>import("../authors/invite/InvitePage"))
 const PresentationPageLazy =React.lazy(()=>import("../pages/presentation/Presentation"))
-const PresentationUserPageLazy =React.lazy(()=>import("../pages/presentation-user/PresentationUser"))
+const PresentationUserPageLazy =React.lazy(()=>import("../pages/presentation/PresentationUser"))
+const MainPresentationPageLazy =React.lazy(()=>import("../pages/presentation/MainPresentation"))
 
 const RoutesPage = () => {
   return (
@@ -119,7 +120,7 @@ const RoutesPage = () => {
         }
       />
         <Route
-            path={"/presentation"}
+            path={"/presentation/edit"}
             element={
                 <React.Suspense fallback={<Loading/>}>
                     {" "}
@@ -133,6 +134,15 @@ const RoutesPage = () => {
                 <React.Suspense fallback={<Loading/>}>
                     {" "}
                     <PresentationUserPageLazy/>
+                </React.Suspense>
+            }
+        />
+        <Route
+            path={"/presentation"}
+            element={
+                <React.Suspense fallback={<Loading/>}>
+                    {" "}
+                    <MainPresentationPageLazy/>
                 </React.Suspense>
             }
         />

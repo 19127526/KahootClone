@@ -14,6 +14,7 @@ ChartJS.register(
 
 const options = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
         legend: {
             position: 'top',
@@ -24,7 +25,7 @@ const options = {
         },
         datalabels: {
             display: true,
-            color: 'black'
+            color: 'white'
         }
     },
 
@@ -46,7 +47,7 @@ const options = {
     }
 };
 
-const ChartPresentation = ({item}) => {
+const ChartPresentation = ({item, width}) => {
     return (
         <Space direction={"vertical"} align={"center"} size={"large"}  style={{
             display: "flex",
@@ -60,7 +61,7 @@ const ChartPresentation = ({item}) => {
             </Typography>
 
             <Bar options={options} data={item.content}
-                 style={{minWidth: "80vh"}}
+                 style={{minWidth: width ?? "80vh"}}
             />
         </Space>
     );
