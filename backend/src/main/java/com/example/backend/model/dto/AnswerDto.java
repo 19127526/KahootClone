@@ -9,8 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 public class AnswerDto {
     private long id;
-    private long questionId;
     private String text;
-    private int score;
-    private List<UserQuestionDto> userQuestions;
+    private long question;
+    private List<UserAnswerDto> userAnswers;
 }

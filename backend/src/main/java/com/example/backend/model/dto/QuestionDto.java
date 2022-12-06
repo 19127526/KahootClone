@@ -12,12 +12,9 @@ import java.util.List;
 public class QuestionDto {
     private long id;
     private GenreQuestion genreQuestion;
-    private String room;
     private String text;
-//    private Integer score;
-    private MultipartFile imageFile;
     private String imageUrl;
-//    private Double percentCorrect;
+    private long presentation;
+    private MultipartFile imageFile;
     private List<AnswerDto> answers;
-    private List<UserQuestionDto> userQuestions;
 }

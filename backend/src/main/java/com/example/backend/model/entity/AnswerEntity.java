@@ -18,20 +18,20 @@ public class AnswerEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question")
-    private QuestionEntity questionId;
     private String text;
-    private int score;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private QuestionEntity question;
 
     @OneToMany(mappedBy = "answer")
-    private List<UserQuestionEntity> userQuestions = new ArrayList<>();
-    public void addUserQuestion(List<UserQuestionEntity> userQuestionEntities) {
-        userQuestions.addAll(userQuestionEntities);
+    private List<UserAnswerEntity> userAnswers = new ArrayList<>();
+    public void addUserAnswers(List<UserAnswerEntity> userQuestionEntities) {
+        userAnswers.addAll(userQuestionEntities);
         userQuestionEntities.forEach(it -> it.setAnswer(this));
     }
-    public void removeUserQuestion(UserQuestionEntity userQuestionEntity) {
-        userQuestions.remove(userQuestionEntity);
-        userQuestionEntity.setAnswer(null);
+    public void removeUserAnswer(UserAnswerEntity userAnswerEntity) {
+        userAnswers.remove(userAnswerEntity);
+        userAnswerEntity.setAnswer(null);
     }
 }

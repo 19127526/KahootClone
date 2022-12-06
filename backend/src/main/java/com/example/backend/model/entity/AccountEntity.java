@@ -22,37 +22,36 @@ public class AccountEntity extends SuperEntity {
     private String password;
     private String imageURL;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<UserRoomEntity> userRoom = new ArrayList<>();
-    public void addUserRoom(UserRoomEntity userRoomEntity) {
-        this.userRoom.add(userRoomEntity);
-        userRoomEntity.setUser(this);
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
+    private List<UserGroupEntity> userGroup = new ArrayList<>();
+    public void addUserGroup(UserGroupEntity userGroupEntity) {
+        this.userGroup.add(userGroupEntity);
+        userGroupEntity.setUsers(this);
     }
-    public void removeUserRoom(UserRoomEntity userRoomEntity) {
-        this.userRoom.remove(userRoomEntity);
-        userRoomEntity.setUser(null);
-    }
-
-
-    @OneToMany(mappedBy = "user")
-    private List<UserQuestionEntity> userQuestion = new ArrayList<>();
-    public void addUserQuestion(List<UserQuestionEntity> userQuestionEntityList) {
-        this.userQuestion.addAll(userQuestionEntityList);
-        userQuestion.forEach(it -> it.setUser(this));
-    }
-    public void removeUserQuestion(UserQuestionEntity userQuestionEntity) {
-        this.userQuestion.remove(userQuestionEntity);
-        userQuestionEntity.setUser(null);
+    public void removeUserGroup(UserGroupEntity userGroupEntity) {
+        this.userGroup.remove(userGroupEntity);
+        userGroupEntity.setUsers(null);
     }
 
-    @OneToMany(mappedBy = "accountEntity")
-    private List<RoomEntity> rooms = new ArrayList<>();
-    public void addRoom(RoomEntity roomEntity) {
-        this.rooms.add(roomEntity);
-        roomEntity.setAccountEntity(this);
+    @OneToMany(mappedBy = "created")
+    private List<GroupEntity> groups = new ArrayList<>();
+    public void addGroup(GroupEntity groupEntity) {
+        this.groups.add(groupEntity);
+        groupEntity.setCreated(this);
     }
-    public void removeRoom(RoomEntity roomEntity) {
-        this.rooms.remove(roomEntity);
-        roomEntity.setAccountEntity(null);
+    public void removeGroup(GroupEntity groupEntity) {
+        this.groups.remove(groupEntity);
+        groupEntity.setCreated(null);
+    }
+
+    @OneToMany(mappedBy = "author")
+    private List<PresentationEntity> presentations = new ArrayList<>();
+    public void addPresentation(PresentationEntity presentation){
+        this.presentations.add(presentation);
+        presentation.setAuthor(this);
+    }
+    public void removePresentation(PresentationEntity presentation) {
+        this.presentations.remove(presentation);
+        presentation.setAuthor(null);
     }
 }

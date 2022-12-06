@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     List<AnswerEntity> findAnswerEntitiesByQuestionId_IdAndTextIn(long questionId, List<String> text);
+    void deleteByQuestion_Id(long questionId);
 }

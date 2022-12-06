@@ -20,7 +20,7 @@ public class SecurityConfig {
         http.cors();
         http.authorizeRequests().anyRequest().permitAll();
         http.oauth2Login().defaultSuccessUrl("/account/auth/loginSocial");
-        http.addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

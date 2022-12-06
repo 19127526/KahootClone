@@ -13,18 +13,16 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "user_in_room")
-public class UserRoomEntity extends SuperEntity {
+public class UserGroupEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_room")
-    private AccountEntity user;
+    private AccountEntity users;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room")
-    private RoomEntity room;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "role")
+    @JoinColumn
+    private GroupEntity group;
     private Role role;
-    private Integer score = 0;
+//    private Integer score = 0;
 }

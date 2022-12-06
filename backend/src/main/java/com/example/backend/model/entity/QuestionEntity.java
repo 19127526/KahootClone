@@ -9,7 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -21,34 +20,22 @@ public class QuestionEntity extends SuperEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private GenreQuestion genreQuestion;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room")
-    private RoomEntity room;
     private String text;
     private String imageUrl;
-    private Integer score;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private PresentationEntity presentation;
 
-    @OneToMany(mappedBy = "questionId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<AnswerEntity> answers = new ArrayList<>();
-    public void addAnswer(AnswerEntity answerEntity) {
-        answers.add(answerEntity);
-        answerEntity.setQuestionId(this);
+    public void addAnswer(List<AnswerEntity> answers) {
+        this.answers.clear();
+        this.answers.addAll(answers);
+        answers.forEach(answer -> answer.setQuestion(this));
     }
     public void removeAnswer(AnswerEntity answerEntity) {
         answers.remove(answerEntity);
-        answerEntity.setQuestionId(null);
-    }
-
-
-    @OneToMany(mappedBy = "question")
-    private List<UserQuestionEntity> userQuestions = new ArrayList<>();
-    public void addUserQuestion(List<UserQuestionEntity> userQuestionEntities) {
-        userQuestions.addAll(userQuestionEntities);
-        userQuestionEntities.forEach(it -> it.setQuestion(this));
-    }
-    public void removeUserQuestion(UserQuestionEntity userQuestionEntity) {
-        userQuestions.remove(userQuestionEntity);
-        userQuestionEntity.setQuestion(null);
+        answerEntity.setQuestion(null);
     }
 }
