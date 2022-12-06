@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userName\": \"huy\",\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"password\": \"123\"\n}",
+							"raw": "{\n    \"userName\": \"huy\",\n    \"email\": \"hmhuy.ft@gmail.com\",\n    \"password\": \"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -77,7 +77,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"password\": \"123\"\n}",
+							"raw": "{\n    \"email\": \"h\",\n    \"password\": \"1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -164,10 +164,16 @@
 					"name": "generate room",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJobWh1eS5maXRAZ21haWwuY29tIiwiZXhwIjoxNjY5ODQwODMxLCJpYXQiOjE2Njk4MjI4MzF9.X-eLSswjV6YG1mu1m8S1sOYQjM_mn31UxRCbtV6TuS5XfjrHNMc9nGz0jD3qcuW2DdGPQQ8v3az9mEJ7QstN_g",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"r9\",\n    \"email\": \"h\"\n}",
+							"raw": "{\n    \"name\": \"rr1\",\n    \"email\": \"hmhuy.fit@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -231,7 +237,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJobWh1eTE5MTEwMUBnbWFpbC5jb20iLCJleHAiOjE2NzIzODE0MzEsImlhdCI6MTY2OTc4OTQzMX0.byqLvWW7syX_FqU6KK7_lV1FxcWEG3hXEOja0PZq7buxp-F78FwE2EmfHSF7dH1ZVEQxjMwoqexRZmNT6NNQaQ",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxIiwiZXhwIjoxNjY5ODQ4Njg2LCJpYXQiOjE2Njk4MzA2ODZ9.0TTsureUpQspj7S5KCN15-ZcLl1QZ4o6XS49UxDREgiOMTTSywPZpDNTDwSTaQNLDFf_6UNX7_zdaKq48-37-Q",
 								"type": "text"
 							}
 						],
@@ -245,7 +251,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/listRoomCreated?email=h",
+							"raw": "http://localhost:8080/account/listRoomCreated?email=q",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -258,7 +264,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "h"
+									"value": "q"
 								}
 							]
 						}
@@ -290,101 +296,241 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "invite email",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"url\": \"https://www.google.com/r1\",\n    \"code\": \"MDZZMO\",\n    \"email\": \"q\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "slide",
+			"item": [
+				{
+					"name": "chose options",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"answers\": [\n        \"options1\",\n        \"options2\"],\n    \"question\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/play/answer/chose",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"play",
+								"answer",
+								"chose"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/room/join",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"room",
-						"join"
-					]
+				{
+					"name": "details slide",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "update slide (raw)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":1,\n    \"genreQuestion\": \"MULTI_CHOICES\",\n    \"text\": \"question 1\",\n    \"presentation\": 2,\n    \"answers\": [\n        \"option1\",\"option2\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/slide/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add slide (text is question)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PresentationId\": 1,\n    \"text\": \"your question\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/slide/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"add"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "cache",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \n    \"database:redis:creator\": \"Salvatore Sanfilippo\" \n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "presentation",
+			"item": [
+				{
+					"name": "add presentation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"GroupId\": 1,\n    \"name\": \"presentation1\",\n    \"email\": \"abc@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"add"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/redis/strings",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"redis",
-						"strings"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "socket",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "password",
-						"value": "0ecc33ac-a97e-4348-8b31-f5105a71f930",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/account/register/validate?mess=hello",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"account",
-						"register",
-						"validate"
-					],
-					"query": [
-						{
-							"key": "mess",
-							"value": "hello"
+				{
+					"name": "update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"delete"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/presentation/details?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"details"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list presentation from group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/presentation/list/group?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"list",
+								"group"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
