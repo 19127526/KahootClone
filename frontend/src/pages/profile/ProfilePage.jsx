@@ -2,8 +2,12 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faAddressCard, faUserGroup} from "@fortawesome/free-solid-svg-icons";
 import {Row} from "react-bootstrap";
 import GroupComponent from "../../components/group/GroupComponent";
+import {useSelector} from "react-redux";
 
 const ProfilePage = () => {
+  const {profile} = useSelector(state => state.loginPage);
+
+
   return (
 
     <div className="container-profile">
@@ -17,12 +21,12 @@ const ProfilePage = () => {
                  src="https://images.pexels.com/photos/1054289/pexels-photo-1054289.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
                  alt="fondo de pantalla"/>
             <img className="user-profile__img"
-                 src="https://scontent.fsgn8-4.fna.fbcdn.net/v/t1.15752-9/313992405_425136383153746_5646818653090776479_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=ae9488&_nc_ohc=GbG9MSx1IyQAX_LIyc6&_nc_ht=scontent.fsgn8-4.fna&oh=03_AdQZvDqBzQtA1_YD-q7Xs90Wa4wsZjHT_0EKCbUV18mCYA&oe=639F5172"
+                 src={profile["imageURL"] ?? "https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/01/anh-wibu.jpg?ssl=1"}
                  alt="Foto de Samuel Domínguez Juárez"/>
             <figcaption className="user-profile__info">
-              <h1 className="user-profile__name">Hoàng Minh Huy (Gò Vấp)</h1>
-              <p className="user-profile__ocupation"><strong>Full Stack Web</strong></p>
-              <p className="user-profile__tagline"><em>freelance disponible</em></p>
+              <h1 className="user-profile__name" style={{textAlign:"center"}}>{profile.userName}</h1>
+              {/*<p className="user-profile__ocupation"><strong>Full Stack Web</strong></p>*/}
+              <p className="user-profile__tagline"  style={{textAlign:"center"}}><em>{profile.email}</em></p>
             </figcaption>
           </figure>
         </aside>
@@ -50,9 +54,9 @@ const ProfilePage = () => {
             <section className="profile">
               <h1 style={{textAlign: "center"}} className="mb-2">Profile</h1>
               <p>
-                Biệt danh: Ho Mĩ
+                Biệt danh:
               </p>
-              <p> Sở thích: chơi gái, thích xúc bình xăng, tia bồ bạn</p>
+              <p> Sở thích: </p>
               <p></p>
               <br/>
             </section>
@@ -63,10 +67,10 @@ const ProfilePage = () => {
               <h1 style={{textAlign: "center"}} className="mb-2">Group</h1>
               <div className="wrap-profile">
                 <Row>
-                  <GroupComponent title={"Joined Groups"}/>
+                  <GroupComponent title={"Joined Groups"} type={"joined"} profile={profile}/>
                 </Row>
                 <Row>
-                  <GroupComponent title={"Created Groups"}/>
+                  <GroupComponent title={"Created Groups"} type={"created"} profile={profile}/>
                 </Row>
               </div>
             </section>

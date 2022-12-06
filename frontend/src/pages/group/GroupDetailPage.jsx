@@ -1,11 +1,28 @@
 import React, {useEffect, useState} from "react";
-import {Avatar, BackTop, Divider, List, Skeleton} from "antd";
+import {Avatar, Button, Divider, List, Modal, Skeleton} from "antd";
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {Row} from "react-bootstrap";
+import {getDetailGroup} from "../../apis/group/groupApi";
+import {useParams} from "react-router-dom";
+import {useSelector} from "react-redux";
+import OtpRemoveMember from "../../components/otpremovemember/OtpRemoveMember";
 
 const ListGroupPage = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const {name} = useParams();
+  const [isOwner, setIsOwner] = useState(false);
+  const dataProfile = useSelector(state => state.loginPage);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const loadMoreData = () => {
     if (loading) {
       return;
@@ -22,14 +39,33 @@ const ListGroupPage = () => {
       });
   };
   useEffect(() => {
-    loadMoreData();
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    getDetailGroup({name: name})
+      .then(res => {
+        (res.data.userRoom.forEach(index => {
+          if ((index.email === dataProfile.profile.email) && (index.role === "OWNER")) {
+            setIsOwner(true)
+          }
+        }));
+        setData(res.data.userRoom);
+        setLoading(false);
+      })
+      .catch(err => {
+        setLoading(false);
+        console.log(err)
+      })
+
   }, []);
+
   return (
     <div className="container-group-detail">
       <div className="group-detail-wrap">
-          <Divider plain style={{fontSize:"30px"}}>Detail Group</Divider>
+        <Divider plain style={{fontSize: "30px"}}>Detail Group</Divider>
         <Row style={{textAlign: "center", marginBottom: "15px"}}>
-          <span className="card__description__detail" style={{padding:"0 2vh"}}>the descriptions If you’ve been reading this blog for a while, you’ve probably seen at least one of our customer spotlights. We love our customers! As a former small business marketer myself, I love our passionate dedication to empowering and supporting small business growth.</span>
+          <span className="card__description__detail" style={{padding: "0 4vh"}}>Welcome to visit {name} group</span>
         </Row>
         <div className=" ant-divider"/>
         <Row style={{width: "100%"}} className="mb-5">
@@ -37,12 +73,25 @@ const ListGroupPage = () => {
             className="scroll-group-detail"
             id="scrollableDiv"
           >
-            <Divider plain style={{fontSize:"20px"}}>Member in group</Divider>
+            <Divider plain style={{fontSize: "20px"}}>Member in group</Divider>
+            <div style={{display: "flex", marginBottom: "10px"}}>
+              {isOwner === true ? <Button type="primary" shape={"round"} style={{marginLeft: "auto"}}
+                                          onClick={() => showModal()}>
+                Kick Member
+              </Button> : ""}
+
+              <Modal title="Remove Member" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered
+                     style={{background: "red"}}>
+                <OtpRemoveMember onSubmit={() => setIsModalOpen(false)} nameRoom={name} listEmail={data}/>
+              </Modal>
+            </div>
+
             <div className="ant-divider"/>
+
             <InfiniteScroll
               dataLength={data.length}
               next={loadMoreData}
-              hasMore={data.length < 50}
+              hasMore={data.length < data.length}
               loader={
                 <Skeleton
                   avatar
@@ -59,15 +108,14 @@ const ListGroupPage = () => {
                 dataSource={data}
                 renderItem={(item) => (
                   <>
-                  <List.Item key={item.email}>
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.picture.large}/>}
-                      title={<a href="https://ant.design">{item.name.last}</a>}
-                      description={item.email}
-                    />
-                    <div className="role">Member</div>
-
-                  </List.Item>
+                    <List.Item key={item.email}>
+                      <List.Item.Meta
+                        avatar={<Avatar src={item.imageURL}/>}
+                        title={<a>{item.userName}</a>}
+                        description={item.email}
+                      />
+                      <div className="role">{item.role}</div>
+                    </List.Item>
                   </>
                 )}
               />

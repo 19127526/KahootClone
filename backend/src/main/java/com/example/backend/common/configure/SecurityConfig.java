@@ -17,6 +17,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.cors();
         http.authorizeRequests().anyRequest().permitAll();
         http.oauth2Login().defaultSuccessUrl("/account/auth/loginSocial");
         http.addFilterAfter(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

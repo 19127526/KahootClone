@@ -4,9 +4,19 @@
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css";
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600&display=swap";
 
-@import "./assets/css/groupdetail.css";
-@import "./assets/css/style.css";
-@import "./assets/css/header.css";
-@import "./assets/css/footer.css";
-@import "./assets/css/login.css";
-@import "./assets/css/profile.css";
+
+
+
+@import "assets/vendor/animate.css/animate.min.css";
+@import "assets/vendor/bootstrap/css/bootstrap.min.css";
+@import "assets/vendor/bootstrap-icons/bootstrap-icons.css";
+@import "assets/vendor/swiper/swiper-bundle.min.css";
+@import "assets/css/style.css";
+
+@import "assets/css/iconds.css";
+
+
+
+
+@import "assets/css/app.css";
+@import "assets/css/vendor.css";

@@ -7,39 +7,300 @@
 	},
 	"item": [
 		{
-			"name": "invite email",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/invite/sendEmail?email=hmhuy191101@gmail.com",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"invite",
-						"sendEmail"
-					],
-					"query": [
-						{
-							"key": "email",
-							"value": "hmhuy191101@gmail.com"
+			"name": "auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"huy\",\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"auth",
+								"register"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "validate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"otp\": \"O0PNB0\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/auth/validate/otp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"auth",
+								"validate",
+								"otp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login traditional",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/auth/loginTraditional",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"auth",
+								"loginTraditional"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJobWh1eTE5MTEwMUBnbWFpbC5jb20iLCJleHAiOjE2Njk3ODkwNjIsImlhdCI6MTY2OTc4OTA2MH0.Id_4dngv6U-44kZHA-MogE31rp2abXPrXdTEEWXxiqIDPVa6PZ2edssV_ZC99QmeKleXpCuoFgqnkaAZ5I3-VA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/refreshToken",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"refreshToken"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "generate room",
+			"name": "room",
+			"item": [
+				{
+					"name": "get detail room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/room/detail?name=r9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"room",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "r9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"r9\",\n    \"email\": \"h\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/room/generate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"room",
+								"generate"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "h",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "update profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get list room create",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJobWh1eTE5MTEwMUBnbWFpbC5jb20iLCJleHAiOjE2NzIzODE0MzEsImlhdCI6MTY2OTc4OTQzMX0.byqLvWW7syX_FqU6KK7_lV1FxcWEG3hXEOja0PZq7buxp-F78FwE2EmfHSF7dH1ZVEQxjMwoqexRZmNT6NNQaQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/listRoomCreated?email=h",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"listRoomCreated"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "h"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get list room join",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/listRoomJoined?email=q",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"listRoomJoined"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "q"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "invite email",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"r2\",\n    \"email\": \"h\"\n}",
+					"raw": "{\n    \"url\": \"https://www.google.com/r1\",\n    \"code\": \"MDZZMO\",\n    \"email\": \"q\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -47,7 +308,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/room/generate",
+					"raw": "http://localhost:8080/room/join",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -55,14 +316,7 @@
 					"port": "8080",
 					"path": [
 						"room",
-						"generate"
-					],
-					"query": [
-						{
-							"key": "email",
-							"value": "h",
-							"disabled": true
-						}
+						"join"
 					]
 				}
 			},
@@ -102,17 +356,16 @@
 			"name": "socket",
 			"request": {
 				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "check",
-			"request": {
-				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "password",
+						"value": "0ecc33ac-a97e-4348-8b31-f5105a71f930",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"url": {
-					"raw": "http://localhost:8080/account/asd",
+					"raw": "http://localhost:8080/account/register/validate?mess=hello",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -120,94 +373,14 @@
 					"port": "8080",
 					"path": [
 						"account",
-						"asd"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get detail room",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/room/detail?name=r9",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"room",
-						"detail"
+						"register",
+						"validate"
 					],
 					"query": [
 						{
-							"key": "name",
-							"value": "r9"
+							"key": "mess",
+							"value": "hello"
 						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get list room create",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "get list room join",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "register",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "validate",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "login traditional",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"password\": \"123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/account/loginTraditional",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"account",
-						"loginTraditional"
 					]
 				}
 			},
