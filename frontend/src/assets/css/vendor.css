@@ -8397,12 +8397,6 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
-@media (max-width: 767.98px){
-  .card{
-    justify-content: center;
-    height:100%
-  }
-}
 
 @media (min-width: 576px) {
   .container {

@@ -44,16 +44,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     email = jwtTokenUtil.getEmailFromToken(jwtToken);
                     if(email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                         UserDetails userDetails = this.accountService.loadUserByUsername(email);
-                       /* if(jwtTokenUtil.validateToken(jwtToken, email)) {
-
+                        if(jwtTokenUtil.validateToken(jwtToken, email)) {
+                            filterChain.doFilter(request, response);
 //                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 //                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 //                    // After setting the Authentication in the context, we specify
 //                    // that the current user is authenticated. So it passes the
 //                    // Spring Security Configurations successfully.
 //                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                        }*/
-                        filterChain.doFilter(request, response);
+                        }else getError(response,"invalid token");
                     }
                 } catch (Exception e) {
                     response.setHeader("error", e.getMessage());
@@ -64,12 +63,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
+//                catch (IllegalArgumentException e) {
+//                    System.out.println("Unable to get JWT Token");
+//                    // check
+//                    getError(response, e.getMessage());
+//                } catch (ExpiredJwtException e) {
+//                    System.out.println("JWT Token has expired");
+//                    // check
+//                    getError(response, e.getMessage());
+//                }
             }else {
-                response.setHeader("error", "Token invalid or format invalid");
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                ResourceInvalidException error = new ResourceInvalidException("Token invalid or format invalid");
-                response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
+                getError(response, "JWT Token does not begin with Bearer String");
             }
         }else {
             filterChain.doFilter(request, response);
