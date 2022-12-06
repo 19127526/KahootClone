@@ -2827,7 +2827,7 @@ span a {
 }
 
 .item-skip{
-  font-size: 4vh;
+  font-size: 3vh;
 }
 @media (max-width: 575.98px) {
   .item-skip{

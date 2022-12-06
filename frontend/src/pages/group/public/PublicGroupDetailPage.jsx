@@ -1,5 +1,39 @@
 import PresentationCardComponent from "../../../components/group/public/PresentationCardComponent";
+import React from "react";
 
+const ModalAddPresenTation=({id})=>{
+  return (
+    <div className="modal fade" id={id} >
+      <div className="modal-dialog" role="document" style={{top:"30%"}}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h4 className="modal-title">
+              <i className="fa fa-opera"></i> Add Presentation</h4>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form className="form-inline">
+              <div className="input-group">
+                <input type="text" className="form-control boxed rounded-s" style={{width: "400px"}}
+                       placeholder="Enter name presentation..."/>
+                <span className="input-group-btn align-content-center" style={{marginTop:"5px"}}>
+                <button className="btn btn-secondary  rounded-s" data-dismiss="modal" type="button" style={{marginRight:"5px"}}>
+                Cancel
+                </button>
+                <button className="btn btn-primary rounded-s" data-dismiss="modal" type="button">
+                Add
+                </button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 const PublicGroupDetailPage=()=>{
   const item=[];
   for(let i=0;i<6;i++){
@@ -20,8 +54,9 @@ const PublicGroupDetailPage=()=>{
           <div className="row">
             <div className="col-md-6">
               <h3 className="title"> List Presentation &nbsp;
-                <a  className="btn btn-primary btn-sm rounded-s"> Add
+                <a  className="btn btn-primary btn-sm rounded-s"  data-toggle="modal" data-target="#addPresentation"> Add
                   New </a>
+                <ModalAddPresenTation id={"addPresentation"}/>
                 <div className="action dropdown">
                   <button className="btn  btn-sm rounded-s btn-secondary dropdown-toggle" type="button"
                           id="dropdownMenu1"

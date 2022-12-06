@@ -25,10 +25,10 @@ function AsideComponent({ onClose }) {
         <nav className="menu">
           <ul className="sidebar-menu metismenu" id="sidebar-menu">
             <li id="dashboard">
-              <a href="/">
+              <a onClick={()=>navigate("/")}>
                 <i className="fa fa-home"></i> Dashboard </a>
             </li>
-            <li id="managementProduct">
+            {/*<li id="managementProduct">
               <a href="#">
                 <i className="fa fa-th-large">
                 </i> Quản lí sản phẩm
@@ -55,7 +55,7 @@ function AsideComponent({ onClose }) {
               </a>
               <ul className="sidebar-nav">
               </ul>
-            </li>
+            </li>*/}
             <li>
               <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>
                 <i className="fa fa-pencil-square-o"></i> Public Present

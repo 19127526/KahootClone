@@ -1,8 +1,40 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import {PlayCircleFilled} from "@ant-design/icons"
 import {useNavigate} from "react-router-dom";
 import {PRESENTATION_URI} from "../../../configs/url";
-
+const ModalInvitePresentation=({id})=>{
+  return (
+    <div className="modal fade" id={id} >
+      <div className="modal-dialog" role="document" style={{top:"30%"}}>
+        <div className="modal-content">
+          <div className="modal-header">
+            <h4 className="modal-title">
+              <i className="fa fa-opera"></i> Invite member to join presentation</h4>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form className="form-inline">
+              <div className="input-group">
+                <input type="text" className="form-control boxed rounded-s" style={{width: "400px"}}
+                       placeholder="Enter email member... "/>
+                <span className="input-group-btn align-content-center" style={{marginTop:"5px"}}>
+                <button className="btn btn-secondary  rounded-s" data-dismiss="modal" type="button" style={{marginRight:"5px"}}>
+                Cancel
+                </button>
+                <button className="btn btn-primary rounded-s" data-dismiss="modal" type="button">
+                Invite
+                </button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const PresentationCardComponent=({index})=>{
   const [openSetting,setOpenSetting]=useState(false);
@@ -64,8 +96,13 @@ const PresentationCardComponent=({index})=>{
             <div className="item-actions-block" style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
               <ul className="item-actions-list">
                 <li>
-                  <a className="remove" href="#" data-toggle="modal" data-target="#confirm-modal">
+                  <a className="remove" data-toggle="modal" data-target="#confirm-modal">
                     <i className="fa fa-trash-o "></i>
+                  </a>
+                </li>
+                <li>
+                  <a className="invite" data-toggle="modal" data-target="#invite-modal">
+                    <i className="fa-solid fa-share-from-square"></i>
                   </a>
                 </li>
                 <li>
@@ -79,6 +116,8 @@ const PresentationCardComponent=({index})=>{
           </div>
         </div>
       </div>
+
+      <ModalInvitePresentation id={"invite-modal"}/>
     </li>
   )
 
