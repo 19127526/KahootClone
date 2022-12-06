@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import java.util.List;
 
 import static com.example.backend.model.entity.QAccountEntity.accountEntity;
@@ -25,8 +24,8 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
     public List<Tuple> getGroupDetail(String name) {
         return new JPAQueryFactory(entityManager)
                 .from(roomEntity).where(roomEntity.name.eq(name))
-                .rightJoin(userRoomEntity).on(roomEntity.id.eq(userRoomEntity.roomId.id))
-                .innerJoin(accountEntity).on(accountEntity.id.eq(userRoomEntity.userId.id))
+                .rightJoin(userRoomEntity).on(roomEntity.id.eq(userRoomEntity.room.id))
+                .innerJoin(accountEntity).on(accountEntity.id.eq(userRoomEntity.user.id))
                 .select(roomEntity,accountEntity,userRoomEntity.score,userRoomEntity.role)
                 .fetch();
     }
@@ -34,8 +33,8 @@ public class RoomRepositoryCustomImpl implements RoomRepositoryCustom {
     @Override
     public List<RoomEntity> getListRoomJoined(String email) {
         return new JPAQueryFactory(entityManager)
-                .from(userRoomEntity).where(userRoomEntity.userId.email.eq(email))
-                .join(roomEntity).on(roomEntity.id.eq(userRoomEntity.roomId.id))
+                .from(userRoomEntity).where(userRoomEntity.user.email.eq(email))
+                .join(roomEntity).on(roomEntity.id.eq(userRoomEntity.room.id))
                 .select(roomEntity)
                 .fetch();
     }
