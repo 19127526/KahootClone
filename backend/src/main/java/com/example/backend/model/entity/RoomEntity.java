@@ -34,36 +34,36 @@ public class RoomEntity extends SuperEntity {
 
 
 
-    @OneToMany(mappedBy = "roomId")
+    @OneToMany(mappedBy = "room")
     private List<QuestionEntity> questions = new ArrayList<>();
     public void addQuestion(QuestionEntity questionEntity) {
         this.questions.add(questionEntity);
-        questionEntity.setRoomId(this);
+        questionEntity.setRoom(this);
     }
     public void removeQuestion(QuestionEntity questionEntity) {
         this.questions.remove(questionEntity);
-        questionEntity.setRoomId(null);
+        questionEntity.setRoom(null);
     }
 
-    @OneToMany(mappedBy = "roomId")
+    @OneToMany(mappedBy = "room")
     private List<UserRoomEntity> userRoom = new ArrayList<>();
     public void addUserRoom(UserRoomEntity userRoomEntity) {
         this.userRoom.add(userRoomEntity);
-        userRoomEntity.setRoomId(this);
+        userRoomEntity.setRoom(this);
     }
     public void removeUserRoom(UserRoomEntity userRoomEntity) {
         this.userRoom.remove(userRoomEntity);
-        userRoomEntity.setRoomId(null);
+        userRoomEntity.setRoom(null);
     }
 
-    @OneToMany(mappedBy = "roomId")
-    private List<UserQuestionEntity> userQuestion = new ArrayList<>();
-    public void addQuestion(UserQuestionEntity userQuestionEntity) {
-        this.userQuestion.add(userQuestionEntity);
-        userQuestionEntity.setRoomId(this);
-    }
-    public void removeQuestion(UserQuestionEntity userQuestionEntity) {
-        this.userQuestion.remove(userQuestionEntity);
-        userQuestionEntity.setRoomId(null);
-    }
+//    @OneToMany(mappedBy = "roomId")
+//    private List<UserQuestionEntity> userQuestion = new ArrayList<>();
+//    public void addQuestion(UserQuestionEntity userQuestionEntity) {
+//        this.userQuestion.add(userQuestionEntity);
+//        userQuestionEntity.setRoomId(this);
+//    }
+//    public void removeQuestion(UserQuestionEntity userQuestionEntity) {
+//        this.userQuestion.remove(userQuestionEntity);
+//        userQuestionEntity.setRoomId(null);
+//    }
 }

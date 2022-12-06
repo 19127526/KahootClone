@@ -3,14 +3,16 @@ package com.example.backend.controller;
 import com.example.backend.common.controller.BaseController;
 import com.example.backend.common.model.EmailDto;
 import com.example.backend.common.model.Role;
+import com.example.backend.mapper.AnswerMapper;
+import com.example.backend.mapper.QuestionMapper;
 import com.example.backend.mapper.RoomMapper;
 import com.example.backend.mapper.UserRoomMapper;
+import com.example.backend.model.dto.AnswerDto;
+import com.example.backend.model.dto.QuestionDto;
 import com.example.backend.model.dto.RoomDto;
 import com.example.backend.model.dto.UserRoomDto;
 import com.example.backend.model.entity.AccountEntity;
-import com.example.backend.model.entity.QuestionEntity;
 import com.example.backend.model.entity.RoomEntity;
-import com.example.backend.model.entity.UserRoomEntity;
 import com.example.backend.model.request.CreateRoomRequest;
 import com.example.backend.model.request.JoinRequest;
 import com.example.backend.model.request.RemoveMemberRequest;
@@ -22,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,15 +34,18 @@ public class RoomController extends BaseController {
     private final EmailService emailService;
     private final RoomMapper roomMapper;
     private final RoomService roomService;
+    private final QuestionMapper questionMapper;
+    private final AnswerMapper answerMapper;
     private final UserRoomMapper userRoomMapper;
+
     @GetMapping("invite/sendEmail")
     public ResponseEntity<String> sendEmail(String email) {
-        return new ResponseEntity<>(emailService.sendEmailInviteToRoom(new EmailDto("hello world",email)), HttpStatus.OK);
+        return new ResponseEntity<>(emailService.sendEmailInviteToRoom(new EmailDto("hello world", email)), HttpStatus.OK);
     }
 
     @PostMapping("generate")
     public ResponseEntity<RoomDto> generate(@RequestBody CreateRoomRequest createRoomRequest) {
-        return new ResponseEntity<>(roomMapper.entityToDto(roomService.createRoom(createRoomRequest)),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(roomMapper.entityToDto(roomService.createRoom(createRoomRequest)), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("detail")
@@ -66,16 +70,27 @@ public class RoomController extends BaseController {
 
     @PostMapping("join")
     public ResponseEntity<UserRoomDto> join(@RequestBody JoinRequest joinRequest) {
-        return ResponseEntity
-                .status(HttpStatus.ACCEPTED)
-                .body(userRoomMapper.entityToDto(roomService.join(joinRequest)));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userRoomMapper.entityToDto(roomService.join(joinRequest)));
     }
-
-    @PostMapping("remove")
-    public ResponseEntity<Boolean> removeMember(@RequestBody RemoveMemberRequest removeMemberRequest) {
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body(roomService.removeMember(removeMemberRequest));
+// working
+    @PostMapping("slide/add")
+    public ResponseEntity<QuestionDto> createSlide(@ModelAttribute("slide") QuestionDto questionDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionMapper.entityToDto(roomService.createSlide(questionDto)));
     }
-
+// working
+    @PostMapping("answer/add")
+    public ResponseEntity<AnswerDto> createAnswer(@RequestBody AnswerDto answerDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(answerMapper.entityToDto(roomService.createAnswer(answerDto)));
+    }
+// working
+    @PostMapping("answer/update")
+    public ResponseEntity<AnswerDto> updateAnswer(@RequestBody AnswerDto answerDto) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(answerMapper.entityToDto(roomService.updateAnswer(answerDto)));
+    }
+// working
+    @PostMapping("answer/delete")
+    public ResponseEntity<Object> deleteAnswer(@RequestBody AnswerDto answers) {
+        roomService.deleteAnswer(answers);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
 }

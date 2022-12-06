@@ -77,6 +77,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     private boolean isRestrict(HttpServletRequest request) {
-        return !(request.getServletPath().contains("/anonymous") || request.getServletPath().contains("/refreshToken") || request.getServletPath().contains("/auth/")||request.getServletPath().contains("/login"));
+        return !(request.getServletPath().contains("/guest") || request.getServletPath().contains("/refreshToken") || request.getServletPath().contains("/auth/"));
+    }
+
+    private void getError(HttpServletResponse response, String message) throws IOException {
     }
 }

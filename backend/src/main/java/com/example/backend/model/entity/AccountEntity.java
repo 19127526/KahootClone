@@ -15,34 +15,34 @@ import java.util.List;
 public class AccountEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private String userName;
     @Column(unique = true)
     private String email;
     private String password;
     private String imageURL;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<UserRoomEntity> userRoom = new ArrayList<>();
     public void addUserRoom(UserRoomEntity userRoomEntity) {
         this.userRoom.add(userRoomEntity);
-        userRoomEntity.setUserId(this);
+        userRoomEntity.setUser(this);
     }
     public void removeUserRoom(UserRoomEntity userRoomEntity) {
         this.userRoom.remove(userRoomEntity);
-        userRoomEntity.setUserId(null);
+        userRoomEntity.setUser(null);
     }
 
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<UserQuestionEntity> userQuestion = new ArrayList<>();
     public void addUserQuestion(List<UserQuestionEntity> userQuestionEntityList) {
         this.userQuestion.addAll(userQuestionEntityList);
-        userQuestion.forEach(it -> it.setUserId(this));
+        userQuestion.forEach(it -> it.setUser(this));
     }
     public void removeUserQuestion(UserQuestionEntity userQuestionEntity) {
         this.userQuestion.remove(userQuestionEntity);
-        userQuestionEntity.setUserId(null);
+        userQuestionEntity.setUser(null);
     }
 
     @OneToMany(mappedBy = "accountEntity")
