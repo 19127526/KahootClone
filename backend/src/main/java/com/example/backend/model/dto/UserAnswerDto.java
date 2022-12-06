@@ -5,10 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserQuestionDto {
+public class UserAnswerDto {
     private long id;
-    private Integer scores;
     private long question;
-    private String user;
-    private String answer;
+    private String userr;
+    private long answer;
 }

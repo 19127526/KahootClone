@@ -1,13 +1,12 @@
 package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
-import com.example.backend.common.utils.JwtTokenUtil;
 import com.example.backend.mapper.AccountMapper;
-import com.example.backend.mapper.RoomMapper;
+import com.example.backend.mapper.GroupMapper;
 import com.example.backend.model.dto.AccountDto;
 import com.example.backend.model.dto.AuthenticationDto;
 import com.example.backend.model.dto.JsonWebToken;
-import com.example.backend.model.dto.RoomDto;
+import com.example.backend.model.dto.GroupDto;
 import com.example.backend.model.request.ValidateRequest;
 import com.example.backend.service.AccountService;
 import com.example.backend.service.RoomService;
@@ -27,7 +26,7 @@ import java.util.List;
 public class AccountController extends BaseController {
     private final AccountService accountService;
     private final AccountMapper accountMapper;
-    private final RoomMapper roomMapper;
+    private final GroupMapper groupMapper;
     private final RoomService roomService;
 
     @GetMapping("auth/loginSocial")
@@ -66,16 +65,16 @@ public class AccountController extends BaseController {
     }
 
     @GetMapping("listRoomCreated")
-    public ResponseEntity<List<RoomDto>> getListRoomCreated(String email) {
+    public ResponseEntity<List<GroupDto>> getListRoomCreated(String email) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(roomService.getListRoomCreated(email).stream().map(roomMapper::entityToDto).toList());
+                .body(roomService.getListRoomCreated(email).stream().map(groupMapper::entityToDto).toList());
     }
 
     @GetMapping("listRoomJoined")
-    public ResponseEntity<List<RoomDto>> getListRoomJoined(String email) {
+    public ResponseEntity<List<GroupDto>> getListRoomJoined(String email) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(roomService.fetchRoomsJoined(email).stream().map(roomMapper::entityToDto).toList());
+                .body(roomService.fetchRoomsJoined(email).stream().map(groupMapper::entityToDto).toList());
     }
 }
