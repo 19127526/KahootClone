@@ -1,7 +1,10 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
+import {PUBLIC_GROUP_URI} from "../../configs/url";
 
 
 function AsideComponent({ onClose }) {
+  const navigate=useNavigate();
   return (<>
 
     <aside className="sidebar">
@@ -16,7 +19,7 @@ function AsideComponent({ onClose }) {
               <span className="l l4"></span>
               <span className="l l5"></span>
             </div>
-            <a className="navbar-brand text-brand" href="/">Shoe<span className="color-b"> Dog</span></a>
+            <a className="navbar-brand text-brand" >Slide<span className="color-b">Clone</span></a>
           </div>
         </div>
         <nav className="menu">
@@ -54,8 +57,8 @@ function AsideComponent({ onClose }) {
               </ul>
             </li>
             <li>
-              <a href="/admin/quan-li-tai-khoan">
-                <i className="fa fa-pencil-square-o"></i> Quản lí tài khoản
+              <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>
+                <i className="fa fa-pencil-square-o"></i> Public Present
               </a>
             </li>
           </ul>

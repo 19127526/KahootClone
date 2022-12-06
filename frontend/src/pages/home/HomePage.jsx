@@ -3,7 +3,7 @@ import React from "react";
 
 const HomePage = () => {
   return (
-    <article className="content charts-flot-page">
+   /* <article className="content charts-flot-page">
       <div className="title-block">
         <h3 className="title"> Charts Flot </h3>
         <p className="title-description"> List of sample charts with custom colors </p>
@@ -20,27 +20,27 @@ const HomePage = () => {
                   <div className="flot-chart">
                     <div className="flot-chart-content" id="flot-bar-chart" style="padding: 0px; position: relative;">
                       <canvas className="flot-base" width="815" height="281"
-                              style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 652.8px; height: 225px;"></canvas>
+                              style={{direction: "ltr", position: "absolute", left: "0px", top: "0px", width: "652.8px", height: "225px"}}></canvas>
                       <div className="flot-text"
-                           style="position: absolute; inset: 0px; font-size: smaller; color: rgb(84, 84, 84);">
+                           style={{position: "absolute", inset: "0px", fontSize: "smaller", color: "rgb(84, 84, 84)"}}>
                         <div className="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;">
                           <div className="flot-tick-label tickLabel"
-                               style="position: absolute; max-width: 75px; top: 205px; left: 17px; text-align: center;">1
+                               style={{position: "absolute", maxWidth: "75px", top: "205px", left: "17px", textAlign: "center"}}>1
                           </div>
                           <div className="flot-tick-label tickLabel"
-                               style="position: absolute; max-width: 75px; top: 205px; left: 129px; text-align: center;">2
+                               style={{position: "absolute", maxWidth: "75px", top: "205px", left: "17px", textAlign: "center"}}>2
                           </div>
                           <div className="flot-tick-label tickLabel"
-                               style="position: absolute; max-width: 75px; top: 205px; left: 240px; text-align: center;">3
+                               style={{position: "absolute", maxWidth: "75px", top: "205px", left: "17px", textAlign: "center"}}>3
                           </div>
                           <div className="flot-tick-label tickLabel"
-                               style="position: absolute; max-width: 75px; top: 205px; left: 351px; text-align: center;">4
+                               style={{position: "absolute", maxWidth: "75px", top: "205px", left: "17px", textAlign: "center"}}>4
                           </div>
                           <div className="flot-tick-label tickLabel"
-                               style="position: absolute; max-width: 75px; top: 205px; left: 463px; text-align: center;">5
+                               style={{position: "absolute", maxWidth: "75px", top: "205px", left: "17px", textAlign: "center"}}>5
                           </div>
                           <div className="flot-tick-label tickLabel"
-                               style="position: absolute; max-width: 75px; top: 205px; left: 574px; text-align: center;">6
+                               style={{position: "absolute", maxWidth: "75px", top: "205px", left: "17px", textAlign: "center"}}>6
                           </div>
                         </div>
                         <div className="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;">
@@ -356,7 +356,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-    </article>
+    </article>*/
+    <></>
   );
 }
 
