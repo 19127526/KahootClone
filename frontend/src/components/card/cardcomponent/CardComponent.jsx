@@ -2,7 +2,7 @@ import React from "react";
 import "./Card.css"
 import {useNavigate} from "react-router-dom";
 
-const CardComponent=({ name, img, id }) =>{
+const CardComponent=({ name, img, id, url }) =>{
   const detail="the descriptions is the descriptions is the descriptiondsdshe descriptions is the descripdsdsdsdsdt";
   console.log(detail.length);
   const navigate = useNavigate();
@@ -16,19 +16,19 @@ const CardComponent=({ name, img, id }) =>{
           </svg>
           <img className="card__thumb" src="https://joeschmoe.io/api/v1/random" alt=""/>
           <div className="card__header-text">
-            <h3 className="card__title">Jessica Parker</h3>
+            <h3 className="card__title">{name}</h3>
           </div>
         </div>
         <p className="card__description">
-          {detail.length>=90?
-            <div>
-              <span className="card__description__detail">{detail.substring(0,90)}...</span>
-            </div>
-            :
-            <span className="card__description__detail">{detail}</span>
-          }
+          {/*{detail.length>=90?*/}
+          {/*  <div>*/}
+          {/*    <span className="card__description__detail">{detail.substring(0,90)}...</span>*/}
+          {/*  </div>*/}
+          {/*  :*/}
+          {/*  <span className="card__description__detail">{detail}</span>*/}
+          {/*}*/}
           <div style={{padding:"10px"}}>
-            <button className="card__description__btn ant-btn ant-btn-primary" onClick={()=>navigate("/group/detail")}>See detail</button>
+            <button className="card__description__btn ant-btn ant-btn-primary" onClick={()=>navigate("/group/detail/"+name)}>See detail</button>
           </div>
         </p>
       </div>

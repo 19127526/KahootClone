@@ -2,8 +2,6 @@ import * as types from "./LoginPage.constraints"
 import produce from "immer"
 
 const initialState= {
-  username:null,
-  password:null,
   isLogin:false,
   profile: {}
 }
@@ -11,9 +9,8 @@ export const LoginPageReducer=(state=initialState,action)=>
   produce(state, draft => {
     switch (action.type) {
       case types.LOGIN_NORMAL_SUCCESS:
-        draft.username= action.payload.username;
-        draft.password=action.payload.password;
         draft.isLogin=true;
+        draft.profile=action.payload;
         break;
       case types.LOGIN_NORMAL_FAIL:
        break;
@@ -25,6 +22,10 @@ export const LoginPageReducer=(state=initialState,action)=>
         break;
       case types.CHANGE_IS_LOGIN:
         draft.isLogin=false;
+        break;
+      case types.LOGOUT_ACCOUNT:
+        draft.isLogin=false;
+        localStorage.removeItem("accessToken");
         break;
       default:
         return state;

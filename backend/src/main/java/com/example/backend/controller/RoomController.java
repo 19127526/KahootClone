@@ -15,6 +15,7 @@ import com.example.backend.model.entity.AccountEntity;
 import com.example.backend.model.entity.RoomEntity;
 import com.example.backend.model.request.CreateRoomRequest;
 import com.example.backend.model.request.JoinRequest;
+import com.example.backend.model.request.RemoveMemberRequest;
 import com.example.backend.service.EmailService;
 import com.example.backend.service.RoomService;
 import com.querydsl.core.Tuple;

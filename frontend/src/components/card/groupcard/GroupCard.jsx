@@ -1,23 +1,16 @@
 import {Container} from "react-bootstrap";
 import {Avatar, Button, Card, Modal, Row} from "antd";
-import {CaretDownOutlined} from "@ant-design/icons";
 import {useState} from "react";
-import EmailComponent from "../email/EmailComponent";
-import DropdownCustom from "./DropdownCustom";
+import DropdownCustom from "../../dropdowncustom/DropdownCustom";
+import {useNavigate} from "react-router-dom";
+import EmailComponent from "../../email/EmailComponent";
 
-const GroupCard = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-
+const GroupCard = ({name,capacity,type,url,code,question,userRoom,typeRoom}) => {
+    const navigate=useNavigate();
+    const handleDetailButton = (e) => {
+        e.preventDefault();
+        navigate("/group/detail/"+name)
+    }
     return (
         <div className="site-card-border-less-wrapper">
             <Card style={{
@@ -34,15 +27,15 @@ const GroupCard = () => {
                         boxShadow: "0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08)",
                         color: "#fff"
                     }}>
-                        Public group
+                        {type}
                     </text>
-                    <DropdownCustom/>
+                    <DropdownCustom typeRoom={typeRoom} name={name} url={url} code={code} />
                 </Row>
                 <div style={{color: "#444", fontSize: "18px", fontWeight: 600, overflow: "clip"}}>
-                    XXX
+                    {name}
                 </div>
                 <div style={{color: "grey", fontSize: "12px"}}>
-                    200 thành viên
+                    {capacity} {capacity > 1 ? "members" : "member"}
                 </div>
                 <Container style={{
                     height: 150,
@@ -62,12 +55,10 @@ const GroupCard = () => {
                     </div>
                 </Container>
                 <Row style={{display: "flex", justifyContent: "space-between"}}>
-                    <Button type="primary" shape="round" size="large" onClick={showModal}>
-                        Join
+                    <Button type="primary" shape="round" size="large" onClick={handleDetailButton}>
+                        Detail
                     </Button>
-                    <Modal  title="Join Group" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered>
-                        <EmailComponent  onSubmit={()=>setIsModalOpen(false)}/>
-                    </Modal>
+
                     <Avatar src="https://joeschmoe.io/api/v1/random" size={"large"} style={{borderColor: "black"}}/>
                 </Row>
             </Card>

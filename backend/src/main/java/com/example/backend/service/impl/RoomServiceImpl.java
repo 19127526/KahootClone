@@ -63,7 +63,7 @@ public class RoomServiceImpl implements RoomService {
             RoomEntity roomEntity = new RoomEntity();
             roomEntity.setName(createRoomRequest.getName());
             roomEntity.setCode(CodeGeneratorUtils.invoke());
-            roomEntity.setUrl("https://www.google.com/" + createRoomRequest.getName());
+            roomEntity.setUrl("http://localhost:3000/group/detail/" + createRoomRequest.getName());
             UserRoomEntity userRoomEntity = new UserRoomEntity();
             userRoomEntity.setRole(Role.OWNER);
             accountEntity.addUserRoom(userRoomEntity);
@@ -78,8 +78,14 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public AccountEntity removeMember(RemoveRequest removeRequest) {
-        return null;
+    public Boolean removeMember(RemoveMemberRequest removeMemberRequest) {
+        AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(removeMemberRequest.getGmail()).orElseThrow(() -> {throw new ResourceNotFoundException("email invalid");});
+        RoomEntity roomEntity = roomRepository.findRoomEntityByName(removeMemberRequest.getNameRoom()).orElseThrow(() -> {throw new ResourceNotFoundException("room invalid");});
+        UserRoomEntity userRoomEntity = userRoomRepository.findUserRoomEntityByUserId_IdAndRoomId_Id(accountEntity.getId(), roomEntity.getId()).orElseThrow(() -> {throw new ResourceNotFoundException("user not in room");});
+        accountEntity.removeUserRoom(userRoomEntity);
+        roomEntity.removeUserRoom(userRoomEntity);
+        userRoomRepository.delete(userRoomEntity);
+        return true;
     }
 
     @Override

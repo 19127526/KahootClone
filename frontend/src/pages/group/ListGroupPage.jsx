@@ -1,62 +1,39 @@
 import {Col, Container} from "react-bootstrap";
 import {Button, Divider, List, Modal, Row, Skeleton, Tabs} from "antd";
 import Search from "antd/es/input/Search";
-import GroupCard from "../../components/card/GroupCard";
-import InfiniteScroll from "react-infinite-scroll-component";
 import {PlusCircleFilled} from "@ant-design/icons";
-import OTPCreateGroup from "../../components/card/OTPCreateGroup";
-import {useState} from "react";
-
-const contents = [1,2,3,4,5];
-
-const GroupContent = () => {
-    return (
-        <InfiniteScroll
-            dataLength={contents.length}
-            loader={
-                <Skeleton
-                    paragraph={{
-                        rows: 5,
-                    }}
-                />
-            }
-            endMessage={<Divider plain>End</Divider>}
-            scrollableTarget="scrollableDiv"
-        >
-            <Row className="m-2">
-                {contents?.map((user, index) =>
-                        <Col xs={12} sm={12} lg={4} md={6} xl={4} style={{paddingBottom: 10}}>
-                            <GroupCard/>
-                        </Col>
-                    )
-                }
-            </Row>
-        </InfiniteScroll>
-    );
-}
-
-const pages = [
-    {
-        label: `Joined Groups`,
-        key: 1,
-        children: GroupContent(),
-    },
-    {
-        label: `Created Groups`,
-        key: 2,
-        children: GroupContent(),
-    }
-];
-
+import OTPCreateGroup from "../../components/otpcreategroup/OTPCreateGroup";
+import {useState, useEffect} from "react";
+import GroupContent from "./GroupContent";
+import {useSelector} from "react-redux";
 
 
 
 const ListGroupPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const {profile} = useSelector(state => state.loginPage);
     const showModal = () => {
         setIsModalOpen(true);
     };
+
+
+    const pages = [
+        {
+            label: `Joined Groups`,
+            key: 1,
+            children: GroupContent("joined"),
+        },
+        {
+            label: `Created Groups`,
+            key: 2,
+            children: GroupContent("created"),
+        }
+    ];
+
+    const onChange=(key)=>{
+        console.log(key)
+
+    }
 
     return (
 
@@ -75,14 +52,15 @@ const ListGroupPage = () => {
                             tabBarExtraContent={
                                 <Button type="primary" shape="round" icon = {<PlusCircleFilled />} onClick={showModal}/>
                             }
-                            defaultActiveKey="1"
+                            defaultActiveKey={1}
                             type="card"
                             size={"large"}
                             items={pages}
+                            onChange={onChange}
                         />
                 </Container>
 
-                <OTPCreateGroup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <OTPCreateGroup isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} profile = {profile}/>
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ import java.util.List;
 public interface RoomService {
     UserRoomEntity join(JoinRequest joinRequest);
     RoomEntity createRoom(CreateRoomRequest createRoomRequest);
-    AccountEntity removeMember(RemoveRequest removeRequest);
+    Boolean removeMember(RemoveMemberRequest removeMemberRequest);
     List<RoomEntity> getListRoomCreated(String email);
     List<RoomEntity> fetchRoomsJoined(String email);
 //    UserRoomEntity update(UserRoomDto userRoomDto);
