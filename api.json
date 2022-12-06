@@ -325,16 +325,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/play/answer/chose",
+							"raw": "http://localhost:8080/slide/play",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"play",
-								"answer",
-								"chose"
+								"slide",
+								"play"
 							]
 						}
 					},
@@ -344,15 +343,54 @@
 					"name": "details slide",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/slide/detail?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"detail"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "delete",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/slide/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"delete"
+							]
+						}
 					},
 					"response": []
 				},
@@ -449,7 +487,7 @@
 					"response": []
 				},
 				{
-					"name": "update",
+					"name": "delete",
 					"request": {
 						"method": "POST",
 						"header": [],
