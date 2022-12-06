@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import java.util.List;
 
 import static com.example.backend.model.entity.QUserRoomEntity.userRoomEntity;
@@ -20,7 +19,7 @@ public class UserRoomRepositoryCustomImpl implements UserRoomRepositoryCustom {
     public List<UserRoomEntity> fetchDataFromAccountAndRoom(Long userId, Long roomId) {
         return new JPAQueryFactory(entityManager)
                 .from(userRoomEntity)
-                .where(userRoomEntity.roomId.id.eq(roomId).and(userRoomEntity.userId.id.eq(userId)))
+                .where(userRoomEntity.room.id.eq(roomId).and(userRoomEntity.user.id.eq(userId)))
                 .select(userRoomEntity).fetch();
     }
 }
