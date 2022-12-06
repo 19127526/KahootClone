@@ -3,7 +3,9 @@ import React from "react";
 import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
 import {
-  HOME_URI, MEMBER_URI, PRESENTATION_PRIVATE,
+  HOME_URI,
+  MEMBER_URI,
+  PRESENTATION_PRIVATE,
   PRESENTATION_PUBLIC,
   PRESENTATION_URI,
   PUBLIC_GROUP_URI,
@@ -11,8 +13,8 @@ import {
   VERIFY_INVITE_URI
 } from "../configs/url";
 import Oauth2Page from "../authors/oauth2/Oauth2Page";
-import SignUpPage from "../pages/register/SignUpPage";
 import RegisterPage from "../pages/register/RegisterPage";
+import SocketPage from "../pages/socket/SocketPage";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy = React.lazy(() => import("../pages/login/LoginPage"))
@@ -24,7 +26,7 @@ const InvitePageLazy = React.lazy(() => import("../authors/invite/InvitePage"))
 const PresentationPageLazy = React.lazy(() => import("../pages/presentation/Presentation"))
 const PublicGroupPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupPage"))
 const PublicGroupDetailPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupDetailPage"))
-const MemberPageLazy =React.lazy(()=>import("../pages/member/MemberPage"))
+const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
 const RoutesPage = () => {
   return (
     <Routes>
@@ -112,8 +114,8 @@ const RoutesPage = () => {
           <React.Suspense fallback={<Loading/>}>
             {" "}
             {/*<Authenticate path={"/group/detail"}>*/}
-              <GroupDetailPageLazy/>
-          {/*  </Authenticate>*/}
+            <GroupDetailPageLazy/>
+            {/*  </Authenticate>*/}
           </React.Suspense>
         }
       />
@@ -138,7 +140,7 @@ const RoutesPage = () => {
         }
       />
       <Route
-          path={PRESENTATION_URI}
+        path={PRESENTATION_URI}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
@@ -180,6 +182,14 @@ const RoutesPage = () => {
             {" "}
             <MemberPageLazy/>
           </React.Suspense>
+        }
+      />
+      <Route
+        path="/test"
+        element={<React.Suspense fallback={<Loading/>}>
+          {" "}
+          <SocketPage/>
+        </React.Suspense>
         }
       />
     </Routes>

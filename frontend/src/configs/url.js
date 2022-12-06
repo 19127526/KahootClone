@@ -12,7 +12,6 @@ export const REGISTER_URi="/account/auth/register"
 export const VALIDATE_OTP_URI="/account/auth/validate/otp"
 export const LOGIN_NORMAL="/account/auth/loginTraditional"
 
-
 //CLIENT ROUTE
 export const REDIRECT_URI="/login/oauth2/redirect"
 export const HOME_URI="/home"

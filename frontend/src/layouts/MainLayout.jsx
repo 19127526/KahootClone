@@ -39,7 +39,7 @@ const MainLayout = () => {
       </Row>*/
     <>
       {
-        location.pathname.includes("login") ||location.pathname.includes("register") ?
+        location.pathname.includes("login") ||location.pathname.includes("register") ||location.pathname.includes("test")?
           <div className="main-wrapper">
             <div className="app" id="app">
               <RoutesPage/>
