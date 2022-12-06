@@ -11,6 +11,10 @@ export const INVITE_MEMBER_INTO_GROUP="/room/join"
 export const REGISTER_URi="/account/auth/register"
 export const VALIDATE_OTP_URI="/account/auth/validate/otp"
 export const LOGIN_NORMAL="/account/auth/loginTraditional"
+export const LIST_PRESENTATION_FROM_GROUP = "/presentation/list/group"
+export const ADD_PRESENTATION = "/presentation/add"
+export const DELETE_PRESENTATION = "/presentation/delete"
+
 
 //CLIENT ROUTE
 export const REDIRECT_URI="/login/oauth2/redirect"

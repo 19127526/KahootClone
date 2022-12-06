@@ -40,10 +40,10 @@ public class PresentationServiceImpl implements PresentationService {
         AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(present.getEmail()).orElseThrow(() -> {
             throw new ResourceInvalidException("account invalid");
         });
-        presentationRepository.findPresentationEntityByGroup_IdAndName(present.getGroupId(), present.getName()).orElseThrow(() -> {
-            throw new ResourceInvalidException("presentation name exist");
-        });
-        GroupEntity group = groupRepository.findById(present.getGroupId()).orElseThrow(() -> {
+//        presentationRepository.findPresentationEntityByGroup_IdAndName(present.getGroupID(), present.getName()).orElseThrow(() -> {
+//            throw new ResourceInvalidException("presentation name exist");
+//        });
+        GroupEntity group = groupRepository.findById(present.getGroupID()).orElseThrow(() -> {
             throw new ResourceInvalidException("group invalid");
         });
         PresentationEntity presentation = new PresentationEntity();

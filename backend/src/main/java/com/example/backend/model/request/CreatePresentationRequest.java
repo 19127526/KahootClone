@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class CreatePresentationRequest {
-    private long GroupId;
+    private long groupID;
     private String name;
     private String email;
 }

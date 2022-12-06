@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {PlayCircleFilled} from "@ant-design/icons"
 import {useNavigate} from "react-router-dom";
 import {PRESENTATION_URI} from "../../../configs/url";
+import {deletePresentation} from "../../../apis/presentation/presentationAPI";
 const ModalInvitePresentation=({id})=>{
   return (
     <div className="modal fade" id={id} >
@@ -39,6 +40,16 @@ const ModalInvitePresentation=({id})=>{
 const PresentationCardComponent=({index})=>{
   const [openSetting,setOpenSetting]=useState(false);
   const navigate=useNavigate()
+  const handleDelete = () => {
+    console.log(index)
+    deletePresentation({id: index.id}).then((response) => {
+      if(response.status === 204){
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000);      }
+    })
+  }
+
   return (
     <li className="item">
       <div className="item-row">
@@ -48,38 +59,38 @@ const PresentationCardComponent=({index})=>{
             <span></span>
           </label>
         </div>
-        <div className="item-col fixed item-col-img md">
-          <a>
-            <div className="item-skip-img">
-              <PlayCircleFilled className="item-skip"/>
-            </div>
-                </a>
-        </div>
+        {/*<div className="item-col fixed item-col-img md">*/}
+        {/*  <a>*/}
+        {/*    <div className="item-skip-img">*/}
+        {/*      <PlayCircleFilled className="item-skip"/>*/}
+        {/*    </div>*/}
+        {/*        </a>*/}
+        {/*</div>*/}
         <div className="item-col fixed pull-left item-col-title">
           <div className="item-heading">Name</div>
           <div>
             {/* onClick={() => navigate(`/admin/category/${index.CatId}/${index.ProId}`, {state: {index: index}})}*/}
             <a
               onClick={()=>navigate(PRESENTATION_URI)}>
-              <h4 className="item-title"> {index.ProName} </h4>
+              <h4 className="item-title"> {index.name} </h4>
             </a>
           </div>
         </div>
         <div className="item-col item-col-author">
           <div className="item-heading">Owner</div>
           <div className="no-overflow"  style={{marginLeft:"-16px"}}>
-            <div>Admin</div>
+            <div>{index.author}</div>
           </div>
         </div>
         <div className="item-col item-col-date">
           <div className="item-heading">Modified</div>
-          <div className="no-overflow" style={{marginRight:"20px"}}> {index.DateStart}</div>
+          <div className="no-overflow" style={{marginRight:"20px"}}> ""</div>
         </div>
 
         <div className="item-col item-col-category no-overflow">
           <div className="item-heading">Created</div>
           <div className="no-overflow" style={{marginLeft:"50px"}}>
-            <div>{index.Quantity}</div>
+            <div>""</div>
           </div>
         </div>
 
@@ -96,7 +107,7 @@ const PresentationCardComponent=({index})=>{
             <div className="item-actions-block" style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
               <ul className="item-actions-list">
                 <li>
-                  <a className="remove" data-toggle="modal" data-target="#confirm-modal">
+                  <a className="remove" data-toggle="modal" data-target="#confirm-modal" onClick={handleDelete}>
                     <i className="fa fa-trash-o "></i>
                   </a>
                 </li>

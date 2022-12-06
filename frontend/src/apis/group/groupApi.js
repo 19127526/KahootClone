@@ -18,6 +18,7 @@ export const getListGroup=async ({type,email})=>{
   return await request.get(type == "joined" ? LIST_GROUP_JOINED_API + `?email=${email}` : LIST_GROUP_CREATED_API  + `?email=${email}`)
 }
 
+
 export const removeGroup=async ({gmail,nameRoom})=>{
   return await request.post(KICK_MEMBER_IN_GROUP_URI,{gmail:gmail,nameRoom:nameRoom});
 }

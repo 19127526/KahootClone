@@ -33,7 +33,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionEntity createQuestion(CreateQuestionRequest createQuestionRequest) {
-        PresentationEntity presentation = presentationRepository.findById(createQuestionRequest.getPresentationId()).orElseThrow(() -> {throw new ResourceNotFoundException("slide not found");});
+        PresentationEntity presentation = presentationRepository.findById(createQuestionRequest.getPresentationID()).orElseThrow(() -> {throw new ResourceNotFoundException("slide not found");});
         QuestionEntity question = new QuestionEntity();
         question.setText(createQuestionRequest.getText());
         presentation.addQuestion(question);
