@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/ChartPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/ChartPresentation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/normal_slide/SlidePresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/normal_slide/SlidePresentation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation-user/PresentationUser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

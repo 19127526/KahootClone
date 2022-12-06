@@ -120,14 +120,14 @@ const MainPresentation = () => {
                     enabled: true,
                 }}
                 pagination={{
-                    type: "progressbar",
+                    type: "bullets",
                 }}
                 navigation={false}
                 modules={[Keyboard, Pagination, Navigation]}
             >
                 {slideList.map((value, index) => {
-                    return (<SwiperSlide style={{backgroundColor: "white", height:"100%"}}>
-                        {value.type === "chart" ? <ChartPresentation item={value} width={"180vh"}/> :
+                    return (<SwiperSlide style={{backgroundColor: "white", height:"100%", padding: "5%"}}>
+                        {value.type === "chart" ? <ChartPresentation item={value} width={"165vh"}/> :
                             <SlidePresentation item={value}/>}
                     </SwiperSlide>)
                 })}
