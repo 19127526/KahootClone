@@ -24,13 +24,13 @@ const MemberCard = ({email, userMame, imageUrl, score, role}) => {
         </div>
         <div className="item-col item-col-sales">
           <div className="item-heading">Score</div>
-          <div> {score}</div>
+          <div style={{marginRight:"20px"}}> {score}</div>
         </div>
 
 
         <div className="item-col item-col-author">
           <div className="item-heading">Role</div>
-          <div className="no-overflow">
+          <div className="no-overflow" style={{marginLeft:"10px"}}>
             <a href="#">{role}</a>
           </div>
         </div>
