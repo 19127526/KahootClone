@@ -118,6 +118,7 @@ const Presentation = () => {
 
     const loadPresentationDetail = () => {
         getPresentationDetail({id: id}).then((response) => {
+            console.log(response.data)
             if(response.status === 200){
                if(response.data["questions"].length === 0){
                    addSlide()

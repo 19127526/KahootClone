@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {deletePresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
+import {PRESENTATION_URI} from "../../../configs/url";
 const ModalInvitePresentation=({id})=>{
   return (
     <div className="modal fade" id={id} >

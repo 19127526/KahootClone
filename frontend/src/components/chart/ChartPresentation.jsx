@@ -1,8 +1,8 @@
-import {BarElement, CategoryScale, Chart as ChartJS, LinearScale, Tooltip} from "chart.js";
+import {BarElement, CategoryScale, Chart, Chart as ChartJS, LinearScale, Tooltip} from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import {Space, Typography} from "antd";
 import {Bar} from "react-chartjs-2";
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +25,7 @@ const options = {
         },
         datalabels: {
             display: true,
-            color: 'white'
+            color: 'black'
         }
     },
 
@@ -47,19 +47,31 @@ const options = {
     }
 };
 
-const ChartPresentation = ({value, width}) => {
-    console.log(value.text)
-    // console.log(value.answers != undefined ? value.answers.length : 10000)
-    // console.log(`answers ${value}`)
-    const data = {
-        labels: value.answers ?? [],
-        datasets: [
-            {
-                data: [],
-                backgroundColor: 'blue',
-            },
-        ]
-    }
+const ChartPresentation = ({value, width, isLoading}) => {
+    let d = []
+    let l = []
+    const [dataChart, setData] = useState({labels: [], datasets: []})
+
+    useEffect(() => {
+        if(value.answers !== undefined){
+            value.answers.forEach((index) => {
+                l.push(index.text)
+                d.push(index.userAnswers.length)
+            })
+            setData({
+                labels: l,
+                datasets: [{
+                    data: d
+                }]
+            })
+        }
+        console.log(value)
+    }, [value])
+
+
+
+
+
     return (
         <Space direction={"vertical"} align={"center"} size={"large"}  style={{
             display: "flex",
@@ -70,12 +82,16 @@ const ChartPresentation = ({value, width}) => {
         }}>
             <Typography style={{fontSize: 25}}>
                 {value.text}
-                32132131
             </Typography>
 
-            <Bar options={options} data={data}
-                 style={{minWidth: width ?? "80vh"}}
-            />
+            {
+              <Bar options={options} data={
+                  dataChart
+                }
+                                  style={{minWidth: width ?? "80vh"}}
+                />
+            }
+
         </Space>
     );
 }

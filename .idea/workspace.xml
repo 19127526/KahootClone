@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/ChartPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/ChartPresentation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/ChartSider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/ChartSider.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/group/public/PresentationCardComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/public/PresentationCardComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

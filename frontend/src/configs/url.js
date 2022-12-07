@@ -1,6 +1,6 @@
 export const SERVER_URL="https://spring-heroku.herokuapp.com"
+// export const SERVER_URL="http://localhost:8080"
 export const CLIENT_URL="http://localhost:3000"
-/*"https://spring-heroku.herokuapp.com/ws"*/
 
 //SERVER
 export const CREATE_GROUP = "/room/generate"
@@ -18,6 +18,8 @@ export const DELETE_PRESENTATION = "/presentation/delete"
 export const PRESENTATION_DETAIL = "/presentation/details"
 export const ADD_NEW_SLIDE = "/slide/add"
 export const REMOVE_SLIDE = "/slide/delete"
+export const ADD_OPTION = "/option/add"
+export const REMOVE_OPTION = "/option/delete"
 
 
 //CLIENT ROUTE
