@@ -8,15 +8,16 @@ import {
 
 export  const getListPresentation = async({type,groupID}) =>{
 
-    return await request.get(type === "public" ? ""  : LIST_PRESENTATION_FROM_GROUP + `?id=${groupID}`)
+    return await request.get(type === "public" ? ""  : LIST_PRESENTATION_FROM_GROUP + `?id=${groupID}&isPublic=0`)
 
 }
 
-export const addNewPresentation = async ({groupID, name, email}) => {
+export const addNewPresentation = async ({groupID, name, email,isPublic}) => {
     return await request.post(ADD_PRESENTATION, {
-        "groupID": groupID,
-        "name": name,
-        "email": email
+        groupId: groupID,
+        name: name,
+        email: email,
+        isPublic: false
     })
 }
 

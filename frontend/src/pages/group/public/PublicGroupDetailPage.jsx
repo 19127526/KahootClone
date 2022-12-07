@@ -26,6 +26,7 @@ const ModalAddPresenTation = ({id, list, setData}) => {
         if (value !== "") {
             addNewPresentation({groupID: params.groupId, email: email, name: value}).then((response) => {
                 if (response.status === 201) {
+                    console.log(response.data)
                     let newList = [...list]
                     newList.push(response.data)
                     setData(newList)
@@ -104,7 +105,43 @@ const PublicGroupDetailPage = () => {
 
     return (
       <>
-
+          {/*<article className="content items-list-page">
+              <div className="card sameheight-item" data-exclude="xs" id="dashboard-history">
+                  <div className="card-header card-header-sm bordered">
+                      <div className="header-block">
+                          <h3 className="title">History</h3>
+                      </div>
+                      <ul className="nav nav-tabs pull-right" role="tablist">
+                          <li className="nav-item">
+                              <a className="nav-link" href="#visits" role="tab" data-toggle="tab"
+                                 aria-selected="false">Visits</a>
+                          </li>
+                          <li className="nav-item">
+                              <a className="nav-link active show" href="#downloads" role="tab" data-toggle="tab"
+                                 aria-selected="true">Downloads</a>
+                          </li>
+                      </ul>
+                  </div>
+                  <div className="card-block">
+                      <div className="tab-content">
+                          <div role="tabpanel" className="tab-pane fade" id="visits">
+                              <p className="title-description"> Number of unique visits last 30 days </p>
+                              <div id="dashboard-visits-chart"
+                                   style={{position: "relative", "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"}}>
+                                  <div className="morris-hover morris-default-style" style={{display: "none"}}></div>
+                              </div>
+                          </div>
+                          <div role="tabpanel" className="tab-pane fade active show" id="downloads">
+                              <p className="title-description"> Number of downloads last 30 days </p>
+                              <div id="dashboard-downloads-chart"
+                                   style={{position: "relative", "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"}}>
+                                  <div className="morris-hover morris-default-style" style={{display: "none"}}></div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </article>*/}
 
 
           //Presentation

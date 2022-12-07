@@ -32,13 +32,7 @@ function AsideComponent({ onClose }) {
               <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>
                 <i className="fa fa-th-large">
                 </i> Group
-                <i className="fa arrow"></i>
               </a>
-              <ul className="sidebar-nav">
-                <li onClick={()=>navigate("/group/member")} >
-                  <a> Member </a>
-                </li>
-              </ul>
             </li>
             <li>
               <a href="#">

@@ -4,7 +4,7 @@ import {addNewPresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints";
 import request from "../../../apis/request";
-import {CREATE_GROUP, LIST_GROUP_JOINED_API} from "../../../configs/url";
+import {CREATE_GROUP, LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../../configs/url";
 import {useSelector} from "react-redux";
 
 
@@ -82,7 +82,7 @@ const PublicGroupPage=()=>{
   const[add,isAdd]=useState(false);
   useEffect(()=>{
     const getListGroupJoined= async ()=>{
-      await request.get(LIST_GROUP_JOINED_API+`?email=${email}`)
+      await request.get(LIST_GROUP_CREATED_API+`?email=${email}`)
         .then(res=>{
           if(res.status===200){
             setListGroupJoined(res.data);
