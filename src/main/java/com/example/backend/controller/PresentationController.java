@@ -20,6 +20,7 @@ public class PresentationController {
 
     @PostMapping("add")
     public ResponseEntity<PresentationDto> addPresentation(@RequestBody CreatePresentationRequest createPresentationRequest) {
+        System.out.println(createPresentationRequest.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(presentationMapper.entityToDto(presentationService.addPresentation(createPresentationRequest)));
     }
 

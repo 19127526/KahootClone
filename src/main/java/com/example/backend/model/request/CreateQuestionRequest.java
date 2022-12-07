@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CreateQuestionRequest {
-    private long PresentationId;
+    private long presentationId;
     private String text;
 }

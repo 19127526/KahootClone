@@ -4,7 +4,16 @@ import lombok.Data;
 
 @Data
 public class CreatePresentationRequest {
-    private long GroupId;
+    long groupId;
     private String name;
     private String email;
+
+    @Override
+    public String toString() {
+        return "CreatePresentationRequest{" +
+                "GroupId=" + groupId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
