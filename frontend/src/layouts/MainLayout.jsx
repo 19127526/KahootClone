@@ -59,7 +59,7 @@ const MainLayout = () => {
                 <div className="sidebar-mobile-menu-handle" id="sidebar-mobile-menu-handle"></div>
                 <div className="mobile-menu-handle"></div>
                 <RoutesPage/>
-                <FooterComponent/>
+                {/*<FooterComponent/>*/}
               </div>
             </div>
       }

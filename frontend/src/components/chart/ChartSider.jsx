@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 const ChartSider = ({selectedItem, list, setListSlide}) => {
 
     const onChangeQuestion = (e) => {
-        list[selectedItem]["question"] = e.target.value
+        list[selectedItem]["text"] = e.target.value
         let tempList = list.concat()
         setListSlide(tempList)
     }
@@ -47,7 +47,7 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
             </text>
             <Input size={"large"} allowClear placeholder={"Type your question"} maxLength={150}
                    showCount
-                   value = {list[selectedItem].question}
+                   value = {list[selectedItem].text}
                    onChange={onChangeQuestion}/>
 
             <div style={{height: "10px"}}/>
@@ -56,21 +56,21 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
                 Options
             </text>
 
-            {
-                list[selectedItem].content.labels.map((value, index) => {
-                    return (
-                        <List.Item key={index}>
-                            <List.Item.Meta
-                                title={<Input size={"large"} value={value}
-                                              onChange={onChangeOption(index)}/>}
-                                style={{marginRight: "5px"}}
-                            />
-                            <Button icon={<CloseOutlined/>}
-                                    onClick={() => handleRemoveButton(index)}/>
-                        </List.Item>
-                    )
-                })
-            }
+            {/*{*/}
+            {/*    list[selectedItem].content.labels.map((value, index) => {*/}
+            {/*        return (*/}
+            {/*            <List.Item key={index}>*/}
+            {/*                <List.Item.Meta*/}
+            {/*                    title={<Input size={"large"} value={value}*/}
+            {/*                                  onChange={onChangeOption(index)}/>}*/}
+            {/*                    style={{marginRight: "5px"}}*/}
+            {/*                />*/}
+            {/*                <Button icon={<CloseOutlined/>}*/}
+            {/*                        onClick={() => handleRemoveButton(index)}/>*/}
+            {/*            </List.Item>*/}
+            {/*        )*/}
+            {/*    })*/}
+            {/*}*/}
 
             <Button icon={<PlusOutlined/>} onClick={handleAddButton}> Add option</Button>
         </Space>

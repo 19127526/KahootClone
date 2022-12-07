@@ -14,6 +14,9 @@ export const LOGIN_NORMAL="/account/auth/loginTraditional"
 export const LIST_PRESENTATION_FROM_GROUP = "/presentation/list/group"
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
+export const PRESENTATION_DETAIL = "/presentation/details"
+export const ADD_NEW_SLIDE = "/slide/add"
+export const REMOVE_SLIDE = "/slide/delete"
 
 
 //CLIENT ROUTE
@@ -25,7 +28,7 @@ export const KICK_MEMBER_IN_GROUP_URI="/room/remove"
 export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const PUBLIC_GROUP_URI="/group/public";
-export const PRESENTATION_URI="/presentation"
+export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_PUBLIC="/present/public"
 export const PRESENTATION_PRIVATE="/present/private"
 export const REGISTER_URI="/register"

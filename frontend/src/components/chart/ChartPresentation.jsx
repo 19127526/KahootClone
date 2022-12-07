@@ -47,7 +47,18 @@ const options = {
     }
 };
 
-const ChartPresentation = ({item, width}) => {
+const ChartPresentation = ({value, width}) => {
+    // console.log(value.answers != undefined ? value.answers.length : 10000)
+    // console.log(`answers ${value}`)
+    const data = {
+        labels: value.answers ?? [],
+        datasets: [
+            {
+                data: [],
+                backgroundColor: 'blue',
+            },
+        ]
+    }
     return (
         <Space direction={"vertical"} align={"center"} size={"large"}  style={{
             display: "flex",
@@ -57,10 +68,10 @@ const ChartPresentation = ({item, width}) => {
             width:"100%",
         }}>
             <Typography style={{fontSize: 25}}>
-                {item.question == "" ? "Your question" : item.question}
+                {value.text}
             </Typography>
 
-            <Bar options={options} data={item.content}
+            <Bar options={options} data={data}
                  style={{minWidth: width ?? "80vh"}}
             />
         </Space>

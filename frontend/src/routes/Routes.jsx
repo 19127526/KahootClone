@@ -140,7 +140,7 @@ const RoutesPage = () => {
         }
       />
       <Route
-        path={PRESENTATION_URI}
+        path={PRESENTATION_URI + ":id/edit"}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}

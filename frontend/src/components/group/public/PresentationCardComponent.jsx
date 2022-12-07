@@ -71,7 +71,7 @@ const PresentationCardComponent=({index})=>{
           <div>
             {/* onClick={() => navigate(`/admin/category/${index.CatId}/${index.ProId}`, {state: {index: index}})}*/}
             <a
-              onClick={()=>navigate(PRESENTATION_URI)}>
+              onClick={()=>navigate(PRESENTATION_URI+ `${index.id}/edit`)}>
               <h4 className="item-title"> {index.name} </h4>
             </a>
           </div>
