@@ -107,7 +107,7 @@ const PublicGroupDetailPage = () => {
 
 
           //Presentation
-          {/*  <article className="content items-list-page">
+            <article className="content items-list-page">
             <div className="title-search-block">
                 <div className="title-block">
                     <div className="row">
@@ -218,7 +218,7 @@ const PublicGroupDetailPage = () => {
                 </li>
               </ul>
             </nav>
-        </article>*/}
+        </article>
 
       </>
     )
