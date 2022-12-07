@@ -29,10 +29,9 @@ public class QuestionEntity extends SuperEntity {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<AnswerEntity> answers = new ArrayList<>();
-    public void addAnswer(List<AnswerEntity> answers) {
-        this.answers.clear();
-        this.answers.addAll(answers);
-        answers.forEach(answer -> answer.setQuestion(this));
+    public void addAnswer(AnswerEntity answer) {
+        this.answers.add(answer);
+        answer.setQuestion(this);
     }
     public void removeAnswer(AnswerEntity answerEntity) {
         answers.remove(answerEntity);

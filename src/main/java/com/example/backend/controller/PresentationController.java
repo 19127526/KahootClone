@@ -24,10 +24,10 @@ public class PresentationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(presentationMapper.entityToDto(presentationService.addPresentation(createPresentationRequest)));
     }
 
-    @PostMapping("update")
-    public ResponseEntity<PresentationDto> updatePresentation(@RequestBody PresentationDto presentationDto) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(presentationMapper.entityToDto(presentationService.updatePresentation(presentationDto)));
-    }
+//    @PostMapping("update")
+//    public ResponseEntity<PresentationDto> updatePresentation(@RequestBody PresentationDto presentationDto) {
+//        return ResponseEntity.status(HttpStatus.ACCEPTED).body(presentationMapper.entityToDto(presentationService.updatePresentation(presentationDto)));
+//    }
 
     @PostMapping("delete")
     public ResponseEntity<Object> deletePresentation(@RequestBody PresentationDto presentationDto) {
