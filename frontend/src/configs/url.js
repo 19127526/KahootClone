@@ -1,6 +1,6 @@
 export const SERVER_URL="http://localhost:8080"
 export const CLIENT_URL="http://localhost:3000"
-
+/*"https://spring-heroku.herokuapp.com/ws"*/
 
 //SERVER
 export const CREATE_GROUP = "/room/generate"

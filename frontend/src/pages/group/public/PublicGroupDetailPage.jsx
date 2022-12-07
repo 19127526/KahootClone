@@ -1,4 +1,3 @@
-import PresentationCardComponent from "../../../components/group/public/PresentationCardComponent";
 import React, {useEffect, useState} from "react";
 import {useLocation, useParams} from "react-router-dom";
 import Notification from "../../../components/notification/Notification";
@@ -6,15 +5,14 @@ import * as constraintNotification from "../../../components/notification/Notifi
 import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 
-const ModalAddPresenTation = ({id,list, setData}) => {
+const ModalAddPresenTation = ({id, list, setData}) => {
     const [value, setValue] = useState("")
-    const params=useParams();
-    const dataProfile=useSelector(state=> state.loginPage);
-    const email=dataProfile.profile.email;
+    const params = useParams();
+    const dataProfile = useSelector(state => state.loginPage);
+    const email = dataProfile.profile.email;
     const onChange = (e) => {
         setValue(e.target.value)
     }
-
 
 
     const handleCancel = () => {
@@ -26,13 +24,13 @@ const ModalAddPresenTation = ({id,list, setData}) => {
         e.preventDefault();
         if (value !== "") {
             addNewPresentation({groupID: params.groupId, email: email, name: value}).then((response) => {
-                if(response.status === 201){
-                    let newList =[...list]
+                if (response.status === 201) {
+                    let newList = [...list]
                     newList.push(response.data)
                     setData(newList)
-                    Notification("Success", "Add Presentation success",constraintNotification.NOTIFICATION_SUCCESS)
+                    Notification("Success", "Add Presentation success", constraintNotification.NOTIFICATION_SUCCESS)
                 } else {
-                    Notification("Error","Add Presentation fail", constraintNotification.NOTIFICATION_WARN)
+                    Notification("Error", "Add Presentation fail", constraintNotification.NOTIFICATION_WARN)
                 }
             })
         } else {
@@ -42,23 +40,23 @@ const ModalAddPresenTation = ({id,list, setData}) => {
     }
 
     return (
-        <div className="modal fade" id={id}>
-            <div className="modal-dialog" role="document" style={{top: "30%"}}>
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h4 className="modal-title">
-                            <i className="fa fa-opera"></i> Add Presentation</h4>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div className="modal-body">
-                        <form className="form-inline">
-                            <div className="input-group">
-                                <input type="text" className="form-control boxed rounded-s" style={{width: "400px"}}
-                                       placeholder="Enter name presentation..." defaultValue={""} value={value}
-                                       onChange={onChange}/>
-                                <span className="input-group-btn align-content-center" style={{marginTop: "5px"}}>
+      <div className="modal fade" id={id}>
+          <div className="modal-dialog" role="document" style={{top: "30%"}}>
+              <div className="modal-content">
+                  <div className="modal-header">
+                      <h4 className="modal-title">
+                          <i className="fa fa-opera"></i> Add Presentation</h4>
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div className="modal-body">
+                      <form className="form-inline">
+                          <div className="input-group">
+                              <input type="text" className="form-control boxed rounded-s" style={{width: "400px"}}
+                                     placeholder="Enter name presentation..." defaultValue={""} value={value}
+                                     onChange={onChange}/>
+                              <span className="input-group-btn align-content-center" style={{marginTop: "5px"}}>
                 <button className="btn btn-secondary  rounded-s" data-dismiss="modal" type="button"
                         style={{marginRight: "5px"}} onClick={handleCancel}>
                 Cancel
@@ -67,12 +65,12 @@ const ModalAddPresenTation = ({id,list, setData}) => {
                 Add
                 </button>
                 </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
     )
 }
 const PublicGroupDetailPage = () => {
@@ -81,7 +79,7 @@ const PublicGroupDetailPage = () => {
     const type = splitType[splitType.length - 1]
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false);
-    const params=useParams();
+    const params = useParams();
 
     const loadData = () => {
         setLoading(true)
@@ -91,8 +89,7 @@ const PublicGroupDetailPage = () => {
             if (response.status == 200) {
                 setData(response.data)
                 console.log(response.data)
-            }
-            else{
+            } else {
 
             }
         })
@@ -105,7 +102,12 @@ const PublicGroupDetailPage = () => {
 
 
     return (
-        <article className="content items-list-page">
+      <>
+
+
+
+          //Presentation
+          {/*  <article className="content items-list-page">
             <div className="title-search-block">
                 <div className="title-block">
                     <div className="row">
@@ -190,33 +192,35 @@ const PublicGroupDetailPage = () => {
                     }
                 </ul>
             </div>
-            {/*<nav className="text-right">*/}
-            {/*  <ul className="pagination">*/}
-            {/*    <li className="page-item">*/}
-            {/*      <a className="page-link" href="#"> Prev </a>*/}
-            {/*    </li>*/}
+            <nav className="text-right">
+              <ul className="pagination">
+                <li className="page-item">
+                  <a className="page-link" href="#"> Prev </a>
+                </li>
 
-            {/*    <li className="page-item active">*/}
-            {/*      <a className="page-link" href="#"> 1 </a>*/}
-            {/*    </li>*/}
-            {/*    <li className="page-item">*/}
-            {/*      <a className="page-link" href="#"> 2 </a>*/}
-            {/*    </li>*/}
-            {/*    <li className="page-item">*/}
-            {/*      <a className="page-link" href="#"> 3 </a>*/}
-            {/*    </li>*/}
-            {/*    <li className="page-item">*/}
-            {/*      <a className="page-link" href="#"> 4 </a>*/}
-            {/*    </li>*/}
-            {/*    <li className="page-item">*/}
-            {/*      <a className="page-link" href="#"> 5 </a>*/}
-            {/*    </li>*/}
-            {/*    <li className="page-item">*/}
-            {/*      <a className="page-link" href="#"> Next </a>*/}
-            {/*    </li>*/}
-            {/*  </ul>*/}
-            {/*</nav>*/}
-        </article>
+                <li className="page-item active">
+                  <a className="page-link" href="#"> 1 </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#"> 2 </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#"> 3 </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#"> 4 </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#"> 5 </a>
+                </li>
+                <li className="page-item">
+                  <a className="page-link" href="#"> Next </a>
+                </li>
+              </ul>
+            </nav>
+        </article>*/}
+
+      </>
     )
 }
 

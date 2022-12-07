@@ -19,7 +19,7 @@ const SocketPage=()=>{
     setUserData({...userData,userName:value})
   }
   const registerUser=()=>{
-    let Sock=new SockJS(`${SERVER_URL}`+"/ws");
+    let Sock=new SockJS("https://spring-heroku.herokuapp.com/ws");
     stompClient=over(Sock);
     stompClient.connect({},onConnected,onError);
   }
