@@ -23,6 +23,7 @@ public class PresentationEntity extends SuperEntity {
 //    private Date created;
     private String type;
     private Boolean isPublic = true;
+    private long isPresent = -1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

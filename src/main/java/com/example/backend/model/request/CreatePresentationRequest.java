@@ -1,20 +1,25 @@
 package com.example.backend.model.request;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Data
 public class CreatePresentationRequest {
     long groupId;
     private String name;
     private String email;
-    private boolean isPublic = true;
+    private Boolean isPublic;
 
     @Override
     public String toString() {
         return "CreatePresentationRequest{" +
-                "GroupId=" + groupId +
+                "groupId=" + groupId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", isPublic=" + isPublic +
                 '}';
     }
 }

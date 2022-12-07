@@ -7,11 +7,13 @@ import com.example.backend.model.entity.AccountEntity;
 import com.example.backend.model.entity.GroupEntity;
 import com.example.backend.model.entity.PresentationEntity;
 import com.example.backend.model.request.CreatePresentationRequest;
+import com.example.backend.model.request.PresentRequest;
 import com.example.backend.repository.AccountRepository;
 import com.example.backend.repository.GroupRepository;
 import com.example.backend.repository.PresentationRepository;
 import com.example.backend.service.PresentationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,6 +22,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class PresentationServiceImpl implements PresentationService {
     private final PresentationRepository presentationRepository;
     private final AccountRepository accountRepository;
@@ -48,8 +51,12 @@ public class PresentationServiceImpl implements PresentationService {
         });
         PresentationEntity presentation = new PresentationEntity();
         presentation.setName(present.getName());
-        presentation.setIsPublic(present.isPublic());
+
+        if (present.getIsPublic() != null) {
+            presentation.setIsPublic(present.getIsPublic());
+        }
         accountEntity.addPresentation(presentation);
+        System.out.println();
         group.addPresentation(presentation);
         accountRepository.save(accountEntity);
         groupRepository.save(group);
@@ -58,7 +65,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public List<PresentationEntity> getList(long id, boolean isPublic) {
-        return presentationRepository.findPresentationEntitiesByGroup_IdAndIsPublic(id,isPublic);
+        return presentationRepository.findPresentationEntitiesByGroup_IdAndIsPublic(id, isPublic);
     }
 
     @Override
@@ -66,5 +73,24 @@ public class PresentationServiceImpl implements PresentationService {
         return presentationRepository.findById(id).orElseThrow(() -> {
             throw new ResourceNotFoundException("presentation not found");
         });
+    }
+
+    @Override
+    public PresentationEntity startPresent(PresentRequest presentRequest) {
+        PresentationEntity presentationEntity = presentationRepository.findById(presentRequest.getPresentationId()).orElseThrow(() -> {
+            throw new ResourceInvalidException("presentation invalid");
+        });
+        if(presentationEntity.getIsPresent() != -1) throw new ResourceInvalidException("presentation is playing");
+        presentationEntity.setIsPresent(presentRequest.getSlideId());
+        return presentationRepository.save(presentationEntity);
+    }
+
+    @Override
+    public PresentationEntity stopPresent(PresentRequest presentRequest) {
+        PresentationEntity presentationEntity = presentationRepository.findById(presentRequest.getPresentationId()).orElseThrow(() -> {
+            throw new ResourceInvalidException("presentation invalid");
+        });
+        presentationEntity.setIsPresent(-1);
+        return presentationRepository.save(presentationEntity);
     }
 }

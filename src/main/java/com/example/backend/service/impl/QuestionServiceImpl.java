@@ -1,9 +1,13 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.QuestionMapper;
 import com.example.backend.model.dto.QuestionDto;
-import com.example.backend.model.entity.*;
+import com.example.backend.model.entity.AnswerEntity;
+import com.example.backend.model.entity.PresentationEntity;
+import com.example.backend.model.entity.QuestionEntity;
+import com.example.backend.model.entity.UserAnswerEntity;
 import com.example.backend.model.request.CreateQuestionRequest;
 import com.example.backend.model.request.PlayingRequest;
 import com.example.backend.repository.*;
@@ -26,6 +30,8 @@ public class QuestionServiceImpl implements QuestionService {
     private final AnswerRepository answerRepository;
     private final QuestionMapper questionMapper;
     private final PresentationRepository presentationRepository;
+    private static final String DESTINATION = "/playing";
+
     @Override
     public void deleteQuestion(QuestionDto questionDto) {
         questionRepository.deleteById(questionDto.getId());
@@ -33,7 +39,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionEntity createQuestion(CreateQuestionRequest createQuestionRequest) {
-        PresentationEntity presentation = presentationRepository.findById(createQuestionRequest.getPresentationId()).orElseThrow(() -> {throw new ResourceNotFoundException("slide not found");});
+        PresentationEntity presentation = presentationRepository.findById(createQuestionRequest.getPresentationId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("slide not found");
+        });
         QuestionEntity question = new QuestionEntity();
         question.setText(createQuestionRequest.getText());
         presentation.addQuestion(question);
@@ -48,7 +56,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionEntity getDetail(long id) {
-        return questionRepository.findById(id).orElseThrow(() -> {throw new ResourceNotFoundException("Question not found");});
+        return questionRepository.findById(id).orElseThrow(() -> {
+            throw new ResourceNotFoundException("Question not found");
+        });
     }
 
     @Override
@@ -56,6 +66,10 @@ public class QuestionServiceImpl implements QuestionService {
         QuestionEntity questionEntity = questionRepository.findById(playingRequest.getQuestion()).orElseThrow(() -> {
             throw new ResourceNotFoundException("question not found");
         });
+        // checking presentationEntity is closed ?
+        PresentationEntity presentationEntity = questionEntity.getPresentation();
+        if (presentationEntity.getIsPresent() == -1) throw new ResourceInvalidException("presentation is closed");
+
         List<UserAnswerEntity> optionalUserAnswerEntity = userQuestionRepository.findUserQuestionEntityByUserrAndQuestion(playingRequest.getEmail(), playingRequest.getQuestion());
         if (!optionalUserAnswerEntity.isEmpty()) {
             return false;
@@ -64,7 +78,8 @@ public class QuestionServiceImpl implements QuestionService {
             if (answers.isEmpty()) return false;
             accountRepository.findAccountEntityByEmail(playingRequest.getEmail()).orElseThrow(() -> {
                 throw new ResourceNotFoundException("user not found");
-            });;
+            });
+            ;
             List<UserAnswerEntity> userQuestionEntities = answers.stream().map(it -> {
                 UserAnswerEntity result = new UserAnswerEntity();
                 result.setUserr(playingRequest.getEmail());
@@ -74,8 +89,33 @@ public class QuestionServiceImpl implements QuestionService {
             answers.forEach(it -> it.addUserAnswers(userQuestionEntities));
             answerRepository.saveAll(answers);
             userQuestionRepository.saveAll(userQuestionEntities);
-            simpMessagingTemplate.convertAndSendToUser(playingRequest.getQuestion() + "/"+ playingRequest.getQuestion(),"/playing",questionMapper.entityToDto(questionEntity));
+//            /slide/{keyPresentation}/playing
+            simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()), DESTINATION, questionMapper.entityToDto(questionEntity));
             return true;
         }
+    }
+
+    @Override
+    public QuestionEntity nextSlide(long slideId) {
+        QuestionEntity question = questionRepository.findById(slideId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("slide not found");
+        });
+        PresentationEntity presentationEntity = question.getPresentation();
+        if (presentationEntity.getIsPresent() == -1) throw new ResourceInvalidException("presentation is stopped");
+        presentationEntity.setIsPresent(slideId);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()),DESTINATION, questionMapper.entityToDto(question));
+        presentationRepository.save(presentationEntity);
+        return question;
+    }
+
+    @Override
+    public QuestionEntity connect(long presentationId) {
+        PresentationEntity presentation =  presentationRepository.findById(presentationId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("presentation not found");
+        });
+        if(presentation.getIsPresent() == -1) throw new ResourceInvalidException("presentation is stopped");
+        return questionRepository.findById(presentation.getIsPresent()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("slide not found");
+        });
     }
 }

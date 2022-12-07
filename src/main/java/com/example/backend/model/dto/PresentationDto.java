@@ -17,6 +17,7 @@ public class PresentationDto {
 //    private Date created;
     private String type;
     private boolean isPublic;
+    private long isPresent;
 
     private String author;
     private List<QuestionDto> questions;

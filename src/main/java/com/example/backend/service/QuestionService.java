@@ -15,4 +15,8 @@ public interface QuestionService {
     QuestionEntity getDetail(long id);
 
     Boolean choseAnswer(PlayingRequest playingRequest);
+
+    QuestionEntity nextSlide(long slideId);
+
+    QuestionEntity connect(long slideId);
 }
