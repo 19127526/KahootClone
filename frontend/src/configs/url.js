@@ -30,6 +30,10 @@ export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const PUBLIC_GROUP_URI="/group/public";
 export const PRESENTATION_URI="/presentation/"
+export const PRESENTATION_SEE_URI="/presentation/:userId/see"
+export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
+export const PRESENTATION_SHOW_URI="/presentation/show"
+
 export const PRESENTATION_PUBLIC="/present/public"
 export const PRESENTATION_PRIVATE="/present/private"
 export const REGISTER_URI="/register"

@@ -159,7 +159,7 @@ const LoginPage = (props) => {
     <>
       <div className="auth">
         <div className="auth-container">
-          <div className="card">
+          <div className="card" style={{height:"100%"}}>
             <header className="auth-header">
               <h1 className="auth-title">
                 <div className="logo">

@@ -5,7 +5,7 @@ import HeaderComponent from "../components/header/HeaderComponent";
 import {useLocation} from "react-router-dom";
 import AsideComponent from "../components/aside/AsideComponent";
 import FooterComponent from "../components/footer/FooterComponent";
-import {PRESENTATION_URI} from "../configs/url";
+import {PRESENTATION_EDIT_URI, PRESENTATION_SEE_URI, PRESENTATION_SHOW_URI, PRESENTATION_URI} from "../configs/url";
 
 
 const {Header, Footer, Content} = Layout;
@@ -39,14 +39,23 @@ const MainLayout = () => {
       </Row>*/
     <>
       {
-        location.pathname.includes("login") ||location.pathname.includes("register") ||location.pathname.includes("test")?
+        location.pathname.includes("login") ||location.pathname.includes("register") ||
+        location.pathname.includes("test")?
           <div className="main-wrapper">
             <div className="app" id="app">
               <RoutesPage/>
             </div>
           </div>
           :
-          location.pathname.includes(PRESENTATION_URI) ?
+          location.pathname.includes(PRESENTATION_SHOW_URI)||
+          location.pathname.includes(PRESENTATION_SEE_URI)?
+            <div className="main-wrapper">
+              <div  >
+                <RoutesPage/>
+              </div>
+            </div>
+            :
+          location.pathname.includes(PRESENTATION_EDIT_URI) ?
             <div className="main-wrapper" style={{overflowY:"hidden" ,paddingBottom:"15px"}}>
               <HeaderComponent index={PRESENTATION_URI}/>
               <RoutesPage/>

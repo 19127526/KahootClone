@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {PlayCircleFilled} from "@ant-design/icons"
 import {useNavigate} from "react-router-dom";
-import {PRESENTATION_URI} from "../../../configs/url";
 import {deletePresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";

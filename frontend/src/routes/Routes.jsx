@@ -4,10 +4,9 @@ import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
 import {
   HOME_URI,
-  MEMBER_URI,
+  MEMBER_URI, PRESENTATION_EDIT_URI,
   PRESENTATION_PRIVATE,
-  PRESENTATION_PUBLIC,
-  PRESENTATION_URI,
+  PRESENTATION_PUBLIC, PRESENTATION_SEE_URI, PRESENTATION_SHOW_URI,
   PUBLIC_GROUP_URI,
   REDIRECT_URI,
   VERIFY_INVITE_URI
@@ -23,7 +22,9 @@ const ProfilePageLazy = React.lazy(() => import("../pages/profile/ProfilePage"))
 const ListGroupPageLazy = React.lazy(() => import("../pages/group/ListGroupPage"))
 const GroupDetailPageLazy = React.lazy(() => import("../pages/group/GroupDetailPage"))
 const InvitePageLazy = React.lazy(() => import("../authors/invite/InvitePage"))
-const PresentationPageLazy = React.lazy(() => import("../pages/presentation/Presentation"))
+const PresentationMainPageLazy = React.lazy(() => import("../pages/presentation/MainPresentation"))
+const PresentationSeeGuestPageLazy = React.lazy(() => import("../pages/presentation/PresentationUser"))
+const PresentationEditPageLazy = React.lazy(() => import("../pages/presentation/Presentation"))
 const PublicGroupPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupPage"))
 const PublicGroupDetailPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupDetailPage"))
 const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
@@ -144,14 +145,38 @@ const RoutesPage = () => {
 
 
       <Route
-        path={PRESENTATION_URI + ":id/edit"}
+        path={PRESENTATION_EDIT_URI}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <PresentationPageLazy/>
+            <PresentationEditPageLazy/>
           </React.Suspense>
         }
       />
+
+      <Route
+        path={PRESENTATION_SHOW_URI}
+        element={
+          <React.Suspense fallback={<Loading/>}>
+            {" "}
+            <PresentationMainPageLazy/>
+          </React.Suspense>
+        }
+      />
+
+      <Route
+        path={PRESENTATION_SEE_URI}
+        element={
+          <React.Suspense fallback={<Loading/>}>
+            {" "}
+            <PresentationSeeGuestPageLazy/>
+          </React.Suspense>
+        }
+      />
+
+
+
+
       <Route
         path={PUBLIC_GROUP_URI}
         element={

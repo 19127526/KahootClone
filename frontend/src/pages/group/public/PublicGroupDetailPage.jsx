@@ -4,6 +4,7 @@ import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints"
 import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
+import PresentationCardComponent from "../../../components/group/public/PresentationCardComponent";
 
 const ModalAddPresenTation = ({id, list, setData}) => {
     const [value, setValue] = useState("")

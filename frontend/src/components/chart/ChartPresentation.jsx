@@ -48,6 +48,7 @@ const options = {
 };
 
 const ChartPresentation = ({value, width}) => {
+    console.log(value.text)
     // console.log(value.answers != undefined ? value.answers.length : 10000)
     // console.log(`answers ${value}`)
     const data = {
@@ -69,6 +70,7 @@ const ChartPresentation = ({value, width}) => {
         }}>
             <Typography style={{fontSize: 25}}>
                 {value.text}
+                32132131
             </Typography>
 
             <Bar options={options} data={data}

@@ -1,5 +1,4 @@
-import barchart from "../../assets/img/chart.png"
-import slide from "../../assets/img/slide.png"
+
 import {Input, List, Popover, Space} from "antd"
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Divider, Dropdown, Layout, Row} from "antd";
@@ -11,9 +10,11 @@ import ChartSider from "../../components/chart/ChartSider";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import SlideSider from "../../components/normal_slide/SlideSider";
 import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
-
+import barchart from "../../assets/img/chart.png"
+import slide from "../../assets/img/slide.png"
+import {PRESENTATION_SHOW_URI} from "../../configs/url";
 
 const items = [
     {
@@ -37,8 +38,9 @@ const options = [
 
 const Presentation = () => {
     const location = useLocation();
-    const idSplit = location.pathname.split("/")
-    const id = idSplit["2"]
+
+    const {id}=useParams();
+    const navigate=useNavigate()
     const [selectedItem, setSelectedItem] = useState(0);
     const [hoverItem, setHoverItem] = useState(0)
     const [slideList, setListSlide] = useState([{}]);
@@ -148,6 +150,11 @@ const Presentation = () => {
         </>
     );
 
+    const presentButton=(e)=>{
+        e.preventDefault()
+        navigate(PRESENTATION_SHOW_URI,{state:{index:slideList}})
+    }
+
 
     return (
         <>
@@ -160,10 +167,15 @@ const Presentation = () => {
                     >
                         <Button type={"primary"} icon={<PlusOutlined/>} size={"large"}
                                 onClick={(e) => e.preventDefault()}
-                                style={{position:"absolute",top:"50%",left: "7%",transform: "translate(-50%, -50%)"}}>
+                                style={{position:"absolute",top:"20%",left: "2.3%"}}>
                             Add slide
                         </Button>
                     </Dropdown>
+                    <Button type={"primary"} size={"large"}
+                            onClick={presentButton}
+                            style={{position:"absolute",right:"3%",top:"20%"}}>
+                        Present
+                    </Button>
                 </Header>
                 <Layout>
                     <Sider style={{backgroundColor: "white", overflowY: "scroll"}}>
@@ -205,7 +217,7 @@ const Presentation = () => {
                             )}
                         /> : <div/>}
                     </Sider>
-                    <Content style={{backgroundColor: "white", margin: "10px", padding: "10px"}}>
+                    <Content style={{backgroundColor: "white", margin: " 0 10px 0 10px", padding: "10px"}}>
                         {
                             // slideList[selectedItem]
                             // slideList[selectedItem].type === "chart" ?

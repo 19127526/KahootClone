@@ -4,110 +4,28 @@ import {Keyboard, Pagination, Navigation} from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import {useState} from "react";
-import barchart from "../../assets/image/chart.png";
+import {useEffect, useState} from "react";
+import barchart from "../../assets/img/chart.png"
+import slide from "../../assets/img/slide.png"
+
 import ChartPresentation from "../../components/chart/ChartPresentation";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
-import slide from "../../assets/image/slide.png";
+import {useLocation} from "react-router-dom";
 
 
 const MainPresentation = () => {
     const [slideList, setListSlide] = useState([
-        {
-            "question": "Your question",
-            "type": "chart",
-            "preview": barchart,
-            "content": {
-                "labels": ["First", "Second", "Third", "Fourth"],
-                "datasets": [
-                    {
-                        label: 'Data',
-                        data: [10, 3, 0, 7],
-                        backgroundColor: 'blue',
-                    },
-                ]
-            }
-        },
-        {
-            "type": "slide",
-            "preview": slide,
-            "content": {
-                "heading": "Heading",
-                "paragraph": "Paragraph",
-                "image": "https://www.w3schools.com/w3css/img_lights.jpg"
-            }
-        },
-        {
-            "type": "slide",
-            "preview": slide,
-            "content": {
-                "heading": "Heading",
-                "paragraph": "Paragraph",
-                "image": "https://www.w3schools.com/w3css/img_lights.jpg"
-            }
-        },
-        {
-            "question": "Your question",
-            "type": "chart",
-            "preview": barchart,
-            "content": {
-                "labels": ["First", "Second", "Third", "Fourth"],
-                "datasets": [
-                    {
-                        label: 'Data',
-                        data: [5, 0, 1, 0],
-                        backgroundColor: 'blue',
-                    },
-                ]
-            }
-        },
-        {
-            "question": "Your question",
-            "type": "chart",
-            "preview": barchart,
-            "content": {
-                "labels": ["First", "Second", "Third", "Fourth"],
-                "datasets": [
-                    {
-                        label: 'Data',
-                        data: [0, 0, 0, 0],
-                        backgroundColor: 'blue',
-                    },
-                ]
-            }
-        },
-        {
-            "question": "Your question",
-            "type": "chart",
-            "preview": barchart,
-            "content": {
-                "labels": ["First", "Second", "Third", "Fourth"],
-                "datasets": [
-                    {
-                        label: 'Data',
-                        data: [0, 0, 0, 0],
-                        backgroundColor: 'blue',
-                    },
-                ]
-            }
-        },
-        {
-            "question": "Your question",
-            "type": "chart",
-            "preview": barchart,
-            "content": {
-                "labels": ["First", "Second", "Third", "Fourth"],
-                "datasets": [
-                    {
-                        label: 'Data',
-                        data: [0, 0, 0, 0],
-                        backgroundColor: 'blue',
-                    },
-                ]
-            }
-        }
+        {}
     ]);
-
+    const location=useLocation();
+    console.log(location.state.index)
+    useEffect(()=>{
+        console.log(location.state.index)
+        setListSlide(location.state.index)
+    },[location.state.index]);
+    const onIndex=(e)=>{
+        console.log(e)
+    }
     return (
         <>
             <Swiper
@@ -123,12 +41,12 @@ const MainPresentation = () => {
                     type: "bullets",
                 }}
                 navigation={false}
+                onActiveIndexChange={onIndex}
                 modules={[Keyboard, Pagination, Navigation]}
             >
                 {slideList.map((value, index) => {
-                    return (<SwiperSlide style={{backgroundColor: "white", height:"100%", padding: "5%"}}>
-                        {value.type === "chart" ? <ChartPresentation item={value} width={"165vh"}/> :
-                            <SlidePresentation item={value}/>}
+                    return (<SwiperSlide style={{backgroundColor: "white", height:"100%", padding: "5%"}}  >
+                        {<ChartPresentation value={value} width={"165vh"}/>}
                     </SwiperSlide>)
                 })}
             </Swiper>
