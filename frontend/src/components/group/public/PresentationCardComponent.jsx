@@ -37,16 +37,18 @@ const ModalInvitePresentation=({id})=>{
   )
 }
 
-const PresentationCardComponent=({index})=>{
+const PresentationCardComponent=({index, list, setData})=>{
   const [openSetting,setOpenSetting]=useState(false);
   const navigate=useNavigate()
   const handleDelete = () => {
     console.log(index)
     deletePresentation({id: index.id}).then((response) => {
       if(response.status === 204){
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000);      }
+        setData(list.filter(value => value !== index))
+        // setTimeout(() => {
+        //   window.location.reload()
+        // }, 1000);
+      }
     })
   }
 

@@ -5,7 +5,7 @@ import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints"
 import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
 
-const ModalAddPresenTation = ({id}) => {
+const ModalAddPresenTation = ({id,list, setData}) => {
     const [value, setValue] = useState("")
 
     const onChange = (e) => {
@@ -20,15 +20,14 @@ const ModalAddPresenTation = ({id}) => {
         e.preventDefault();
         if (value !== "") {
             addNewPresentation({groupID: 20, email: "trthanhson232@gmail.com", name: value}).then((response) => {
-                // if(response.data != null){
-                //
-                // } else {
-                //     Notification("Error", constraintNotification.NOTIFICATION_WARN)
-                // }
-                setTimeout(()=>{
-                    window.location.reload()
-                },1500)
-                Notification("Success", constraintNotification.NOTIFICATION_SUCCESS)
+                if(response.status === 201){
+                    let newList =[...list]
+                    newList.push(response.data)
+                    setData(newList)
+                    Notification("Success", constraintNotification.NOTIFICATION_SUCCESS)
+                } else {
+                    Notification("Error", constraintNotification.NOTIFICATION_WARN)
+                }
             })
         } else {
             Notification("Error", "Name can't be empty", constraintNotification.NOTIFICATION_WARN)
@@ -105,7 +104,7 @@ const PublicGroupDetailPage = () => {
                                 <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
                                    data-target="#addPresentation"> Add
                                     New </a>
-                                <ModalAddPresenTation id={"addPresentation"}/>
+                                <ModalAddPresenTation id={"addPresentation"} setData={setData} list={data}/>
                                 <div className="action dropdown">
                                     <button className="btn  btn-sm rounded-s btn-secondary dropdown-toggle"
                                             type="button"
@@ -176,7 +175,7 @@ const PublicGroupDetailPage = () => {
                                 Empty
                             </div> :
                             data.map((value) => (
-                                <PresentationCardComponent index={value}/>
+                                <PresentationCardComponent index={value} setData={setData} list={data}/>
                             ))
                     }
                 </ul>
