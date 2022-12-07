@@ -3,6 +3,8 @@ import {PlayCircleFilled} from "@ant-design/icons"
 import {useNavigate} from "react-router-dom";
 import {PRESENTATION_URI} from "../../../configs/url";
 import {deletePresentation} from "../../../apis/presentation/presentationAPI";
+import Notification from "../../notification/Notification";
+import * as constraintNotification from "../../notification/Notification.constraints";
 const ModalInvitePresentation=({id})=>{
   return (
     <div className="modal fade" id={id} >
@@ -41,15 +43,18 @@ const PresentationCardComponent=({index, list, setData})=>{
   const [openSetting,setOpenSetting]=useState(false);
   const navigate=useNavigate()
   const handleDelete = () => {
-    console.log(index)
     deletePresentation({id: index.id}).then((response) => {
       if(response.status === 204){
         setData(list.filter(value => value !== index))
-        // setTimeout(() => {
-        //   window.location.reload()
-        // }, 1000);
+        Notification("Notification about remove presentation",`Remove presentation ${index.name} success`,constraintNotification.NOTIFICATION_SUCCESS)
+      }
+      else{
+        Notification("Notification about remove presentation",`Remove presentation ${index.name} fail`,constraintNotification.NOTIFICATION_ERROR)
       }
     })
+      .catch(err=>{
+        Notification("Notification about remove presentation",`Remove presentation ${index.name} fail`,constraintNotification.NOTIFICATION_ERROR)
+      })
   }
 
   return (
@@ -61,13 +66,13 @@ const PresentationCardComponent=({index, list, setData})=>{
             <span></span>
           </label>
         </div>
-        {/*<div className="item-col fixed item-col-img md">*/}
-        {/*  <a>*/}
-        {/*    <div className="item-skip-img">*/}
-        {/*      <PlayCircleFilled className="item-skip"/>*/}
-        {/*    </div>*/}
-        {/*        </a>*/}
-        {/*</div>*/}
+        <div className="item-col fixed item-col-img md">
+          <a>
+            <div className="item-skip-img">
+              <PlayCircleFilled className="item-skip"/>
+            </div>
+                </a>
+        </div>
         <div className="item-col fixed pull-left item-col-title">
           <div className="item-heading">Name</div>
           <div>

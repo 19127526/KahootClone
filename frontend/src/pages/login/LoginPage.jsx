@@ -178,11 +178,11 @@ const LoginPage = (props) => {
                 <div className="form-group">
                   <label htmlFor="username">Email</label>
                   <input type="email" className="form-control underlined" name="username" id="username"
-                         placeholder="Your email address" required /></div>
+                         placeholder="Your email address" required onChange={handleUsername}/></div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
                   <input type="password" className="form-control underlined" name="password" id="password"
-                         placeholder="Your password" required/></div>
+                         placeholder="Your password" required onChange={handlePassword}/></div>
                 <div className="form-group">
                   <label htmlFor="remember">
                     <input className="checkbox" id="remember" type="checkbox"/>
@@ -191,7 +191,7 @@ const LoginPage = (props) => {
                   <a href="reset.html" className="forgot-btn pull-right">Forgot password?</a>
                 </div>
                 <div className="form-group"  onClick={submitLogin}>
-                  <button type="submit" className="btn btn-block btn-primary">Login</button>
+                  <button type="submit" onClick={submitLogin} className="btn btn-block btn-primary">Login</button>
                   <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
                     <OtpComponent onSubmit={()=>setIsModalOpen(false)}/>
                   </Modal>

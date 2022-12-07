@@ -7,6 +7,7 @@ import {
 } from "../../configs/url";
 
 export  const getListPresentation = async({type,groupID}) =>{
+    console.log(type)
     return await request.get(type === "public" ? ""  : LIST_PRESENTATION_FROM_GROUP + `?id=${groupID}`)
 
 }

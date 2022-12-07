@@ -47,6 +47,7 @@ const OtpComponent = (props) => {
             console.log(res)
             if (res.status === 201) {
               onSubmit();
+              navigate("/login")
               Notification("Thông báo đăng ký", "Đăng ký thành công, hãy đăng nhập", constraintNotification.NOTIFICATION_SUCCESS)
             } else if (res.response.status == 400) {
               Notification("Thông báo đăng ký", res.response.data.message, constraintNotification.NOTIFICATION_ERROR)

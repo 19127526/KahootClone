@@ -4,13 +4,18 @@ import {useLocation} from "react-router-dom";
 import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints"
 import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
+import {useSelector} from "react-redux";
 
 const ModalAddPresenTation = ({id,list, setData}) => {
     const [value, setValue] = useState("")
 
+    const dataProfile=useSelector(state=> state.loginPage);
+    const email=dataProfile.profile.email;
     const onChange = (e) => {
         setValue(e.target.value)
     }
+
+
 
     const handleCancel = () => {
         setValue("")
@@ -19,14 +24,14 @@ const ModalAddPresenTation = ({id,list, setData}) => {
     const handleOk = (e) => {
         e.preventDefault();
         if (value !== "") {
-            addNewPresentation({groupID: 20, email: "trthanhson232@gmail.com", name: value}).then((response) => {
+            addNewPresentation({groupID: 1, email: email, name: value}).then((response) => {
                 if(response.status === 201){
                     let newList =[...list]
                     newList.push(response.data)
                     setData(newList)
-                    Notification("Success", constraintNotification.NOTIFICATION_SUCCESS)
+                    Notification("Success", "Add Presentation success",constraintNotification.NOTIFICATION_SUCCESS)
                 } else {
-                    Notification("Error", constraintNotification.NOTIFICATION_WARN)
+                    Notification("Error","Add Presentation fail", constraintNotification.NOTIFICATION_WARN)
                 }
             })
         } else {
@@ -79,11 +84,14 @@ const PublicGroupDetailPage = () => {
     const loadData = () => {
         setLoading(true)
         setData([])
-        getListPresentation({type: type, groupID: 20}).then((response) => {
-            console.log(type)
+        getListPresentation({type: type, groupID: 1}).then((response) => {
+            console.log(response)
             if (response.status == 200) {
-                console.log(response.data)
                 setData(response.data)
+
+            }
+            else{
+
             }
         })
         setLoading(false)
