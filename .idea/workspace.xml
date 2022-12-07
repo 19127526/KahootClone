@@ -18,7 +18,6 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/QuestionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/PresentationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/PresentationServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/QuestionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/QuestionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +193,7 @@
       <workItem from="1670172089877" duration="25058000" />
       <workItem from="1670350909470" duration="2840000" />
       <workItem from="1670416875673" duration="13122000" />
-      <workItem from="1670439623583" duration="671000" />
+      <workItem from="1670439623583" duration="975000" />
     </task>
     <servers />
   </component>
