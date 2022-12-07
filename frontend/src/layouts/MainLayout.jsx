@@ -12,7 +12,6 @@ const {Header, Footer, Content} = Layout;
 
 const MainLayout = () => {
   const location = useLocation();
-
   return (
     /*  <Row xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
         <Col xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
@@ -55,7 +54,7 @@ const MainLayout = () => {
               </div>
             </div>
             :
-          location.pathname.includes(PRESENTATION_EDIT_URI) ?
+          location.pathname.includes(PRESENTATION_URI) &&location.pathname.includes("edit") ?
             <div className="main-wrapper" style={{overflowY:"hidden" ,paddingBottom:"15px"}}>
               <HeaderComponent index={PRESENTATION_URI}/>
               <RoutesPage/>

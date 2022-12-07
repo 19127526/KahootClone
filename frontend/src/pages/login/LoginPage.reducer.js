@@ -25,6 +25,7 @@ export const LoginPageReducer=(state=initialState,action)=>
         break;
       case types.LOGOUT_ACCOUNT:
         draft.isLogin=false;
+        draft.profile=null;
         localStorage.removeItem("accessToken");
         break;
       default:

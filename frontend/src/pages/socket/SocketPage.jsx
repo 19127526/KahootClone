@@ -40,6 +40,7 @@ const SocketPage=()=>{
         break;
     }
   }
+  console.log(publicChats);
   const onPrivateMessageReceived=(payload)=>{
     let payloadData=JSON.parse(payload.body);
     switch (payloadData.status){

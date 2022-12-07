@@ -200,7 +200,9 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
+            <Authenticate path={PRESENTATION_PRIVATE}>
             <PublicGroupDetailPageLazy/>
+            </Authenticate>
           </React.Suspense>
         }
       />
