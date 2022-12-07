@@ -37,6 +37,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return new JPAQueryFactory(entityManager)
                 .from(userGroupEntity).where(userGroupEntity.users.email.eq(email))
                 .join(groupEntity).on(groupEntity.id.eq(userGroupEntity.group.id))
+                .where(userGroupEntity.users.id.ne(groupEntity.created.id))
                 .select(groupEntity)
                 .fetch();
     }

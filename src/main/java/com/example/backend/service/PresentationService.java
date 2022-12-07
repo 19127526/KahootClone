@@ -14,7 +14,7 @@ public interface PresentationService {
 
     PresentationEntity addPresentation(CreatePresentationRequest createPresentationRequest);
 
-    List<PresentationEntity> getList(long id);
+    List<PresentationEntity> getList(long id, boolean isPublic);
 
     PresentationEntity getDetail(long id);
 }

@@ -22,6 +22,7 @@ public class PresentationEntity extends SuperEntity {
     private String url;
 //    private Date created;
     private String type;
+    private Boolean isPublic = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

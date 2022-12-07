@@ -16,6 +16,7 @@ public class PresentationDto {
     private String url;
 //    private Date created;
     private String type;
+    private boolean isPublic;
 
     private String author;
     private List<QuestionDto> questions;

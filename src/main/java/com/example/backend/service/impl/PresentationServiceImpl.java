@@ -48,6 +48,7 @@ public class PresentationServiceImpl implements PresentationService {
         });
         PresentationEntity presentation = new PresentationEntity();
         presentation.setName(present.getName());
+        presentation.setIsPublic(present.isPublic());
         accountEntity.addPresentation(presentation);
         group.addPresentation(presentation);
         accountRepository.save(accountEntity);
@@ -56,8 +57,8 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
-    public List<PresentationEntity> getList(long id) {
-        return presentationRepository.findPresentationEntitiesByGroup_Id(id);
+    public List<PresentationEntity> getList(long id, boolean isPublic) {
+        return presentationRepository.findPresentationEntitiesByGroup_IdAndIsPublic(id,isPublic);
     }
 
     @Override

@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Service
 public interface PresentationRepository extends JpaRepository<PresentationEntity, Long> {
-    List<PresentationEntity> findPresentationEntitiesByGroup_Id(long groupId);
+    List<PresentationEntity> findPresentationEntitiesByGroup_IdAndIsPublic(long groupId, boolean isPublic);
     Optional<PresentationEntity> findPresentationEntityByGroup_IdAndName(long GroupId, String name);
 }

@@ -41,7 +41,7 @@ public class PresentationController {
     }
 
     @GetMapping("list/group")
-    public ResponseEntity<List<PresentationDto>> getPresentations(long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getList(id).stream().map(presentationMapper::entityToDto).toList());
+    public ResponseEntity<List<PresentationDto>> getPresentations(long id, boolean isPublic) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getList(id, isPublic).stream().map(presentationMapper::entityToDto).toList());
     }
 }

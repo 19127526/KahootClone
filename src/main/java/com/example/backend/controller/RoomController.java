@@ -68,6 +68,8 @@ public class RoomController extends BaseController {
     public ResponseEntity<UserGroupDto> join(@RequestBody JoinRequest joinRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userGroupMapper.entityToDto(roomService.join(joinRequest)));
     }
+
+
 //// working
 //    @PostMapping("slide/add")
 //    public ResponseEntity<QuestionDto> createSlide(@ModelAttribute("slide") QuestionDto questionDto) {
