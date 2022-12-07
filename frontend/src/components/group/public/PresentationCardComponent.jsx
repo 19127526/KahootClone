@@ -5,6 +5,8 @@ import {deletePresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
 import {PRESENTATION_URI} from "../../../configs/url";
+import {Modal} from "antd";
+import EmailComponent from "../../email/EmailComponent";
 const ModalInvitePresentation=({id})=>{
   return (
     <div className="modal fade" id={id} >
@@ -20,7 +22,11 @@ const ModalInvitePresentation=({id})=>{
           <div className="modal-body">
             <form className="form-inline">
               <div className="input-group">
+
                 <input type="text" className="form-control boxed rounded-s" style={{width: "400px"}}
+                       placeholder="Enter email member... " defaultValue={"dsdsds"}/>
+
+                <input type="email" className="form-control boxed rounded-s" style={{width: "400px"}}
                        placeholder="Enter email member... "/>
                 <span className="input-group-btn align-content-center" style={{marginTop:"5px"}}>
                 <button className="btn btn-secondary  rounded-s" data-dismiss="modal" type="button" style={{marginRight:"5px"}}>
@@ -41,7 +47,21 @@ const ModalInvitePresentation=({id})=>{
 
 const PresentationCardComponent=({index, list, setData})=>{
   const [openSetting,setOpenSetting]=useState(false);
-  const navigate=useNavigate()
+  const navigate=useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+
   const handleDelete = () => {
     deletePresentation({id: index.id}).then((response) => {
       if(response.status === 204){
@@ -119,7 +139,7 @@ const PresentationCardComponent=({index, list, setData})=>{
                   </a>
                 </li>
                 <li>
-                  <a className="invite" data-toggle="modal" data-target="#invite-modal">
+                  <a className="invite"  onClick={()=>showModal()}>
                     <i className="fa-solid fa-share-from-square"></i>
                   </a>
                 </li>
@@ -135,7 +155,12 @@ const PresentationCardComponent=({index, list, setData})=>{
         </div>
       </div>
 
-      <ModalInvitePresentation id={"invite-modal"}/>
+
+      <Modal title="Invite Member" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered>
+        <EmailComponent onSubmit={() => setIsModalOpen(false)} code={null} url={null} name={null}/>
+      </Modal>
+
+    {/*  <ModalInvitePresentation id={"invite-modal"}/>*/}
     </li>
   )
 

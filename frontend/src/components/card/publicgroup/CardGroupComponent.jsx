@@ -7,7 +7,7 @@ const CardGroupComponent=({title,subTitle,id})=>{
   const navigate=useNavigate();
 
   return(
-    <div className="card_public_group" onClick={()=>navigate(PRESENTATION_PRIVATE+`/${id}`)}>
+    <div className="card_public_group" onClick={()=>navigate(PRESENTATION_PRIVATE+`/${id}`,{state:{nameGroup:title}})}>
     <div className="icon">
      {/* <svg viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path
