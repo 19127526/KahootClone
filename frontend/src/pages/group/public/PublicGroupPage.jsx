@@ -8,15 +8,20 @@ import {CREATE_GROUP, LIST_GROUP_JOINED_API} from "../../../configs/url";
 import {useSelector} from "react-redux";
 
 
-const ModalAddGroup = ({id}) => {
+const ModalAddGroup = ({id,setIsAdd}) => {
   const [nameGroup,setNameGroup]=useState("");
   const dataProfile=useSelector(state=> state.loginPage);
   const email=dataProfile.profile.email;
+
   const clickAddGroup=()=>{
     request.post(CREATE_GROUP,{name:nameGroup,email:email})
       .then(res=>{
+        console.log(res)
         if(res.status===202){
           Notification("Notification about adding group","Added group success !!", constraintNotification.NOTIFICATION_SUCCESS)
+        }
+        else if(res.response.status===400){
+          Notification("Notification about adding group",res.response.data.message, constraintNotification.NOTIFICATION_ERROR)
         }
         else{
           Notification("Notification about adding group","Added group fail !!", constraintNotification.NOTIFICATION_ERROR)
@@ -24,6 +29,9 @@ const ModalAddGroup = ({id}) => {
        })
       .catch(err=>{
         Notification("Notification about adding group","Added group fail !!", constraintNotification.NOTIFICATION_ERROR)
+      })
+      .finally(()=>{
+        setIsAdd()
       })
   }
 
@@ -71,7 +79,7 @@ const PublicGroupPage=()=>{
   const [listGroupJoined,setListGroupJoined]=useState([])
   const dataProfile=useSelector(state=> state.loginPage);
   const email=dataProfile.profile.email;
-
+  const[add,isAdd]=useState(false);
   useEffect(()=>{
     const getListGroupJoined= async ()=>{
       await request.get(LIST_GROUP_JOINED_API+`?email=${email}`)
@@ -88,7 +96,7 @@ const PublicGroupPage=()=>{
 
     }
     getListGroupJoined()
-  },[])
+  },[add])
 
   return(
     <article className="content charts-morris-page">
@@ -102,7 +110,7 @@ const PublicGroupPage=()=>{
               <p className="title-description">List group is public </p></div>
         </div>
 
-        <ModalAddGroup id={"addGroup"}/>
+        <ModalAddGroup id={"addGroup"} setIsAdd={()=>isAdd(!add)}/>
 
         <section className="section">
           <div className="row">

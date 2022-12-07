@@ -1,6 +1,6 @@
 import PresentationCardComponent from "../../../components/group/public/PresentationCardComponent";
 import React, {useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints"
 import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 
 const ModalAddPresenTation = ({id,list, setData}) => {
     const [value, setValue] = useState("")
-
+    const params=useParams();
     const dataProfile=useSelector(state=> state.loginPage);
     const email=dataProfile.profile.email;
     const onChange = (e) => {
@@ -21,10 +21,11 @@ const ModalAddPresenTation = ({id,list, setData}) => {
         setValue("")
     }
 
+
     const handleOk = (e) => {
         e.preventDefault();
         if (value !== "") {
-            addNewPresentation({groupID: 1, email: email, name: value}).then((response) => {
+            addNewPresentation({groupID: params.groupId, email: email, name: value}).then((response) => {
                 if(response.status === 201){
                     let newList =[...list]
                     newList.push(response.data)
@@ -80,15 +81,16 @@ const PublicGroupDetailPage = () => {
     const type = splitType[splitType.length - 1]
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false);
+    const params=useParams();
 
     const loadData = () => {
         setLoading(true)
         setData([])
-        getListPresentation({type: type, groupID: 1}).then((response) => {
-            console.log(response)
+        getListPresentation({type: type, groupID: params.groupId}).then((response) => {
+
             if (response.status == 200) {
                 setData(response.data)
-
+                console.log(response.data)
             }
             else{
 
@@ -99,7 +101,7 @@ const PublicGroupDetailPage = () => {
 
     useEffect(() => {
         loadData()
-    }, [type]);
+    }, [params.groupId]);
 
 
     return (

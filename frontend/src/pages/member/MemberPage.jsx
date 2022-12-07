@@ -1,6 +1,9 @@
 import PresentationCardComponent from "../../components/group/public/PresentationCardComponent";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import MemberCar from "../../components/card/member/MemberCard";
+import {useSelector} from "react-redux";
+import request from "../../apis/request";
+import {LIST_GROUP_JOINED_API} from "../../configs/url";
 
 const ModalAddMember=({id})=>{
   return (
@@ -47,6 +50,29 @@ const MemberPage=()=>{
       role:"Thành viên",
     })
   }
+
+  const [listMemberJoined,setListMemberJoined]=useState([])
+  const dataProfile=useSelector(state=> state.loginPage);
+  const email=dataProfile.profile.email;
+
+  useEffect(()=>{
+    const getListGroupJoined= async ()=>{
+      await request.get(LIST_GROUP_JOINED_API+`?email=${email}`)
+        .then(res=>{
+          if(res.status===200){
+            setListMemberJoined(res.data);
+            console.log(res.data)
+          }
+          else{
+
+          }
+        })
+        .catch(err=>{})
+
+    }
+    getListGroupJoined()
+  },[])
+
   return (
     <article className="content items-list-page">
       <div className="title-search-block">

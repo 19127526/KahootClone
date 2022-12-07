@@ -1,13 +1,13 @@
 import "./CardGroupComponent.css"
 import {useNavigate} from "react-router-dom";
-import {PUBLIC_GROUP_URI} from "../../../configs/url";
+import {PRESENTATION_PRIVATE, PUBLIC_GROUP_URI} from "../../../configs/url";
 import cardImage from"../../../assets/img/carimage.svg"
 
 const CardGroupComponent=({title,subTitle,id})=>{
   const navigate=useNavigate();
 
   return(
-    <div className="card_public_group" onClick={()=>navigate(PUBLIC_GROUP_URI+`/detail/${id}`)}>
+    <div className="card_public_group" onClick={()=>navigate(PRESENTATION_PRIVATE+`/${id}`)}>
     <div className="icon">
      {/* <svg viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path

@@ -162,7 +162,7 @@ const RoutesPage = () => {
         }
       />
       <Route
-        path={PRESENTATION_PUBLIC}
+        path={PRESENTATION_PUBLIC+"/:groupId"}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
@@ -171,7 +171,7 @@ const RoutesPage = () => {
         }
       />
       <Route
-        path={PRESENTATION_PRIVATE}
+        path={PRESENTATION_PRIVATE+"/:groupId"}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
