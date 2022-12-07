@@ -10,6 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+import static com.example.backend.model.entity.QGroupEntity.groupEntity;
+import static com.example.backend.model.entity.QUserGroupEntity.userGroupEntity;
+
 
 @Repository
 public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
@@ -29,11 +32,12 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
 
     @Override
     public List<GroupEntity> getListRoomJoined(String email) {
-        return null;
-//        return new JPAQueryFactory(entityManager)
-//                .from(userRoomEntity).where(userRoomEntity.user.email.eq(email))
-//                .join(roomEntity).on(roomEntity.id.eq(userRoomEntity.room.id))
-//                .select(roomEntity)
-//                .fetch();
+        return new JPAQueryFactory(entityManager)
+                .from(userGroupEntity).where(userGroupEntity.users.email.eq(email))
+                .join(groupEntity).on(groupEntity.id.eq(userGroupEntity.group.id))
+                .select(groupEntity)
+                .fetch();
     }
+
+
 }

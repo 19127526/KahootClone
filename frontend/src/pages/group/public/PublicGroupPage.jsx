@@ -4,7 +4,7 @@ import {addNewPresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints";
 import request from "../../../apis/request";
-import {CREATE_GROUP} from "../../../configs/url";
+import {CREATE_GROUP, LIST_GROUP_JOINED_API} from "../../../configs/url";
 import {useSelector} from "react-redux";
 
 
@@ -68,7 +68,27 @@ const ModalAddGroup = ({id}) => {
 }
 
 const PublicGroupPage=()=>{
+  const [listGroupJoined,setListGroupJoined]=useState([])
+  const dataProfile=useSelector(state=> state.loginPage);
+  const email=dataProfile.profile.email;
 
+  useEffect(()=>{
+    const getListGroupJoined= async ()=>{
+      await request.get(LIST_GROUP_JOINED_API+`?email=${email}`)
+        .then(res=>{
+          if(res.status===200){
+            setListGroupJoined(res.data);
+            console.log(res.data)
+          }
+          else{
+
+          }
+        })
+        .catch(err=>{})
+
+    }
+    getListGroupJoined()
+  },[])
 
   return(
     <article className="content charts-morris-page">
@@ -86,24 +106,11 @@ const PublicGroupPage=()=>{
 
         <section className="section">
           <div className="row">
-            <div className="col-md-6" style={{padding:"10px"}}>
-              <CardGroupComponent title={"Public Group"} subTitle={"Group Slide Viet Nam"}/>
-            </div>
-            <div className="col-md-6" style={{padding:"10px"}}>
-              <CardGroupComponent title={"Public Group"} subTitle={"Group Slide Viet Nam"}/>
-            </div>
-            <div className="col-md-6" style={{padding:"10px"}}>
-              <CardGroupComponent title={"Public Group"} subTitle={"Group Slide Viet Nam"}/>
-            </div>
-            <div className="col-md-6" style={{padding:"10px"}}>
-              <CardGroupComponent title={"Public Group"} subTitle={"Group Slide Viet Nam"}/>
-            </div>
-            <div className="col-md-6" style={{padding:"10px"}}>
-              <CardGroupComponent title={"Public Group"} subTitle={"Group Slide Viet Nam"}/>
-            </div>
-            <div className="col-md-6" style={{padding:"10px"}}>
-              <CardGroupComponent title={"Public Group"} subTitle={"Group Slide Viet Nam"}/>
-            </div>
+            {listGroupJoined.map(index=>(
+              <div className="col-md-6" style={{padding:"10px"}}>
+                <CardGroupComponent id={index.id} title={`Group: ${index.name}`} subTitle={index.description===null?"Group Slide Viet Nam":index.description}/>
+              </div>
+            ))}
           </div>
         </section>
       </div>

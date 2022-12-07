@@ -14,7 +14,7 @@ const SocketPage=()=>{
   })
   const [publicChats,setPublicChats]=useState([]);
   const handleUserName=(e)=>{
-    const value=e.target;
+    const value=e.target.value;
     console.log(value)
     setUserData({...userData,userName:value})
   }
@@ -27,7 +27,7 @@ const SocketPage=()=>{
   const onConnected=()=>{
     setUserData({...userData,connected:true});
     stompClient.subscribe("/chatroom/public",onPublicMessageReceived)
-    stompClient.subscribe("/user/"+userData.userName+"/private",onPrivateMessageReceived)
+    stompClient.subscribe("/user/"+userData.userName+"private",onPrivateMessageReceived)
   }
   const onPublicMessageReceived=(payload)=>{
     let payloadData=JSON.parse(payload.body);
@@ -57,7 +57,7 @@ const SocketPage=()=>{
   return (
     <div className="container">
       {userData.connected?
-        <div></div>
+        <div>Thành công</div>
         :
         <div className="register">
           <input id="userName" placeholder="Enter user name" defaultValue={userData.userName} onChange={handleUserName}/>
