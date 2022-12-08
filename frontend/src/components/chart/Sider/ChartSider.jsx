@@ -30,30 +30,15 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
         }
       }
     })
-    // list[selectedItem]["content"]["labels"] = [...list[selectedItem]["content"]["labels"], "New option"]
-    // let datasets = list[selectedItem]["content"]["datasets"];
-    // let data = [...datasets[0]["data"], 0]
-    // datasets[0]["data"] = data
-    // list[selectedItem]["content"]["datasets"] = datasets
-    //     let tempList = list.concat()
-    // setListSlide(tempList)
   }
 
   const handleRemoveButton = ({index, value}) => {
-    // console.log(value["id"])
-    // console.log(value["question"])
-    //   console.log(    )
-      console.log( list[selectedItem].id)
-      console.log(value.id)
-    // removeOption({optionID: value.id,questionID:  list[selectedItem].id}).then((response) => {
-    //     console.log(response)
-    // })
-    // let lable = list[selectedItem]["content"]["labels"]
-    // let data = list[selectedItem]["content"]["datasets"][0]["data"]
-    // list[selectedItem]["content"]["labels"] = lable.filter((_, i) => i !== index)
-    // list[selectedItem]["content"]["datasets"][0]["data"] = data.filter((_, i) => i !== index)
-    // let tempList = list.concat()
-    // setListSlide(tempList)
+    removeOption({optionID: value.id,questionID:  list[selectedItem].id}).then((response) => {
+        console.log(response)
+    })
+      list[selectedItem]["answers"] = list[selectedItem]["answers"].filter((v) => value.id !== v.id)
+    let tempList = list.concat()
+    setListSlide(tempList)
   }
 
   const onChangeOption = (index) => (e) => {
@@ -63,8 +48,6 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
   }
 
   const handleBlur = (index) => (e) => {
-      // console.log(e.target.value)
-      // console.log(list[selectedItem].answers[index].id)
       changeOption({id:list[selectedItem].answers[index].id, text: e.target.value}).then(()=>{
 
       })

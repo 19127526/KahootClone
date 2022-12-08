@@ -99,9 +99,11 @@ const Presentation = () => {
         let deletedItem = list.splice(hoverItem, 1)
         await deleteSlide({id:deletedItem[0]["id"]});
         setListSlide(list)
-        if(hoverItem === 1 && list.length <= 1){
-            setSelectedItem(0)
-        } else {
+        console.log(list)
+        if(hoverItem === 1 && list.length <= 2){
+            setSelectedItem(selectedItem > hoverItem ? 0 : 0)
+        }
+        else {
             setSelectedItem(hoverItem <= selectedItem ? selectedItem-1 : selectedItem)
         }
 
