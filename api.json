@@ -47,7 +47,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"hmhuy.fit@gmail.com\",\n    \"otp\": \"098AFM\"\n}",
+							"raw": "{\n    \"email\": \"hmhuy.fit@gmail.com\",\n    \"otp\": \"6HMTP5\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,12 +55,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/auth/validate/otp",
-							"protocol": "http",
+							"raw": "https://spring-heroku.herokuapp.com/account/auth/validate/otp",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"spring-heroku",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"account",
 								"auth",
@@ -78,7 +79,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"h\",\n    \"password\": \"1\"\n}",
+							"raw": "{\n    \"email\": \"hmhuy.fit@gmail.com\",\n    \"password\": \"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -86,12 +87,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/auth/loginTraditional",
-							"protocol": "http",
+							"raw": "https://spring-heroku.herokuapp.com/account/auth/loginTraditional",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"spring-heroku",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"account",
 								"auth",
@@ -425,7 +427,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1\n}",
+							"raw": "{\n    \"id\": 3\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -454,7 +456,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\":1,\n    \"genreQuestion\": \"MULTI_CHOICES\",\n    \"text\": \"question 1\",\n    \"presentation\": 2,\n    \"answers\": [\n        \"option1\",\"option2\"\n    ]\n}",
+							"raw": "{\n    \"id\":1,\n    \"text\": \"question 1\"\n    // \"genreQuestion\": \"MULTI_CHOICES\",\n    // \"presentation\": 2,\n    // \"answers\": [\n    //     \"option1\",\"option2\"\n    // ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -483,7 +485,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"presentationId\": 1,\n    \"text\": \"your question\"\n}",
+							"raw": "{\n    \"presentationId\": 1,\n    \"text\": \"your question2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -517,7 +519,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"groupId\": 1,\n    \"name\": \"presentation1\",\n    \"email\": \"hmhuy.fit@gmail.com\"\n}",
+							"raw": "{\n    \"groupId\": 1,\n    \"name\": \"presentation2\",\n    \"email\": \"hmhuy.fit@gmail.com\",\n    \"isPublic\": true\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -574,7 +576,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/presentation/details?id=1",
+							"raw": "http://localhost:8080/presentation/details?id=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -587,7 +589,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "2"
 								}
 							]
 						}
@@ -683,6 +685,152 @@
 							"path": [
 								"option",
 								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update option",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":2,\n    \"text\": \"option1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/option/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"option",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "playing",
+			"item": [
+				{
+					"name": "next slide",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/play/nextSlide?slideId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"play",
+								"nextSlide"
+							],
+							"query": [
+								{
+									"key": "slideId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "connect from player",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/play/connect?slideId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"play",
+								"connect"
+							],
+							"query": [
+								{
+									"key": "slideId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start playing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"presentationId\": 1,\n    \"slideId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/present/start",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"present",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "stop playing",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"presentationId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/present/stop",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"present",
+								"stop"
 							]
 						}
 					},
