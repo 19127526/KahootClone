@@ -102,7 +102,7 @@ const Presentation = () => {
         if(hoverItem === 1 && list.length <= 1){
             setSelectedItem(0)
         } else {
-            setSelectedItem(hoverItem < selectedItem ? selectedItem-1 : selectedItem)
+            setSelectedItem(hoverItem <= selectedItem ? selectedItem-1 : selectedItem)
         }
 
     }
@@ -145,7 +145,7 @@ const Presentation = () => {
         e.preventDefault();
 
 
-        navigate(PRESENTATION_URI + `${id}/show`,{state:{index:slideList}})
+        navigate(PRESENTATION_URI + `${id}/show`,{state:{index:slideList, firstSlide: slideList[0].id}})
     }
 
     useEffect(() => {

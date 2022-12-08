@@ -1,6 +1,6 @@
 import {Button, Input, List, Space} from "antd";
 import {CloseOutlined, PlusOutlined} from "@ant-design/icons";
-import {addOption, removeOption} from "../../../apis/slide/slideAPI";
+import {addOption, changeOption, changeQuestion, removeOption} from "../../../apis/slide/slideAPI";
 import {useDispatch} from "react-redux";
 import {reRenderChart} from "./ChartSider.actions";
 
@@ -11,6 +11,14 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
     let tempList = list.concat()
     setListSlide(tempList)
   }
+
+  const onBlurQuestion  = (e) =>{
+      console.log(e.target.value)
+      console.log( list[selectedItem].id)
+      changeQuestion({id: list[selectedItem].id, text: e.target.value}).then(() => {
+      })
+  }
+
   const handleAddButton = () => {
     addOption({option: `New option ${list[selectedItem]["answers"] === undefined ? 1 : list[selectedItem]["answers"].length}`, questionId: list[selectedItem].id}).then((response) => {
       if(response.status === 201){
@@ -34,7 +42,10 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
   const handleRemoveButton = ({index, value}) => {
     // console.log(value["id"])
     // console.log(value["question"])
-    // removeOption({optionID: value["id"],questionID: value["question"]}).then((response) => {
+    //   console.log(    )
+      console.log( list[selectedItem].id)
+      console.log(value.id)
+    // removeOption({optionID: value.id,questionID:  list[selectedItem].id}).then((response) => {
     //     console.log(response)
     // })
     // let lable = list[selectedItem]["content"]["labels"]
@@ -46,11 +57,17 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
   }
 
   const onChangeOption = (index) => (e) => {
-    let lable = [...list[selectedItem]["content"]["labels"]]
-    lable[index] = e.target.value
-    list[selectedItem]["content"]["labels"] = lable
+      list[selectedItem].answers[index].text = e.target.value
     let tempList = list.concat()
     setListSlide(tempList)
+  }
+
+  const handleBlur = (index) => (e) => {
+      // console.log(e.target.value)
+      // console.log(list[selectedItem].answers[index].id)
+      changeOption({id:list[selectedItem].answers[index].id, text: e.target.value}).then(()=>{
+
+      })
   }
 
 
@@ -60,10 +77,12 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
       <text>
         Question
       </text>
-      <Input size={"large"} allowClear placeholder={"Type your question"} maxLength={150}
+      <Input
+          size={"large"} allowClear placeholder={"Type your question"} maxLength={150}
              showCount
              value = {list[selectedItem].text}
-             onChange={onChangeQuestion}/>
+          onBlur ={onBlurQuestion}
+          onChange={onChangeQuestion}/>
 
       <div style={{height: "10px"}}/>
 
@@ -78,6 +97,7 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
               <List.Item key={index}>
                 <List.Item.Meta
                   title={<Input size={"large"} value={value.text}
+                                onBlur={handleBlur(index)}
                                 onChange={onChangeOption(index)}/>}
                   style={{marginRight: "5px"}}
                 />
