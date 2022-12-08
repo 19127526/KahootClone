@@ -40,7 +40,7 @@ public class AnswerServiceImpl implements AnswerService {
         AnswerEntity answerEntity = answerRepository.findById(answerDto.getId()).orElseThrow(() -> {
             throw new ResourceNotFoundException("options not found");
         });
-        QuestionEntity questionEntity = questionRepository.findById(answerDto.getId()).orElseThrow(() -> {
+        QuestionEntity questionEntity = questionRepository.findById(answerDto.getQuestion()).orElseThrow(() -> {
             throw new ResourceNotFoundException("slide not found");
         });
         questionEntity.removeAnswer(answerEntity);
