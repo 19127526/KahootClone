@@ -26,6 +26,7 @@ public class QuestionController {
 
     @PostMapping("update")
     public ResponseEntity<QuestionDto> updateQuestion(@RequestBody QuestionDto questionDto) {
+        System.out.println("==================");
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(questionMapper.entityToDto(questionService.updateQuestion(questionDto)));

@@ -45,12 +45,4 @@ public class PlayingController extends BaseController {
                 .body(questionMapper.entityToDto(questionService.connect(presentationId)));
     }
 
-
-//    @PostMapping("answer/delete")
-//    public ResponseEntity<Object> deleteAnswer(@RequestBody PlayingRequest playingRequest) {
-//        playService.removeAnswer(playingRequest);
-//        return ResponseEntity
-//                .status(HttpStatus.NO_CONTENT)
-//                .body(null);
-//    }
 }

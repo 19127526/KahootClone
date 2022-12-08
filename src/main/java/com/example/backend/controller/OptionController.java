@@ -28,4 +28,13 @@ public class OptionController {
         answerService.removeAnswer(answerDto);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
+
+    @PostMapping("update")
+    public ResponseEntity<AnswerDto> updateOption(@RequestBody AnswerDto answerDto) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(answerMapper.entityToDto(
+                        answerService.updateAnswer(answerDto)
+                ));
+    }
 }

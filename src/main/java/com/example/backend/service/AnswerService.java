@@ -6,4 +6,6 @@ import com.example.backend.model.entity.AnswerEntity;
 public interface AnswerService {
     AnswerEntity addAnswer(AnswerDto answerDto);
     void removeAnswer(AnswerDto answerDto);
+
+    AnswerEntity updateAnswer(AnswerDto answerDto);
 }

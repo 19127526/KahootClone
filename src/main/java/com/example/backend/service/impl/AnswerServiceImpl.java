@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.AnswerMapper;
 import com.example.backend.model.dto.AnswerDto;
@@ -9,6 +10,7 @@ import com.example.backend.repository.AnswerRepository;
 import com.example.backend.repository.QuestionRepository;
 import com.example.backend.service.AnswerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,6 +18,7 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class AnswerServiceImpl implements AnswerService {
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -44,4 +47,16 @@ public class AnswerServiceImpl implements AnswerService {
         answerRepository.delete(answerEntity);
         questionRepository.save(questionEntity);
     }
+
+    @Override
+    public AnswerEntity updateAnswer(AnswerDto answerDto) {
+        log.error(answerDto.toString());
+        AnswerEntity answer = answerRepository.findById(answerDto.getId()).orElseThrow(() -> {
+            throw new ResourceInvalidException("option not found");
+        });
+        answer.setText(answerDto.getText());
+        return answerRepository.save(answer);
+    }
+
+
 }

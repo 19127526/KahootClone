@@ -32,7 +32,7 @@ public class PresentationEntity extends SuperEntity {
     @JoinColumn
     private AccountEntity author;
 
-    @OneToMany(mappedBy = "presentation")
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
     private List<QuestionEntity> questions = new ArrayList<>();
     public void addQuestion(QuestionEntity question) {
         this.questions.add(question);

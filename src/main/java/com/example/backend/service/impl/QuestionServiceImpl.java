@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class QuestionServiceImpl implements QuestionService {
+    private static final String DESTINATION = "/playing";
     private final UserQuestionRepository userQuestionRepository;
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
@@ -30,7 +31,6 @@ public class QuestionServiceImpl implements QuestionService {
     private final AnswerRepository answerRepository;
     private final QuestionMapper questionMapper;
     private final PresentationRepository presentationRepository;
-    private static final String DESTINATION = "/playing";
 
     @Override
     public void deleteQuestion(QuestionDto questionDto) {
@@ -51,7 +51,13 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionEntity updateQuestion(QuestionDto questionDto) {
-        return null;
+        QuestionEntity question = questionRepository.findById(questionDto.getId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("slide not found");
+        });
+        PresentationEntity presentation = question.getPresentation();
+        if(presentation.getIsPresent() != -1) throw new ResourceInvalidException("presentation is running");
+        question.setText(questionDto.getText());
+        return questionRepository.save(question);
     }
 
     @Override
@@ -103,17 +109,17 @@ public class QuestionServiceImpl implements QuestionService {
         PresentationEntity presentationEntity = question.getPresentation();
         if (presentationEntity.getIsPresent() == -1) throw new ResourceInvalidException("presentation is stopped");
         presentationEntity.setIsPresent(slideId);
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()),DESTINATION, questionMapper.entityToDto(question));
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()), DESTINATION, questionMapper.entityToDto(question));
         presentationRepository.save(presentationEntity);
         return question;
     }
 
     @Override
     public QuestionEntity connect(long presentationId) {
-        PresentationEntity presentation =  presentationRepository.findById(presentationId).orElseThrow(() -> {
+        PresentationEntity presentation = presentationRepository.findById(presentationId).orElseThrow(() -> {
             throw new ResourceNotFoundException("presentation not found");
         });
-        if(presentation.getIsPresent() == -1) throw new ResourceInvalidException("presentation is stopped");
+        if (presentation.getIsPresent() == -1) throw new ResourceInvalidException("presentation is stopped");
         return questionRepository.findById(presentation.getIsPresent()).orElseThrow(() -> {
             throw new ResourceNotFoundException("slide not found");
         });
