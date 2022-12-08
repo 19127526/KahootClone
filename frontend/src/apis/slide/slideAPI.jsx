@@ -1,11 +1,11 @@
 import request from "../request";
 import {
     ADD_NEW_SLIDE,
-    ADD_OPTION,
+    ADD_OPTION, CHANGE_OPTION, CHANGE_QUESTION,
     NEXT_SLIDE,
     REMOVE_OPTION,
     REMOVE_SLIDE,
-    START_PRESENTATION
+    START_PRESENTATION, STOP_PRESENTATION
 } from "../../configs/url";
 
 export const addNewSlide = async ({id,question}) =>{
@@ -39,6 +39,27 @@ export const startPresentation = async ({presentationId, slideId})=>{
     })
 }
 
+export const closePresentation = async ({presentationId})=>{
+    return await request.post(STOP_PRESENTATION, {
+        "presentationId": presentationId
+    })
+}
+
+
 export const nextSlide = async ({slideId}) => {
     return await request.get(NEXT_SLIDE + `?slideId=${slideId}`)
+}
+
+export const changeOption = async ({id,text}) => {
+    return await request.post(CHANGE_OPTION, {
+        "id": id,
+        "text": text
+    })
+}
+
+export const changeQuestion  = async ({id, text}) => {
+    return await request.post(CHANGE_QUESTION, {
+        "id": id,
+        "text": text
+    })
 }

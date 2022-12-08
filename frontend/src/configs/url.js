@@ -23,7 +23,10 @@ export const REMOVE_OPTION = "/option/delete"
 export const CHOOSE_OPTIONS_USER="/slide/play"
 export const GET_QUESTION_OPTION_USER="/play/connect"
 export const START_PRESENTATION = "/presentation/present/start"
+export const STOP_PRESENTATION = "/presentation/present/stop"
 export const NEXT_SLIDE = "/play/nextSlide"
+export const CHANGE_OPTION = "/option/update"
+export const CHANGE_QUESTION = "/slide/update"
 
 
 //CLIENT ROUTE

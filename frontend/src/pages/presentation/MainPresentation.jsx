@@ -6,15 +6,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import {useEffect, useState} from "react";
-import barchart from "../../assets/img/chart.png"
-import slide from "../../assets/img/slide.png"
 
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
-import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {useLocation, useParams} from "react-router-dom";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
-import {nextSlide, startPresentation} from "../../apis/slide/slideAPI";
+import {closePresentation, nextSlide, startPresentation} from "../../apis/slide/slideAPI";
 
 let stompClient=null
 const MainPresentation = () => {
@@ -52,8 +49,8 @@ const MainPresentation = () => {
             console.log(err)
         }
         const startPresent = () => {
-            console.log(slideList[0])
-            startPresentation({presentationId: id, slideId: slideList[0].id}).then((response) => {
+            console.log(location.state.firstSlide)
+            startPresentation({presentationId: id, slideId: location.state.firstSlide}).then((response) => {
                 // setListSlide(response.data["questions"])
             })
         }
@@ -61,14 +58,14 @@ const MainPresentation = () => {
         startPresent();
     },[]);
 
-
+    window.addEventListener('popstate', function(event) {
+        closePresentation({presentationId: id})
+    });
 
     const onIndex=(e)=>{
-        // console.log(slideList[e.activeIndex]["id"])
         setActiveIndex(e.activeIndex)
         nextSlide({slideId: slideList[e.activeIndex]?.id}).then((response) => {
         })
-        // console.log(e.activeIndex)
     }
 
 
