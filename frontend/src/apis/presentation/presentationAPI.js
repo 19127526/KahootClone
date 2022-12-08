@@ -1,7 +1,7 @@
 import request from "../request";
 import {
-    ADD_PRESENTATION,
-    DELETE_PRESENTATION,
+    ADD_PRESENTATION, CHOOSE_OPTIONS_USER,
+    DELETE_PRESENTATION, GET_QUESTION_OPTION_USER,
     LIST_PRESENTATION_FROM_GROUP,
     PRESENTATION_DETAIL
 } from "../../configs/url";
@@ -29,4 +29,13 @@ export const deletePresentation = async ({id}) => {
     return await request.post(DELETE_PRESENTATION, {
        "id": id
     })
+}
+
+
+export const postAnswer=async ({answer,question,email})=>{
+    return await request.post(CHOOSE_OPTIONS_USER,{answers:[answer],question:question,email:email});
+}
+
+export const getListQuestionAndOptionByPreId=async ({preId})=>{
+    return await request.get(GET_QUESTION_OPTION_USER+`?presentationId=${preId}`);
 }

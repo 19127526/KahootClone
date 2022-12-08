@@ -161,7 +161,6 @@ const Presentation = () => {
             console.log("dsds",payload.data)
         }
         const onConnected=()=>{
-
             stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
         }
         const onError=(err)=>{

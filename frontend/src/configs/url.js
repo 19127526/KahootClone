@@ -20,7 +20,8 @@ export const ADD_NEW_SLIDE = "/slide/add"
 export const REMOVE_SLIDE = "/slide/delete"
 export const ADD_OPTION = "/option/add"
 export const REMOVE_OPTION = "/option/delete"
-
+export const CHOOSE_OPTIONS_USER="/slide/play"
+export const GET_QUESTION_OPTION_USER="/play/connect"
 
 //CLIENT ROUTE
 export const REDIRECT_URI="/login/oauth2/redirect"
@@ -32,7 +33,7 @@ export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const PUBLIC_GROUP_URI="/group/public";
 export const PRESENTATION_URI="/presentation/"
-export const PRESENTATION_SEE_URI="/presentation/:userId/see"
+export const PRESENTATION_SEE_URI="/presentation/:preId/see"
 export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
 export const PRESENTATION_SHOW_URI="/presentation/show"
 
