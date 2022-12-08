@@ -23,7 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class QuestionServiceImpl implements QuestionService {
-    private static final String DESTINATION = "/playing";
+    private static final String DESTINATION_PLAYING = "/playing";
+    private static final String DESTINATION_NEXT = "/next";
     private final UserQuestionRepository userQuestionRepository;
     private final QuestionRepository questionRepository;
     private final AccountRepository accountRepository;
@@ -96,7 +97,7 @@ public class QuestionServiceImpl implements QuestionService {
             answerRepository.saveAll(answers);
             userQuestionRepository.saveAll(userQuestionEntities);
 //            /slide/{keyPresentation}/playing
-            simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()), DESTINATION, questionMapper.entityToDto(questionEntity));
+            simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()), DESTINATION_PLAYING, questionMapper.entityToDto(questionEntity));
             return true;
         }
     }
@@ -109,7 +110,7 @@ public class QuestionServiceImpl implements QuestionService {
         PresentationEntity presentationEntity = question.getPresentation();
         if (presentationEntity.getIsPresent() == -1) throw new ResourceInvalidException("presentation is stopped");
         presentationEntity.setIsPresent(slideId);
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()), DESTINATION, questionMapper.entityToDto(question));
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(presentationEntity.getId()), DESTINATION_NEXT, questionMapper.entityToDto(question));
         presentationRepository.save(presentationEntity);
         return question;
     }
