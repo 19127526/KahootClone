@@ -14,7 +14,6 @@ const HeaderComponent = ({index}) => {
   const dataProfile=useSelector(state=> state.loginPage);
   const navigate=useNavigate()
   const profile=dataProfile.profile
-  console.log(profile)
   const handleLogoutCLick = () => {
     dispatch(logoutAccount());
     Notification("Thông báo đăng xuất", "Đăng xuất thành công", constraintNotification.NOTIFICATION_SUCCESS)

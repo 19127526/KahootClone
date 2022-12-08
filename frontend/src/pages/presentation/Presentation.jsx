@@ -15,6 +15,8 @@ import barchart from "../../assets/img/chart.png"
 import slide from "../../assets/img/slide.png"
 import {PRESENTATION_SHOW_URI} from "../../configs/url";
 import SocketConFig from "../../service/socket";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
 
 const items = [
     {
@@ -35,7 +37,7 @@ const options = [
 ];
 
 
-
+let stompClient=null
 const Presentation = () => {
     const location = useLocation();
 
@@ -44,6 +46,14 @@ const Presentation = () => {
     const [selectedItem, setSelectedItem] = useState(0);
     const [hoverItem, setHoverItem] = useState(0)
     const [slideList, setListSlide] = useState([{}]);
+    const [isConnected,setIsConnected]=useState(false)
+    const [received,setReceived]=useState([]);
+    const [userData,setUserData]=useState({
+        userName:"",
+        receiverName:"",
+        connected:false,
+        message:""
+    });
     const handleClickItem = (index) => {
         setSelectedItem(index)
     }
@@ -137,9 +147,35 @@ const Presentation = () => {
       </>
     );
 
+    useEffect(()=>{
+        const registerUser = () => {
+            let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
+            stompClient = over(Sock);
+            stompClient.connect({}, onConnected, onError);
+            setIsConnected(true);
+        }
+        const onMessageReceived = (payload) => {
+            setReceived(payload)
+            console.log(payload)
+            console.log("dsds",payload.data)
+        }
+
+        const onConnected=()=>{
+
+            stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
+        }
+        const onError=(err)=>{
+            console.log(err)
+        }
+
+        registerUser();
+    },[received])
+
+
     const presentButton=(e)=>{
-        e.preventDefault()
-        SocketConFig();
+        e.preventDefault();
+
+
         navigate(PRESENTATION_SHOW_URI,{state:{index:slideList}})
     }
 
@@ -147,6 +183,7 @@ const Presentation = () => {
         const loadPresentationDetail = () => {
             getPresentationDetail({id: id}).then((response) => {
                 if(response.status === 200){
+                    console.log(response.data)
                     if(response.data["questions"].length === 0){
                         addSlide()
                     } else {

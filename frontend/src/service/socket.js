@@ -13,21 +13,29 @@ const SocketConFig=()=>{
     message:""
   })
   const [publicChats,setPublicChats]=useState([]);
-  const handleUserName=(e)=>{
-    const value=e.target.value;
-    console.log(value)
-    setUserData({...userData,userName:value})
-  }
+
   const registerUser=()=>{
     let Sock=new SockJS("https://spring-heroku.herokuapp.com/ws");
     stompClient=over(Sock);
     stompClient.connect({},onConnected,onError);
   }
 
+
+  const handleUserName=(e)=>{
+    const value=e.target.value;
+    console.log(value)
+    setUserData({...userData,userName:value})
+  }
+
   const onConnected=()=>{
     setUserData({...userData,connected:true});
+    stompClient.subscribe(`slide/{keyPresentation}/playing`,onReceived);
     stompClient.subscribe("/chatroom/public",onPublicMessageReceived)
     stompClient.subscribe("/user/"+userData.userName+"private",onPrivateMessageReceived)
+  }
+
+  const onReceived=(payload)=>{
+
   }
   const onPublicMessageReceived=(payload)=>{
     let payloadData=JSON.parse(payload.body);
@@ -54,6 +62,7 @@ const SocketConFig=()=>{
   const onError=(err)=>{
     console.log(err)
   }
+  return registerUser()
 }
 
 export default SocketConFig
