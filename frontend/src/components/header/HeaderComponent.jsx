@@ -12,8 +12,8 @@ import {LOGIN_URI, PRESENTATION_URI} from "../../configs/url";
 const HeaderComponent = ({index}) => {
   const dispatch = useDispatch();
   const dataProfile=useSelector(state=> state.loginPage);
-  const navigate=useNavigate()
   const profile=dataProfile.profile
+  const navigate=useNavigate()
   const handleLogoutCLick = () => {
     dispatch(logoutAccount());
     Notification("Thông báo đăng xuất", "Đăng xuất thành công", constraintNotification.NOTIFICATION_SUCCESS)

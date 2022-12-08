@@ -29,6 +29,8 @@ const MainPresentation = () => {
 
 
 
+
+
     useEffect(()=>{
         setListSlide(location.state.index)
 
@@ -59,7 +61,8 @@ const MainPresentation = () => {
     }
     const onMessageReceived = (payload) => {
         setReceived(payload)
-        console.log(payload)
+        console.log(payload);
+
         console.log("dsds",payload.data)
     }
     const onConnected=()=>{
@@ -72,8 +75,8 @@ const MainPresentation = () => {
 
 
     useEffect(() => {
-        // startPresent()
-        // registerUser();
+        startPresent()
+        registerUser();
     },[])
 
 

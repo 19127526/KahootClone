@@ -3,8 +3,10 @@ import {useEffect, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useParams} from "react-router-dom";
-import {getListQuestionAndOptionByPreId} from "../../apis/presentation/presentationAPI";
-
+import {getListQuestionAndOptionByPreId, postAnswer} from "../../apis/presentation/presentationAPI";
+import {useSelector} from "react-redux";
+import Notification from "../../components/notification/Notification";
+import * as constraintNotification from "../../components/notification/Notification.constraints"
 
 
 let stompClient=null
@@ -26,7 +28,7 @@ const PresentationUser = () => {
     const [dataPresent,setDataPresent]=useState([]);
 
   const [received,setReceived]=useState([]);
-  const [presentOpen,setPresentOpen]=useState(false);
+  const [presentOpen,setPresentOpen]=useState(0);
   const [userData,setUserData]=useState({
     userName:"",
     receiverName:"",
@@ -34,33 +36,46 @@ const PresentationUser = () => {
     message:""
   });
   const {preId}=useParams();
+  const dataProfile=useSelector(state=> state.loginPage);
+  const profile=dataProfile.profile
+
 
   const [isConnected,setIsConnected]=useState(false)
 
 
 
+  const registerUser = () => {
+    let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
+    stompClient = over(Sock);
+    stompClient.connect({}, onConnected, onError);
+  }
+  const onMessageNextSlideReceived = (payload) => {
+    /*setReceived(JSON.parse(payload?.body))*/
+    console.log(JSON.parse(payload?.body))
+    setDataPresent(JSON.parse(payload?.body));
+    setPresentOpen(1);
+  }
+
+
+  const onMessageSubmitReceived = (payload) => {
+    /*setReceived(JSON.parse(payload?.body))*/
+    console.log(JSON.parse(payload?.body))
+  }
+
+
+  const onConnected=()=>{
+
+    stompClient.subscribe(`/slide/${preId}/playing`,onMessageSubmitReceived);
+    stompClient.subscribe(`/slide/${preId}/next`,onMessageNextSlideReceived)
+  }
+  const onError=(err)=>{
+
+  }
 
   useEffect(()=>{
-    const registerUser = () => {
-      let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
-      stompClient = over(Sock);
-      stompClient.connect({}, onConnected, onError);
-      setIsConnected(true);
-    }
-    const onMessageReceived = (payload) => {
-      setReceived(payload)
-      console.log(payload);
-    }
-
-    const onConnected=()=>{
-      stompClient.subscribe(`/slide/${preId}/playing`,onMessageReceived)
-    }
-    const onError=(err)=>{
-      console.log(err)
-    }
-
     registerUser();
-  },[received]);
+  },[])
+
 
   useEffect(()=>{
     const getListOptionAndAnswer=async ()=>{
@@ -68,52 +83,54 @@ const PresentationUser = () => {
         .then(res=>{
           if(res.response?.status===400){
             if(res.response.data.message.includes("presentation is stopped")){
-              setPresentOpen(false);
+              setPresentOpen(0);
             }
             if(res.response.data.message.includes("slide not found")){
-              setPresentOpen(false);
+              setPresentOpen(0);
             }
           }
           else{
             setDataPresent(res.data);
-            setPresentOpen(true);
+            setPresentOpen(1);
           }
-          console.log(res)
+
         })
         .catch(err=>{console.log(err)})
     }
     getListOptionAndAnswer();
   },[]);
-  console.log(dataPresent)
-/*
-  console.log([0].userAnswers)*/
-
-  const onClick=()=>{
-      if (stompClient) {
-        var chatMessage ={
-          answers: ["New option"],
-          question: 201,
-          email: "trthanhson232@gmail.com"
-        };
-        console.log(chatMessage);
-        stompClient.send("/slide/play", {}, JSON.stringify(chatMessage));
-      }
-  }
 
 
-  const chooseOptions=()=>{
-  }
 
     const [value, setValue] = useState(0);
 
     const onChange = (e) => {
-        console.log('radio checked', e.target.value);
         setValue(e.target.value);
     };
+    const addOption=async ()=>{
+      await postAnswer({email:profile.email,question:dataPresent?.id,answer:value})
+        .then((res=>{
+          console.log(res)
+          if(res.status===202) {
+            if (res.data === true) {
+                setPresentOpen(2)
+            }
+            else{
+              Notification("Notification submit","Host disable present, please waiting host",constraintNotification.NOTIFICATION_WARN)
+            }
+          }
+        }))
+        .catch((err)=>{})
+    }
 
-  if(presentOpen===false){
-    return (<Empty description="Please wait owner present slide"/>)
+  if(presentOpen===0){
+    return (<Empty description="Please wait owner present slide" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
   }
+  if(presentOpen===2){
+    Notification("Notification submit","You submit success",constraintNotification.NOTIFICATION_SUCCESS)
+    return (<Empty description="You submit success" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
+  }
+
 
 
     return (
@@ -131,7 +148,7 @@ const PresentationUser = () => {
                     return (<Card
                         style={{marginLeft: "5%", marginRight: "5%", marginBottom: "1%", border: "solid"}}>
                         <Row>
-                            <Radio value={item.id} key={item.id}/>
+                            <Radio value={item.text} key={item.id}/>
                             <Typography>{item.text}</Typography>
                         </Row>
                     </Card>)
@@ -140,7 +157,7 @@ const PresentationUser = () => {
             </Radio.Group>
             <Space direction={"vertical"} align={"center"} style={{width:"100%"}}>
                <Row>
-                   <Button >
+                   <Button onClick={addOption}>
                        Submit
                    </Button>
                </Row>

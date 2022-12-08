@@ -33,6 +33,7 @@ export const deletePresentation = async ({id}) => {
 
 
 export const postAnswer=async ({answer,question,email})=>{
+    console.log(answer,question,email)
     return await request.post(CHOOSE_OPTIONS_USER,{answers:[answer],question:question,email:email});
 }
 

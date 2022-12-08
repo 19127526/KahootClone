@@ -47,8 +47,10 @@ const MainLayout = () => {
                     </div>
                     :
                     location.pathname.includes(PRESENTATION_SHOW_URI) ||
-                    location.pathname.includes(PRESENTATION_SEE_URI) || (location.pathname.includes(PRESENTATION_URI) && location.pathname.includes("show")) ?
-                        <div className="main-wrapper">
+                    location.pathname.includes(PRESENTATION_SEE_URI) ||
+                    (location.pathname.includes(PRESENTATION_URI) && location.pathname.includes("show"))
+                      ||(location.pathname.includes(PRESENTATION_URI) && location.pathname.includes("see"))?
+                        <div className="main-wrapper" >
                             <div>
                                 <RoutesPage/>
                             </div>
