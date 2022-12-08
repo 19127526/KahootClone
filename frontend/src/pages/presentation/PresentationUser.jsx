@@ -140,7 +140,7 @@ const PresentationUser = () => {
             </Radio.Group>
             <Space direction={"vertical"} align={"center"} style={{width:"100%"}}>
                <Row>
-                   <Button onClick={onClick}>
+                   <Button >
                        Submit
                    </Button>
                </Row>

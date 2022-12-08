@@ -1,5 +1,6 @@
 import {Swiper, SwiperSlide} from "swiper/react";
 import {Keyboard, Pagination, Navigation} from "swiper";
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -10,22 +11,72 @@ import slide from "../../assets/img/slide.png"
 
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
+import {nextSlide, startPresentation} from "../../apis/slide/slideAPI";
 
-
+let stompClient=null
 const MainPresentation = () => {
     const [slideList, setListSlide] = useState([
         {}
     ]);
+    const [received,setReceived]=useState([]);
     const location=useLocation();
-    console.log(location.state.index)
+    // const [activeSlide, setActiveSlide] = useState(0)
+    const {id} = useParams()
+
+
+
+
     useEffect(()=>{
-        console.log(location.state.index)
         setListSlide(location.state.index)
+
     },[location.state.index]);
-    const onIndex=(e)=>{
-        console.log(e)
+
+    const startPresent = () => {
+        startPresentation({presentationId: id, slideId: slideList[0]["id"]}).then((response) => {
+            console.log(response)
+        })
     }
+
+    // startPresent()
+
+
+
+    const onIndex=(e)=>{
+        // console.log(slideList[e.activeIndex]["id"])
+        nextSlide({slideId: slideList[e.activeIndex]["id"]}).then((response) => {
+            console.log(response)
+        })
+        // console.log(e.activeIndex)
+    }
+
+    const registerUser = () => {
+        let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+    }
+    const onMessageReceived = (payload) => {
+        setReceived(payload)
+        console.log(payload)
+        console.log("dsds",payload.data)
+    }
+    const onConnected=()=>{
+
+        stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
+    }
+    const onError=(err)=>{
+        console.log(err)
+    }
+
+
+    useEffect(() => {
+        // startPresent()
+        // registerUser();
+    },[])
+
+
     return (
         <>
             <Swiper
