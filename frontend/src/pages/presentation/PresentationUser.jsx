@@ -29,6 +29,7 @@ const PresentationUser = () => {
 
   const [received,setReceived]=useState([]);
   const [presentOpen,setPresentOpen]=useState(0);
+  const [value, setValue] = useState(0);
   const [userData,setUserData]=useState({
     userName:"",
     receiverName:"",
@@ -39,6 +40,7 @@ const PresentationUser = () => {
   const dataProfile=useSelector(state=> state.loginPage);
   const profile=dataProfile.profile
 
+  const [defaultValue,setDefaultValue]=useState(false);
 
   const [isConnected,setIsConnected]=useState(false)
 
@@ -51,7 +53,25 @@ const PresentationUser = () => {
   }
   const onMessageNextSlideReceived = (payload) => {
     /*setReceived(JSON.parse(payload?.body))*/
-    console.log(JSON.parse(payload?.body))
+    console.log("slide",JSON.parse(payload?.body));
+    const data=JSON.parse(payload?.body);
+
+    let isBoolean=false;
+    const result=data.answers.forEach((index)=>{
+      index?.userAnswers.forEach(index2=>{
+        if(index2.userr == profile.email) {
+          isBoolean=true;
+        }
+      })
+      if(isBoolean==true){
+        setDefaultValue(true)
+        return index
+      }
+    })
+    if(isBoolean===false){
+      setDefaultValue(false)
+    }
+
     setDataPresent(JSON.parse(payload?.body));
     setPresentOpen(1);
   }
@@ -102,7 +122,7 @@ const PresentationUser = () => {
 
 
 
-    const [value, setValue] = useState(0);
+
 
     const onChange = (e) => {
         setValue(e.target.value);
@@ -131,6 +151,10 @@ const PresentationUser = () => {
     return (<Empty description="You submit success" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
   }
 
+  if(defaultValue===true){
+    Notification("Notification submit","You submitted",constraintNotification.NOTIFICATION_WARN)
+  }
+
 
 
     return (
@@ -143,12 +167,12 @@ const PresentationUser = () => {
                   {dataPresent.text}
                 </Typography>
             </Space>
-            <Radio.Group onChange={onChange} value={value} style={{width: "100%"}}>
+            <Radio.Group onChange={onChange} value={value} style={{width: "100%"}}  defaultValue={defaultValue}>
                 {dataPresent.answers.map((item, index) => {
                     return (<Card
                         style={{marginLeft: "5%", marginRight: "5%", marginBottom: "1%", border: "solid"}}>
                         <Row>
-                            <Radio value={item.text} key={item.id}/>
+                            <Radio value={item.text} key={item.id} />
                             <Typography>{item.text}</Typography>
                         </Row>
                     </Card>)
@@ -157,7 +181,7 @@ const PresentationUser = () => {
             </Radio.Group>
             <Space direction={"vertical"} align={"center"} style={{width:"100%"}}>
                <Row>
-                   <Button onClick={addOption}>
+                   <Button onClick={addOption} disabled={defaultValue===true?true:false}>
                        Submit
                    </Button>
                </Row>

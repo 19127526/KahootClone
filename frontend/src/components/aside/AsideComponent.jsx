@@ -34,7 +34,7 @@ function AsideComponent({ onClose }) {
                 </i> Group
               </a>
             </li>
-            <li>
+           {/* <li>
               <a href="#">
                 <i className="fa fa-area-chart"></i> Present
                 &nbsp;&nbsp; &nbsp;
@@ -48,7 +48,7 @@ function AsideComponent({ onClose }) {
                   <a> Private </a>
                 </li>
               </ul>
-            </li>
+            </li>*/}
           </ul>
         </nav>
       </div>

@@ -13,7 +13,6 @@ import {
 } from "../configs/url";
 import Oauth2Page from "../authors/oauth2/Oauth2Page";
 import RegisterPage from "../pages/register/RegisterPage";
-import SocketPage from "../pages/socket/SocketPage";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
 const LoginPageLazy = React.lazy(() => import("../pages/login/LoginPage"))
@@ -149,7 +148,9 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
+            <Authenticate  path={"/"}>
             <PresentationEditPageLazy/>
+            </Authenticate>
           </React.Suspense>
         }
       />
@@ -159,7 +160,9 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
+            <Authenticate  path={"/"}>
             <PresentationMainPageLazy/>
+            </Authenticate>
           </React.Suspense>
         }
       />
@@ -169,7 +172,9 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
+            <Authenticate path={"/"} >
             <PresentationSeeGuestPageLazy/>
+            </Authenticate>
           </React.Suspense>
         }
       />
@@ -182,16 +187,21 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
+            <Authenticate path={PUBLIC_GROUP_URI}>
             <PublicGroupPageLazy/>
+            </Authenticate>
           </React.Suspense>
         }
       />
       <Route
         path={PRESENTATION_PUBLIC+"/:groupId"}
         element={
+
           <React.Suspense fallback={<Loading/>}>
             {" "}
+            <Authenticate path={PRESENTATION_PUBLIC+"/:groupId"}>
             <PublicGroupDetailPageLazy/>
+            </Authenticate>
           </React.Suspense>
         }
       />
@@ -213,14 +223,6 @@ const RoutesPage = () => {
             {" "}
             <MemberPageLazy/>
           </React.Suspense>
-        }
-      />
-      <Route
-        path="/test"
-        element={<React.Suspense fallback={<Loading/>}>
-          {" "}
-          <SocketPage/>
-        </React.Suspense>
         }
       />
     </Routes>
