@@ -12,7 +12,7 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
     setListSlide(tempList)
   }
   const handleAddButton = () => {
-    addOption({option: "New option", questionId: list[selectedItem].id}).then((response) => {
+    addOption({option: `New option ${list[selectedItem]["answers"] === undefined ? 1 : list[selectedItem]["answers"].length}`, questionId: list[selectedItem].id}).then((response) => {
       if(response.status === 201){
         if(list[selectedItem]["answers"] !== undefined){
           list[selectedItem]["answers"].push(response.data)

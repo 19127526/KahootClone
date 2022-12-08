@@ -20,6 +20,8 @@ export const ADD_NEW_SLIDE = "/slide/add"
 export const REMOVE_SLIDE = "/slide/delete"
 export const ADD_OPTION = "/option/add"
 export const REMOVE_OPTION = "/option/delete"
+export const START_PRESENTATION = "/presentation/present/start"
+export const NEXT_SLIDE = "/play/nextSlide"
 
 
 //CLIENT ROUTE
@@ -34,7 +36,7 @@ export const PUBLIC_GROUP_URI="/group/public";
 export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_SEE_URI="/presentation/:userId/see"
 export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
-export const PRESENTATION_SHOW_URI="/presentation/show"
+export const PRESENTATION_SHOW_URI="/presentation/:id/show"
 
 export const PRESENTATION_PUBLIC="/present/public"
 export const PRESENTATION_PRIVATE="/present/private"

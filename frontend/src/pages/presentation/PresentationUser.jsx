@@ -59,19 +59,6 @@ const PresentationUser = () => {
     registerUser();
   },[received])
 
-  const onClick=()=>{
-      if (stompClient) {
-        var chatMessage ={
-          answers: ["New option"],
-          question: 201,
-          email: "trthanhson232@gmail.com"
-        };
-        console.log(chatMessage);
-        stompClient.send("/slide/play", {}, JSON.stringify(chatMessage));
-      }
-  }
-
-
 
 
 
@@ -107,7 +94,7 @@ const PresentationUser = () => {
             </Radio.Group>
             <Space direction={"vertical"} align={"center"} style={{width:"100%"}}>
                <Row>
-                   <Button onClick={onClick}>
+                   <Button >
                        Submit
                    </Button>
                </Row>

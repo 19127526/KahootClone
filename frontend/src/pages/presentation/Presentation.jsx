@@ -13,10 +13,8 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
 import barchart from "../../assets/img/chart.png"
 import slide from "../../assets/img/slide.png"
-import {PRESENTATION_SHOW_URI} from "../../configs/url";
-import SocketConFig from "../../service/socket";
-import SockJS from "sockjs-client";
-import {over} from "stompjs";
+import {PRESENTATION_SHOW_URI, PRESENTATION_URI} from "../../configs/url";
+
 
 const items = [
     {
@@ -37,7 +35,6 @@ const options = [
 ];
 
 
-let stompClient=null
 const Presentation = () => {
     const location = useLocation();
 
@@ -47,7 +44,6 @@ const Presentation = () => {
     const [hoverItem, setHoverItem] = useState(0)
     const [slideList, setListSlide] = useState([{}]);
     const [isConnected,setIsConnected]=useState(false)
-    const [received,setReceived]=useState([]);
     const [userData,setUserData]=useState({
         userName:"",
         receiverName:"",
@@ -147,36 +143,11 @@ const Presentation = () => {
       </>
     );
 
-    useEffect(()=>{
-        console.log("hshshs")
-        const registerUser = () => {
-            let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
-            stompClient = over(Sock);
-            stompClient.connect({}, onConnected, onError);
-            setIsConnected(true);
-        }
-        const onMessageReceived = (payload) => {
-            setReceived(payload)
-            console.log(payload)
-            console.log("dsds",payload.data)
-        }
-        const onConnected=()=>{
-
-            stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
-        }
-        const onError=(err)=>{
-            console.log(err)
-        }
-
-        registerUser();
-    },[received])
-
-
     const presentButton=(e)=>{
         e.preventDefault();
 
 
-        navigate(PRESENTATION_SHOW_URI,{state:{index:slideList}})
+        navigate(PRESENTATION_URI + `${id}/show`,{state:{index:slideList}})
     }
 
     useEffect(() => {
