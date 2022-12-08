@@ -1,6 +1,11 @@
 import {Avatar, Button, Card, List, Radio, Row, Space, Typography} from "antd";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
 
+
+
+let stompClient=null
 const PresentationUser = () => {
     const data = [
         {
@@ -16,6 +21,59 @@ const PresentationUser = () => {
             title: 'Ant Design Title 4',
         },
     ];
+
+  const [received,setReceived]=useState([]);
+  const [userData,setUserData]=useState({
+    userName:"",
+    receiverName:"",
+    connected:false,
+    message:""
+  });
+
+  const [isConnected,setIsConnected]=useState(false)
+
+
+
+
+  useEffect(()=>{
+    const registerUser = () => {
+      let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
+      stompClient = over(Sock);
+      stompClient.connect({}, onConnected, onError);
+      setIsConnected(true);
+    }
+    const onMessageReceived = (payload) => {
+      setReceived(payload)
+      console.log(payload)
+      console.log("dsds",payload.data)
+    }
+
+    const onConnected=()=>{
+
+      stompClient.subscribe(`/slide/29/playing`,onMessageReceived)
+    }
+    const onError=(err)=>{
+      console.log(err)
+    }
+
+    registerUser();
+  },[received])
+
+  const onClick=()=>{
+      if (stompClient) {
+        var chatMessage ={
+          answers: ["New option"],
+          question: 201,
+          email: "trthanhson232@gmail.com"
+        };
+        console.log(chatMessage);
+        stompClient.send("/slide/play", {}, JSON.stringify(chatMessage));
+      }
+  }
+
+
+
+
 
     const [value, setValue] = useState(0);
 
@@ -49,7 +107,7 @@ const PresentationUser = () => {
             </Radio.Group>
             <Space direction={"vertical"} align={"center"} style={{width:"100%"}}>
                <Row>
-                   <Button>
+                   <Button onClick={onClick}>
                        Submit
                    </Button>
                </Row>

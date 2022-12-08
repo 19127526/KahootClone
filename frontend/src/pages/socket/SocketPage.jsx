@@ -26,7 +26,7 @@ const SocketPage=()=>{
 
   const onConnected=()=>{
     setUserData({...userData,connected:true});
-    stompClient.subscribe(`/slide/{${preiD}/playing`,onPublicMessageReceived)
+    stompClient.subscribe(`/slide//playing`,onPublicMessageReceived)
     stompClient.subscribe("/user/"+userData.userName+"private",onPrivateMessageReceived)
   }
   const onPublicMessageReceived=(payload)=>{

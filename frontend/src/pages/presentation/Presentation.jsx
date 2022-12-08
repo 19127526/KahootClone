@@ -148,6 +148,7 @@ const Presentation = () => {
     );
 
     useEffect(()=>{
+        console.log("hshshs")
         const registerUser = () => {
             let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
             stompClient = over(Sock);
@@ -159,7 +160,6 @@ const Presentation = () => {
             console.log(payload)
             console.log("dsds",payload.data)
         }
-
         const onConnected=()=>{
 
             stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
