@@ -14,6 +14,7 @@ import {addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
 import barchart from "../../assets/img/chart.png"
 import slide from "../../assets/img/slide.png"
 import {PRESENTATION_SHOW_URI} from "../../configs/url";
+import SocketConFig from "../../service/socket";
 
 const items = [
     {
@@ -154,6 +155,7 @@ const Presentation = () => {
 
     const presentButton=(e)=>{
         e.preventDefault()
+        SocketConFig();
         navigate(PRESENTATION_SHOW_URI,{state:{index:slideList}})
     }
 
