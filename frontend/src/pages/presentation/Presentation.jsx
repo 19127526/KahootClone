@@ -40,11 +40,9 @@ const Presentation = () => {
 
     const {id}=useParams();
     const navigate=useNavigate()
-    const [isLoading, setIsLoading] = useState(false)
     const [selectedItem, setSelectedItem] = useState(0);
     const [hoverItem, setHoverItem] = useState(0)
     const [slideList, setListSlide] = useState([{}]);
-    const [isLoading,setIsLoading]=useState(false)
     const handleClickItem = (index) => {
         setSelectedItem(index)
     }
@@ -119,43 +117,7 @@ const Presentation = () => {
         })
     }
 
-<<<<<<< Updated upstream
-
-    useEffect(() => {
-        const loadPresentationDetail = () => {
-            getPresentationDetail({id: id}).then((response) => {
-                if(response.status === 200){
-                    if(response.data["questions"].length === 0){
-                        addSlide()
-                    } else {
-                        setListSlide(response.data["questions"])
-                    }
-                }
-            })
-        }
-        loadPresentationDetail()
-=======
-    const loadPresentationDetail = async () => {
-        await getPresentationDetail({id: id}).then((response) => {
-            console.log(response.data)
-            if(response.status === 200){
-               if(response.data["questions"].length === 0){
-                   addSlide()
-               } else {
-                   setListSlide(response.data["questions"])
-               }
-            }
-        })
-    }
-
-    useEffect(() => {
-        setIsLoading(true)
-        loadPresentationDetail().then(() => {
-            setIsLoading(false)
-        })
->>>>>>> Stashed changes
-    }, [])
-
+    
     const handleAddButton = () => {
         slideList[selectedItem]["content"]["labels"] = [...slideList[selectedItem]["content"]["labels"], "New option"]
         let datasets = slideList[selectedItem]["content"]["datasets"];
@@ -179,9 +141,22 @@ const Presentation = () => {
         navigate(PRESENTATION_SHOW_URI,{state:{index:slideList}})
     }
 
+    useEffect(() => {
+        const loadPresentationDetail = () => {
+            getPresentationDetail({id: id}).then((response) => {
+                if(response.status === 200){
+                    if(response.data["questions"].length === 0){
+                        addSlide()
+                    } else {
+                        setListSlide(response.data["questions"])
+                    }
+                }
+            })
+        }
+        loadPresentationDetail()
+    }, [])
 
     return (
-<<<<<<< Updated upstream
       <>
           <Divider/>
           <Layout style={{height: "100%", width:"100%",padding: "40px 10px 0 10px"}}>
@@ -246,14 +221,14 @@ const Presentation = () => {
                       {
                           // slideList[selectedItem]
                           // slideList[selectedItem].type === "chart" ?
-                          <ChartPresentation value={slideList[selectedItem]} isLoading={isLoading}/>
+                          <ChartPresentation value={slideList[selectedItem]} slideList={slideList} />
                           //     : <SlidePresentation item={slideList[selectedItem]}/>
 
                       }
                   </Content>
                   <Sider style={{backgroundColor: "white", padding: "20px", overflowY: "scroll"}} width={"400px"}>
                       {/*{slideList[selectedItem].type === "chart" ?*/}
-                      <ChartSider selectedItem={selectedItem} list={slideList} setListSlide={setListSlide} setLoading={()=>setIsLoading(!isLoading)} />
+                      <ChartSider selectedItem={selectedItem} list={slideList} setListSlide={setListSlide}  />
                       {/*    :*/}
                       {/*    <SlideSider item={slideList[selectedItem]} list={slideList} setListSlide={setListSlide}/>*/}
                       {/*}*/}
@@ -264,94 +239,6 @@ const Presentation = () => {
 
           </Layout>
       </>
-=======
-        <>
-            <Divider/>
-            {
-               <Layout style={{height: "100%", width:"100%",padding: "40px 10px 0 10px"}}>
-                    <Header style={{backgroundColor: "white", marginBottom: "10px",position:"relative"}}>
-                        <Dropdown
-                            menu={menuProps}
-                            arrow
-                        >
-                            <Button type={"primary"} icon={<PlusOutlined/>} size={"large"}
-                                    onClick={(e) => e.preventDefault()}
-                                    style={{position:"absolute",top:"20%",left: "2.3%"}}>
-                                Add slide
-                            </Button>
-                        </Dropdown>
-                        <Button type={"primary"} size={"large"}
-                                onClick={presentButton}
-                                style={{position:"absolute",right:"3%",top:"20%"}}>
-                            Present
-                        </Button>
-                    </Header>
-                    <Layout>
-                        <Sider style={{backgroundColor: "white", overflowY: "scroll"}}>
-                            {slideList.length !== 0 ?  <List
-                                itemLayout="vertical"
-                                size="large"
-                                dataSource={slideList}
-                                renderItem={(item, index) => (
-                                    <Popover placement="right" title="Menu" content={content} trigger={"contextMenu"} onOpenChange={(visible) =>{
-                                        if(visible){
-                                            setHoverItem(index)
-                                        }
-                                    }}>
-                                        <Card onClick={() => handleClickItem(index)} style={{
-                                            backgroundColor: index === selectedItem ? "lightblue" : "white",
-                                            margin: "10px",
-                                            border: "solid"
-                                        }}>
-                                            <List.Item
-                                                key={item.key}
-                                            >
-                                                <Row>
-                                                    <Col>
-                                                        <text>
-                                                            {index + 1}
-                                                        </text>
-                                                    </Col>
-                                                    <Col>
-                                                        <img src={barchart} alt={""}/>
-                                                        <text>
-                                                            {item.type}
-                                                        </text>
-                                                    </Col>
-                                                </Row>
-                                            </List.Item>
-                                        </Card>
-                                    </Popover>
-
-                                )}
-                            /> : <div/>}
-                        </Sider>
-                        <Content style={{backgroundColor: "white", margin: " 0 10px 0 10px", padding: "10px"}}>
-                            {
-                                // slideList[selectedItem]
-                                // slideList[selectedItem].type === "chart" ?
-                                <ChartPresentation value={slideList[selectedItem]} slideList={slideList}/>
-
-                                //     : <SlidePresentation item={slideList[selectedItem]}/>
-
-                            }
-                        </Content>
-                        <Sider style={{backgroundColor: "white", padding: "20px", overflowY: "scroll"}} width={"400px"}>
-                            {/*{slideList[selectedItem].type === "chart" ?*/}
-                            <ChartSider selectedItem={selectedItem} list={slideList} setListSlide={setListSlide} />
-                            {/*    :*/}
-                            {/*    <SlideSider item={slideList[selectedItem]} list={slideList} setListSlide={setListSlide}/>*/}
-                            {/*}*/}
-
-                        </Sider>
-                    </Layout>
-                    <Footer></Footer>
-
-                </Layout>
-            }
-        </>
->>>>>>> Stashed changes
-
     );
 }
 
