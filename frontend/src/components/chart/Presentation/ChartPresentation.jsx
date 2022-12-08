@@ -48,19 +48,23 @@ const options = {
     }
 };
 
-const ChartPresentation = ({value, width, isLoading}) => {
+const ChartPresentation = ({value, width, slideList}) => {
     let d = []
     let l = []
+<<<<<<< Updated upstream:frontend/src/components/chart/Presentation/ChartPresentation.jsx
 
     const data=useSelector(state=>state.chartSiderRoutes);
     const [dataChart, setData] = useState({labels: [], datasets: []})
+=======
+>>>>>>> Stashed changes:frontend/src/components/chart/ChartPresentation.jsx
 
+    const [dataChart, setData] = useState({labels: [], datasets: []})
     useEffect(() => {
         if(value.answers !== undefined){
             value.answers.forEach((index) => {
 
                 l.push(index.text)
-                d.push(index.userAnswers.length)
+                d.push(index.userAnswers === null ? 0 : index.userAnswers.length)
             })
             setData({
                 labels: l,
@@ -69,8 +73,12 @@ const ChartPresentation = ({value, width, isLoading}) => {
                 }]
             })
         }
+<<<<<<< Updated upstream:frontend/src/components/chart/Presentation/ChartPresentation.jsx
 
     }, [value])
+=======
+    }, [value, slideList])
+>>>>>>> Stashed changes:frontend/src/components/chart/ChartPresentation.jsx
 
 
 
