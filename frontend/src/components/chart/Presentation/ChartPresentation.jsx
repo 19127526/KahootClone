@@ -48,19 +48,18 @@ const options = {
     }
 };
 
-const ChartPresentation = ({value, width, isLoading}) => {
+const ChartPresentation = ({value, width, slideList}) => {
     let d = []
     let l = []
 
-    const data=useSelector(state=>state.chartSiderRoutes);
-    const [dataChart, setData] = useState({labels: [], datasets: []})
 
+    const [dataChart, setData] = useState({labels: [], datasets: []})
     useEffect(() => {
         if(value.answers !== undefined){
             value.answers.forEach((index) => {
 
                 l.push(index.text)
-                d.push(index.userAnswers.length)
+                d.push(index.userAnswers === null ? 0 : index.userAnswers.length)
             })
             setData({
                 labels: l,
@@ -69,8 +68,7 @@ const ChartPresentation = ({value, width, isLoading}) => {
                 }]
             })
         }
-
-    }, [value])
+    }, [value, slideList])
 
 
 
