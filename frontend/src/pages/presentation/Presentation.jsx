@@ -6,8 +6,6 @@ import Sider from "antd/es/layout/Sider";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
 import ChartSider from "../../components/chart/Sider/ChartSider";
-import SlidePresentation from "../../components/normal_slide/SlidePresentation";
-import SlideSider from "../../components/normal_slide/SlideSider";
 import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";

@@ -6,15 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/Sider/ChartSider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/Sider/ChartSider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/layouts/MainLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/layouts/MainLayout.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

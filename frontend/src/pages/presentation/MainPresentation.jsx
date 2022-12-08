@@ -23,7 +23,7 @@ const MainPresentation = () => {
     ]);
     const [received,setReceived]=useState([]);
     const location=useLocation();
-    // const [activeSlide, setActiveSlide] = useState(0)
+    const [activeIndex,setActiveIndex] = useState(0)
     const {id} = useParams()
 
 
@@ -33,23 +33,27 @@ const MainPresentation = () => {
 
     useEffect(()=>{
         setListSlide(location.state.index)
-
     },[location.state.index]);
 
     const startPresent = () => {
-        startPresentation({presentationId: id, slideId: slideList[0]["id"]}).then((response) => {
-            console.log(response)
+        startPresentation({presentationId: id, slideId: slideList[0].id}).then((response) => {
+            // setListSlide(response.data["questions"])
         })
     }
 
-    // startPresent()
+
+    useEffect(() => {
+        startPresent()
+        registerUser();
+    },[])
+
 
 
 
     const onIndex=(e)=>{
         // console.log(slideList[e.activeIndex]["id"])
+        setActiveIndex(e.activeIndex)
         nextSlide({slideId: slideList[e.activeIndex]["id"]}).then((response) => {
-            console.log(response)
         })
         // console.log(e.activeIndex)
     }
@@ -60,19 +64,36 @@ const MainPresentation = () => {
         stompClient.connect({}, onConnected, onError);
     }
     const onMessageReceived = (payload) => {
+<<<<<<< Updated upstream
         setReceived(payload)
         console.log(payload);
 
         console.log("dsds",payload.data)
+=======
+        const data = JSON.parse(payload.body)
+        console.log("bsdhgjashdjka",slideList)
+        console.log("ashdjkashdjkas",data)
+        // let tempList =  slideList.map((value,index) => {
+        //     if(value.id === data.id){
+        //        return data
+        //     }
+        //     return value
+        // })
+        // // console.log(slideList)
+        // // console.log(tempList)
+        // setListSlide(tempList)
+>>>>>>> Stashed changes
     }
     const onConnected=()=>{
 
         stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
+
     }
     const onError=(err)=>{
         console.log(err)
     }
 
+<<<<<<< Updated upstream
 
     useEffect(() => {
         startPresent()
@@ -80,12 +101,15 @@ const MainPresentation = () => {
     },[])
 
 
+=======
+>>>>>>> Stashed changes
     return (
         <>
             <Swiper
                 slidesPerView={1}
                 autoHeight={true}
                 // setWrapperSize={true}
+                initialSlide={activeIndex}
                 centeredSlides={true}
                 spaceBetween={30}
                 keyboard={{
