@@ -29,7 +29,7 @@ public class GroupEntity extends SuperEntity {
     private AccountEntity created;
 
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
     private List<PresentationEntity> presentations = new ArrayList<>();
     public void addPresentation(PresentationEntity presentation) {
         this.presentations.add(presentation);
@@ -40,7 +40,7 @@ public class GroupEntity extends SuperEntity {
         presentation.setGroup(null);
     }
 
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE)
     private List<UserGroupEntity> userGroup = new ArrayList<>();
     public void addUserGroup(UserGroupEntity userGroupEntity) {
         this.userGroup.add(userGroupEntity);

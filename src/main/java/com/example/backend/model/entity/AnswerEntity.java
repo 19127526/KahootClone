@@ -24,7 +24,7 @@ public class AnswerEntity extends SuperEntity {
     @JoinColumn
     private QuestionEntity question;
 
-    @OneToMany(mappedBy = "answer")
+    @OneToMany(mappedBy = "answer", cascade = CascadeType.REMOVE)
     private List<UserAnswerEntity> userAnswers = new ArrayList<>();
     public void addUserAnswers(List<UserAnswerEntity> userQuestionEntities) {
         userAnswers.addAll(userQuestionEntities);
