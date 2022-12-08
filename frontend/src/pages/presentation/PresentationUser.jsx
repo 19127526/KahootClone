@@ -59,7 +59,7 @@ const PresentationUser = () => {
 
   const onMessageSubmitReceived = (payload) => {
     /*setReceived(JSON.parse(payload?.body))*/
-    console.log(JSON.parse(payload?.body))
+    console.log("One",JSON.parse(payload?.body))
   }
 
 
