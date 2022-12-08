@@ -5,35 +5,55 @@ import SockJS from 'sockjs-client';
 
 let stompClient=null
 
-class SocketConfig{
-   register=({presentationId})=>{
+const SocketConFig=()=>{
+  const [userData,setUserData]=useState({
+    userName:"",
+    receiverName:"",
+    connected:false,
+    message:""
+  })
+  const [publicChats,setPublicChats]=useState([]);
+  const handleUserName=(e)=>{
+    const value=e.target.value;
+    console.log(value)
+    setUserData({...userData,userName:value})
+  }
+  const registerUser=()=>{
     let Sock=new SockJS("https://spring-heroku.herokuapp.com/ws");
     stompClient=over(Sock);
-
-    stompClient.connect({},this.onConnected(presentationId),onError);
-  }
-  onConnected=(presentationId)=>{
-    stompClient.subscribe(`/slide/${presentationId}/playing`,onPublicMessageReceived)
-  }
-}
-const registerUser=({presentationId})=>{
-
-  const register=()=>{
-  let Sock=new SockJS("https://spring-heroku.herokuapp.com/ws");
-  stompClient=over(Sock);
-
-  stompClient.connect({},onConnected,onError);
+    stompClient.connect({},onConnected,onError);
   }
 
-
+  const onConnected=()=>{
+    setUserData({...userData,connected:true});
+    stompClient.subscribe("/chatroom/public",onPublicMessageReceived)
+    stompClient.subscribe("/user/"+userData.userName+"private",onPrivateMessageReceived)
+  }
   const onPublicMessageReceived=(payload)=>{
-    console.log(payload)
     let payloadData=JSON.parse(payload.body);
-    console.log(payloadData)
+    switch (payloadData.status){
+      case "JOIN":
+        break;
+      case "MESSAGE":
+        publicChats.push(payloadData);
+        setPublicChats([...publicChats])
+        break;
+    }
+  }
+  const onPrivateMessageReceived=(payload)=>{
+    let payloadData=JSON.parse(payload.body);
+    switch (payloadData.status){
+      case "JOIN":
+        break;
+      case "MESSAGE":
+        publicChats.push(payloadData);
+        setPublicChats([...publicChats])
+        break;
+    }
   }
   const onError=(err)=>{
     console.log(err)
   }
 }
 
-export default registerUser
+export default SocketConFig

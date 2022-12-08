@@ -3,13 +3,14 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import {Space, Typography} from "antd";
 import {Bar} from "react-chartjs-2";
 import React, {useEffect, useState} from "react";
+import {useSelector} from "react-redux";
 
 ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-    ChartDataLabels
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  ChartDataLabels
 );
 
 const options = {
@@ -50,11 +51,14 @@ const options = {
 const ChartPresentation = ({value, width, isLoading}) => {
     let d = []
     let l = []
+
+    const data=useSelector(state=>state.chartSiderRoutes);
     const [dataChart, setData] = useState({labels: [], datasets: []})
 
     useEffect(() => {
         if(value.answers !== undefined){
             value.answers.forEach((index) => {
+
                 l.push(index.text)
                 d.push(index.userAnswers.length)
             })
@@ -65,7 +69,7 @@ const ChartPresentation = ({value, width, isLoading}) => {
                 }]
             })
         }
-        console.log(value)
+
     }, [value])
 
 
@@ -73,26 +77,26 @@ const ChartPresentation = ({value, width, isLoading}) => {
 
 
     return (
-        <Space direction={"vertical"} align={"center"} size={"large"}  style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            width:"100%",
-        }}>
-            <Typography style={{fontSize: 25}}>
-                {value.text}
-            </Typography>
+      <Space direction={"vertical"} align={"center"} size={"large"}  style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+          width:"100%",
+      }}>
+          <Typography style={{fontSize: 25}}>
+              {value.text}
+          </Typography>
 
-            {
+          {
               <Bar options={options} data={
                   dataChart
-                }
-                                  style={{minWidth: width ?? "80vh"}}
-                />
-            }
+              }
+                   style={{minWidth: width ?? "80vh"}}
+              />
+          }
 
-        </Space>
+      </Space>
     );
 }
 

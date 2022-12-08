@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 import barchart from "../../assets/img/chart.png"
 import slide from "../../assets/img/slide.png"
 
-import ChartPresentation from "../../components/chart/ChartPresentation";
+import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {useLocation} from "react-router-dom";
 

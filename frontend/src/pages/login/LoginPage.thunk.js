@@ -14,7 +14,7 @@ export const loginNormal = (payload) => dispatch => {
       if (res.status == 200) {
         console.log(res.data.jsonWebToken);
         localStorage.setItem("accessToken", res.data.jsonWebToken.accessToken);
-        registerUser();
+        /*registerUser();*/
         return dispatch(actions.loginNormalSuccess(res.data.accountDto));
       } else if (res.response.status == 400) {
         return dispatch(actions.loginNormalFail());
