@@ -3,10 +3,14 @@ import React from "react";
 import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
 import {
+  FORGOT_PASSWORD_URI,
   HOME_URI,
-  MEMBER_URI, PRESENTATION_EDIT_URI,
+  MEMBER_URI,
+  PRESENTATION_EDIT_URI,
   PRESENTATION_PRIVATE,
-  PRESENTATION_PUBLIC, PRESENTATION_SEE_URI, PRESENTATION_SHOW_URI,
+  PRESENTATION_PUBLIC,
+  PRESENTATION_SEE_URI,
+  PRESENTATION_SHOW_URI,
   PUBLIC_GROUP_URI,
   REDIRECT_URI,
   VERIFY_INVITE_URI
@@ -27,6 +31,9 @@ const PresentationEditPageLazy = React.lazy(() => import("../pages/presentation/
 const PublicGroupPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupPage"))
 const PublicGroupDetailPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupDetailPage"))
 const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
+const ForgotPageLazy = React.lazy(() => import("../pages/forgotpassword/ForgotPasswordPage"))
+
+
 const RoutesPage = () => {
   return (
     <Routes>
@@ -141,15 +148,13 @@ const RoutesPage = () => {
       />
 
 
-
-
       <Route
         path={PRESENTATION_EDIT_URI}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate  path={"/"}>
-            <PresentationEditPageLazy/>
+            <Authenticate path={"/"}>
+              <PresentationEditPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
@@ -160,8 +165,8 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate  path={"/"}>
-            <PresentationMainPageLazy/>
+            <Authenticate path={"/"}>
+              <PresentationMainPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
@@ -172,14 +177,12 @@ const RoutesPage = () => {
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate path={"/"} >
-            <PresentationSeeGuestPageLazy/>
+            <Authenticate path={"/"}>
+              <PresentationSeeGuestPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
       />
-
-
 
 
       <Route
@@ -188,30 +191,30 @@ const RoutesPage = () => {
           <React.Suspense fallback={<Loading/>}>
             {" "}
             <Authenticate path={PUBLIC_GROUP_URI}>
-            <PublicGroupPageLazy/>
+              <PublicGroupPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
       />
       <Route
-        path={PRESENTATION_PUBLIC+"/:groupId"}
+        path={PRESENTATION_PUBLIC + "/:groupId"}
         element={
 
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate path={PRESENTATION_PUBLIC+"/:groupId"}>
-            <PublicGroupDetailPageLazy/>
+            <Authenticate path={PRESENTATION_PUBLIC + "/:groupId"}>
+              <PublicGroupDetailPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
       />
       <Route
-        path={PRESENTATION_PRIVATE+"/:groupId"}
+        path={PRESENTATION_PRIVATE + "/:groupId"}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
             <Authenticate path={PRESENTATION_PRIVATE}>
-            <PublicGroupDetailPageLazy/>
+              <PublicGroupDetailPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
@@ -222,6 +225,15 @@ const RoutesPage = () => {
           <React.Suspense fallback={<Loading/>}>
             {" "}
             <MemberPageLazy/>
+          </React.Suspense>
+        }
+      />
+      <Route
+        path={FORGOT_PASSWORD_URI}
+        element={
+          <React.Suspense fallback={<Loading/>}>
+            {" "}
+            <ForgotPageLazy/>
           </React.Suspense>
         }
       />

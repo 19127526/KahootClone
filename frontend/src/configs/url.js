@@ -42,6 +42,7 @@ export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_SEE_URI="/presentation/:preId/see"
 export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
 export const PRESENTATION_SHOW_URI="/presentation/:id/show"
+export const FORGOT_PASSWORD_URI="/forgot"
 
 export const PRESENTATION_PUBLIC="/present/public"
 export const PRESENTATION_PRIVATE="/present/private"

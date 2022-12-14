@@ -39,6 +39,7 @@ const MainLayout = () => {
         <>
             {
                 location.pathname.includes("login") || location.pathname.includes("register") ||
+                location.pathname.includes("forgot")||
                 location.pathname.includes("test") ?
                     <div className="main-wrapper">
                         <div className="app" id="app">

@@ -44,7 +44,14 @@ const SignUpPage=()=>{
       Notification("Thông báo đăng ký", "Vui lòng điền đầy đủ thông tin", constraintNotification.NOTIFICATION_WARN)
     } else if (cofirmPassword !== password) {
       Notification("Thông báo đăng ký", "Mật khẩu không trùng khớp", constraintNotification.NOTIFICATION_WARN)
-    } else {
+    }
+    else if(password.length<8){
+      Notification("Thông báo đăng ký", "Vui lòng điền mật khẩu hơn 8 kí tự", constraintNotification.NOTIFICATION_WARN)
+    }
+    else if(cofirmPassword.length<8){
+      Notification("Thông báo đăng ký", "Vui lòng điền mật khẩu hơn 8 kí tự", constraintNotification.NOTIFICATION_WARN)
+    }
+    else{
       setIsLoading(true)
       postRegisterApi({userName: userName, password: password, email: email})
         .then(res => {
@@ -102,7 +109,11 @@ const SignUpPage=()=>{
                              id="retype_password" placeholder="Re-type password" required=""
                              aria-describedby="pass-error" aria-invalid="true" onChange={handleConfirmPassword}/></div>
                   </div>
-                  <span id="pass-error" className="has-error">Passwords should be at least 8 characters.</span>
+                  {password.length < 8 && cofirmPassword.length < 8 ?
+                    <span id="pass-error" className="has-error">Passwords should be at least 8 characters.</span>
+                    :
+                    ""
+                  }
                 </div>
                 <div className="form-group"  >
                   <button type="submit" className="btn btn-block btn-primary"  onClick={submitRegister} disabled={isLoading===true?true:false}>Sign Up</button>

@@ -10,9 +10,10 @@ import * as constraintNotification from "../../components/notification/Notificat
 import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
 import request from "../../apis/request";
+import "./LoginPage.css"
 import {
   CLIENT_LOGIN_GOOGLE,
-  CLIENT_URL_REDIRECT,
+  CLIENT_URL_REDIRECT, FORGOT_PASSWORD_URI,
   GET_LOGIN_OAUTH2,
   REGISTER_URI,
   REGISTER_URi
@@ -188,22 +189,22 @@ const LoginPage = (props) => {
                     <input className="checkbox" id="remember" type="checkbox"/>
                     <span>Remember me</span>
                   </label>
-                  <a href="reset.html" className="forgot-btn pull-right">Forgot password?</a>
+                  <a onClick={()=>navigate(FORGOT_PASSWORD_URI)} className="forgot-btn pull-right">Forgot password?</a>
                 </div>
                 <div className="form-group"  onClick={submitLogin}>
-                  <button type="submit" onClick={submitLogin} className="btn btn-block btn-primary">Login</button>
+                  <button type="submit" className="btn btn-block btn-primary">Login</button>
                   <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
                     <OtpComponent onSubmit={()=>setIsModalOpen(false)}/>
                   </Modal>
                 </div>
                 <div className="form-group">
                   <p className="text-muted text-center">Do not have an account?
-                    <a onClick={()=>navigate(REGISTER_URI)}>Sign Up!</a>
+                    <a onClick={()=>navigate(REGISTER_URI)}> Sign Up !</a>
                   </p>
                 </div>
                 <div className="form-group">
                   <p className="text-muted text-center">You can also login with
-                    <a ><GoogleOutlined style={{paddingBottom:"10px"}}/></a>
+                    <a ><GoogleOutlined className="logo-google" /></a>
                   </p>
                 </div>
               </form>
