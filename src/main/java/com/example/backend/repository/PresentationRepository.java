@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public interface PresentationRepository extends JpaRepository<PresentationEntity, Long> {
-    List<PresentationEntity> findPresentationEntitiesByGroup_IdAndIsPublic(long groupId, boolean isPublic);
-    Optional<PresentationEntity> findPresentationEntityByGroup_IdAndName(long GroupId, String name);
+public interface PresentationRepository extends JpaRepository<PresentationEntity, Long>, SlidePresentCustom {
+    Optional<PresentationEntity> findPresentationEntityByAuthor_EmailAndId(String email, long presentId);
+//    List<PresentationEntity> findPresentationEntitiesByGroup_IdAndIsPublic(long groupId, boolean isPublic);
+//    Optional<PresentationEntity> findPresentationEntityByGroup_IdAndName(long GroupId, String name);
 }

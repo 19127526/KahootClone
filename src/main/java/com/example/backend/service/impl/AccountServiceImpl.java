@@ -9,13 +9,13 @@ import com.example.backend.common.utils.EmailUtils;
 import com.example.backend.common.utils.JwtTokenUtil;
 import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
-import com.example.backend.mapper.AccountMapper;
-import com.example.backend.model.dto.AccountDto;
+import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.dto.AuthenticationDto;
 import com.example.backend.model.dto.JsonWebToken;
-import com.example.backend.model.entity.AccountEntity;
-import com.example.backend.model.request.ValidateRequest;
-import com.example.backend.repository.AccountRepository;
+import com.example.backend.model.dto.UserDto;
+import com.example.backend.model.entity.UserEntity;
+import com.example.backend.model.request.AuthRequest;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,122 +33,115 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 public class AccountServiceImpl implements AccountService {
-    private static final String REDIS_KEY_OTP = "redis:otp";
-    private static final String REDIS_KEY_ACCOUNT = "redis:account";
-    private final AccountRepository accountRepository;
-    private final AccountMapper accountMapper;
+    private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final EmailUtils emailUtils;
-    //    @Value("${CLOUDINARY_URL}")
+    //    private final RedisTemplate<String, Object> cache;
+    private final UserMapper userMapper;
+    private final Map<String, AuthRequest> cacheAuth = new HashMap<>();
     @Value("${spring.cloudinary.url}")
     private String cloudinary_url;
-    //    private final RedisTemplate<String, Object> cache;
-    private Map<String, AccountDto> cacheAccount = new HashMap<>();
-    private Map<String, String> cacheOTP = new HashMap<>();
 
+    // done
     @Override
     public AuthenticationDto loginSocial(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-        AuthenticationDto authenticationDto = new AuthenticationDto();
-        authenticationDto.setAccountStatus(AccountStatus.OLD_USER);
-        AccountDto accountDto = convertOAuthToAccount(oAuth2AuthenticationToken.getPrincipal().getAttributes());
-        Optional<AccountEntity> accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail());
-        if (accountEntity.isEmpty()) {
+        AuthenticationDto authenticationDto;
+        AuthRequest authRequest = convertOAuthToAccount(oAuth2AuthenticationToken.getPrincipal().getAttributes());
+        Optional<UserEntity> optionUserEntity = userRepository.findAccountEntityByEmail(authRequest.getEmail());
+        if (optionUserEntity.isEmpty()) {
             String otp = CodeGeneratorUtils.invoke();
-            cacheAccount.put(accountDto.getEmail(), accountDto);
-            cacheOTP.put(accountDto.getEmail(), otp);
-            authenticationDto.setEmail(accountDto.getEmail());
-            authenticationDto.setAccountStatus(AccountStatus.NEW_USER);
-            emailUtils.sendEmailInviteToRoom(otp, accountDto.getEmail(), "REGISTER");
+            authRequest.setOtp(otp);
+            cacheAuth.put(authRequest.getEmail(), authRequest);
+            authenticationDto = AuthenticationDto.builder().email(authRequest.getEmail()).accountStatus(AccountStatus.NEW_USER).build();
+            emailUtils.sendEmailInviteToRoom(otp, authRequest.getEmail(), "REGISTER");
         } else {
-            authenticationDto.setAccountDto(accountMapper.entityToDto(accountEntity.get()));
-            String at = jwtTokenUtil.generateToken(accountEntity.get().getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
-            String rt = jwtTokenUtil.generateToken(accountEntity.get().getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY);
-            authenticationDto.setJsonWebToken(new JsonWebToken(at, rt));
+            UserEntity userEntity = optionUserEntity.get();
+            String at = jwtTokenUtil.generateToken(optionUserEntity.get().getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
+            String rt = jwtTokenUtil.generateToken(optionUserEntity.get().getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY);
+            UserDto user = userMapper.entityToDto(userEntity);
+//            UserDto user = UserDto.builder().id(userEntity.getId()).userName(userEntity.getUserName()).email(userEntity.getEmail()).password(userEntity.getPassword()).imageURL(userEntity.getImageURL()).build();
+            authenticationDto = AuthenticationDto.builder().accountStatus(AccountStatus.OLD_USER).userDto(user).jsonWebToken(new JsonWebToken(at, rt)).build();
         }
         return authenticationDto;
     }
 
-    private AccountDto convertOAuthToAccount(Map<String, Object> data) {
-        AccountDto accountDto = new AccountDto();
-        accountDto.setEmail((String) data.get("email"));
-        accountDto.setUserName((String) data.get("name"));
-        accountDto.setImageURL((String) data.get("picture"));
-        return accountDto;
+    private AuthRequest convertOAuthToAccount(Map<String, Object> data) {
+        return AuthRequest.builder().userName(String.valueOf(data.get("name"))).email((String) data.get("email")).imageURL((String) data.get("picture")).build();
     }
 
     @Override
-    public AccountEntity update(AccountDto accountDto) {
-        AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail()).orElseThrow(() -> {
+    public UserEntity update(UserDto userDto) {
+        UserEntity userEntity = userRepository.findAccountEntityByEmail(userDto.getEmail()).orElseThrow(() -> {
             throw new ResourceNotFoundException("account not exist");
         });
         Cloudinary cloudinary = CloudinaryConfig.getInstance();
         try {
-            Map cloudinary_response = cloudinary.uploader().upload(accountDto.getImageFile().getBytes(), CloudinaryConfig.options(accountDto.getImageFile().getOriginalFilename()));
-            accountEntity.setImageURL(cloudinary_response.get("url").toString());
-            accountEntity.setUserName(accountDto.getUserName());
-            return accountRepository.save(accountEntity);
+            Map cloudinary_response = cloudinary.uploader().upload(userDto.getImageFile().getBytes(), CloudinaryConfig.options(userDto.getImageFile().getOriginalFilename()));
+            userEntity.setImageURL(cloudinary_response.get("url").toString());
+            userEntity.setUserName(userDto.getUserName());
+            return userRepository.save(userEntity);
         } catch (IOException e) {
             throw new TechnicalException(e.getMessage());
         }
     }
 
     @Override
-    public AuthenticationDto register(AccountDto accountDto) {
-        Optional<AccountEntity> accountEntity = accountRepository.findAccountEntityByEmail(accountDto.getEmail());
-        if (accountEntity.isPresent()) throw new ResourceInvalidException("email " + accountDto.getEmail() + " exists");
+    public AuthenticationDto register(AuthRequest authRequest) {
+        Optional<UserEntity> accountEntity = userRepository.findAccountEntityByEmail(authRequest.getEmail());
+        if (accountEntity.isPresent())
+            throw new ResourceInvalidException("email " + authRequest.getEmail() + " exists");
         else {
-            cacheAccount.put(accountDto.getEmail(), accountDto);
             String otp = CodeGeneratorUtils.invoke();
-            cacheOTP.put(accountDto.getEmail(), otp);
-            emailUtils.sendEmailInviteToRoom("your otp is: " + otp, accountDto.getEmail(), "REGISTER");
-            AuthenticationDto authenticationDto = new AuthenticationDto();
-            authenticationDto.setEmail(accountDto.getEmail());
-            authenticationDto.setAccountStatus(AccountStatus.NEW_USER);
-            return authenticationDto;
+            authRequest.setOtp(otp);
+            cacheAuth.put(authRequest.getEmail(), authRequest);
+            emailUtils.sendEmailInviteToRoom("your otp is: " + otp, authRequest.getEmail(), "REGISTER");
+            return AuthenticationDto.builder().email(authRequest.getEmail()).accountStatus(AccountStatus.NEW_USER).build();
         }
     }
 
     @Override
-    public Boolean validateAccount(ValidateRequest validateRequest) {
-        Optional<AccountEntity> checking = accountRepository.findAccountEntityByEmail(validateRequest.getEmail());
+    public Boolean validateRegisterAccount(AuthRequest authRequest) {
+        Optional<UserEntity> checking = userRepository.findAccountEntityByEmail(authRequest.getEmail());
         if (checking.isPresent()) throw new ResourceInvalidException("account is exists");
-        if (!cacheAccount.containsKey(validateRequest.getEmail()) || !cacheOTP.containsKey(validateRequest.getEmail())) {
+        if (!cacheAuth.containsKey(authRequest.getEmail())) {
             throw new ResourceInvalidException("account or otp in valid");
         }
-        AccountDto accountDto = (AccountDto) cacheAccount.get(validateRequest.getEmail());
-        String otp = (String) cacheOTP.get(validateRequest.getEmail());
-        if (!Objects.equals(otp, validateRequest.getOtp())) throw new ResourceInvalidException("otp invalid");
+        AuthRequest userDto = cacheAuth.get(authRequest.getEmail());
+        String otp = authRequest.getOtp();
+        if (!Objects.equals(otp, authRequest.getOtp())) throw new ResourceInvalidException("otp invalid");
         else {
-            AccountEntity accountEntity = accountMapper.dtoToEntity(accountDto);
-            accountRepository.save(accountEntity);
-            cacheAccount.remove(validateRequest.getEmail());
-            cacheOTP.remove(validateRequest.getEmail());
+            UserEntity userEntity = new UserEntity();
+            userEntity.setEmail(userDto.getEmail());
+            userEntity.setPassword(userDto.getPassword());
+            userEntity.setUserName(userDto.getUserName());
+            userEntity.setImageURL(authRequest.getImageURL());
+            userRepository.save(userEntity);
+            cacheAuth.remove(authRequest.getEmail());
             return true;
         }
     }
 
     @Override
-    public AuthenticationDto loginTraditional(AccountDto accountDto) {
-        AccountEntity accountEntity = accountRepository.findAccountEntityByEmailAndPassword(accountDto.getEmail(), accountDto.getPassword()).orElseThrow(() -> {
+    public AuthenticationDto loginTraditional(UserDto userDto) {
+        UserEntity userEntity = userRepository.findAccountEntityByEmailAndPassword(userDto.getEmail(), userDto.getPassword()).orElseThrow(() -> {
             throw new ResourceNotFoundException("email or password invalid");
         });
-        JsonWebToken jsonWebToken = new JsonWebToken(jwtTokenUtil.generateToken(accountDto.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY), jwtTokenUtil.generateToken(accountDto.getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY));
-        AuthenticationDto authenticationDto = new AuthenticationDto();
-        authenticationDto.setJsonWebToken(jsonWebToken);
-        authenticationDto.setAccountStatus(AccountStatus.OLD_USER);
-        authenticationDto.setAccountDto(accountMapper.entityToDto(accountEntity));
-        return authenticationDto;
+        String accessToken = jwtTokenUtil.generateToken(userDto.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
+        String refreshToken = jwtTokenUtil.generateToken(userDto.getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY);
+        UserDto user = userMapper.entityToDto(userEntity);
+//        UserDto user = UserDto.builder().id(userEntity.getId()).userName(userEntity.getUserName()).email(userEntity.getEmail()).password(userEntity.getPassword()).imageURL(userEntity.getImageURL()).build();
+        return AuthenticationDto.builder().jsonWebToken(new JsonWebToken(accessToken, refreshToken)).accountStatus(AccountStatus.OLD_USER).userDto(user).build();
     }
 
     @Override
     public JsonWebToken refreshToken(String refreshToken) {
         try {
             String email = jwtTokenUtil.getEmailFromToken(refreshToken);
-            AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(email).orElseThrow(() -> {
+            UserEntity userEntity = userRepository.findAccountEntityByEmail(email).orElseThrow(() -> {
                 throw new ResourceNotFoundException("refreshToken invalid");
             });
-            if (jwtTokenUtil.validateToken(refreshToken, accountEntity.getEmail())) {
-                String accessToken = jwtTokenUtil.generateToken(accountEntity.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
+            if (jwtTokenUtil.validateToken(refreshToken, userEntity.getEmail())) {
+                String accessToken = jwtTokenUtil.generateToken(userEntity.getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
                 return new JsonWebToken(accessToken, refreshToken);
             } else {
                 throw new ResourceInvalidException("refreshToken invalid");
@@ -160,7 +153,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AccountEntity> accountEntity = accountRepository.findAccountEntityByEmail(username);
+        Optional<UserEntity> accountEntity = userRepository.findAccountEntityByEmail(username);
         if (accountEntity.isPresent()) {
             return new User(accountEntity.get().getEmail(), "", new ArrayList<>());
         } else {

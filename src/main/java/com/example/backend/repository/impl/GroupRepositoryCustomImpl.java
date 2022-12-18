@@ -1,15 +1,17 @@
 package com.example.backend.repository.impl;
 
-import com.example.backend.model.entity.GroupEntity;
+import com.example.backend.common.model.Role;
 import com.example.backend.repository.GroupRepositoryCustom;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static com.example.backend.model.entity.QGroupEntity.groupEntity;
+import static com.example.backend.model.entity.QUserEntity.userEntity;
 import static com.example.backend.model.entity.QUserGroupEntity.userGroupEntity;
 
 
@@ -19,26 +21,27 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Tuple> getGroupDetail(long id) {
-        return null;
-//        return new JPAQueryFactory(entityManager)
-//                .from(groupEntity).where(groupEntity.id.eq(id))
-//                .rightJoin(userGroupEntity).on(groupEntity.id.)
-//        return new JPAQueryFactory(entityManager)
-//                .from(roomEntity).where(roomEntity.name.eq(id))
-//                .rightJoin(userRoomEntity).on(roomEntity.id.eq(userRoomEntity.room.id))
-//                .innerJoin(accountEntity).on(accountEntity.id.eq(userRoomEntity.user.id))
-//                .select(roomEntity,accountEntity,userRoomEntity.score,userRoomEntity.role)
+    public List<Tuple> getGroupDetail(long groupId) {
+        return new JPAQueryFactory(entityManager)
+                .from(userGroupEntity).where(userGroupEntity.group.id.eq(groupId))
+                .join(userEntity).on(userEntity.id.eq(userGroupEntity.users.id))
+                .select(userEntity,userGroupEntity.role)
+                .fetch();
+//                .from(groupEntity).on(groupEntity.id.eq(id))
+//                .rightJoin(userGroupEntity).on(userGroupEntity.group.id.eq(groupEntity.id))
+//                .join(userEntity).on(userGroupEntity.users.id.eq(userEntity.id))
+//                .select(groupEntity, userEntity, userGroupEntity.role)
 //                .fetch();
     }
 
     @Override
-    public List<GroupEntity> getListRoomJoined(String email) {
+    public List<Tuple> getListGroups(String email, List<Role> roles) {
         return new JPAQueryFactory(entityManager)
-                .from(userGroupEntity).where(userGroupEntity.users.email.eq(email))
+                .from(userGroupEntity).on(userGroupEntity.users.email.eq(email))
                 .join(groupEntity).on(groupEntity.id.eq(userGroupEntity.group.id))
-                .where(userGroupEntity.users.id.ne(groupEntity.created.id))
-                .select(groupEntity)
+                .join(userEntity).on(userEntity.id.eq(groupEntity.created.id))
+                .where(userGroupEntity.role.in(roles))
+                .select(groupEntity, userEntity.email)
                 .fetch();
     }
 }

@@ -7,12 +7,11 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface UserGroupMapper {
-    @Mapping(target = "userName", source = "users.userName")
-    @Mapping(target = "email", source = "users.email")
-    @Mapping(target = "imageURL", source = "users.imageURL")
-    @Mapping(target = "group", source = "group.id")
-    UserGroupDto entityToDto(UserGroupEntity userGroupEntity);
-
-    @Mapping(target = "group", ignore = true)
-    UserGroupEntity dtoToEntity(UserGroupDto userRoomDto);
+//    @Mapping(target = "group", ignore = true)
+//    @Mapping(target = "joinOn", ignore = true)
+//    UserGroupDto entityToDto(UserGroupEntity userGroupEntity);
+//
+//    @Mapping(target = "group", ignore = true)
+//    @Mapping(target = "joinOn", ignore = true)
+//    UserGroupEntity dtoToEntity(UserGroupDto userRoomDto);
 }

@@ -1,24 +1,24 @@
 package com.example.backend.model.dto;
 
+import com.example.backend.common.model.PresentationStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+//@Builder
 public class PresentationDto {
     private long id;
     private String name;
-    private String url;
-//    private Date created;
-    private String type;
-    private boolean isPublic;
-    private long isPresent;
-
+//    private String url;
+    private PresentationStatus status;
+    private long currentSlide;
+    //////////////////
+    private long inGroup;
+    //    private Date created;
     private String author;
-    private List<QuestionDto> questions;
+    private List<SlideDto> slides;
 }

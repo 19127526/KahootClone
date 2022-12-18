@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface GroupRepository extends JpaRepository<GroupEntity, Long>, GroupRepositoryCustom {
-    Optional<GroupEntity> findRoomEntityByUrl(String url);
-    Optional<GroupEntity> findRoomEntityByName(String name);
-
-    List<GroupEntity> findRoomEntitiesByCreated_Email(String email);
-
+public interface GroupRepository extends JpaRepository<GroupEntity, Long>, GroupRepositoryCustom, UserGroupRepositoryCustom {
+//    Optional<GroupEntity> findRoomEntityByUrl(String url);
+//    Optional<GroupEntity> findRoomEntityByName(String name);
 }

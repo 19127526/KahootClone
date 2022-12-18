@@ -2,15 +2,16 @@ package com.example.backend.service.impl;
 
 import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
+import com.example.backend.mapper.PresentationMapper;
+import com.example.backend.mapper.SlideMapper;
 import com.example.backend.model.dto.PresentationDto;
-import com.example.backend.model.entity.AccountEntity;
-import com.example.backend.model.entity.GroupEntity;
+import com.example.backend.model.dto.SlideDto;
 import com.example.backend.model.entity.PresentationEntity;
-import com.example.backend.model.request.CreatePresentationRequest;
-import com.example.backend.model.request.PresentRequest;
-import com.example.backend.repository.AccountRepository;
-import com.example.backend.repository.GroupRepository;
+import com.example.backend.model.entity.UserEntity;
+import com.example.backend.model.request.PresentationRequest;
 import com.example.backend.repository.PresentationRepository;
+import com.example.backend.repository.SlideRepository;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.PresentationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,72 +26,48 @@ import java.util.List;
 @Slf4j
 public class PresentationServiceImpl implements PresentationService {
     private final PresentationRepository presentationRepository;
-    private final AccountRepository accountRepository;
-    private final GroupRepository groupRepository;
+    private final SlideRepository slideRepository;
+    private final UserRepository userRepository;
+    private final SlideMapper slideMapper;
+    private final PresentationMapper presentationMapper;
 
     @Override
-    public void deletePresentation(PresentationDto presentationDto) {
-        presentationRepository.deleteById(presentationDto.getId());
+    public PresentationDto getDetail(PresentationRequest presentationRequest) {
+        PresentationEntity presentation = presentationRepository.findPresentationEntityByAuthor_EmailAndId(presentationRequest.getEmail(), presentationRequest.getId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("presentation not found");
+        });
+        List<SlideDto> slides = slideRepository.findByPresentation_Id(presentationRequest.getId()).stream().map(slideMapper::entityToDto).toList();
+        PresentationDto presentationDto = presentationMapper.entityToDto(presentation);
+        presentationDto.setSlides(slides);
+        presentationDto.setAuthor(presentationRequest.getEmail());
+        return presentationDto;
+    }
+
+    @Override
+    public PresentationEntity addPresentation(PresentationRequest presentationRequest) {
+        UserEntity user = userRepository.findAccountEntityByEmail(presentationRequest.getEmail()).orElseThrow(() -> {
+            throw new ResourceInvalidException("account invalid");
+        });
+        PresentationEntity presentation = new PresentationEntity();
+        presentation.setName(presentationRequest.getNamePresentation());
+        user.addPresentation(presentation);
+        PresentationEntity presentationEntity = presentationRepository.save(presentation);
+        userRepository.save(user);
+        return presentationEntity;
+    }
+
+    @Override
+    public void deletePresentation(PresentationRequest presentationRequest) {
+        presentationRepository.deleteById(presentationRequest.getId());
+    }
+
+    @Override
+    public Boolean clearAdvanced(PresentationRequest presentationRequest) {
+        return null;
     }
 
     @Override
     public PresentationEntity updatePresentation(PresentationDto presentationDto) {
         return null;
-    }
-
-    @Override
-    public PresentationEntity addPresentation(CreatePresentationRequest present) {
-        AccountEntity accountEntity = accountRepository.findAccountEntityByEmail(present.getEmail()).orElseThrow(() -> {
-            throw new ResourceInvalidException("account invalid");
-        });
-//        presentationRepository.findPresentationEntityByGroup_IdAndName(present.getGroupId(), present.getName()).orElseThrow(() -> {
-//            throw new ResourceInvalidException("presentation name exist");
-//        });
-        GroupEntity group = groupRepository.findById(present.getGroupId()).orElseThrow(() -> {
-            throw new ResourceInvalidException("group invalid");
-        });
-        PresentationEntity presentation = new PresentationEntity();
-        presentation.setName(present.getName());
-
-        if (present.getIsPublic() != null) {
-            presentation.setIsPublic(present.getIsPublic());
-        }
-        accountEntity.addPresentation(presentation);
-        System.out.println();
-        group.addPresentation(presentation);
-        accountRepository.save(accountEntity);
-        groupRepository.save(group);
-        return presentationRepository.save(presentation);
-    }
-
-    @Override
-    public List<PresentationEntity> getList(long id, boolean isPublic) {
-        return presentationRepository.findPresentationEntitiesByGroup_IdAndIsPublic(id, isPublic);
-    }
-
-    @Override
-    public PresentationEntity getDetail(long id) {
-        return presentationRepository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException("presentation not found");
-        });
-    }
-
-    @Override
-    public PresentationEntity startPresent(PresentRequest presentRequest) {
-        PresentationEntity presentationEntity = presentationRepository.findById(presentRequest.getPresentationId()).orElseThrow(() -> {
-            throw new ResourceInvalidException("presentation invalid");
-        });
-        if(presentationEntity.getIsPresent() != -1) throw new ResourceInvalidException("presentation is playing");
-        presentationEntity.setIsPresent(presentRequest.getSlideId());
-        return presentationRepository.save(presentationEntity);
-    }
-
-    @Override
-    public PresentationEntity stopPresent(PresentRequest presentRequest) {
-        PresentationEntity presentationEntity = presentationRepository.findById(presentRequest.getPresentationId()).orElseThrow(() -> {
-            throw new ResourceInvalidException("presentation invalid");
-        });
-        presentationEntity.setIsPresent(-1);
-        return presentationRepository.save(presentationEntity);
     }
 }

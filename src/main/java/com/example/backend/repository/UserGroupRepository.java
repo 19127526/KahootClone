@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserGroupRepository extends JpaRepository<UserGroupEntity,Long>, UserRoomRepositoryCustom {
+public interface UserGroupRepository extends JpaRepository<UserGroupEntity, Long> {
     Optional<UserGroupEntity> findUserRoomEntityByUsers_IdAndGroup_Id(Long user, Long group);
+
+    Optional<UserGroupEntity> findUserGroupEntityByGroup_IdAndUsers_Email(long groupId, String email);
 }

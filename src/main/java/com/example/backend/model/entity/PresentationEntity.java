@@ -1,10 +1,10 @@
 package com.example.backend.model.entity;
 
+import com.example.backend.common.model.PresentationStatus;
 import com.example.backend.common.model.SuperEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,27 +19,37 @@ public class PresentationEntity extends SuperEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private String url;
+//    private String url;
+    private PresentationStatus status = PresentationStatus.IDLE;
+    private long currentSlide = -1;
+    //////////////////
+    private long inGroup = -1;
 //    private Date created;
-    private String type;
-    private Boolean isPublic = true;
-    private long isPresent = -1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private GroupEntity group;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    private AccountEntity author;
+    private UserEntity author;
 
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
-    private List<QuestionEntity> questions = new ArrayList<>();
-    public void addQuestion(QuestionEntity question) {
-        this.questions.add(question);
-        question.setPresentation(this);
+    private List<SlideEntity> slides = new ArrayList<>();
+    public void addSlide(SlideEntity slide) {
+        this.slides.add(slide);
+        slide.setPresentation(this);
     }
-    public void removeQuestion(QuestionEntity question) {
-        this.questions.remove(question);
-        question.setPresentation(null);
+    public void removeSlide(SlideEntity slide) {
+        this.slides.remove(slide);
+        slide.setPresentation(null);
+    }
+
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
+    private List<ChatEntity> chat = new ArrayList<>();
+    public void addChat(ChatEntity mess) {
+        this.chat.add(mess);
+        mess.setPresentation(this);
+    }
+
+    public void removeChat(ChatEntity mess) {
+        this.chat.remove(mess);
+        mess.setPresentation(null);
     }
 }

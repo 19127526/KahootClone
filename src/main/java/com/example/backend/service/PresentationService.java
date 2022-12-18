@@ -2,23 +2,16 @@ package com.example.backend.service;
 
 import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.entity.PresentationEntity;
-import com.example.backend.model.request.CreatePresentationRequest;
-import com.example.backend.model.request.PresentRequest;
-
-import java.util.List;
+import com.example.backend.model.request.PresentationRequest;
 
 public interface PresentationService {
-    void deletePresentation(PresentationDto presentationDto);
+    void deletePresentation(PresentationRequest presentationRequest);
 
     PresentationEntity updatePresentation(PresentationDto presentationDto);
 
-    PresentationEntity addPresentation(CreatePresentationRequest createPresentationRequest);
+    PresentationEntity addPresentation(PresentationRequest presentationRequest);
 
-    List<PresentationEntity> getList(long id, boolean isPublic);
+    PresentationDto getDetail(PresentationRequest presentationRequest);
 
-    PresentationEntity getDetail(long id);
-
-    PresentationEntity startPresent(PresentRequest presentRequest);
-
-    PresentationEntity stopPresent(PresentRequest presentRequest);
+    Boolean clearAdvanced(PresentationRequest presentationRequest);
 }

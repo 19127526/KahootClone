@@ -2,15 +2,12 @@ package com.example.backend.controller;
 
 import com.example.backend.mapper.PresentationMapper;
 import com.example.backend.model.dto.PresentationDto;
-import com.example.backend.model.request.CreatePresentationRequest;
-import com.example.backend.model.request.PresentRequest;
+import com.example.backend.model.request.PresentationRequest;
 import com.example.backend.service.PresentationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,40 +16,25 @@ public class PresentationController {
     private final PresentationService presentationService;
     private final PresentationMapper presentationMapper;
 
-    @PostMapping("add")
-    public ResponseEntity<PresentationDto> addPresentation(@RequestBody CreatePresentationRequest createPresentationRequest) {
-        System.out.println(createPresentationRequest.toString());
-        return ResponseEntity.status(HttpStatus.CREATED).body(presentationMapper.entityToDto(presentationService.addPresentation(createPresentationRequest)));
+    @GetMapping("details")
+    public ResponseEntity<PresentationDto> getDetail(@RequestBody PresentationRequest presentationRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getDetail(presentationRequest));
     }
 
-//    @PostMapping("update")
-//    public ResponseEntity<PresentationDto> updatePresentation(@RequestBody PresentationDto presentationDto) {
-//        return ResponseEntity.status(HttpStatus.ACCEPTED).body(presentationMapper.entityToDto(presentationService.updatePresentation(presentationDto)));
-//    }
+    @PostMapping("add")
+    public ResponseEntity<PresentationDto> addPresentation(@RequestBody PresentationRequest presentationRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(presentationMapper.entityToDto(presentationService.addPresentation(presentationRequest)));
+    }
 
     @PostMapping("delete")
-    public ResponseEntity<Object> deletePresentation(@RequestBody PresentationDto presentationDto) {
-        presentationService.deletePresentation(presentationDto);
+    public ResponseEntity<Object> deletePresentation(@RequestBody PresentationRequest presentationRequest) {
+        presentationService.deletePresentation(presentationRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @GetMapping("details")
-    public ResponseEntity<PresentationDto> getDetail(long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationMapper.entityToDto(presentationService.getDetail(id)));
-    }
 
-    @GetMapping("list/group")
-    public ResponseEntity<List<PresentationDto>> getPresentations(long id, boolean isPublic) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getList(id, isPublic).stream().map(presentationMapper::entityToDto).toList());
-    }
-
-    @PostMapping("present/start")
-    public ResponseEntity<PresentationDto> present(@RequestBody PresentRequest presentRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationMapper.entityToDto(presentationService.startPresent(presentRequest)));
-    }
-
-    @PostMapping("present/stop")
-    public ResponseEntity<PresentationDto> stopPresent(@RequestBody PresentRequest presentRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationMapper.entityToDto(presentationService.stopPresent(presentRequest)));
+    @PostMapping("update/clearAdvanced")
+    public ResponseEntity<Boolean> clearAdvanced(@RequestBody PresentationRequest presentationRequest) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(presentationService.clearAdvanced(presentationRequest));
     }
 }

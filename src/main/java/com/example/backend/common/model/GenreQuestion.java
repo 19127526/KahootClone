@@ -1,8 +1,7 @@
 package com.example.backend.common.model;
 
 public enum GenreQuestion {
+    DOCUMENT,
     MULTI_CHOICES,
-    MULTI_ANSWERS,
-    TRUE_FALSE,
-    SINGLE_ANSWER
+    SINGLE_CHOICE
 }

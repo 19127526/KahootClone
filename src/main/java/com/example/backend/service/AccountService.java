@@ -1,18 +1,18 @@
 package com.example.backend.service;
 
-import com.example.backend.model.dto.AccountDto;
+import com.example.backend.model.dto.UserDto;
 import com.example.backend.model.dto.AuthenticationDto;
 import com.example.backend.model.dto.JsonWebToken;
-import com.example.backend.model.entity.AccountEntity;
-import com.example.backend.model.request.ValidateRequest;
+import com.example.backend.model.entity.UserEntity;
+import com.example.backend.model.request.AuthRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 public interface AccountService extends UserDetailsService {
     AuthenticationDto loginSocial(OAuth2AuthenticationToken oAuth2AuthenticationToken);
-    AccountEntity update(AccountDto accountDto);
-    AuthenticationDto register(AccountDto accountDto);
-    Boolean validateAccount(ValidateRequest validateRequest);
-    AuthenticationDto loginTraditional(AccountDto accountDto);
+    UserEntity update(UserDto userDto);
+    AuthenticationDto register(AuthRequest authRequest);
+    Boolean validateRegisterAccount(AuthRequest authRequest);
+    AuthenticationDto loginTraditional(UserDto userDto);
     JsonWebToken refreshToken(String refreshToken);
 }
