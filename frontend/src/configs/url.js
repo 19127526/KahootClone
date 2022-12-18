@@ -58,7 +58,41 @@ export const CLIENT_JOIN_GROUP_URL=CLIENT_URL+DETAIL_GROUP_URI;
 export const GET_LOGIN_OAUTH2="/account/auth/loginSocial";
 
 
-
-
-
-
+/*
+// auth
+export const REGISTER="/auth/register"
+export const VALIDATE_OTP="/auth/validate/otp"
+export const LOGIN_NORMAL="/auth/loginTraditional"
+export const LOGIN_OAUTH2="/auth/loginSocial";
+// group
+export const DETAIL_GROUP="/group/detail/"
+export const CREATE_GROUP = "/group/generate"
+export const UPDATE_GROUP="/group/update"
+export const DELETE_GROUP="/group/delete"
+export const REMOVE_MEMBER_GROUP="/group/remove/member"
+export const JOIN_GROUP="/group/join"
+// presentation
+export const DETAIL_PRESENTATION = "/presentation/details"
+export const ADD_PRESENTATION = "/presentation/add"
+export const DELETE_PRESENTATION = "/presentation/delete"
+export const CLEAR_ADVANCED_PRESENTATION = "/presentation/update/clearAdvanced"
+// realtime present
+export const START_PRESENTATION = "/present/start"
+export const STOP_PRESENTATION = "/present/stop"
+export const CHANGE_SLIDE_PRESENTATION = "/present/changeSlide";
+export const CONNECT_PRESENTATION="/present/connect"
+export const CHOSE_OPTION_PRESENTATION = "/present/option/chose"
+// slide
+export const NEW_SLIDE = "/slide/add"
+export const DELETE_SLIDE = "/slide/delete"
+export const DETAIL_SLIDE = "/slide/detail"
+export const UPDATE_SLIDE = "/slide/update"
+// option
+export const NEW_OPTION = "/option/add"
+export const DELETE_OPTION = "/option/delete"
+export const UPDATE_OPTION = "/option/update"
+// account
+export const UPDATE_ACCOUNT = "/account/update"
+export const LIST_GROUP_CREATED_ACCOUNT = "/account/listRoomCreated";
+export const LIST_GROUP_JOINED_ACCOUNT = "/account/listRoomJoined";
+*/
