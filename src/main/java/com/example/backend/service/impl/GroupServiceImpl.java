@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -99,13 +100,16 @@ public class GroupServiceImpl implements GroupService {
             Role role = (Role) tuple.toArray()[1];
             if (role == Role.OWNER) groupDto.setCreated(user.getEmail());
             return UserGroupDto.builder().id(user.getId()).group(groupRequest.getId()).email(groupRequest.getEmail()).userName(user.getUserName()).imageURL(user.getImageURL()).role(role).build();
-        }).toList();
+        }).toList().stream().sorted(Comparator.comparing(UserGroupDto::getRole)).toList();
         groupDto.setUsers(userGroups);
         return groupDto;
     }
 
     @Override
     public void delete(GroupRequest groupRequest) {
+        userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("permission denied");
+        });
         groupRepository.deleteById(groupRequest.getId());
     }
 
