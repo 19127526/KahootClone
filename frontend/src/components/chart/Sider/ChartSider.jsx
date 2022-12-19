@@ -1,4 +1,4 @@
-import {Button, Input, List, Space} from "antd";
+import {Button, Col, Input, List, Row, Space} from "antd";
 import {CloseOutlined, PlusOutlined} from "@ant-design/icons";
 import {addOption, changeOption, changeQuestion, removeOption} from "../../../apis/slide/slideAPI";
 import {useDispatch} from "react-redux";
@@ -77,16 +77,17 @@ const ChartSider = ({selectedItem, list, setListSlide}) => {
         list[selectedItem]["answers"] !== undefined ?
           list[selectedItem]["answers"].map((value, index) => {
             return (
-              <List.Item key={index}>
-                <List.Item.Meta
-                  title={<Input size={"large"} value={value.text}
-                                onBlur={handleBlur(index)}
-                                onChange={onChangeOption(index)}/>}
-                  style={{marginRight: "5px"}}
-                />
-                <Button icon={<CloseOutlined/>}
-                        onClick={() => handleRemoveButton({index, value})}/>
-              </List.Item>
+                <Space direction={"horizontal"} wrap={false} style={{width:"100%"}}>
+                   <Col flex={10}>
+                       <Input size={"large"} value={value.text}
+                              onBlur={handleBlur(index)}
+                              onChange={onChangeOption(index)}/>
+                   </Col>
+                   <Col flex={2}>
+                       <Button icon={<CloseOutlined/>}
+                               onClick={() => handleRemoveButton({index, value})}/>
+                   </Col>
+                </Space>
             )
           }) : <div/>
       }

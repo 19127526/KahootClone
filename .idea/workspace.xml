@@ -6,8 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/Sider/ChartSider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/Sider/ChartSider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +35,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2HuU8EPsllycZQW2130sjGCTW1W" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -92,6 +99,8 @@
       <workItem from="1669629720531" duration="4563000" />
       <workItem from="1670030282838" duration="33250000" />
       <workItem from="1670350406003" duration="5418000" />
+      <workItem from="1670988145688" duration="15766000" />
+      <workItem from="1671244978196" duration="603000" />
     </task>
     <servers />
   </component>
