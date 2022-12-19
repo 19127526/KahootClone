@@ -53,4 +53,10 @@ public class GroupController extends BaseController {
         // request 2 time.
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(groupService.getDetail(groupRequest));
     }
+
+    @PostMapping("assignRole")
+    public ResponseEntity<Object> assignRole(@RequestBody GroupRequest groupRequest) {
+        groupService.assignRole(groupRequest);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
 }

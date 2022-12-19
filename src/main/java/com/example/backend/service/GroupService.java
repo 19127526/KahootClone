@@ -20,4 +20,6 @@ public interface GroupService {
     GroupDto getDetail(GroupRequest groupRequest);
 
     void delete(GroupRequest groupRequest);
+
+    void assignRole(GroupRequest groupRequest);
 }

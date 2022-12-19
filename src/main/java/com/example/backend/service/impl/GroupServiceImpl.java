@@ -9,8 +9,10 @@ import com.example.backend.model.dto.GroupDto;
 import com.example.backend.model.dto.UserGroupDto;
 import com.example.backend.model.entity.GroupEntity;
 import com.example.backend.model.entity.UserEntity;
+import com.example.backend.model.entity.UserGroupEntity;
 import com.example.backend.model.request.GroupRequest;
 import com.example.backend.repository.GroupRepository;
+import com.example.backend.repository.UserGroupRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.GroupService;
 import com.querydsl.core.Tuple;
@@ -18,8 +20,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -28,6 +28,7 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class GroupServiceImpl implements GroupService {
+    private final UserGroupRepository userGroupRepository;
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final GroupMapper groupMapper;
@@ -52,7 +53,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void removeMember(GroupRequest groupRequest) {
-        Tuple user_group = userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER, Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> new ResourceInvalidException("user is not in a group"));
+        Tuple user_group = userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> new ResourceInvalidException("user is not in a group"));
         UserEntity user = (UserEntity) user_group.toArray()[0];
         GroupEntity group = (GroupEntity) user_group.toArray()[1];
         // check
@@ -108,15 +109,29 @@ public class GroupServiceImpl implements GroupService {
         groupRepository.deleteById(groupRequest.getId());
     }
 
+    @Override
+    public void assignRole(GroupRequest groupRequest) {
+        userRepository.getUserAndGroupWithRoles(groupRequest.getEmailAssign(), groupRequest.getId(), List.of(Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("account " + groupRequest.getEmailAssign() + "not exists in room");
+        });
+
+        userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("assign fail");
+        });
+        UserGroupEntity userGroup = userGroupRepository.findUserGroupEntityByGroup_IdAndUsers_Email(groupRequest.getId(), groupRequest.getEmailAssign()).get();
+        userGroup.setRole(groupRequest.getRole());
+        userGroupRepository.save(userGroup);
+    }
+
     public GroupEntity join(GroupRequest groupRequest) {
         if (groupRequest.getEmail() == null || groupRequest.getCode() == null || groupRequest.getId() == null) {
             throw new ResourceInvalidException("request invalid");
         }
         UserEntity userEntity = userRepository.findAccountEntityByEmail(groupRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException("account " + groupRequest.getEmail() + " not found"));
         GroupEntity group = groupRepository.findById(groupRequest.getId()).orElseThrow(() -> new ResourceNotFoundException("group not found"));
-        userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER, Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> {
+        if (userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER, Role.Co_OWNER, Role.MEMBER)).isPresent()) {
             throw new ResourceInvalidException("account " + groupRequest.getEmail() + " exists in room");
-        });
+        }
         if (group.getCode().equals(groupRequest.getCode())) {
             group.addUser(userEntity);
             return groupRepository.save(group);

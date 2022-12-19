@@ -1,5 +1,6 @@
 package com.example.backend.model.request;
 
+import com.example.backend.common.model.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,8 @@ public class GroupRequest {
     private String code;
     private Long id;
 
+    private String emailAssign;
+    private Role role;
     @Override
     public String toString() {
         return "GroupRequest{" +
