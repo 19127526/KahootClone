@@ -23,7 +23,7 @@ public class RealTimeController extends BaseController {
     private final RealTimeService realTimeService;
     private final PresentationMapper presentationMapper;
 
-    @PostMapping("option/chose")
+    @PostMapping("vote/chose")
     public ResponseEntity<Object> choseAnswer(@RequestBody InteractPresentRequest interact) {
         realTimeService.choseVote(interact);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);

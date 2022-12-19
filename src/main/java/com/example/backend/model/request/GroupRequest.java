@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GroupRequest {
     private String email;
-    private String name_group;
+    private String nameGroup;
     private String code;
     private Long id;
 }

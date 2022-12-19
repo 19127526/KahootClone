@@ -56,6 +56,7 @@ public class SlideServiceImpl implements SlideService {
         });
         SlideEntity question = new SlideEntity();
         question.setText(slideDto.getText());
+        question.setGenreQuestion(slideDto.getGenreQuestion());
         presentation.addSlide(question);
         presentationRepository.save(presentation);
         return slideRepository.save(question);

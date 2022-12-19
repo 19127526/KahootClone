@@ -6,13 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d68bc8bf-a6bd-4d3f-9388-0d6956c3ea4e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/AuthRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/AuthRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/ChatRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/ChatRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/ChoseVoteRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/ChoseVoteRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/RealTimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/RealTimeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/VoteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/VoteController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/GroupRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/GroupRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/InteractPresentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/InteractPresentRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/PresentationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/PresentationRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/VoteRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/VoteRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/GroupServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/GroupServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/SlideServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/SlideServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

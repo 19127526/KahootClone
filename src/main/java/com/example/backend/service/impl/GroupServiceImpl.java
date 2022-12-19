@@ -31,12 +31,12 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupEntity createRoom(GroupRequest groupRequest) {
-        if (groupRequest.getName_group() == null || groupRequest.getEmail() == null) {
+        if (groupRequest.getNameGroup() == null || groupRequest.getEmail() == null) {
             throw new ResourceInvalidException("request invalid");
         }
         UserEntity userEntity = userRepository.findAccountEntityByEmail(groupRequest.getEmail()).orElseThrow(() -> new ResourceNotFoundException(groupRequest.getEmail() + " invalid"));
         GroupEntity group = new GroupEntity();
-        group.setName(groupRequest.getName_group());
+        group.setName(groupRequest.getNameGroup());
         group.setCode(CodeGeneratorUtils.invoke());
         userEntity.addGroup(group);
         userEntity.addGroupCreated(group);
