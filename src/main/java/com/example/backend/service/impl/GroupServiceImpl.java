@@ -99,7 +99,7 @@ public class GroupServiceImpl implements GroupService {
             UserEntity user = (UserEntity) tuple.toArray()[0];
             Role role = (Role) tuple.toArray()[1];
             if (role == Role.OWNER) groupDto.setCreated(user.getEmail());
-            return UserGroupDto.builder().id(user.getId()).group(groupRequest.getId()).email(groupRequest.getEmail()).userName(user.getUserName()).imageURL(user.getImageURL()).role(role).build();
+            return UserGroupDto.builder().id(user.getId()).group(groupRequest.getId()).email(user.getEmail()).userName(user.getUserName()).imageURL(user.getImageURL()).role(role).build();
         }).toList().stream().sorted(Comparator.comparing(UserGroupDto::getRole)).toList();
         groupDto.setUsers(userGroups);
         return groupDto;
