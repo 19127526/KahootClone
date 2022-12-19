@@ -10,4 +10,15 @@ public class GroupRequest {
     private String nameGroup;
     private String code;
     private Long id;
+
+    @Override
+    public String toString() {
+        return "GroupRequest{" +
+                "email='" + email + '\'' +
+                ", nameGroup='" + nameGroup + '\'' +
+                ", code='" + code + '\'' +
+                ", id=" + id +
+                '}';
+    }
+
 }

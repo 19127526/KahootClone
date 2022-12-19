@@ -34,6 +34,7 @@ public class UserGroupEntity extends SuperEntity {
         this.users = users;
         this.group = group;
         this.role = role;
+        this.id = new UserGroupId(users.getId(),group.getId());
     }
 
     @Override

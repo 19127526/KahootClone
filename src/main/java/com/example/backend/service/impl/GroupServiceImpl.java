@@ -15,14 +15,18 @@ import com.example.backend.repository.UserRepository;
 import com.example.backend.service.GroupService;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class GroupServiceImpl implements GroupService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
@@ -40,7 +44,9 @@ public class GroupServiceImpl implements GroupService {
         group.setCode(CodeGeneratorUtils.invoke());
         userEntity.addGroup(group);
         userEntity.addGroupCreated(group);
-        return groupRepository.save(group);
+        group = groupRepository.save(group);
+        userRepository.save(userEntity);
+        return group;
     }
 
 

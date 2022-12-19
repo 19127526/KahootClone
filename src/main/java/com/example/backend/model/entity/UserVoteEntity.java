@@ -28,6 +28,7 @@ public class UserVoteEntity extends SuperEntity {
     public UserVoteEntity(UserEntity users, VoteEntity vote) {
         this.users = users;
         this.vote = vote;
+        this.id = new UserVoteId(users.getId(), vote.getId());
     }
 
     @Override
