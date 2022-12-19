@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"userName\": \"huy\",\n    \"email\": \"hmhuy.ft@gmail.com\",\n    \"password\": \"123\"\n}",
+							"raw": "{\n    \"userName\": \"abc\",\n    \"email\": \"abc@gmail.com\",\n    \"password\": \"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,14 +24,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/auth/register",
+							"raw": "http://localhost:8080/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"account",
 								"auth",
 								"register"
 							]
@@ -46,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"hmhuy191101@gmail.com\",\n    \"otp\": \"O0PNB0\"\n}",
+							"raw": "{\n    \"email\": \"abc@gmail.com\",\n    \"otp\": \"3144YW\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -54,14 +53,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/auth/validate/otp",
+							"raw": "http://localhost:8080/auth/validate/otp",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"account",
 								"auth",
 								"validate",
 								"otp"
@@ -77,7 +75,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"h\",\n    \"password\": \"1\"\n}",
+							"raw": "{\n    \"email\": \"abc@gmail.com\",\n    \"password\": \"123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,14 +83,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/auth/loginTraditional",
+							"raw": "http://localhost:8080/auth/loginTraditional",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"account",
 								"auth",
 								"loginTraditional"
 							]
@@ -115,15 +112,35 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/refreshToken",
+							"raw": "http://localhost:8080/auth/refreshToken",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"account",
+								"auth",
 								"refreshToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login social",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/loginSocial",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"loginSocial"
 							]
 						}
 					},
@@ -132,36 +149,42 @@
 			]
 		},
 		{
-			"name": "room",
+			"name": "group",
 			"item": [
 				{
-					"name": "get detail room",
+					"name": "get detail group",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/room/detail?name=r9",
+							"raw": "http://localhost:8080/group/detail",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"room",
+								"group",
 								"detail"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "r9"
-								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "generate room",
+					"name": "generate group",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -173,7 +196,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"rr1\",\n    \"email\": \"hmhuy.fit@gmail.com\"\n}",
+							"raw": "{\n    \"nameGroup\": \"rr1\",\n    \"email\": \"hmhuy.fit@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -181,14 +204,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/room/generate",
+							"raw": "http://localhost:8080/group/generate",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"room",
+								"group",
 								"generate"
 							],
 							"query": [
@@ -201,26 +224,21 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "account",
-			"item": [
+				},
 				{
-					"name": "update profile",
+					"name": "update group",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/account/update",
+							"raw": "http://localhost:8080/group/update",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"account",
+								"group",
 								"update"
 							]
 						}
@@ -228,147 +246,12 @@
 					"response": []
 				},
 				{
-					"name": "get list room create",
+					"name": "delete group",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxIiwiZXhwIjoxNjY5ODQ4Njg2LCJpYXQiOjE2Njk4MzA2ODZ9.0TTsureUpQspj7S5KCN15-ZcLl1QZ4o6XS49UxDREgiOMTTSywPZpDNTDwSTaQNLDFf_6UNX7_zdaKq48-37-Q",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "text"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/account/listRoomCreated?email=q",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"account",
-								"listRoomCreated"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "q"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get list room join",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/account/listRoomJoined?email=q",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"account",
-								"listRoomJoined"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "q"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "remove",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "slide",
-			"item": [
-				{
-					"name": "chose options",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"answers\": [\n        \"options1\",\n        \"options2\"],\n    \"question\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/slide/play",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"slide",
-								"play"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "details slide",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/slide/detail?id=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"slide",
-								"detail"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
-					"request": {
-						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -380,14 +263,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/slide/delete",
+							"raw": "http://localhost:8080/group/delete",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"slide",
+								"group",
 								"delete"
 							]
 						}
@@ -395,13 +278,13 @@
 					"response": []
 				},
 				{
-					"name": "update slide (raw)",
+					"name": "remove member",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\":1,\n    \"genreQuestion\": \"MULTI_CHOICES\",\n    \"text\": \"question 1\",\n    \"presentation\": 2,\n    \"answers\": [\n        \"option1\",\"option2\"\n    ]\n}",
+							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -409,28 +292,29 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/slide/update",
+							"raw": "http://localhost:8080/group/remove/member",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"slide",
-								"update"
+								"group",
+								"remove",
+								"member"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "add slide (text is question)",
+					"name": "join group",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"PresentationId\": 1,\n    \"text\": \"your question\"\n}",
+							"raw": "{\n    \"email\": \"abc@gmail.com\",\n    \"code\": \"123456\",\n    \"id\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -438,15 +322,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/slide/add",
+							"raw": "http://localhost:8080/group/join",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"slide",
-								"add"
+								"group",
+								"join"
 							]
 						}
 					},
@@ -464,7 +348,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"GroupId\": 1,\n    \"name\": \"presentation1\",\n    \"email\": \"abc@gmail.com\"\n}",
+							"raw": "{\n    \"namePresentation\": \"presentation2\",\n    \"email\": \"hmhuy.fit@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -517,11 +401,23 @@
 				},
 				{
 					"name": "detail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/presentation/details?id=1",
+							"raw": "http://localhost:8080/presentation/details",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -530,6 +426,106 @@
 							"path": [
 								"presentation",
 								"details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "get list room create",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJxIiwiZXhwIjoxNjY5ODQ4Njg2LCJpYXQiOjE2Njk4MzA2ODZ9.0TTsureUpQspj7S5KCN15-ZcLl1QZ4o6XS49UxDREgiOMTTSywPZpDNTDwSTaQNLDFf_6UNX7_zdaKq48-37-Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/account/listRoomCreated?email=abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"listRoomCreated"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "abc@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get list room join",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/listRoomJoined?email=abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"listRoomJoined"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "abc@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "slide",
+			"item": [
+				{
+					"name": "details slide",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/slide/detail?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"detail"
 							],
 							"query": [
 								{
@@ -542,12 +538,298 @@
 					"response": []
 				},
 				{
-					"name": "list presentation from group",
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/slide/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update slide",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\":1,\n    \"text\": \"question 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/slide/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add slide",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"presentation\": 1,\n    \"text\": \"your question2\",\n    \"genreQuestion\": \"MULTI_CHOICES\"\n    // \"genreQuestion\": \"SINGLE_CHOICE\",\n    // \"genreQuestion\": \"DOCUMENT\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/slide/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"slide",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "vote",
+			"item": [
+				{
+					"name": "add vote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"option1\",\n    \"slideId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/vote/add",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vote",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove vote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/vote/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vote",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update vote",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 2,\n    \"text\": \"option1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/vote/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"vote",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "realTime",
+			"item": [
+				{
+					"name": "change slide",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"slideId\": 1,\n    \"presentationId\": 1,\n    \"email\": \"abc@gmail.com\",\n    \"groupId\": 1,\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/presentation/list/group?id=1",
+							"raw": "http://localhost:8080/present/changeSlide",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"present",
+								"changeSlide"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "connect",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"presentationId\": 1,\n    \"groupId\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/present/connect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"present",
+								"connect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "start presentation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"presentationId\": 1,\n    \"mode\": \"PUBLIC\",\n    // \"mode\": \"PRIVATE\",\n    \"email\": \"abc@gmail.com\",\n    \"groupId\": 1 // if private\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/present/start",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"present",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "stop presentation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"presentationId\": 1,\n    \"groupId\": 1 // if private\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/present/stop",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -555,14 +837,56 @@
 							"port": "8080",
 							"path": [
 								"presentation",
-								"list",
-								"group"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "1"
+								"present",
+								"stop"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "chose vote",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"votes\": [1,2,3],\n    \"slideId\": 1,\n    \"presentationId\": 2,\n    \"email\": \"abc@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/present/vote/chose",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"present",
+								"vote",
+								"chose"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "real time",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/chat/presentation (send mess chat)",
+							"path": [
+								"chat",
+								"presentation (send mess chat)"
 							]
 						}
 					},
