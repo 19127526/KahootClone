@@ -5,10 +5,9 @@ import com.example.backend.mapper.UserMapper;
 import com.example.backend.model.dto.GroupDto;
 import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.dto.UserDto;
-import com.example.backend.service.AccountService;
+import com.example.backend.service.UserService;
 import com.example.backend.service.GroupService;
 import com.example.backend.service.PresentationService;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,14 +20,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-public class AccountController extends BaseController {
-    private final AccountService accountService;
+public class UserController extends BaseController {
+    private final UserService userService;
     private final UserMapper userMapper;
     private final GroupService groupService;
     private final PresentationService presentationService;
     @PostMapping("update")
     public ResponseEntity<UserDto> updateAccount(@ModelAttribute("value") UserDto userDto) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userMapper.entityToDto(accountService.update(userDto)));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userMapper.entityToDto(userService.update(userDto)));
     }
 
     @GetMapping("listRoomCreated")

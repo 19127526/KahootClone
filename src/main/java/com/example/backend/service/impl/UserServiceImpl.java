@@ -16,7 +16,7 @@ import com.example.backend.model.dto.UserDto;
 import com.example.backend.model.entity.UserEntity;
 import com.example.backend.model.request.AuthRequest;
 import com.example.backend.repository.UserRepository;
-import com.example.backend.service.AccountService;
+import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
@@ -32,7 +32,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class AccountServiceImpl implements AccountService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final JwtTokenUtil jwtTokenUtil;
     private final EmailUtils emailUtils;

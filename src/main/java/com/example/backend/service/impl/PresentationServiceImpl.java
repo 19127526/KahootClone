@@ -38,7 +38,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public PresentationDto getDetail(long id, String email) {
-        Tuple userPresentation = presentationRepository.getUserAndPresentationWithRole(email, id, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(email, id, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
             throw new ResourceNotFoundException("presentation not found");
         });
         PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
@@ -91,10 +91,10 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public void removeCollaborate(PresentationRequest presentationRequest) {
-        userRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
+        userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
             throw new ResourceInvalidException("Permission denied");
         });
-        Tuple userPresentation = userRepository.getUserAndPresentationWithRole(presentationRequest.getEmailRemoved(), presentationRequest.getId(), List.of(RolePresentation.Co_LAB, RolePresentation.PENDING)).orElseThrow(() -> {
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmailRemoved(), presentationRequest.getId(), List.of(RolePresentation.Co_LAB, RolePresentation.PENDING)).orElseThrow(() -> {
             throw new ResourceInvalidException("Collaborate not in presentation");
         });
         PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];

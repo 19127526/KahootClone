@@ -8,7 +8,7 @@ import com.example.backend.model.request.AuthRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
-public interface AccountService extends UserDetailsService {
+public interface UserService extends UserDetailsService {
     AuthenticationDto loginSocial(OAuth2AuthenticationToken oAuth2AuthenticationToken);
     UserEntity update(UserDto userDto);
     AuthenticationDto register(AuthRequest authRequest);
