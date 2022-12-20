@@ -1,6 +1,6 @@
 import PresentationCardComponent from "../../components/group/public/PresentationCardComponent";
 import React, {useEffect, useState} from "react";
-import MemberCar from "../../components/card/member/MemberCard";
+import MemberCar from "../../components/card/member/OwnerCard";
 import {useSelector} from "react-redux";
 import request from "../../apis/request";
 import {LIST_GROUP_JOINED_API} from "../../configs/url";

@@ -6,15 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/apis/group/groupApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/group/groupApi.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/aside/AsideComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/aside/AsideComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/member/MemberCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/member/MemberCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/member/MemberCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/member/OwnerCard.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/card/publicgroup/CardGroupComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/publicgroup/CardGroupComponent.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/GroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/GroupDetailPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/member/MemberPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/member/MemberPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

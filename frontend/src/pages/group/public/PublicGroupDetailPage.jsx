@@ -1,16 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useLocation, useParams} from "react-router-dom";
-import Notification from "../../../components/notification/Notification";
-import * as constraintNotification from "../../../components/notification/Notification.constraints"
-import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
-import {useSelector} from "react-redux";
-import PresentationCardComponent from "../../../components/group/public/PresentationCardComponent";
-import ListPresentationComponent from "../../../components/group/detail/ListPresentationComponent";
 import ListMemberPresentationComponent from "../../../components/group/detail/ListMemberPresentationComponent";
 
 const PublicGroupDetailPage = () => {
-    const location=useLocation();
-
+    // const location=useLocation();
+    // const type = location.pathname.split("/")[2];
     return (
       <>
           <article className="content items-list-page" style={{minHeight:"100vh"}}>
@@ -40,6 +34,7 @@ const PublicGroupDetailPage = () => {
                           {/*    </div>*/}
                           {/*</div>*/}
                           <div role="tabpanel" className="tab-pane fade active show" id="downloads">
+                              {/*{type === "created" ? <ListMemberPresentationComponent/> : <ListMemberJoined/>}*/}
                               <ListMemberPresentationComponent/>
                               <div id="dashboard-downloads-chart"
                                    style={{position: "relative", "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"}}>

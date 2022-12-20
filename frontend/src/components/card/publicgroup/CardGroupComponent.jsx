@@ -5,15 +5,15 @@ import {
   CREATED_GROUP_URI,
   DETAIL_GROUP_API,
   DETAIL_GROUP_URI,
-  GROUP_CREATED_DETAIL
+  GROUP_CREATED_DETAIL, GROUP_JOINED_DETAIL
 } from "../../../configs/url";
 import cardImage from"../../../assets/img/carimage.svg"
 
-const CardGroupComponent=({title,subTitle,id})=>{
+const CardGroupComponent=({type,title,subTitle,id})=>{
   const navigate=useNavigate();
 
   return(
-    <div className="card_public_group" onClick={()=>navigate(GROUP_CREATED_DETAIL+`/${id}`)}>
+    <div className="card_public_group" onClick={()=>navigate(type === "created" ? GROUP_CREATED_DETAIL+`/${id}` : GROUP_JOINED_DETAIL+`/${id}`)}>
     <div className="icon">
      {/* <svg viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
         <path

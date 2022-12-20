@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useSelector} from "react-redux";
 import request from "../../../apis/request";
-import {LIST_GROUP_JOINED_API} from "../../../configs/url";
-import MemberCar from "../../card/member/MemberCard";
+import MemberCar from "../../card/member/OwnerCard";
 import {getDetailGroup} from "../../../apis/group/groupApi";
 import {useLocation, useParams} from "react-router-dom";
+import OwnerCard from "../../card/member/OwnerCard";
+import MemberCard from "../../card/member/MemberCard";
 
 const ModalAddMember = ({id}) => {
     return (
@@ -49,10 +50,12 @@ const ListMemberPresentationComponent = () => {
     const id = splitType[splitType.length - 1]
     const dataProfile = useSelector(state => state.loginPage);
     const email = dataProfile.profile.email;
+    const [isOwner, setIsOwner] = useState(false)
 
     useEffect(() => {
         getDetailGroup({email: email, id: id}).then(res => {
             console.log(res.data.users)
+            setIsOwner(res.data.created === email)
             setItem(res.data.users)
         })
             .catch(err => {
@@ -66,9 +69,9 @@ const ListMemberPresentationComponent = () => {
                     <div className="row">
                         <div className="col-md-6">
                             <h3 className="title"> List Member &nbsp;
-                                <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
-                                   data-target="#addPresentation"> Add
-                                    New </a>
+                                {isOwner ? <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
+                                              data-target="#addPresentation"> Add
+                                    New </a> : <div/>}
                                 <ModalAddMember id={"addPresentation"}/>
                                 {/*<div className="action dropdown">*/}
                                 {/*    <button className="btn  btn-sm rounded-s btn-secondary dropdown-toggle"*/}
@@ -141,10 +144,13 @@ const ListMemberPresentationComponent = () => {
                         </div>
                     </li>
                     {
-                        item.map(value => (
-                            <MemberCar owner={email} id={id} email={value.email} role={value.role}
+                       isOwner ?  item.map(value => (
+                           <OwnerCard owner={email} id={id} email={value.email} role={value.role}
                                       userMame={value.userName} setItem = {setItem}/>
-                        ))
+                       )) : item.map(value => (
+                           <MemberCard email={value.email} role={value.role}
+                                      userMame={value.userName}/>
+                       ))
                     }
                 </ul>
             </div>

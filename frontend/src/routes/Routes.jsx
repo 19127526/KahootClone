@@ -3,17 +3,17 @@ import React from "react";
 import Loading from "../components/loading/LoadingComponent";
 import Authenticate from "../guards/AuthenticateRoutes";
 import {
-  FORGOT_PASSWORD_URI,
-  HOME_URI,
-  MEMBER_URI,
-  PRESENTATION_EDIT_URI,
-  PRESENTATION_PRIVATE,
-  GROUP_CREATED_DETAIL,
-  PRESENTATION_SEE_URI,
-  PRESENTATION_SHOW_URI,
-  CREATED_GROUP_URI,
-  REDIRECT_URI,
-  VERIFY_INVITE_URI
+    FORGOT_PASSWORD_URI,
+    HOME_URI,
+    MEMBER_URI,
+    PRESENTATION_EDIT_URI,
+    PRESENTATION_PRIVATE,
+    GROUP_CREATED_DETAIL,
+    PRESENTATION_SEE_URI,
+    PRESENTATION_SHOW_URI,
+    CREATED_GROUP_URI,
+    REDIRECT_URI,
+    VERIFY_INVITE_URI, JOINED_GROUP_URI, GROUP_JOINED_DETAIL
 } from "../configs/url";
 import Oauth2Page from "../authors/oauth2/Oauth2Page";
 import RegisterPage from "../pages/register/RegisterPage";
@@ -196,6 +196,19 @@ const RoutesPage = () => {
           </React.Suspense>
         }
       />
+
+        <Route
+            path={JOINED_GROUP_URI}
+            element={
+                <React.Suspense fallback={<Loading/>}>
+                    {" "}
+                    <Authenticate path={JOINED_GROUP_URI}>
+                        <PublicGroupPageLazy/>
+                    </Authenticate>
+                </React.Suspense>
+            }
+        />
+
       <Route
         path={GROUP_CREATED_DETAIL + "/:groupId"}
         element={
@@ -208,17 +221,30 @@ const RoutesPage = () => {
           </React.Suspense>
         }
       />
-      <Route
-        path={PRESENTATION_PRIVATE + "/:groupId"}
-        element={
-          <React.Suspense fallback={<Loading/>}>
-            {" "}
-            <Authenticate path={PRESENTATION_PRIVATE}>
-              <PublicGroupDetailPageLazy/>
-            </Authenticate>
-          </React.Suspense>
-        }
-      />
+
+        <Route
+            path={GROUP_JOINED_DETAIL + "/:groupId"}
+            element={
+
+                <React.Suspense fallback={<Loading/>}>
+                    {" "}
+                    <Authenticate path={GROUP_JOINED_DETAIL + "/:groupId"}>
+                        <PublicGroupDetailPageLazy/>
+                    </Authenticate>
+                </React.Suspense>
+            }
+        />
+      {/*<Route*/}
+      {/*  path={PRESENTATION_PRIVATE + "/:groupId"}*/}
+      {/*  element={*/}
+      {/*    <React.Suspense fallback={<Loading/>}>*/}
+      {/*      {" "}*/}
+      {/*      <Authenticate path={PRESENTATION_PRIVATE}>*/}
+      {/*        <PublicGroupDetailPageLazy/>*/}
+      {/*      </Authenticate>*/}
+      {/*    </React.Suspense>*/}
+      {/*  }*/}
+      {/*/>*/}
       <Route
         path={MEMBER_URI}
         element={

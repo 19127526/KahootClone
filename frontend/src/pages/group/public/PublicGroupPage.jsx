@@ -4,8 +4,9 @@ import {addNewPresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints";
 import request from "../../../apis/request";
-import {CREATE_GROUP, LIST_GROUP_CREATED_API} from "../../../configs/url";
+import {CREATE_GROUP, LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../../configs/url";
 import {useSelector} from "react-redux";
+import {useLocation} from "react-router-dom";
 
 
 const ModalAddGroup = ({id,setIsAdd}) => {
@@ -76,13 +77,16 @@ const ModalAddGroup = ({id,setIsAdd}) => {
 }
 
 const PublicGroupPage=()=>{
-  const [listGroupCreated,setlistGroupCreated]=useState([])
+    const location=useLocation();
+    const splitType = location.pathname.split("/")
+    const type = splitType[splitType.length-1]
+    const [listGroupCreated,setlistGroupCreated]=useState([])
   const dataProfile=useSelector(state=> state.loginPage);
   const email=dataProfile.profile.email;
   const[add,isAdd]=useState(false);
   useEffect(()=>{
     const getlistGroupCreated= async ()=>{
-      await request.get(LIST_GROUP_CREATED_API+`?email=${email}`)
+      await request.get(type === "created" ? LIST_GROUP_CREATED_API+`?email=${email}` : LIST_GROUP_JOINED_API+`?email=${email}`)
         .then(res=>{
           if(res.status===200){
             setlistGroupCreated(res.data);
@@ -96,18 +100,19 @@ const PublicGroupPage=()=>{
 
     }
     getlistGroupCreated()
-  },[add])
+  },[add, type])
 
   return(
     <article className="content charts-morris-page">
       <div className="title-block">
         <div className="row">
             <div className="col-md-6">
-              <h3 className="title"> Created Groups &nbsp;<a className="btn btn-primary btn-sm rounded-s"
-                                                                data-toggle="modal" data-target="#addGroup"> Add
-                New </a>
+              <h3 className="title"> {type === "created" ? "Created" : "Joined"} Groups&nbsp;
+                  {type === "created" ?   <a className="btn btn-primary btn-sm rounded-s"
+                                             data-toggle="modal" data-target="#addGroup"> Add
+                      New </a> : <div/>}
               </h3>
-              <p className="title-description">List group is created </p></div>
+              <p className="title-description">List group {type === "created" ? "is created" : "joined"}</p></div>
         </div>
 
         <ModalAddGroup id={"addGroup"} setIsAdd={()=>isAdd(!add)}/>
@@ -116,7 +121,7 @@ const PublicGroupPage=()=>{
           <div className="row">
             {listGroupCreated.map(index=>(
               <div className="col-md-6" style={{padding:"10px"}}>
-                <CardGroupComponent id={index.id} title={`Group: ${index.name}`} subTitle={index.description===null?"Group Slide Viet Nam":index.description}/>
+                <CardGroupComponent type={type} id={index.id} title={`Group: ${index.name}`} subTitle={index.description===null?"Group Slide Viet Nam":index.description}/>
               </div>
             ))}
           </div>

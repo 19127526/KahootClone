@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {CREATED_GROUP_URI} from "../../configs/url";
+import {CREATED_GROUP_URI, JOINED_GROUP_URI} from "../../configs/url";
 
 
 function AsideComponent({ onClose }) {
@@ -44,7 +44,7 @@ function AsideComponent({ onClose }) {
                 <li  onClick={()=>navigate(CREATED_GROUP_URI)}>
                   <a> Created Groups </a>
                 </li>
-                <li  onClick={()=>navigate("/present/private")}>
+                <li  onClick={()=>navigate(JOINED_GROUP_URI)}>
                   <a> Joined Groups </a>
                 </li>
               </ul>

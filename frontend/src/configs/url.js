@@ -11,7 +11,7 @@ export const DETAIL_GROUP_API="/group/detail"
 export const INVITE_MEMBER_INTO_GROUP="/room/join"
 export const REGISTER_URi="/account/auth/register"
 export const VALIDATE_OTP_URI="/account/auth/validate/otp"
-export const LOGIN_NORMAL="/auth/loginTraditional"
+export const LOGIN_NORMAL="/account/auth/loginTraditional"
 export const LIST_PRESENTATION_FROM_GROUP = "/presentation/list/group"
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
@@ -40,6 +40,8 @@ export const DETAIL_GROUP_URI="/group/detail/"
 export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const CREATED_GROUP_URI="/group/created";
+export const JOINED_GROUP_URI="/group/joined";
+
 export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_SEE_URI="/presentation/:preId/see"
 export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
@@ -47,6 +49,8 @@ export const PRESENTATION_SHOW_URI="/presentation/:id/show"
 export const FORGOT_PASSWORD_URI="/forgot"
 
 export const GROUP_CREATED_DETAIL="/group/created/detail"
+export const GROUP_JOINED_DETAIL="/group/joined/detail"
+
 export const PRESENTATION_PRIVATE="/present/private"
 export const REGISTER_URI="/register"
 export const LOGIN_URI="/login"
