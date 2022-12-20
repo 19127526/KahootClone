@@ -11,7 +11,7 @@ public interface PresentationService {
 
     PresentationEntity addPresentation(PresentationRequest presentationRequest);
 
-    PresentationDto getDetail(PresentationRequest presentationRequest);
+    PresentationDto getDetail(long id, String email);
 
     Boolean clearAdvanced(PresentationRequest presentationRequest);
 }

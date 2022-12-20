@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.PresentationMapper;
 import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.request.PresentationRequest;
@@ -12,13 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("presentation")
-public class PresentationController {
+public class PresentationController extends BaseController {
     private final PresentationService presentationService;
     private final PresentationMapper presentationMapper;
 
     @GetMapping("details")
-    public ResponseEntity<PresentationDto> getDetail(@RequestBody PresentationRequest presentationRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getDetail(presentationRequest));
+    public ResponseEntity<PresentationDto> getDetail(long id, String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getDetail(id, email));
     }
 
     @PostMapping("add")

@@ -10,9 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("https://kahoot-clone-zwc3-git-mainv2-19127526.vercel.app/","http://localhost:3000/")
-                .allowedMethods("GET","POST","PUT","DELETE","HEAD","OPTION")
-                .allowCredentials(true);
+//        registry.addMapping("/**")
+//                .allowedOrigins("https://kahoot-clone-zwc3-git-mainv2-19127526.vercel.app/","http://localhost:3000/")
+//                .allowedMethods("GET","POST","PUT","DELETE","HEAD","OPTION")
+//                .allowCredentials(true);
     }
 }

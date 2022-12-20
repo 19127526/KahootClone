@@ -18,8 +18,8 @@ public class GroupController extends BaseController {
     private final GroupService groupService;
 
     @GetMapping("detail")
-    public ResponseEntity<GroupDto> getDetail(@RequestBody GroupRequest groupRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(groupService.getDetail(groupRequest));
+    public ResponseEntity<GroupDto> getDetail(long id, String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(groupService.getDetail(id, email));
     }
 
     @PostMapping("generate")
@@ -51,7 +51,7 @@ public class GroupController extends BaseController {
     public ResponseEntity<GroupDto> join(@RequestBody GroupRequest groupRequest) {
         groupService.join(groupRequest);
         // request 2 time.
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(groupService.getDetail(groupRequest));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(groupService.getDetail(groupRequest.getId(), groupRequest.getEmail()));
     }
 
     @PostMapping("assignRole")
