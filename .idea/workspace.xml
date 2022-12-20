@@ -6,12 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/Sider/ChartSider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/Sider/ChartSider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/apis/group/groupApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/group/groupApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/aside/AsideComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/aside/AsideComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/member/MemberCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/member/MemberCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/publicgroup/CardGroupComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/publicgroup/CardGroupComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/GroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/GroupDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,6 +105,7 @@
       <workItem from="1670350406003" duration="5418000" />
       <workItem from="1670988145688" duration="15766000" />
       <workItem from="1671244978196" duration="603000" />
+      <workItem from="1671519445881" duration="8353000" />
     </task>
     <servers />
   </component>

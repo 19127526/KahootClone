@@ -4,7 +4,7 @@ import {addNewPresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../../components/notification/Notification";
 import * as constraintNotification from "../../../components/notification/Notification.constraints";
 import request from "../../../apis/request";
-import {CREATE_GROUP, LIST_GROUP_CREATED_API, LIST_GROUP_JOINED_API} from "../../../configs/url";
+import {CREATE_GROUP, LIST_GROUP_CREATED_API} from "../../../configs/url";
 import {useSelector} from "react-redux";
 
 
@@ -76,16 +76,16 @@ const ModalAddGroup = ({id,setIsAdd}) => {
 }
 
 const PublicGroupPage=()=>{
-  const [listGroupJoined,setListGroupJoined]=useState([])
+  const [listGroupCreated,setlistGroupCreated]=useState([])
   const dataProfile=useSelector(state=> state.loginPage);
   const email=dataProfile.profile.email;
   const[add,isAdd]=useState(false);
   useEffect(()=>{
-    const getListGroupJoined= async ()=>{
+    const getlistGroupCreated= async ()=>{
       await request.get(LIST_GROUP_CREATED_API+`?email=${email}`)
         .then(res=>{
           if(res.status===200){
-            setListGroupJoined(res.data);
+            setlistGroupCreated(res.data);
             console.log(res.data)
           }
           else{
@@ -95,7 +95,7 @@ const PublicGroupPage=()=>{
         .catch(err=>{})
 
     }
-    getListGroupJoined()
+    getlistGroupCreated()
   },[add])
 
   return(
@@ -103,18 +103,18 @@ const PublicGroupPage=()=>{
       <div className="title-block">
         <div className="row">
             <div className="col-md-6">
-              <h3 className="title"> Public Group &nbsp;<a className="btn btn-primary btn-sm rounded-s"
+              <h3 className="title"> Created Groups &nbsp;<a className="btn btn-primary btn-sm rounded-s"
                                                                 data-toggle="modal" data-target="#addGroup"> Add
                 New </a>
               </h3>
-              <p className="title-description">List group is public </p></div>
+              <p className="title-description">List group is created </p></div>
         </div>
 
         <ModalAddGroup id={"addGroup"} setIsAdd={()=>isAdd(!add)}/>
 
         <section className="section">
           <div className="row">
-            {listGroupJoined.map(index=>(
+            {listGroupCreated.map(index=>(
               <div className="col-md-6" style={{padding:"10px"}}>
                 <CardGroupComponent id={index.id} title={`Group: ${index.name}`} subTitle={index.description===null?"Group Slide Viet Nam":index.description}/>
               </div>

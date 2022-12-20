@@ -1,5 +1,5 @@
-export const SERVER_URL="https://spring-heroku.herokuapp.com"
-// export const SERVER_URL="http://localhost:8080"
+// export const SERVER_URL="https://spring-heroku.herokuapp.com"
+export const SERVER_URL="http://localhost:8080"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
@@ -7,11 +7,11 @@ export const CREATE_GROUP = "/room/generate"
 
 export const LIST_GROUP_CREATED_API = "account/listRoomCreated"
 export const LIST_GROUP_JOINED_API = "account/listRoomJoined"
-export const DETAIL_GROUP_API="/room/detail?name="
+export const DETAIL_GROUP_API="/group/detail"
 export const INVITE_MEMBER_INTO_GROUP="/room/join"
 export const REGISTER_URi="/account/auth/register"
 export const VALIDATE_OTP_URI="/account/auth/validate/otp"
-export const LOGIN_NORMAL="/account/auth/loginTraditional"
+export const LOGIN_NORMAL="/auth/loginTraditional"
 export const LIST_PRESENTATION_FROM_GROUP = "/presentation/list/group"
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
@@ -27,6 +27,9 @@ export const STOP_PRESENTATION = "/presentation/present/stop"
 export const NEXT_SLIDE = "/play/nextSlide"
 export const CHANGE_OPTION = "/option/update"
 export const CHANGE_QUESTION = "/slide/update"
+export const ASSIGN_ROLE = "/group/assignRole"
+export const REMOVE_MEMBER = "/group/remove/member"
+export const DELETE_GROUP="/group/delete"
 
 
 //CLIENT ROUTE
@@ -34,17 +37,16 @@ export const REDIRECT_URI="/login/oauth2/redirect"
 export const HOME_URI="/home"
 export const GROUP_URI = "/group"
 export const DETAIL_GROUP_URI="/group/detail/"
-export const KICK_MEMBER_IN_GROUP_URI="/room/remove"
 export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
-export const PUBLIC_GROUP_URI="/group/public";
+export const CREATED_GROUP_URI="/group/created";
 export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_SEE_URI="/presentation/:preId/see"
 export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
 export const PRESENTATION_SHOW_URI="/presentation/:id/show"
 export const FORGOT_PASSWORD_URI="/forgot"
 
-export const PRESENTATION_PUBLIC="/present/public"
+export const GROUP_CREATED_DETAIL="/group/created/detail"
 export const PRESENTATION_PRIVATE="/present/private"
 export const REGISTER_URI="/register"
 export const LOGIN_URI="/login"

@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {PUBLIC_GROUP_URI} from "../../configs/url";
+import {CREATED_GROUP_URI} from "../../configs/url";
 
 
 function AsideComponent({ onClose }) {
@@ -28,27 +28,27 @@ function AsideComponent({ onClose }) {
               <a onClick={()=>navigate("/")}>
                 <i className="fa fa-home"></i> Dashboard </a>
             </li>
-            <li id="managementProduct">
-              <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>
-                <i className="fa fa-th-large">
-                </i> Group
-              </a>
-            </li>
-           {/* <li>
+            {/*<li id="managementProduct">*/}
+            {/*  <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>*/}
+            {/*    <i className="fa fa-th-large">*/}
+            {/*    </i> Group*/}
+            {/*  </a>*/}
+            {/*</li>*/}
+            <li>
               <a href="#">
                 <i className="fa fa-area-chart"></i> Present
                 &nbsp;&nbsp; &nbsp;
                 <i className="fa arrow"></i>
               </a>
               <ul className="sidebar-nav">
-                <li  onClick={()=>navigate("/present/public")}>
-                  <a> Public </a>
+                <li  onClick={()=>navigate(CREATED_GROUP_URI)}>
+                  <a> Created Groups </a>
                 </li>
                 <li  onClick={()=>navigate("/present/private")}>
-                  <a> Private </a>
+                  <a> Joined Groups </a>
                 </li>
               </ul>
-            </li>*/}
+            </li>
           </ul>
         </nav>
       </div>

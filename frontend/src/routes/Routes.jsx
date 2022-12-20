@@ -8,10 +8,10 @@ import {
   MEMBER_URI,
   PRESENTATION_EDIT_URI,
   PRESENTATION_PRIVATE,
-  PRESENTATION_PUBLIC,
+  GROUP_CREATED_DETAIL,
   PRESENTATION_SEE_URI,
   PRESENTATION_SHOW_URI,
-  PUBLIC_GROUP_URI,
+  CREATED_GROUP_URI,
   REDIRECT_URI,
   VERIFY_INVITE_URI
 } from "../configs/url";
@@ -186,23 +186,23 @@ const RoutesPage = () => {
 
 
       <Route
-        path={PUBLIC_GROUP_URI}
+        path={CREATED_GROUP_URI}
         element={
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate path={PUBLIC_GROUP_URI}>
+            <Authenticate path={CREATED_GROUP_URI}>
               <PublicGroupPageLazy/>
             </Authenticate>
           </React.Suspense>
         }
       />
       <Route
-        path={PRESENTATION_PUBLIC + "/:groupId"}
+        path={GROUP_CREATED_DETAIL + "/:groupId"}
         element={
 
           <React.Suspense fallback={<Loading/>}>
             {" "}
-            <Authenticate path={PRESENTATION_PUBLIC + "/:groupId"}>
+            <Authenticate path={GROUP_CREATED_DETAIL + "/:groupId"}>
               <PublicGroupDetailPageLazy/>
             </Authenticate>
           </React.Suspense>

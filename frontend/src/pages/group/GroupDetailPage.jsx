@@ -12,7 +12,7 @@ const ListGroupPage = () => {
   const [data, setData] = useState([]);
   const {name} = useParams();
   const [isOwner, setIsOwner] = useState(false);
-  const dataProfile = useSelector(state => state.loginPage);
+  const dataProfile = useSelector(state => state.loginPage).profile;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -38,19 +38,18 @@ const ListGroupPage = () => {
         setLoading(false);
       });
   };
+
   useEffect(() => {
     if (loading) {
       return;
     }
     setLoading(true);
-    getDetailGroup({name: name})
+    console.log(dataProfile.email)
+    console.log(name)
+    getDetailGroup({email: dataProfile.email, id: name})
       .then(res => {
-        (res.data.userRoom.forEach(index => {
-          if ((index.email === dataProfile.profile.email) && (index.role === "OWNER")) {
-            setIsOwner(true)
-          }
-        }));
-        setData(res.data.userRoom);
+        console.log(res.data.users)
+        setData(res.data.users);
         setLoading(false);
       })
       .catch(err => {
