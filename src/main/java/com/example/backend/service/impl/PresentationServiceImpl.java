@@ -32,14 +32,14 @@ public class PresentationServiceImpl implements PresentationService {
     private final PresentationMapper presentationMapper;
 
     @Override
-    public PresentationDto getDetail(PresentationRequest presentationRequest) {
-        PresentationEntity presentation = presentationRepository.findPresentationEntityByAuthor_EmailAndId(presentationRequest.getEmail(), presentationRequest.getId()).orElseThrow(() -> {
+    public PresentationDto getDetail(long id, String email) {
+        PresentationEntity presentation = presentationRepository.findPresentationEntityByAuthor_EmailAndId(email, id).orElseThrow(() -> {
             throw new ResourceNotFoundException("presentation not found");
         });
-        List<SlideDto> slides = slideRepository.findByPresentation_Id(presentationRequest.getId()).stream().map(slideMapper::entityToDto).toList();
+        List<SlideDto> slides = slideRepository.findByPresentation_Id(id).stream().map(slideMapper::entityToDto).toList();
         PresentationDto presentationDto = presentationMapper.entityToDto(presentation);
         presentationDto.setSlides(slides);
-        presentationDto.setAuthor(presentationRequest.getEmail());
+        presentationDto.setAuthor(presentation.getAuthor().getEmail());
         return presentationDto;
     }
 

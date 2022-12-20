@@ -17,7 +17,7 @@ public interface GroupService {
 
     List<GroupDto> getGroupsJoined(String email);
 
-    GroupDto getDetail(GroupRequest groupRequest);
+    GroupDto getDetail(long id, String email);
 
     void delete(GroupRequest groupRequest);
 

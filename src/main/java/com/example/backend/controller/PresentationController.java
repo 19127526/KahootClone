@@ -18,8 +18,8 @@ public class PresentationController extends BaseController {
     private final PresentationMapper presentationMapper;
 
     @GetMapping("details")
-    public ResponseEntity<PresentationDto> getDetail(@RequestBody PresentationRequest presentationRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getDetail(presentationRequest));
+    public ResponseEntity<PresentationDto> getDetail(long id, String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getDetail(id, email));
     }
 
     @PostMapping("add")

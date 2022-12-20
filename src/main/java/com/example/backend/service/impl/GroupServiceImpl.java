@@ -89,17 +89,17 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDto getDetail(GroupRequest groupRequest) {
-        Tuple user_group = groupRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER, Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> {
+    public GroupDto getDetail(long id, String email) {
+        Tuple user_group = groupRepository.getUserAndGroupWithRoles(email, id, List.of(Role.OWNER, Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> {
             throw new ResourceInvalidException("Permission denied");
         });
         GroupEntity group = (GroupEntity) user_group.toArray()[1];
         GroupDto groupDto = groupMapper.entityToDto(group);
-        List<UserGroupDto> userGroups = groupRepository.getGroupDetail(groupRequest.getId()).stream().map(tuple -> {
+        List<UserGroupDto> userGroups = groupRepository.getGroupDetail(id).stream().map(tuple -> {
             UserEntity user = (UserEntity) tuple.toArray()[0];
             Role role = (Role) tuple.toArray()[1];
             if (role == Role.OWNER) groupDto.setCreated(user.getEmail());
-            return UserGroupDto.builder().id(user.getId()).group(groupRequest.getId()).email(user.getEmail()).userName(user.getUserName()).imageURL(user.getImageURL()).role(role).build();
+            return UserGroupDto.builder().id(user.getId()).group(id).email(user.getEmail()).userName(user.getUserName()).imageURL(user.getImageURL()).role(role).build();
         }).toList().stream().sorted(Comparator.comparing(UserGroupDto::getRole)).toList();
         groupDto.setUsers(userGroups);
         return groupDto;
