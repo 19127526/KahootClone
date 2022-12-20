@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.VoteMapper;
 import com.example.backend.model.dto.VoteDto;
 import com.example.backend.model.entity.VoteEntity;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("vote")
 @RequiredArgsConstructor
-public class VoteController {
+public class VoteController extends BaseController {
     private final VoteService voteService;
 
     private final VoteMapper voteMapper;

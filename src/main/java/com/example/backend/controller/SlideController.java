@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.SlideMapper;
 import com.example.backend.model.dto.SlideDto;
 import com.example.backend.service.SlideService;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("slide")
-public class SlideController {
+public class SlideController extends BaseController {
 
     private final SlideService slideService;
     private final SlideMapper slideMapper;
