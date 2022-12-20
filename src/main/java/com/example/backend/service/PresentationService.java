@@ -14,4 +14,12 @@ public interface PresentationService {
     PresentationDto getDetail(long id, String email);
 
     Boolean clearAdvanced(PresentationRequest presentationRequest);
+
+    void inviteCollaborate(PresentationRequest presentationRequest);
+
+    void removeCollaborate(PresentationRequest presentationRequest);
+
+    void acceptPending(PresentationRequest presentationRequest);
+
+    void rejectPending(PresentationRequest presentationRequest);
 }

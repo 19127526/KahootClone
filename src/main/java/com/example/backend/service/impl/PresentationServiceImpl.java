@@ -1,5 +1,6 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.common.model.RolePresentation;
 import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.PresentationMapper;
@@ -8,11 +9,14 @@ import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.dto.SlideDto;
 import com.example.backend.model.entity.PresentationEntity;
 import com.example.backend.model.entity.UserEntity;
+import com.example.backend.model.entity.UserPresentationEntity;
 import com.example.backend.model.request.PresentationRequest;
 import com.example.backend.repository.PresentationRepository;
 import com.example.backend.repository.SlideRepository;
+import com.example.backend.repository.UserPresentationRepository;
 import com.example.backend.repository.UserRepository;
 import com.example.backend.service.PresentationService;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,12 +34,14 @@ public class PresentationServiceImpl implements PresentationService {
     private final UserRepository userRepository;
     private final SlideMapper slideMapper;
     private final PresentationMapper presentationMapper;
+    private final UserPresentationRepository userPresentationRepository;
 
     @Override
     public PresentationDto getDetail(long id, String email) {
-        PresentationEntity presentation = presentationRepository.findPresentationEntityByAuthor_EmailAndId(email, id).orElseThrow(() -> {
+        Tuple userPresentation = presentationRepository.getUserAndPresentationWithRole(email, id, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
             throw new ResourceNotFoundException("presentation not found");
         });
+        PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
         List<SlideDto> slides = slideRepository.findByPresentation_Id(id).stream().map(slideMapper::entityToDto).toList();
         PresentationDto presentationDto = presentationMapper.entityToDto(presentation);
         presentationDto.setSlides(slides);
@@ -50,6 +56,7 @@ public class PresentationServiceImpl implements PresentationService {
         });
         PresentationEntity presentation = new PresentationEntity();
         presentation.setName(presentationRequest.getNamePresentation());
+        user.addPresentationCreated(presentation);
         user.addPresentation(presentation);
         PresentationEntity presentationEntity = presentationRepository.save(presentation);
         userRepository.save(user);
@@ -64,6 +71,54 @@ public class PresentationServiceImpl implements PresentationService {
     @Override
     public Boolean clearAdvanced(PresentationRequest presentationRequest) {
         return null;
+    }
+
+    @Override
+    public void inviteCollaborate(PresentationRequest presentationRequest) {
+        UserEntity userInvited = userRepository.findAccountEntityByEmail(presentationRequest.getEmailInvited()).orElseThrow(() -> {
+            throw new ResourceInvalidException("email not exist");
+        });
+        if (userPresentationRepository.findUserPresentationEntityByUsers_EmailAndPresentation_Id(presentationRequest.getEmailInvited(), presentationRequest.getId()).isPresent()) {
+            throw new ResourceInvalidException("user was collaborate in presentation");
+        }
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("Permission denied");
+        });
+        PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
+        presentation.addCollaborate(userInvited);
+        presentationRepository.save(presentation);
+    }
+
+    @Override
+    public void removeCollaborate(PresentationRequest presentationRequest) {
+        userRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("Permission denied");
+        });
+        Tuple userPresentation = userRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.Co_LAB, RolePresentation.PENDING)).orElseThrow(() -> {
+            throw new ResourceInvalidException("Collaborate not in presentation");
+        });
+        PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
+        presentation.removeCollaborate((UserEntity) userPresentation.toArray()[0]);
+        presentationRepository.save(presentation);
+    }
+
+    @Override
+    public void acceptPending(PresentationRequest presentationRequest) {
+        UserPresentationEntity userPresentation = userPresentationRepository.findUserPresentationEntityByUsers_EmailAndPresentation_IdAndRole(presentationRequest.getEmail(), presentationRequest.getId(), RolePresentation.PENDING).orElseThrow(() -> {
+            throw new ResourceInvalidException("you not in pending");
+        });
+        userPresentation.setRole(RolePresentation.Co_LAB);
+        userPresentationRepository.save(userPresentation);
+    }
+
+    @Override
+    public void rejectPending(PresentationRequest presentationRequest) {
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.PENDING)).orElseThrow(() -> {
+            throw new ResourceInvalidException("you not in pending");
+        });
+        PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
+        presentation.removeCollaborate((UserEntity) userPresentation.toArray()[0]);
+        presentationRepository.save(presentation);
     }
 
     @Override

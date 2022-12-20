@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 public class PresentationRequest {
     private Long id;
     private String email;
+    private String emailInvited;
+    private String emailRemoved;
     private String namePresentation;
     private String urlPresentation;
 

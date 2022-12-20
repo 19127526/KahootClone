@@ -1,6 +1,7 @@
 package com.example.backend.model.entity;
 
 import com.example.backend.common.model.Role;
+import com.example.backend.common.model.RolePresentation;
 import com.example.backend.common.model.SuperEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,34 +33,39 @@ public class UserEntity extends SuperEntity {
 
     @OneToMany(mappedBy = "created", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<GroupEntity> groupsCreated = new ArrayList<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
+    private List<PresentationEntity> presentationsCreated = new ArrayList<>();
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserGroupEntity> groups = new ArrayList<>();
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserPresentationEntity> presentations = new ArrayList<>();
+
     public void addGroupCreated(GroupEntity group) {
         this.groupsCreated.add(group);
         group.setCreated(this);
     }
+
     public void removeGroupCreated(GroupEntity group) {
         this.groupsCreated.remove(group);
         group.setCreated(null);
     }
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
-    private List<PresentationEntity> presentations = new ArrayList<>();
-    public void addPresentation(PresentationEntity presentation) {
-        this.presentations.add(presentation);
+    public void addPresentationCreated(PresentationEntity presentation) {
+        this.presentationsCreated.add(presentation);
         presentation.setAuthor(this);
     }
-    public void removePresentation(PresentationEntity presentation) {
-        this.presentations.remove(presentation);
+
+    public void removePresentationCreated(PresentationEntity presentation) {
+        this.presentationsCreated.remove(presentation);
         presentation.setAuthor(null);
     }
 
-
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserGroupEntity> groups = new ArrayList<>();
     public void addGroup(GroupEntity group) {
         UserGroupEntity userGroup = new UserGroupEntity(this, group, Role.OWNER);
         groups.add(userGroup);
         group.getUsers().add(userGroup);
     }
+
     public void removeGroup(GroupEntity groupEntity) {
         for (Iterator<UserGroupEntity> iterator = groups.iterator(); iterator.hasNext(); ) {
             UserGroupEntity userGroup = iterator.next();
@@ -68,6 +74,24 @@ public class UserEntity extends SuperEntity {
                 userGroup.getGroup().getUsers().remove(userGroup);
                 userGroup.setUsers(null);
                 userGroup.setGroup(null);
+            }
+        }
+    }
+
+    public void addPresentation(PresentationEntity presentation) {
+        UserPresentationEntity userPresentation = new UserPresentationEntity(this, presentation, RolePresentation.OWNER);
+        presentations.add(userPresentation);
+        presentation.getUserPresentations().add(userPresentation);
+    }
+
+    public void removePresentation(PresentationEntity presentation) {
+        for (Iterator<UserPresentationEntity> iterator = presentations.iterator(); iterator.hasNext(); ) {
+            UserPresentationEntity userPresentation = iterator.next();
+            if (userPresentation.getUsers().equals(this) && userPresentation.getPresentation().equals(presentation)) {
+                iterator.remove();
+                userPresentation.getPresentation().getUserPresentations().remove(userPresentation);
+                userPresentation.setUsers(null);
+                userPresentation.setPresentation(null);
             }
         }
     }
