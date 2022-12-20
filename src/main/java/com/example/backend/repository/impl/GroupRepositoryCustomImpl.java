@@ -14,7 +14,6 @@ import static com.example.backend.model.entity.QGroupEntity.groupEntity;
 import static com.example.backend.model.entity.QUserEntity.userEntity;
 import static com.example.backend.model.entity.QUserGroupEntity.userGroupEntity;
 
-
 @Repository
 public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     @PersistenceContext
