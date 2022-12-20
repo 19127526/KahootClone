@@ -4,6 +4,8 @@ import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.entity.PresentationEntity;
 import com.example.backend.model.request.PresentationRequest;
 
+import java.util.List;
+
 public interface PresentationService {
     void deletePresentation(PresentationRequest presentationRequest);
 
@@ -22,4 +24,8 @@ public interface PresentationService {
     void acceptPending(PresentationRequest presentationRequest);
 
     void rejectPending(PresentationRequest presentationRequest);
+
+    List<PresentationDto> getListJoin(String email);
+
+    List<PresentationDto> getListPending(String email);
 }

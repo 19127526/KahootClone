@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface UserPresentationRepositoryCustom {
     Optional<Tuple> getUserAndPresentationWithRole(String email, long presentationId, List<RolePresentation> roles);
+    List<Tuple> getListPresentationsAndOwnerWithRole(String email, List<RolePresentation> roles);
 }

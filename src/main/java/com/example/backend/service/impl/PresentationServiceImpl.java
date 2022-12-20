@@ -94,7 +94,7 @@ public class PresentationServiceImpl implements PresentationService {
         userRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
             throw new ResourceInvalidException("Permission denied");
         });
-        Tuple userPresentation = userRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.Co_LAB, RolePresentation.PENDING)).orElseThrow(() -> {
+        Tuple userPresentation = userRepository.getUserAndPresentationWithRole(presentationRequest.getEmailRemoved(), presentationRequest.getId(), List.of(RolePresentation.Co_LAB, RolePresentation.PENDING)).orElseThrow(() -> {
             throw new ResourceInvalidException("Collaborate not in presentation");
         });
         PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
@@ -119,6 +119,24 @@ public class PresentationServiceImpl implements PresentationService {
         PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
         presentation.removeCollaborate((UserEntity) userPresentation.toArray()[0]);
         presentationRepository.save(presentation);
+    }
+
+    @Override
+    public List<PresentationDto> getListJoin(String email) {
+        return userPresentationRepository.getListPresentationsAndOwnerWithRole(email, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).stream().map(tuple -> {
+            PresentationDto presentationDto = presentationMapper.entityToDto((PresentationEntity) tuple.toArray()[0]);
+            presentationDto.setAuthor(((UserEntity) tuple.toArray()[1]).getEmail());
+            return presentationDto;
+        }).toList();
+    }
+
+    @Override
+    public List<PresentationDto> getListPending(String email) {
+        return userPresentationRepository.getListPresentationsAndOwnerWithRole(email, List.of(RolePresentation.PENDING)).stream().map(tuple -> {
+            PresentationDto presentationDto = presentationMapper.entityToDto((PresentationEntity) tuple.toArray()[0]);
+            presentationDto.setAuthor(((UserEntity) tuple.toArray()[1]).getEmail());
+            return presentationDto;
+        }).toList();
     }
 
     @Override

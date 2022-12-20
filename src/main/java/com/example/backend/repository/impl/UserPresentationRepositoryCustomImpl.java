@@ -1,6 +1,7 @@
 package com.example.backend.repository.impl;
 
 import com.example.backend.common.model.RolePresentation;
+import com.example.backend.model.entity.PresentationEntity;
 import com.example.backend.repository.PresentationRepository;
 import com.example.backend.repository.UserPresentationRepositoryCustom;
 import com.querydsl.core.Tuple;
@@ -34,5 +35,15 @@ public class UserPresentationRepositoryCustomImpl implements UserPresentationRep
                         .where(userPresentationEntity.users.email.eq(email).and(userPresentationEntity.presentation.id.eq(presentationId)))
                         .select(userEntity, presentationEntity).fetchOne()
         );
+    }
+
+    @Override
+    public List<Tuple> getListPresentationsAndOwnerWithRole(String email, List<RolePresentation> roles) {
+        return new JPAQueryFactory(entityManager)
+                .from(userPresentationEntity)
+                .where(userPresentationEntity.users.email.eq(email).and(userPresentationEntity.role.in(roles)))
+                .join(presentationEntity).on(presentationEntity.id.eq(userPresentationEntity.presentation.id))
+                .join(userEntity).on(userEntity.id.eq(presentationEntity.author.id))
+                .select(presentationEntity, userEntity).fetch();
     }
 }
