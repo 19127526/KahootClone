@@ -1,5 +1,5 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8081"
+export const SERVER_URL="http://localhost:8080"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
@@ -12,10 +12,17 @@ export const JOIN_INTO_GROUP="/group/join"
 export const REGISTER_URi="/auth/register"
 export const VALIDATE_OTP_URI="/auth/validate/otp"
 export const LOGIN_NORMAL="/auth/loginTraditional"
-export const LIST_PRESENTATION_FROM_GROUP = "/presentation/list/group"
+export const LIST_PRESENTATION = "/account/listPresent"
+export const LIST_INVITATION = "/account/listPresentPending"
+export const ACCEPT_INVITATION = "/presentation/acceptPending"
+export const REJECT_INVITATION = "/presentation/rejectPending"
+
+
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
 export const PRESENTATION_DETAIL = "/presentation/details"
+export const COLLABORATING_INVITATION = "/presentation/invite"
+
 export const ADD_NEW_SLIDE = "/slide/add"
 export const REMOVE_SLIDE = "/slide/delete"
 export const ADD_OPTION = "/option/add"

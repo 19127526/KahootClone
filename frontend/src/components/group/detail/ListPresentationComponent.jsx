@@ -2,11 +2,12 @@ import PresentationCardComponent from "../public/PresentationCardComponent";
 import React, {useEffect, useState} from "react";
 import {useLocation, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
-import {addNewPresentation, getListPresentation} from "../../../apis/presentation/presentationAPI";
+import {addNewPresentation, getInvitation, getListPresentation} from "../../../apis/presentation/presentationAPI";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
+import {Pagination} from "antd";
 
-const ModalAddPresenTation = ({id, list, setData}) => {
+const ModalAddPresenTation = ({id, loadData}) => {
   const [value, setValue] = useState("")
   const params = useParams();
   const dataProfile = useSelector(state => state.loginPage);
@@ -23,14 +24,12 @@ const ModalAddPresenTation = ({id, list, setData}) => {
 
   const handleOk = (e) => {
     e.preventDefault();
+    console.log(value)
     if (value !== "") {
-      addNewPresentation({groupID: params.groupId, email: email, name: value}).then((response) => {
+      addNewPresentation({email: email, name: value}).then((response) => {
         if (response.status === 201) {
-          console.log(response.data)
-          let newList = [...list]
-          newList.push(response.data)
-          setData(newList)
           Notification("Success", "Add Presentation success", constraintNotification.NOTIFICATION_SUCCESS)
+          loadData({type: "created"})
         } else {
           Notification("Error", "Add Presentation fail", constraintNotification.NOTIFICATION_WARN)
         }
@@ -76,33 +75,15 @@ const ModalAddPresenTation = ({id, list, setData}) => {
   )
 }
 
-const ListPresentationComponent=()=>{
+const pageIndex = 6;
+const ListPresentationComponent=({type, data, loadData})=>{
 
-  const location = useLocation();
-  const splitType = location.pathname.split("/")
-  const type = splitType[splitType.length - 1]
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(false);
+  const [tempItem,setTempItem]=useState([]);
   const params = useParams();
+  const [page, setPage] = useState(1);
+  const currentIndexPage = pageIndex * page;
+  const prevIndexPage = pageIndex * (page - 1);
 
-  const loadData = () => {
-    setLoading(true)
-    setData([])
-    getListPresentation({type: type, groupID: params.groupId}).then((response) => {
-
-      if (response.status == 200) {
-        setData(response.data)
-        console.log("HSHSHS",response.data)
-      } else {
-
-      }
-    })
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    loadData()
-  }, [params.groupId]);
 
 
   return (
@@ -112,27 +93,17 @@ const ListPresentationComponent=()=>{
           <div className="row">
             <div className="col-md-6">
               <h3 className="title"> List Presentation &nbsp;
-                <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
-                   data-target="#addPresentation"> Add
-                  New </a>
-                <ModalAddPresenTation id={"addPresentation"} setData={setData} list={data}/>
-                <div className="action dropdown">
-                  <button className="btn  btn-sm rounded-s btn-secondary dropdown-toggle"
-                          type="button"
-                          id="dropdownMenu1"
-                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> More
-                    actions...
-                  </button>
-                  <div className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <a className="dropdown-item" href="#">
-                      <i className="fa fa-pencil-square-o icon"></i>Mark as a draft</a>
-                    <a className="dropdown-item" href="#" data-toggle="modal"
-                       data-target="#confirm-modal">
-                      <i className="fa fa-close icon" ></i>Delete</a>
-                  </div>
-                </div>
+                {
+                  type === "created" ? <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
+                                          data-target="#add"> Add
+                    New </a> : <div/>
+                }
+                {
+                  type === "created" ? <ModalAddPresenTation id={"add"} loadData={loadData}/>: <div/>
+                }
+
               </h3>
-              <p className="title-description">List presentation in group </p>
+              <p className="title-description">List presentation</p>
             </div>
           </div>
         </div>
@@ -153,12 +124,6 @@ const ListPresentationComponent=()=>{
         <ul className="item-list striped">
           <li className="item item-list-header">
             <div className="item-row">
-              <div className="item-col fixed item-col-check">
-                <label className="item-check" id="select-all-items">
-                  <input type="checkbox" className="checkbox"/>
-                  <span></span>
-                </label>
-              </div>
               <div className="item-col item-col-header item-col-title">
                 <div style={{marginLeft: "10px"}}>
                   <span>Name</span>
@@ -171,12 +136,7 @@ const ListPresentationComponent=()=>{
               </div>
               <div className="item-col item-col-header item-col-date">
                 <div className="no-overflow" style={{marginRight: "45px"}}>
-                  <span>Modified</span>
-                </div>
-              </div>
-              <div className="item-col item-col-header item-col-category">
-                <div className="no-overflow">
-                  <span>Created</span>
+                  <span>Status</span>
                 </div>
               </div>
             </div>
@@ -185,38 +145,19 @@ const ListPresentationComponent=()=>{
             data.length === 0 ? <div style={{textAlign: "center", padding: "5%"}}>
                 Empty
               </div> :
-              data.map((value) => (
-                <PresentationCardComponent index={value} setData={setData} list={data}/>
-              ))
+              data.map((value,index) => prevIndexPage <= index && index < currentIndexPage ?  (
+
+                <PresentationCardComponent index={value} loadData={loadData} type ={type}/>
+              ) : "")
           }
         </ul>
       </div>
-      <nav className="text-right">
+      <nav className="text-right" style={{display:"flex",justifyContent:"center",marginTop:"3%"}}>
         <ul className="pagination">
-          <li className="page-item">
-            <a className="page-link" href="#"> Prev </a>
-          </li>
-
-          <li className="page-item active">
-            <a className="page-link" href="#"> 1 </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#"> 2 </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#"> 3 </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#"> 4 </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#"> 5 </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#"> Next </a>
-          </li>
+          <Pagination total={data.length} current={page} defaultCurrent={1}  pageSize={pageIndex}  showSizeChanger={false} onChange={(pageindex)=>setPage(pageindex)} />
         </ul>
       </nav>
+
     </div>
   )
 }

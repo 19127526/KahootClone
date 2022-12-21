@@ -13,7 +13,7 @@ import {
     PRESENTATION_SHOW_URI,
     CREATED_GROUP_URI,
     REDIRECT_URI,
-    VERIFY_INVITE_URI, JOINED_GROUP_URI, GROUP_JOINED_DETAIL
+    VERIFY_INVITE_URI, JOINED_GROUP_URI, GROUP_JOINED_DETAIL, PRESENTATION_URI
 } from "../configs/url";
 import Oauth2Page from "../authors/oauth2/Oauth2Page";
 import RegisterPage from "../pages/register/RegisterPage";
@@ -33,6 +33,7 @@ const PublicGroupDetailPageLazy = React.lazy(() => import("../pages/group/public
 const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
 const ForgotPageLazy = React.lazy(() => import("../pages/forgotpassword/ForgotPasswordPage"))
 const ErrorPageLazy=React.lazy(()=>import("../pages/error/ErrorPage"))
+const PresentationList=React.lazy(()=>import("../pages/presentation/PresentationList"))
 
 const RoutesPage = () => {
   return (
@@ -263,6 +264,16 @@ const RoutesPage = () => {
           </React.Suspense>
         }
       />
+
+        <Route
+            path={PRESENTATION_URI}
+            element={
+                <React.Suspense fallback={<Loading/>}>
+                    {" "}
+                    <PresentationList/>
+                </React.Suspense>
+            }
+        />
 
 
       <Route path="*" element={<React.Suspense fallback={<Loading/>} >  <ErrorPageLazy/> </React.Suspense>}/>

@@ -34,15 +34,16 @@ export const assignRole = async({id, email, assignedEmail,role})=>{
     return await request.post(ASSIGN_ROLE, {
         "id": id,
         "email": email,
-        "emailAssign": assignedEmail,
+        "emailAssigned": assignedEmail,
         "role": role
     });
 
 }
 
-export const removeMember = async({id, email}) => {
+export const removeMember = async({id, email, emailRemoved}) => {
     return await request.post(REMOVE_MEMBER, {
         "id": id,
-        "email": email
+        "email": email,
+        "emailRemoved": emailRemoved
     });
 }

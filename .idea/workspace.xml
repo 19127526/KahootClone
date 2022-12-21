@@ -6,14 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/apis/group/groupApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/group/groupApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/apis/presentation/presentationAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/presentation/presentationAPI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/aside/AsideComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/aside/AsideComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/member/MemberCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/member/OwnerCard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/publicgroup/CardGroupComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/publicgroup/CardGroupComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/card/member/OwnerCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/card/member/OwnerCard.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/group/detail/ListPresentationComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/detail/ListPresentationComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/group/public/PresentationCardComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/public/PresentationCardComponent.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupDetailPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/group/public/PublicGroupPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/member/MemberPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/member/MemberPage.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/routes/Routes.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -40,7 +42,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2HuU8EPsllycZQW2130sjGCTW1W" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -105,6 +107,7 @@
       <workItem from="1670988145688" duration="15766000" />
       <workItem from="1671244978196" duration="603000" />
       <workItem from="1671519445881" duration="8353000" />
+      <workItem from="1671605634266" duration="10291000" />
     </task>
     <servers />
   </component>

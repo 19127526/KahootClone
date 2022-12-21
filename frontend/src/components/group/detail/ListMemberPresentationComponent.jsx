@@ -116,9 +116,9 @@ const ListMemberPresentationComponent = () => {
           <div className="row">
             <div className="col-md-6">
               <h3 className="title"> List Member &nbsp;
-                {isOwner ? <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
+               <a className="btn btn-primary btn-sm rounded-s" data-toggle="modal"
                               data-target="#addPresentation"> Add
-                  New </a> : <div/>}
+                  New </a>
                 <ModalAddMember idModal={"addPresentation"}
                                 id={detailGroup?.id}
                                 code={detailGroup?.code}

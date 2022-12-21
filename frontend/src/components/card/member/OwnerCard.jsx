@@ -22,6 +22,7 @@ const OwnerCard = ({owner, id, email, userMame, role, setItem}) => {
   // console.log(location)
   const onClick = ({key}) => {
     assignRole({email: owner, id: id, assignedEmail: email, role: items[key].label}).then(() => {
+      console.log(owner, id, email, items[key].label)
       getDetailGroup({email: owner, id: id})
         .then(res => {
           if (res.status == 200) {
@@ -43,7 +44,7 @@ const OwnerCard = ({owner, id, email, userMame, role, setItem}) => {
         navigate(CREATED_GROUP_URI)
       })
     } else {
-      removeMember({id: id, email: email}).then(() => {
+      removeMember({id: id, email: owner, emailRemoved: email}).then(() => {
         getDetailGroup({email: owner, id: id}).then(res => {
           setItem(res.data.users)
         })

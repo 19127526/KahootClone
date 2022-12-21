@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {CREATED_GROUP_URI, JOINED_GROUP_URI} from "../../configs/url";
+import {CREATED_GROUP_URI, JOINED_GROUP_URI, PRESENTATION_URI} from "../../configs/url";
 
 
 function AsideComponent({ onClose }) {
@@ -28,15 +28,9 @@ function AsideComponent({ onClose }) {
               <a onClick={()=>navigate("/")}>
                 <i className="fa fa-home"></i> Dashboard </a>
             </li>
-            {/*<li id="managementProduct">*/}
-            {/*  <a onClick={()=>navigate(PUBLIC_GROUP_URI)}>*/}
-            {/*    <i className="fa fa-th-large">*/}
-            {/*    </i> Group*/}
-            {/*  </a>*/}
-            {/*</li>*/}
             <li>
               <a href="#">
-                <i className="fa fa-area-chart"></i> Present
+                <i className="fa fa-area-chart"></i> Groups
                 &nbsp;&nbsp; &nbsp;
                 <i className="fa arrow"></i>
               </a>
@@ -48,6 +42,12 @@ function AsideComponent({ onClose }) {
                   <a> Joined Groups </a>
                 </li>
               </ul>
+            </li>
+            <li id="managementProduct">
+              <a onClick={()=>navigate(PRESENTATION_URI)}>
+                <i className="fa fa-th-large">
+                </i> Presentations
+              </a>
             </li>
           </ul>
         </nav>
