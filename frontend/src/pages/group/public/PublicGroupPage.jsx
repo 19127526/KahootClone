@@ -15,10 +15,9 @@ const ModalAddGroup = ({id,setIsAdd}) => {
   const email=dataProfile.profile.email;
 
   const clickAddGroup=()=>{
-    request.post(CREATE_GROUP,{name:nameGroup,email:email})
+    request.post(CREATE_GROUP,{nameGroup:nameGroup,email:email})
       .then(res=>{
-        console.log(res)
-        if(res.status===202){
+        if(res.status===201){
           Notification("Notification about adding group","Added group success !!", constraintNotification.NOTIFICATION_SUCCESS)
         }
         else if(res.response.status===400){
@@ -37,7 +36,6 @@ const ModalAddGroup = ({id,setIsAdd}) => {
   }
 
   const onChangeGroup=(e)=>{
-    console.log(e.target.value)
     setNameGroup(e.target.value)
   }
 

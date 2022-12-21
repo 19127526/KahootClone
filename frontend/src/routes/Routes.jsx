@@ -32,7 +32,7 @@ const PublicGroupPageLazy = React.lazy(() => import("../pages/group/public/Publi
 const PublicGroupDetailPageLazy = React.lazy(() => import("../pages/group/public/PublicGroupDetailPage"))
 const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
 const ForgotPageLazy = React.lazy(() => import("../pages/forgotpassword/ForgotPasswordPage"))
-
+const ErrorPageLazy=React.lazy(()=>import("../pages/error/ErrorPage"))
 
 const RoutesPage = () => {
   return (
@@ -263,6 +263,9 @@ const RoutesPage = () => {
           </React.Suspense>
         }
       />
+
+
+      <Route path="*" element={<React.Suspense fallback={<Loading/>} >  <ErrorPageLazy/> </React.Suspense>}/>
     </Routes>
   );
 }

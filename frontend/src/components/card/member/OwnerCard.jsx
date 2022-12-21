@@ -1,44 +1,55 @@
 import {Button, Dropdown, Popconfirm, Space, Typography} from "antd";
 import {DeleteOutlined, DownOutlined} from "@ant-design/icons";
-import {useState} from "react";
 import {assignRole, getDetailGroup, removeGroup, removeMember} from "../../../apis/group/groupApi";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {CREATED_GROUP_URI} from "../../../configs/url";
-const items = [
-    {
-        key: '0',
-        label: 'Co_OWNER',
-    },
-    {
-        key: '1',
-        label: 'MEMBER',
-    },
-];
-const OwnerCard = ({owner,id,email, userMame, role, setItem}) => {
-    const navigate = useNavigate();
-    // const location = useLocation()
-    // console.log(location)
-    const onClick = ({key}) => {
-        assignRole({email: owner, id: id, assignedEmail: email, role: items[key].label}).then(()=>{
-            getDetailGroup({email: owner, id: id}).then(res => {
-               setItem(res.data.users)
-            })
-        })
-    }
+import Notification from "../../notification/Notification"
+import * as StatusNotificaion from "../../notification/Notification.constraints"
 
-    const remove = () => {
-      if(role === "OWNER") {
-          removeGroup({id, email}).then(() => {
-              navigate(CREATED_GROUP_URI)
-          })
-      } else {
-          removeMember({id:id,email:email}).then(()=>{
-              getDetailGroup({email: owner, id: id}).then(res => {
-                  setItem(res.data.users)
-              })
-          })
-      }
+const items = [
+  {
+    key: '0',
+    label: 'Co_OWNER',
+  },
+  {
+    key: '1',
+    label: 'MEMBER',
+  },
+];
+const OwnerCard = ({owner, id, email, userMame, role, setItem}) => {
+  const navigate = useNavigate();
+  // const location = useLocation()
+  // console.log(location)
+  const onClick = ({key}) => {
+    assignRole({email: owner, id: id, assignedEmail: email, role: items[key].label}).then(() => {
+      getDetailGroup({email: owner, id: id})
+        .then(res => {
+          if (res.status == 200) {
+            Notification("notification", `Change Role ${items[key].label} Success`, StatusNotificaion.NOTIFICATION_SUCCESS)
+            setItem(res.data.users)
+          } else {
+            Notification("notification", "Change Role Fail", StatusNotificaion.NOTIFICATION_ERROR)
+          }
+        })
+        .catch(err => {
+          Notification("notification", err.toString(), StatusNotificaion.NOTIFICATION_ERROR)
+        })
+    })
+  }
+
+  const remove = () => {
+    if (role === "OWNER") {
+      removeGroup({id, email}).then(() => {
+        navigate(CREATED_GROUP_URI)
+      })
+    } else {
+      removeMember({id: id, email: email}).then(() => {
+        getDetailGroup({email: owner, id: id}).then(res => {
+          setItem(res.data.users)
+        })
+      })
     }
+  }
   return (
     <li className="item">
       <div className="item-row">
@@ -58,7 +69,7 @@ const OwnerCard = ({owner,id,email, userMame, role, setItem}) => {
           <div className="item-heading">Name</div>
           <div>
             {/*<a href="item-editor.html" className="">*/}
-              <h4 className="item-title"> {userMame} </h4>
+            <h4 className="item-title"> {userMame} </h4>
             {/*</a>*/}
           </div>
         </div>
@@ -70,38 +81,38 @@ const OwnerCard = ({owner,id,email, userMame, role, setItem}) => {
 
         <div className="item-col item-col-author">
           <div className="item-heading">Role</div>
-          <div className="no-overflow" style={{marginLeft:"10px"}}>
+          <div className="no-overflow" style={{marginLeft: "10px"}}>
             {/*<a href="#">{role}</a>*/}
-              {
-                  role === "OWNER" ? <Typography>
-                      {role}
-                  </Typography> :   <Dropdown
-                      menu={{
-                          items,
-                          onClick
-                      }}
-                  >
-                      <Typography.Link onClick={(e) => e.preventDefault()}>
-                          <Space>
-                              {role}
-                              <DownOutlined />
-                          </Space>
-                      </Typography.Link>
-                  </Dropdown>
-              }
+            {
+              role === "OWNER" ? <Typography>
+                {role}
+              </Typography> : <Dropdown
+                menu={{
+                  items,
+                  onClick
+                }}
+              >
+                <Typography.Link onClick={(e) => e.preventDefault()}>
+                  <Space>
+                    {role}
+                    <DownOutlined/>
+                  </Space>
+                </Typography.Link>
+              </Dropdown>
+            }
           </div>
         </div>
         <div className="item-col item-col-date">
           <div className="item-heading">Email</div>
           <div className="no-overflow"> {email}</div>
         </div>
-          <div className="item-col fixed item-col-actions-dropdown">
-              <Popconfirm placement="topLeft" title={
-                  role === "OWNER" ? "Do you really want to delete this group?" : "Do you want to delete this member"
-              } onConfirm={remove} okText="Yes" cancelText="No">
-                  <Button icon={<DeleteOutlined/>}/>
-              </Popconfirm>
-          </div>
+        <div className="item-col fixed item-col-actions-dropdown">
+          <Popconfirm placement="topLeft" title={
+            role === "OWNER" ? "Do you really want to delete this group?" : "Do you want to delete this member"
+          } onConfirm={remove} okText="Yes" cancelText="No">
+            <Button icon={<DeleteOutlined/>}/>
+          </Popconfirm>
+        </div>
         {/*<div className="item-col fixed item-col-actions-dropdown">*/}
         {/*  <div className="item-actions-dropdown">*/}
         {/*    <a className="item-actions-toggle-btn">*/}

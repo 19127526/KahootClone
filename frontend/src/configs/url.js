@@ -1,17 +1,17 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8080"
+export const SERVER_URL="http://localhost:8081"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
-export const CREATE_GROUP = "/room/generate"
 
+export const CREATE_GROUP = "/group/generate"
 export const LIST_GROUP_CREATED_API = "account/listRoomCreated"
 export const LIST_GROUP_JOINED_API = "account/listRoomJoined"
 export const DETAIL_GROUP_API="/group/detail"
-export const INVITE_MEMBER_INTO_GROUP="/room/join"
-export const REGISTER_URi="/account/auth/register"
-export const VALIDATE_OTP_URI="/account/auth/validate/otp"
-export const LOGIN_NORMAL="/account/auth/loginTraditional"
+export const JOIN_INTO_GROUP="/group/join"
+export const REGISTER_URi="/auth/register"
+export const VALIDATE_OTP_URI="/auth/validate/otp"
+export const LOGIN_NORMAL="/auth/loginTraditional"
 export const LIST_PRESENTATION_FROM_GROUP = "/presentation/list/group"
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
@@ -37,7 +37,7 @@ export const REDIRECT_URI="/login/oauth2/redirect"
 export const HOME_URI="/home"
 export const GROUP_URI = "/group"
 export const DETAIL_GROUP_URI="/group/detail/"
-export const VERIFY_INVITE_URI="/verify/:name/:code/:email"
+export const VERIFY_INVITE_URI="/verify/:email/:code/:id"
 export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const CREATED_GROUP_URI="/group/created";
 export const JOINED_GROUP_URI="/group/joined";
@@ -61,7 +61,8 @@ export const CLIENT_LOGIN_GOOGLE=SERVER_URL+"/login";
 export const CLIENT_JOIN_GROUP_URL=CLIENT_URL+DETAIL_GROUP_URI;
 
 
-export const GET_LOGIN_OAUTH2="/account/auth/loginSocial";
+
+export const GET_LOGIN_OAUTH2="/auth/loginSocial";
 
 
 /*
@@ -72,7 +73,7 @@ export const LOGIN_NORMAL="/auth/loginTraditional"
 export const LOGIN_OAUTH2="/auth/loginSocial";
 // group
 export const DETAIL_GROUP="/group/detail/"
-export const CREATE_GROUP = "/group/generate"
+export const CREATE_GROUP = "/group/generate" xxx
 export const UPDATE_GROUP="/group/update"
 export const DELETE_GROUP="/group/delete"
 export const REMOVE_MEMBER_GROUP="/group/remove/member"

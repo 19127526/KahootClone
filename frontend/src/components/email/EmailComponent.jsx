@@ -23,15 +23,15 @@ const EmailComponent=({onSubmit,code,url,name})=>{
   return (
     <form className="form-email" ref={form} onSubmit={sendEmail}>
       <label style={{display:"none"}}>Name</label>
-      <input type="text" name="user_name" value="Kahoot Clone" style={{display:"none"}}/>
-      <label style={{display:"none"}}>Group</label>
-      <input type="text" name="user_group" value={name} style={{display:"none"}}/>
-      <label style={{display:"none"}}>Group</label>
-      <input type="text" name="user_link_redirect" value={INVITE_URL_REDIRECT+"/"+name+"/"+code} style={{display:"none"}}/>
-      <label>Email</label>
-      <Input type="email" name="user_email"/>
-      <label>Link Detail Group</label>
-      <Input type="text" name="user_link"  value={url} readOnly={true} />
+        <input type="text" name="user_name" value="Kahoot Clone" style={{display:"none"}}/>
+        <label style={{display:"none"}}>Group</label>
+        <input type="text" name="user_group" value={name} style={{display:"none"}}/>
+        <label style={{display:"none"}}>Group</label>
+        <input type="text" name="user_link_redirect" value={INVITE_URL_REDIRECT+"/"+name+"/"+code} style={{display:"none"}}/>
+        <label>Email</label>
+        <Input type="email" name="user_email"/>
+        <label>Link Detail Group</label>
+        <Input type="text" name="user_link"  value={url} readOnly={true} />
       <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
       <button type="submit"  className="mt-3 email-btn">Send Invite</button>
       </div>

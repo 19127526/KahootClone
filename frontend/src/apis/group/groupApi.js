@@ -1,7 +1,7 @@
 import {
     ASSIGN_ROLE, DELETE_GROUP,
     DETAIL_GROUP_API,
-    INVITE_MEMBER_INTO_GROUP, KICK_MEMBER_IN_GROUP_URI,
+    INVITE_MEMBER_INTO_GROUP, JOIN_INTO_GROUP, KICK_MEMBER_IN_GROUP_URI,
     LIST_GROUP_CREATED_API,
     LIST_GROUP_JOINED_API, REMOVE_MEMBER
 } from "../../configs/url";
@@ -17,8 +17,8 @@ export const getDetailGroup = async ({email, id}) => {
     });
 }
 
-export const postInviteInMember = async ({url, email, code}) => {
-    return await request.post(INVITE_MEMBER_INTO_GROUP, {url: url, email: email, code: code});
+export const postInviteInMember = async ({id, email, code}) => {
+    return await request.post(JOIN_INTO_GROUP, {id: id, email: email, code: code});
 }
 
 export const getListGroup = async ({type, email}) => {
