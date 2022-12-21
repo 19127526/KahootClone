@@ -153,23 +153,11 @@
 			"item": [
 				{
 					"name": "get detail group",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/group/detail",
+							"raw": "http://localhost:8080/group/detail?id=5&email=hmhuy.fit@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -178,6 +166,16 @@
 							"path": [
 								"group",
 								"detail"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5"
+								},
+								{
+									"key": "email",
+									"value": "hmhuy.fit@gmail.com"
+								}
 							]
 						}
 					},
@@ -191,7 +189,8 @@
 							{
 								"key": "Authorization",
 								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJobWh1eS5maXRAZ21haWwuY29tIiwiZXhwIjoxNjY5ODQwODMxLCJpYXQiOjE2Njk4MjI4MzF9.X-eLSswjV6YG1mu1m8S1sOYQjM_mn31UxRCbtV6TuS5XfjrHNMc9nGz0jD3qcuW2DdGPQQ8v3az9mEJ7QstN_g",
-								"type": "text"
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
@@ -226,12 +225,21 @@
 					"response": []
 				},
 				{
-					"name": "update group",
+					"name": "assign group",
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 5,\n    \"email\": \"hmhuy.fit@gmail.com\",\n    \"emailAssigned\": \"abc\",\n    \"role\": \"Co_OWNER\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8080/group/update",
+							"raw": "http://localhost:8080/group/assignRole",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -239,7 +247,7 @@
 							"port": "8080",
 							"path": [
 								"group",
-								"update"
+								"assignRole"
 							]
 						}
 					},
@@ -247,11 +255,8 @@
 				},
 				{
 					"name": "delete group",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -284,7 +289,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
+							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\",\n    \"emailRemoved\": \"removed@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -314,7 +319,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"abc@gmail.com\",\n    \"code\": \"123456\",\n    \"id\": 1\n}",
+							"raw": "{\n    \"email\": \"abc\",\n    \"code\": \"7L894Z\",\n    \"id\": 5\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -401,23 +406,11 @@
 				},
 				{
 					"name": "detail",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"id\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/presentation/details",
+							"raw": "http://localhost:8080/presentation/details?id=4&email=abc@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -426,6 +419,132 @@
 							"path": [
 								"presentation",
 								"details"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								},
+								{
+									"key": "email",
+									"value": "abc@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invite collaborate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\",\n    \"emailInvited\": \"invited@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/invite",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"invite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove collaborate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\",\n    \"emailRemoved\": \"removed@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/remove",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "accept invite",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/acceptPending",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"acceptPending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reject invite",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"email\": \"abc@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/presentation/rejectPending",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"presentation",
+								"rejectPending"
 							]
 						}
 					},
@@ -437,7 +556,7 @@
 			"name": "account",
 			"item": [
 				{
-					"name": "get list room create",
+					"name": "list room create",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -460,7 +579,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/account/listRoomCreated?email=abc@gmail.com",
+							"raw": "http://localhost:8080/account/listRoomCreated?email=hmhuy.fit@gmail.com",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -473,7 +592,7 @@
 							"query": [
 								{
 									"key": "email",
-									"value": "abc@gmail.com"
+									"value": "hmhuy.fit@gmail.com"
 								}
 							]
 						}
@@ -481,12 +600,12 @@
 					"response": []
 				},
 				{
-					"name": "get list room join",
+					"name": "list room join",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/account/listRoomJoined?email=abc@gmail.com",
+							"raw": "http://localhost:8080/account/listRoomJoined?email=d",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -495,6 +614,58 @@
 							"path": [
 								"account",
 								"listRoomJoined"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list present join",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/listPresent?email=abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"listPresent"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "abc@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list present pending",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/account/listPresentPending?email=abc@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"account",
+								"listPresentPending"
 							],
 							"query": [
 								{
