@@ -24,7 +24,9 @@ public class PresentationController extends BaseController {
 
     @PostMapping("add")
     public ResponseEntity<PresentationDto> addPresentation(@RequestBody PresentationRequest presentationRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(presentationMapper.entityToDto(presentationService.addPresentation(presentationRequest)));
+        PresentationDto presentation = presentationMapper.entityToDto(presentationService.addPresentation(presentationRequest));
+        presentation.setAuthor(presentationRequest.getEmail());
+        return ResponseEntity.status(HttpStatus.CREATED).body(presentation);
     }
 
     @PostMapping("delete")

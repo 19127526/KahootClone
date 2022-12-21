@@ -38,7 +38,7 @@ public class UserEntity extends SuperEntity {
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserGroupEntity> groups = new ArrayList<>();
     @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserPresentationEntity> presentations = new ArrayList<>();
+    private List<UserPresentationEntity> userPresentations = new ArrayList<>();
 
     public void addGroupCreated(GroupEntity group) {
         this.groupsCreated.add(group);
@@ -80,12 +80,12 @@ public class UserEntity extends SuperEntity {
 
     public void addPresentation(PresentationEntity presentation) {
         UserPresentationEntity userPresentation = new UserPresentationEntity(this, presentation, RolePresentation.OWNER);
-        presentations.add(userPresentation);
+        userPresentations.add(userPresentation);
         presentation.getUserPresentations().add(userPresentation);
     }
 
     public void removePresentation(PresentationEntity presentation) {
-        for (Iterator<UserPresentationEntity> iterator = presentations.iterator(); iterator.hasNext(); ) {
+        for (Iterator<UserPresentationEntity> iterator = userPresentations.iterator(); iterator.hasNext(); ) {
             UserPresentationEntity userPresentation = iterator.next();
             if (userPresentation.getUsers().equals(this) && userPresentation.getPresentation().equals(presentation)) {
                 iterator.remove();

@@ -67,7 +67,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupDto> getGroupsCreated(String email) {
         if (email.isEmpty()) throw new ResourceInvalidException("email invalid");
-        return groupRepository.getListGroups(email, List.of(Role.OWNER)).stream().map(tuple -> {
+        return groupRepository.getListGroupsAndOwner(email, List.of(Role.OWNER)).stream().map(tuple -> {
             GroupEntity group = (GroupEntity) tuple.toArray()[0];
             GroupDto groupDto = groupMapper.entityToDto(group);
             groupDto.setCreated(email);
@@ -79,7 +79,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GroupDto> getGroupsJoined(String email) {
         if (email.isEmpty()) throw new ResourceInvalidException("email invalid");
-        return groupRepository.getListGroups(email, List.of(Role.MEMBER, Role.Co_OWNER)).stream().map(tuple -> {
+        return groupRepository.getListGroupsAndOwner(email, List.of(Role.MEMBER, Role.Co_OWNER)).stream().map(tuple -> {
             Object[] payload = tuple.toArray();
             String author = (String) payload[1];
             GroupEntity group = (GroupEntity) payload[0];
@@ -96,7 +96,7 @@ public class GroupServiceImpl implements GroupService {
         });
         GroupEntity group = (GroupEntity) user_group.toArray()[1];
         GroupDto groupDto = groupMapper.entityToDto(group);
-        List<UserGroupDto> userGroups = groupRepository.getGroupDetail(id).stream().map(tuple -> {
+        List<UserGroupDto> userGroups = groupRepository.getListUsersAndRoleInGroupDetail(id).stream().map(tuple -> {
             UserEntity user = (UserEntity) tuple.toArray()[0];
             Role role = (Role) tuple.toArray()[1];
             if (role == Role.OWNER) groupDto.setCreated(user.getEmail());

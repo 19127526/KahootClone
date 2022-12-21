@@ -21,7 +21,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<Tuple> getGroupDetail(long groupId) {
+    public List<Tuple> getListUsersAndRoleInGroupDetail(long groupId) {
         return new JPAQueryFactory(entityManager)
                 .from(userGroupEntity).where(userGroupEntity.group.id.eq(groupId))
                 .join(userEntity).on(userEntity.id.eq(userGroupEntity.users.id))
@@ -35,7 +35,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     }
 
     @Override
-    public List<Tuple> getListGroups(String email, List<Role> roles) {
+    public List<Tuple> getListGroupsAndOwner(String email, List<Role> roles) {
         return new JPAQueryFactory(entityManager)
                 .from(userGroupEntity)
                 .where(userGroupEntity.users.email.eq(email).and(userGroupEntity.role.in(roles)))

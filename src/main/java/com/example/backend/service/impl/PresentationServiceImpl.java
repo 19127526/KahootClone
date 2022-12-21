@@ -65,6 +65,9 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public void deletePresentation(PresentationRequest presentationRequest) {
+        userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(),presentationRequest.getId(),List.of(RolePresentation.OWNER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("Permission denied");
+        });
         presentationRepository.deleteById(presentationRequest.getId());
     }
 
