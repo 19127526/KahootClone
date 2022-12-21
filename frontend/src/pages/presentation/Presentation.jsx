@@ -12,6 +12,8 @@ import {addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
 import barchart from "../../assets/img/chart.png"
 import slide from "../../assets/img/slide.png"
 import {PRESENTATION_SHOW_URI, PRESENTATION_URI} from "../../configs/url";
+import {useSelector} from "react-redux";
+import LoadingExample from "../../components/loading/LoadingExample";
 
 
 const items = [
@@ -38,9 +40,13 @@ const Presentation = () => {
 
     const {id}=useParams();
     const navigate=useNavigate()
+    const dataProfile = useSelector(state => state.loginPage);
+    const email = dataProfile.profile.email;
     const [selectedItem, setSelectedItem] = useState(0);
+    const [selectedValue, setSelectedValue] = useState(undefined)
+    const [isLoading, setIsLoading] = useState(false)
     const [hoverItem, setHoverItem] = useState(0)
-    const [slideList, setListSlide] = useState([{}]);
+    const [slideList, setListSlide] = useState([]);
     const [isConnected,setIsConnected]=useState(false)
     const [userData,setUserData]=useState({
         userName:"",
@@ -49,28 +55,13 @@ const Presentation = () => {
         message:""
     });
     const handleClickItem = (index) => {
+        setSelectedValue(slideList[index])
         setSelectedItem(index)
     }
     const handleMenuClick = (e) => {
         switch (e.key) {
             case "0":
-                // let list = slideList.concat([{
-                //     "type": "chart",
-                //     "preview": barchart,
-                //     "question": "Your question",
-                //     "content": {
-                //         labels: [],
-                //         datasets: [
-                //             {
-                //                 data: [],
-                //                 backgroundColor: 'blue',
-                //             },
-                //         ]
-                //     }
-                // }])
-                // setListSlide(list)
-                // setSelectedItem(list.length - 1)
-                addSlide()
+                addSlide({genre: "MULTI_CHOICES"})
                 break;
             default:
                 let temp = slideList.concat([
@@ -109,15 +100,16 @@ const Presentation = () => {
 
     }
 
-    const addSlide = () => {
-        addNewSlide({id: id, question:"Your question"}).then((response) => {
+    const addSlide = ({genre}) => {
+        addNewSlide({id: id, question:"Your question", genre: genre}).then((response) => {
             if(response.status === 201){
-                if(slideList.length===1 && slideList[0].id===undefined){
+                if(slideList.length === 0 ){
                     setListSlide([response.data])
                 }
                 else{
                     setListSlide([...slideList,response.data])
                 }
+                setSelectedValue(response.data)
                 setSelectedItem(slideList.length-1)
             }
 
@@ -151,19 +143,22 @@ const Presentation = () => {
     }
 
     useEffect(() => {
-        const loadPresentationDetail = () => {
-            getPresentationDetail({id: id}).then((response) => {
-                if(response.status === 200){
-                    console.log(response.data)
-                    if(response.data["questions"].length === 0){
-                        addSlide()
-                    } else {
-                        setListSlide(response.data["questions"])
-                    }
+        setIsLoading(true)
+        async function getDetail() {
+            let response = await getPresentationDetail({id: id, email:email })
+            if(response.status === 200){
+                if(response.data.slides.length === 0){
+                    addSlide()
+                } else {
+                    console.log(response.data.slides)
+                    setSelectedValue(response.data.slides[0])
+                    setListSlide(response.data.slides)
                 }
-            })
+            }
         }
-        loadPresentationDetail()
+        getDetail()
+        setIsLoading(false)
+
     }, [])
 
     return (
@@ -214,7 +209,7 @@ const Presentation = () => {
                                               </text>
                                           </Col>
                                           <Col>
-                                              <img src={barchart} alt={""}/>
+                                              {/*<img src={barchart} alt={""}/>*/}
                                               <text>
                                                   {item.type}
                                               </text>
@@ -228,20 +223,12 @@ const Presentation = () => {
                       /> : <div/>}
                   </Sider>
                   <Content style={{backgroundColor: "white", margin: " 0 10px 0 10px", padding: "10px"}}>
-                      {
-                          // slideList[selectedItem]
-                          // slideList[selectedItem].type === "chart" ?
-                          <ChartPresentation value={slideList[selectedItem]} slideList={slideList} />
-                          //     : <SlidePresentation item={slideList[selectedItem]}/>
+                          {selectedValue === undefined ? <div/> : <ChartPresentation value={selectedValue} slideList={slideList} />}
 
-                      }
                   </Content>
                   <Sider style={{backgroundColor: "white", padding: "20px", overflowY: "scroll"}} width={"400px"}>
-                      {/*{slideList[selectedItem].type === "chart" ?*/}
-                      <ChartSider selectedItem={selectedItem} list={slideList} setListSlide={setListSlide}  />
-                      {/*    :*/}
-                      {/*    <SlideSider item={slideList[selectedItem]} list={slideList} setListSlide={setListSlide}/>*/}
-                      {/*}*/}
+                      {selectedValue === undefined   ? <div/> :                       <ChartSider selectedItem={selectedItem} setSelectedValue={setSelectedValue} list={slideList} setListSlide={setListSlide} isLoading={isLoading} />
+                      }
 
                   </Sider>
               </Layout>

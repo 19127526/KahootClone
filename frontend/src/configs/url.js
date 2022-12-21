@@ -25,7 +25,9 @@ export const COLLABORATING_INVITATION = "/presentation/invite"
 
 export const ADD_NEW_SLIDE = "/slide/add"
 export const REMOVE_SLIDE = "/slide/delete"
-export const ADD_OPTION = "/option/add"
+export const DETAIL_SLIDE = "/slide/detail"
+
+export const ADD_OPTION = "/vote/add"
 export const REMOVE_OPTION = "/option/delete"
 export const CHOOSE_OPTIONS_USER="/slide/play"
 export const GET_QUESTION_OPTION_USER="/play/connect"

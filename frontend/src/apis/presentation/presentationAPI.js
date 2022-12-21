@@ -42,8 +42,13 @@ export const rejectInvitation = async ({id, email}) => {
 }
 
 
-export  const getPresentationDetail = async ({id}) =>  {
-    return await request.get(PRESENTATION_DETAIL + `?id=${id}`)
+export  const getPresentationDetail = async ({id, email}) =>  {
+    return await request.get(PRESENTATION_DETAIL, {
+        params: {
+            "id": id,
+            "email": email
+        }
+    })
 }
 
 

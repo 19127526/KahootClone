@@ -3,7 +3,9 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import {Space, Typography} from "antd";
 import {Bar} from "react-chartjs-2";
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getDetailSlide} from "../../../apis/slide/slideAPI";
+import {reRenderChart} from "../Sider/ChartSider.actions";
 
 ChartJS.register(
   CategoryScale,
@@ -49,17 +51,41 @@ const options = {
 };
 
 const ChartPresentation = ({value, width, slideList}) => {
+    // const reRender=useDispatch();
+
     let d = []
     let l = []
-
-
     const [dataChart, setData] = useState({labels: [], datasets: []})
+    // console.log(value)
+    // useEffect(() => {
+    //
+    //     if(value.votes !== null){
+    //         setLoading(true)
+    //         value.votes.forEach((index) => {
+    //
+    //             l.push(index.text)
+    //             d.push(index.users === null ? 0 : index.users.length)
+    //         })
+    //         setData({
+    //             labels: l,
+    //             datasets: [{
+    //                 data: d
+    //             }]
+    //         })
+    //         reRender(reRenderChart())
+    //         setLoading(false)
+    //
+    //     }
+    // }, [value, slideList])
+
     useEffect(() => {
-        if(value.answers !== undefined){
-            value.answers.forEach((index) => {
+        console.log(value.votes)
+        if(value.votes === null) return;
+
+            value.votes.forEach((index) => {
 
                 l.push(index.text)
-                d.push(index.userAnswers === null ? 0 : index.userAnswers.length)
+                d.push(index.users === null ? 0 : index.users.length)
             })
             setData({
                 labels: l,
@@ -67,9 +93,9 @@ const ChartPresentation = ({value, width, slideList}) => {
                     data: d
                 }]
             })
-        }
-    }, [value, slideList])
+        console.log("RUNNNN")
 
+    }, [value])
 
 
 
@@ -87,11 +113,10 @@ const ChartPresentation = ({value, width, slideList}) => {
           </Typography>
 
           {
-              <Bar options={options} data={
-                  dataChart
-              }
-                   style={{minWidth: width ?? "80vh"}}
-              />
+            value === null ? <div/> :   <Bar options={options} data={
+                dataChart
+            }
+                                             style={{minWidth: width ?? "80vh"}}/>
           }
 
       </Space>
