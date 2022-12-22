@@ -1,72 +1,73 @@
-import {Button, Col, Input, List, Row, Space} from "antd";
+import {Button, Col, Input, Space} from "antd";
 import {CloseOutlined, PlusOutlined} from "@ant-design/icons";
 import {addOption, changeOption, changeQuestion, getDetailSlide, removeOption} from "../../../apis/slide/slideAPI";
-import {useDispatch} from "react-redux";
-import {reRenderChart} from "./ChartSider.actions";
 import {useEffect, useState} from "react";
+import LoadingExample from "../../loading/LoadingExample";
 
-const ChartSider = ({selectedItem, list, setListSlide, setSelectedValue}) => {
+const ChartSider = ({selectedValue,selectedItem, setSelectedValue}) => {
     const [detail, setDetail] = useState(undefined);
     const [isLoading, setLoading] = useState(true)
     useEffect(() => {
       async function getDetail() {
           setLoading(true)
-          let response = await getDetailSlide({id: list[selectedItem].id})
-          // console.log(response.data)
+          let response = await getDetailSlide({id: selectedValue.id})
           setDetail(response.data)
           setSelectedValue(response.data)
           setLoading(false)
-
       }
         getDetail()
     }, [selectedItem])
 
-  const reRender=useDispatch();
   const onChangeQuestion = (e) => {
-    list[selectedItem]["text"] = e.target.value
-    let tempList = list.concat()
-    setListSlide(tempList)
+      setSelectedValue(prevState => ({
+          ...prevState,
+          text: e.target.value
+      }));
   }
 
   const onBlurQuestion  = (e) =>{
-      console.log(e.target.value)
-      console.log( list[selectedItem].id)
-      changeQuestion({id: list[selectedItem].id, text: e.target.value}).then(() => {
+      changeQuestion({id: selectedValue.id, text: e.target.value}).then(() => {
       })
   }
 
   const handleAddButton = () => {
-    addOption({option: `New option ${detail["votes"]=== null ? 1 : detail["votes"].length}`, slideId: detail.id}).then((response) => {
-      if(response.status === 201){
+      addOption({option: `New option ${detail["votes"]=== null ? 1 : detail["votes"].length}`, slideId: detail.id}).then((response) => {
+          console.log("before",selectedValue)
+          if(response.status === 201){
         if(detail["votes"]!== undefined){
-            setSelectedValue(response.data)
-          // list[selectedItem] = response.data
-          // const tempList = [...list]
-          // setListSlide(tempList)
-          // reRender(reRenderChart())
+            detail.votes = [...detail.votes,response.data]
+            setSelectedValue(prevState => ({
+                ...prevState,
+                votes: detail.votes
+            }));
+            setDetail(
+                detail
+            )
         }
       }
-        // console.log(response)
-    })
+          console.log("after",selectedValue)
+
+      })
   }
 
-  const handleRemoveButton = ({index, value}) => {
-    removeOption({optionID: value.id,questionID:  list[selectedItem].id}).then((response) => {
-        console.log(response)
-    })
-      list[selectedItem]["answers"] = list[selectedItem]["answers"].filter((v) => value.id !== v.id)
-    let tempList = list.concat()
-    setListSlide(tempList)
-  }
+  const handleRemoveButton = ({value}) => {
+    removeOption({optionID: value.id}).then(r => {});
+      detail.votes = detail.votes.filter((v) => value.id !== v.id)
+      setSelectedValue(prevState => ({
+          ...prevState,
+          votes: detail.votes
+      }));  }
 
   const onChangeOption = (index) => (e) => {
-      list[selectedItem].answers[index].text = e.target.value
-    let tempList = list.concat()
-    setListSlide(tempList)
+      selectedValue.votes[index].text = e.target.value
+      setSelectedValue(prevState => ({
+          ...prevState,
+          votes: selectedValue.votes
+      }))
   }
 
   const handleBlur = (index) => (e) => {
-      changeOption({id:list[selectedItem].answers[index].id, text: e.target.value}).then(()=>{
+      changeOption({id:selectedValue.votes[index].id, text: e.target.value}).then(()=>{
 
       })
   }
@@ -81,7 +82,7 @@ const ChartSider = ({selectedItem, list, setListSlide, setSelectedValue}) => {
       <Input
           size={"large"} allowClear placeholder={"Type your question"} maxLength={150}
              showCount
-             value = {list[selectedItem].text}
+             value = {selectedValue.text}
           onBlur ={onBlurQuestion}
           onChange={onChangeQuestion}/>
 
@@ -92,7 +93,7 @@ const ChartSider = ({selectedItem, list, setListSlide, setSelectedValue}) => {
       </text>
 
       {
-          isLoading ? <div/> : detail["votes"].map((value, index) => {
+          isLoading ? <LoadingExample/> : detail["votes"].map((value, index) => {
               return (
                   <Space direction={"horizontal"} wrap={false} style={{width:"100%"}}>
                       <Col flex={10}>

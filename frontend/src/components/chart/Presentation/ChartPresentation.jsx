@@ -8,11 +8,11 @@ import {getDetailSlide} from "../../../apis/slide/slideAPI";
 import {reRenderChart} from "../Sider/ChartSider.actions";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  ChartDataLabels
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Tooltip,
+    ChartDataLabels
 );
 
 const options = {
@@ -50,8 +50,9 @@ const options = {
     }
 };
 
-const ChartPresentation = ({value, width, slideList}) => {
+const ChartPresentation = ({selectedValue, width}) => {
     // const reRender=useDispatch();
+    // const [isLoading, setLoading] = useState(true)
 
     let d = []
     let l = []
@@ -79,47 +80,42 @@ const ChartPresentation = ({value, width, slideList}) => {
     // }, [value, slideList])
 
     useEffect(() => {
-        console.log(value.votes)
-        if(value.votes === null) return;
+        console.log("RUN")
+        if (selectedValue.votes === null) return;
+        selectedValue.votes.forEach((index) => {
 
-            value.votes.forEach((index) => {
-
-                l.push(index.text)
-                d.push(index.users === null ? 0 : index.users.length)
-            })
-            setData({
-                labels: l,
-                datasets: [{
-                    data: d
-                }]
-            })
-        console.log("RUNNNN")
-
-    }, [value])
-
-
+            l.push(index.text)
+            d.push(index.users === null ? 0 : index.users.length)
+        })
+        setData({
+            labels: l,
+            datasets: [{
+                data: d
+            }]
+        })
+    }, [selectedValue])
 
 
     return (
-      <Space direction={"vertical"} align={"center"} size={"large"}  style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          width:"100%",
-      }}>
-          <Typography style={{fontSize: 25}}>
-              {value.text}
-          </Typography>
+        <Space direction={"vertical"} align={"center"} size={"large"} style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+        }}>
+            <Typography style={{fontSize: 25}}>
+                {selectedValue.text}
+            </Typography>
 
-          {
-            value === null ? <div/> :   <Bar options={options} data={
-                dataChart
+            {
+               <Bar options={options} data={
+                    dataChart
+                }
+                                               style={{minWidth: width ?? "80vh"}}/>
             }
-                                             style={{minWidth: width ?? "80vh"}}/>
-          }
 
-      </Space>
+        </Space>
     );
 }
 
