@@ -59,6 +59,9 @@ const Presentation = () => {
             case "0":
                 addSlide({genre: "MULTI_CHOICES"})
                 break;
+            case "1":
+
+                break;
             default:
         }
     };

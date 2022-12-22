@@ -8,7 +8,6 @@ import registerUser from "../../service/socket";
 
 
 export const loginNormal = (payload) => dispatch => {
-  console.log(payload)
   return postLoginNormal({email: payload.username, password: payload.password})
     .then((res) => {
       if (res.status == 200) {

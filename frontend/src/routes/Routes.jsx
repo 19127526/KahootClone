@@ -268,10 +268,12 @@ const RoutesPage = () => {
         <Route
             path={PRESENTATION_URI}
             element={
+              <Authenticate path={PRESENTATION_URI}>
                 <React.Suspense fallback={<Loading/>}>
                     {" "}
                     <PresentationList/>
                 </React.Suspense>
+              </Authenticate>
             }
         />
 

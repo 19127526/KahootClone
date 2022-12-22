@@ -112,7 +112,7 @@ const ListPresentationComponent=({type, data, loadData})=>{
             <div className="input-group">
               <input type="text" className="form-control boxed rounded-s" placeholder="Search for..."/>
               <span className="input-group-btn">
-                  <button className="btn btn-secondary rounded-s" type="button">
+                  <button className="btn btn-secondary rounded-s" type="button" style={{height:"100%"}}>
                       <i className="fa fa-search"></i>
                   </button>
               </span>
