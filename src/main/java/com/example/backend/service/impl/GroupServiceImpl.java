@@ -54,7 +54,8 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void removeMember(GroupRequest groupRequest) {
-        Tuple user_group = userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> new ResourceInvalidException("user is not in a group"));
+        userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER)).orElseThrow(() -> new ResourceInvalidException("Permission denied"));
+        Tuple user_group = userRepository.getUserAndGroupWithRoles(groupRequest.getEmailRemoved(), groupRequest.getId(), List.of(Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> new ResourceInvalidException("user is not in a group"));
         UserEntity user = (UserEntity) user_group.toArray()[0];
         GroupEntity group = (GroupEntity) user_group.toArray()[1];
         // check
@@ -115,14 +116,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void assignRole(GroupRequest groupRequest) {
-        userRepository.getUserAndGroupWithRoles(groupRequest.getEmailAssign(), groupRequest.getId(), List.of(Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> {
-            throw new ResourceInvalidException("account " + groupRequest.getEmailAssign() + "not exists in room");
+        userRepository.getUserAndGroupWithRoles(groupRequest.getEmailAssigned(), groupRequest.getId(), List.of(Role.Co_OWNER, Role.MEMBER)).orElseThrow(() -> {
+            throw new ResourceInvalidException("account " + groupRequest.getEmailAssigned() + "not exists in room");
         });
 
         userRepository.getUserAndGroupWithRoles(groupRequest.getEmail(), groupRequest.getId(), List.of(Role.OWNER)).orElseThrow(() -> {
             throw new ResourceInvalidException("assign fail");
         });
-        UserGroupEntity userGroup = userGroupRepository.findUserGroupEntityByGroup_IdAndUsers_Email(groupRequest.getId(), groupRequest.getEmailAssign()).get();
+        UserGroupEntity userGroup = userGroupRepository.findUserGroupEntityByGroup_IdAndUsers_Email(groupRequest.getId(), groupRequest.getEmailAssigned()).get();
         userGroup.setRole(groupRequest.getRole());
         userGroupRepository.save(userGroup);
     }

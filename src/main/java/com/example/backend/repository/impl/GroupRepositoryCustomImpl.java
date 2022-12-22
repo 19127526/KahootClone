@@ -24,7 +24,7 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
         return new JPAQueryFactory(entityManager)
                 .from(userGroupEntity).where(userGroupEntity.group.id.eq(groupId))
                 .join(userEntity).on(userEntity.id.eq(userGroupEntity.users.id))
-                .select(userEntity,userGroupEntity.role)
+                .select(userEntity, userGroupEntity.role)
                 .fetch();
 //                .from(groupEntity).on(groupEntity.id.eq(id))
 //                .rightJoin(userGroupEntity).on(userGroupEntity.group.id.eq(groupEntity.id))
@@ -36,10 +36,10 @@ public class GroupRepositoryCustomImpl implements GroupRepositoryCustom {
     @Override
     public List<Tuple> getListGroups(String email, List<Role> roles) {
         return new JPAQueryFactory(entityManager)
-                .from(userEntity).where(userEntity.email.eq(email))
-                .join(userGroupEntity).on(userGroupEntity.users.id.eq(userEntity.id))
+                .from(userGroupEntity)
+                .where(userGroupEntity.users.email.eq(email).and(userGroupEntity.role.in(roles)))
                 .join(groupEntity).on(groupEntity.id.eq(userGroupEntity.group.id))
-                .where(userGroupEntity.role.in(roles))
+                .join(userEntity).on(userEntity.email.eq(groupEntity.created.email))
                 .select(groupEntity, userEntity.email)
                 .fetch();
     }

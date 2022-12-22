@@ -1,12 +1,18 @@
 package com.example.backend.model.entity;
 
 import com.example.backend.common.model.PresentationStatus;
+import com.example.backend.common.model.RolePresentation;
 import com.example.backend.common.model.SuperEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -19,7 +25,7 @@ public class PresentationEntity extends SuperEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-//    private String url;
+    //    private String url;
     private PresentationStatus status = PresentationStatus.IDLE;
     private long currentSlide = -1;
     //////////////////
@@ -32,17 +38,21 @@ public class PresentationEntity extends SuperEntity {
 
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
     private List<SlideEntity> slides = new ArrayList<>();
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
+    private List<ChatEntity> chat = new ArrayList<>();
+    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<UserPresentationEntity> userPresentations = new ArrayList<>();
+
     public void addSlide(SlideEntity slide) {
         this.slides.add(slide);
         slide.setPresentation(this);
     }
+
     public void removeSlide(SlideEntity slide) {
         this.slides.remove(slide);
         slide.setPresentation(null);
     }
 
-    @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
-    private List<ChatEntity> chat = new ArrayList<>();
     public void addChat(ChatEntity mess) {
         this.chat.add(mess);
         mess.setPresentation(this);
@@ -51,5 +61,36 @@ public class PresentationEntity extends SuperEntity {
     public void removeChat(ChatEntity mess) {
         this.chat.remove(mess);
         mess.setPresentation(null);
+    }
+
+    public void addCollaborate(UserEntity user) {
+        UserPresentationEntity userPresentation = new UserPresentationEntity(user, this, RolePresentation.PENDING);
+        userPresentations.add(userPresentation);
+        user.getPresentations().add(userPresentation);
+    }
+
+    public void removeCollaborate(UserEntity user) {
+        for (Iterator<UserPresentationEntity> iterator = userPresentations.iterator(); iterator.hasNext(); ) {
+            UserPresentationEntity userPresentation = iterator.next();
+            if (userPresentation.getPresentation().equals(this) && userPresentation.getUsers().equals(user)) {
+                iterator.remove();
+                userPresentation.getUsers().getGroups().remove(userPresentation);
+                userPresentation.setPresentation(null);
+                userPresentation.setUsers(null);
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PresentationEntity that = (PresentationEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

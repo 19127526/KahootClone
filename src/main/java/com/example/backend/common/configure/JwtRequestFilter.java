@@ -2,7 +2,7 @@
 //
 //import com.example.backend.common.utils.JwtTokenUtil;
 //import com.example.backend.exception.ResourceInvalidException;
-//import com.example.backend.service.AccountService;
+//import com.example.backend.service.UserService;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import io.jsonwebtoken.ExpiredJwtException;
 //import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@
 //    @Autowired
 //    private JwtTokenUtil jwtTokenUtil;
 //    @Autowired
-//    private AccountService accountService;
+//    private UserService accountService;
 //
 //
 //

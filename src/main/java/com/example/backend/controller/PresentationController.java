@@ -33,6 +33,30 @@ public class PresentationController extends BaseController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
+    @PostMapping("invite")
+    public ResponseEntity<Object> inviteCollaborate(@RequestBody PresentationRequest presentationRequest) {
+        presentationService.inviteCollaborate(presentationRequest);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
+    @PostMapping("remove")
+    public ResponseEntity<Object> removeCollaborate(@RequestBody PresentationRequest presentationRequest) {
+        presentationService.removeCollaborate(presentationRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @PostMapping("acceptPending")
+    public ResponseEntity<Object> acceptPending(@RequestBody PresentationRequest presentationRequest) {
+        presentationService.acceptPending(presentationRequest);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
+    @PostMapping("rejectPending")
+    public ResponseEntity<Object> rejectPending(@RequestBody PresentationRequest presentationRequest) {
+        presentationService.rejectPending(presentationRequest);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+    }
+
 
     @PostMapping("update/clearAdvanced")
     public ResponseEntity<Boolean> clearAdvanced(@RequestBody PresentationRequest presentationRequest) {

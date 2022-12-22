@@ -12,7 +12,8 @@ public class GroupRequest {
     private String code;
     private Long id;
 
-    private String emailAssign;
+    private String emailAssigned;
+    private String emailRemoved;
     private Role role;
     @Override
     public String toString() {
