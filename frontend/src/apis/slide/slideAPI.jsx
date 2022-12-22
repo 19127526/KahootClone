@@ -33,10 +33,9 @@ export  const addOption = async ({option,slideId}) => {
     })
 }
 
-export const removeOption  = async ({optionID, questionID}) => {
-    return await request.post("https://spring-heroku.herokuapp.com/option/delete", {
+export const removeOption  = async ({optionID}) => {
+    return await request.post(REMOVE_OPTION, {
         "id": optionID,
-        "question": questionID
     })
 }
 

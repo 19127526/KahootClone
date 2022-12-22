@@ -8,11 +8,11 @@ import {getDetailSlide} from "../../../apis/slide/slideAPI";
 import {reRenderChart} from "../Sider/ChartSider.actions";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  ChartDataLabels
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Tooltip,
+    ChartDataLabels
 );
 
 const options = {
@@ -97,25 +97,25 @@ const ChartPresentation = ({selectedValue, width}) => {
 
 
     return (
-      <Space direction={"vertical"} align={"center"} size={"large"} style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          width: "100%",
-      }}>
-          <Typography style={{fontSize: 25}}>
-              {selectedValue.text}
-          </Typography>
+        <Space direction={"vertical"} align={"center"} size={"large"} style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+        }}>
+            <Typography style={{fontSize: 25}}>
+                {selectedValue.text}
+            </Typography>
 
-          {
-              <Bar options={options} data={
-                  dataChart
-              }
-                   style={{minWidth: width ?? "80vh"}}/>
-          }
+            {
+               <Bar options={options} data={
+                    dataChart
+                }
+                                               style={{minWidth: width ?? "80vh"}}/>
+            }
 
-      </Space>
+        </Space>
     );
 }
 
