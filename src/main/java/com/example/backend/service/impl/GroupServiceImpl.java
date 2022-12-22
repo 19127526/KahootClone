@@ -44,9 +44,9 @@ public class GroupServiceImpl implements GroupService {
         GroupEntity group = new GroupEntity();
         group.setName(groupRequest.getNameGroup());
         group.setCode(CodeGeneratorUtils.invoke());
-        userEntity.addGroup(group);
-        userEntity.addGroupCreated(group);
+        group.addUserGroup(userEntity,Role.OWNER);
         group = groupRepository.save(group);
+        userEntity.addGroupCreated(group);
         userRepository.save(userEntity);
         return group;
     }
@@ -138,7 +138,7 @@ public class GroupServiceImpl implements GroupService {
             throw new ResourceInvalidException("account " + groupRequest.getEmail() + " exists in room");
         }
         if (group.getCode().equals(groupRequest.getCode())) {
-            group.addUser(userEntity);
+            group.addUserGroup(userEntity, Role.MEMBER);
             return groupRepository.save(group);
         } else throw new ResourceNotFoundException("code invalid");
     }

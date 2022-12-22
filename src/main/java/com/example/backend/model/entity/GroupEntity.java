@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "room")
+@Slf4j
 public class GroupEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,26 +33,33 @@ public class GroupEntity extends SuperEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity created;
 
-    @OneToMany(mappedBy = "group", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<UserGroupEntity> users = new ArrayList<>();
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserGroupEntity> userGroups = new ArrayList<>();
 
-    public void addUser(UserEntity user) {
-        UserGroupEntity userGroup = new UserGroupEntity(user, this, Role.MEMBER);
-        users.add(userGroup);
-        user.getGroups().add(userGroup);
+    public void addUserGroup(UserEntity user, Role role) {
+        UserGroupEntity userGroup = new UserGroupEntity(user, this, role);
+        userGroups.add(userGroup);
     }
 
     public void removeUserGroup(UserEntity user) {
-        for (Iterator<UserGroupEntity> iterator = users.iterator(); iterator.hasNext(); ) {
+        for (Iterator<UserGroupEntity> iterator = userGroups.iterator(); iterator.hasNext(); ) {
             UserGroupEntity userGroup = iterator.next();
-
             if (userGroup.getGroup().equals(this) && userGroup.getUsers().equals(user)) {
                 iterator.remove();
-                userGroup.getUsers().getGroups().remove(userGroup);
                 userGroup.setGroup(null);
                 userGroup.setUsers(null);
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "GroupEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", code='" + code + '\'' +
+                ", present=" + present;
     }
 
     @Override

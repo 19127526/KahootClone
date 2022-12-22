@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class PresentationServiceImpl implements PresentationService {
     private final PresentationMapper presentationMapper;
     private final UserPresentationRepository userPresentationRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
     @Override
     public PresentationDto getDetail(long id, String email) {
         Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(email, id, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
@@ -56,11 +60,11 @@ public class PresentationServiceImpl implements PresentationService {
         });
         PresentationEntity presentation = new PresentationEntity();
         presentation.setName(presentationRequest.getNamePresentation());
+        presentation.addCollaborate(user,RolePresentation.OWNER);
+        presentation = presentationRepository.save(presentation);
         user.addPresentationCreated(presentation);
-        user.addPresentation(presentation);
-        PresentationEntity presentationEntity = presentationRepository.save(presentation);
         userRepository.save(user);
-        return presentationEntity;
+        return presentation;
     }
 
     @Override
@@ -88,7 +92,7 @@ public class PresentationServiceImpl implements PresentationService {
             throw new ResourceInvalidException("Permission denied");
         });
         PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
-        presentation.addCollaborate(userInvited);
+        presentation.addCollaborate(userInvited, RolePresentation.PENDING);
         presentationRepository.save(presentation);
     }
 

@@ -3,7 +3,6 @@ package com.example.backend.mapper;
 import com.example.backend.model.dto.GroupDto;
 import com.example.backend.model.entity.GroupEntity;
 import com.example.backend.model.request.GroupRequest;
-import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -19,7 +18,7 @@ public interface GroupMapper {
     GroupDto requestToDto(GroupRequest groupRequest);
 
 
-    @Mapping(target = "users", ignore = true)
+    @Mapping(target = "userGroups", ignore = true)
     @Mapping(target = "created", ignore = true)
     GroupEntity dtoToEntity(GroupDto groupDto);
 }

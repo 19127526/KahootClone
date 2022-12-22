@@ -15,7 +15,7 @@ public class UserPresentationId implements Serializable {
     @Column(name = "user_id")
     private long userId;
 
-    @Column(name = "group_id")
+    @Column(name = "presentation_id")
     private long presentationId;
 
     @Override
