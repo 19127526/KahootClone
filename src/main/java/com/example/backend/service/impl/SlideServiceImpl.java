@@ -54,12 +54,13 @@ public class SlideServiceImpl implements SlideService {
         PresentationEntity presentation = presentationRepository.findById(slideDto.getPresentation()).orElseThrow(() -> {
             throw new ResourceNotFoundException("slide not found");
         });
-        SlideEntity question = new SlideEntity();
-        question.setText(slideDto.getText());
-        question.setGenreQuestion(slideDto.getGenreQuestion());
-        presentation.addSlide(question);
+        SlideEntity slide = new SlideEntity();
+        slide.setText(slideDto.getText());
+        slide.setHeading(slide.getHeading());
+        slide.setGenreQuestion(slideDto.getGenreQuestion());
+        presentation.addSlide(slide);
         presentationRepository.save(presentation);
-        return slideRepository.save(question);
+        return slideRepository.save(slide);
     }
 
     @Override
