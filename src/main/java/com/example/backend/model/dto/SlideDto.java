@@ -11,6 +11,7 @@ import java.util.List;
 public class SlideDto {
     private long id;
     private String text;
+    private String heading;
     private GenreQuestion genreQuestion;
     private String imageURL;
     private long presentation;

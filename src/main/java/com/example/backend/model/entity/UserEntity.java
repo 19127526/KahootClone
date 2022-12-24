@@ -35,10 +35,10 @@ public class UserEntity extends SuperEntity {
     private List<GroupEntity> groupsCreated = new ArrayList<>();
     @OneToMany(mappedBy = "author", cascade = CascadeType.REMOVE)
     private List<PresentationEntity> presentationsCreated = new ArrayList<>();
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserGroupEntity> groups = new ArrayList<>();
-    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserPresentationEntity> presentations = new ArrayList<>();
+//    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<UserGroupEntity> userGroups = new ArrayList<>();
+//    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<UserPresentationEntity> userPresentations = new ArrayList<>();
 
     public void addGroupCreated(GroupEntity group) {
         this.groupsCreated.add(group);
@@ -60,41 +60,41 @@ public class UserEntity extends SuperEntity {
         presentation.setAuthor(null);
     }
 
-    public void addGroup(GroupEntity group) {
-        UserGroupEntity userGroup = new UserGroupEntity(this, group, Role.OWNER);
-        groups.add(userGroup);
-        group.getUsers().add(userGroup);
-    }
-
-    public void removeGroup(GroupEntity groupEntity) {
-        for (Iterator<UserGroupEntity> iterator = groups.iterator(); iterator.hasNext(); ) {
-            UserGroupEntity userGroup = iterator.next();
-            if (userGroup.getUsers().equals(this) && userGroup.getGroup().equals(groupEntity)) {
-                iterator.remove();
-                userGroup.getGroup().getUsers().remove(userGroup);
-                userGroup.setUsers(null);
-                userGroup.setGroup(null);
-            }
-        }
-    }
-
-    public void addPresentation(PresentationEntity presentation) {
-        UserPresentationEntity userPresentation = new UserPresentationEntity(this, presentation, RolePresentation.OWNER);
-        presentations.add(userPresentation);
-        presentation.getUserPresentations().add(userPresentation);
-    }
-
-    public void removePresentation(PresentationEntity presentation) {
-        for (Iterator<UserPresentationEntity> iterator = presentations.iterator(); iterator.hasNext(); ) {
-            UserPresentationEntity userPresentation = iterator.next();
-            if (userPresentation.getUsers().equals(this) && userPresentation.getPresentation().equals(presentation)) {
-                iterator.remove();
-                userPresentation.getPresentation().getUserPresentations().remove(userPresentation);
-                userPresentation.setUsers(null);
-                userPresentation.setPresentation(null);
-            }
-        }
-    }
+//    public void addGroup(GroupEntity group) {
+//        UserGroupEntity userGroup = new UserGroupEntity(this, group, Role.OWNER);
+//        userGroups.add(userGroup);
+//        group.getUserGroups().add(userGroup);
+//    }
+//
+//    public void removeGroup(GroupEntity groupEntity) {
+//        for (Iterator<UserGroupEntity> iterator = userGroups.iterator(); iterator.hasNext(); ) {
+//            UserGroupEntity userGroup = iterator.next();
+//            if (userGroup.getUsers().equals(this) && userGroup.getGroup().equals(groupEntity)) {
+//                iterator.remove();
+//                userGroup.getGroup().getUserGroups().remove(userGroup);
+//                userGroup.setUsers(null);
+//                userGroup.setGroup(null);
+//            }
+//        }
+//    }
+//
+//    public void addPresentation(PresentationEntity presentation) {
+//        UserPresentationEntity userPresentation = new UserPresentationEntity(this, presentation, RolePresentation.OWNER);
+//        userPresentations.add(userPresentation);
+//        presentation.getUserPresentations().add(userPresentation);
+//    }
+//
+//    public void removePresentation(PresentationEntity presentation) {
+//        for (Iterator<UserPresentationEntity> iterator = userPresentations.iterator(); iterator.hasNext(); ) {
+//            UserPresentationEntity userPresentation = iterator.next();
+//            if (userPresentation.getUsers().equals(this) && userPresentation.getPresentation().equals(presentation)) {
+//                iterator.remove();
+//                userPresentation.getPresentation().getUserPresentations().remove(userPresentation);
+//                userPresentation.setUsers(null);
+//                userPresentation.setPresentation(null);
+//            }
+//        }
+//    }
 
     @Override
     public boolean equals(Object o) {

@@ -40,7 +40,7 @@ public class PresentationEntity extends SuperEntity {
     private List<SlideEntity> slides = new ArrayList<>();
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
     private List<ChatEntity> chat = new ArrayList<>();
-    @OneToMany(mappedBy = "users", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserPresentationEntity> userPresentations = new ArrayList<>();
 
     public void addSlide(SlideEntity slide) {
@@ -63,10 +63,9 @@ public class PresentationEntity extends SuperEntity {
         mess.setPresentation(null);
     }
 
-    public void addCollaborate(UserEntity user) {
-        UserPresentationEntity userPresentation = new UserPresentationEntity(user, this, RolePresentation.PENDING);
+    public void addCollaborate(UserEntity user, RolePresentation role) {
+        UserPresentationEntity userPresentation = new UserPresentationEntity(user, this, role);
         userPresentations.add(userPresentation);
-        user.getPresentations().add(userPresentation);
     }
 
     public void removeCollaborate(UserEntity user) {
@@ -74,7 +73,6 @@ public class PresentationEntity extends SuperEntity {
             UserPresentationEntity userPresentation = iterator.next();
             if (userPresentation.getPresentation().equals(this) && userPresentation.getUsers().equals(user)) {
                 iterator.remove();
-                userPresentation.getUsers().getGroups().remove(userPresentation);
                 userPresentation.setPresentation(null);
                 userPresentation.setUsers(null);
             }

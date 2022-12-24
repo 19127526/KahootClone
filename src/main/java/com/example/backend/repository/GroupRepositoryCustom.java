@@ -11,7 +11,7 @@ public interface GroupRepositoryCustom {
      * @param groupId
      * @return USER, ROLE
      */
-    List<Tuple> getGroupDetail(long groupId);
+    List<Tuple> getListUsersAndRoleInGroupDetail(long groupId);
 //    List<GroupEntity> getListRoomJoined(String email);
 
     /**
@@ -19,6 +19,6 @@ public interface GroupRepositoryCustom {
      * @param roles
      * @return tuple with GROUP and OWNER
      */
-    List<Tuple> getListGroups(String email, List<Role> roles);
+    List<Tuple> getListGroupsAndOwner(String email, List<Role> roles);
 
 }

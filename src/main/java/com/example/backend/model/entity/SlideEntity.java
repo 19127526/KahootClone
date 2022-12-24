@@ -20,6 +20,7 @@ public class SlideEntity extends SuperEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String text;
+    private String heading;
     private GenreQuestion genreQuestion;
     private String imageURL;
 
