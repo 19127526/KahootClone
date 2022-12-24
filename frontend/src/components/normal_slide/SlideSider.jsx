@@ -1,9 +1,14 @@
 import {Input, Space} from "antd";
 import React, {useEffect, useState} from "react";
 import {changeQuestion, updateHeader} from "../../apis/slide/slideAPI";
+import ParagraphComponent from "../paragraph/ParagraphComponent";
+import JoditEditor from "jodit-react";
+import useDebounce from "../../hooks/useDebounce";
+import {useDispatch} from "react-redux";
 
 const SlideSider = ({selectedItem,selectedValue, setSelectedValue}) => {
     // console.log(selectedValue)
+    const debounceValue = useDebounce(selectedValue, 300);
 
     const onBlurHeader = (e) => {
         updateHeader({id: selectedValue.id, heading:e.target.value, text: selectedValue.text}).then(() => {
@@ -11,27 +16,43 @@ const SlideSider = ({selectedItem,selectedValue, setSelectedValue}) => {
     }
 
     const onBlurParagraph = (e) => {
-        updateHeader({id: selectedValue.id, text: e.target.value, heading:selectedValue.heading}).then(() => {
+        updateHeader({id: selectedValue.id, text: e, heading:selectedValue.heading}).then(() => {
         })
     }
 
 
     const onChangeHeader = (e) => {
+
         setSelectedValue(prevState => ({
             ...prevState,
             heading: e.target.value
         }));
     }
+
+
     const onChangeParagraph = (e) => {
         setSelectedValue(prevState => ({
             ...prevState,
-            text: e.target.value
+            text: e
         }));
     }
 
     useEffect(() => {
-        setSelectedValue(selectedValue)
-    }, [onBlurParagraph, onChangeParagraph])
+        setSelectedValue(selectedValue);
+    }, [onBlurParagraph, onChangeParagraph]);
+
+    useEffect(
+
+      () => {
+          if (debounceValue) {
+
+              updateHeader({id: selectedValue.id, text: selectedValue?.text, heading:selectedValue.heading}).then(() => {
+              })
+          }
+          else {
+          }
+      },[debounceValue]);
+
 
     
     return (
@@ -47,10 +68,10 @@ const SlideSider = ({selectedItem,selectedValue, setSelectedValue}) => {
             <b>
                 Paragraph
             </b>
-            <Input size={"large"} allowClear placeholder={"Type your paragraph"} maxLength={800}
-                   value = {selectedValue.text}
-                   onBlur={onBlurParagraph}
-                   showCount onChange={onChangeParagraph}/>
+            <JoditEditor  onChange={onChangeParagraph}
+                         value={selectedValue.text} onBlur={onBlurParagraph}
+            />
+
         </Space>
     );
 }

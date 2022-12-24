@@ -2,6 +2,7 @@ import {Space} from "antd";
 import Paragraph from "antd/lib/typography/Paragraph";
 import React from "react";
 import Title from "antd/es/typography/Title";
+import Parser from 'html-react-parser';
 
 const SlidePresentation = ({selectedValue}) => {
     return (
@@ -19,8 +20,8 @@ const SlidePresentation = ({selectedValue}) => {
                 <Title>
                     {selectedValue.heading}
                 </Title>
-                <Paragraph style={{textAlign: "center"}}>
-                    {selectedValue.text}
+                <Paragraph style={{textAlign: "center"}} >
+                  {Parser(selectedValue.text)}
                 </Paragraph>
             </div>
         </Space>
