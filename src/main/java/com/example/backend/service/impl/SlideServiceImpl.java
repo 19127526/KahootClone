@@ -56,7 +56,7 @@ public class SlideServiceImpl implements SlideService {
         });
         SlideEntity slide = new SlideEntity();
         slide.setText(slideDto.getText());
-        slide.setHeading(slide.getHeading());
+        slide.setHeading(slideDto.getHeading());
         slide.setGenreQuestion(slideDto.getGenreQuestion());
         presentation.addSlide(slide);
         presentationRepository.save(presentation);
