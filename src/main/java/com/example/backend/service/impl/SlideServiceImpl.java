@@ -52,7 +52,7 @@ public class SlideServiceImpl implements SlideService {
     @Override
     public SlideEntity createSlide(SlideDto slideDto) {
         PresentationEntity presentation = presentationRepository.findById(slideDto.getPresentation()).orElseThrow(() -> {
-            throw new ResourceNotFoundException("slide not found");
+            throw new ResourceNotFoundException("presentation not found");
         });
         SlideEntity slide = new SlideEntity();
         slide.setText(slideDto.getText());
@@ -72,6 +72,7 @@ public class SlideServiceImpl implements SlideService {
         if (presentation.getStatus() != PresentationStatus.IDLE)
             throw new ResourceInvalidException("presentation is running");
         question.setText(slideDto.getText());
+        question.setHeading(slideDto.getHeading());
         return slideRepository.save(question);
     }
 }
