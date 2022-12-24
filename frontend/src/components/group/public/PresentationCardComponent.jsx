@@ -13,44 +13,6 @@ import {PRESENTATION_URI} from "../../../configs/url";
 import {Input, Modal} from "antd";
 import EmailComponent from "../../email/EmailComponent";
 import {useSelector} from "react-redux";
-// const ModalInvitePresentation=({id})=>{
-//   return (
-//     <div className="modal fade" id={id} >
-//       <div className="modal-dialog" role="document" style={{top:"30%"}}>
-//         <div className="modal-content">
-//           <div className="modal-header">
-//             <h4 className="modal-title">
-//               <i className="fa fa-opera"></i> Invite member to join presentation</h4>
-//             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-//               <span aria-hidden="true">&times;</span>
-//             </button>
-//           </div>
-//           <div className="modal-body">
-//             <form className="form-inline">
-//               <div className="input-group">
-//
-//                 <input type="text" className="form-control boxed rounded-s" style={{width: "400px"}}
-//                        placeholder="Enter email member... " defaultValue={"dsdsds"}/>
-//
-//                 <input type="email" className="form-control boxed rounded-s" style={{width: "400px"}}
-//                        placeholder="Enter email member... "/>
-//                 <span className="input-group-btn align-content-center" style={{marginTop:"5px"}}>
-//                 <button className="btn btn-secondary  rounded-s" data-dismiss="modal" type="button" style={{marginRight:"5px"}}>
-//                 Cancel
-//                 </button>
-//                 <button className="btn btn-primary rounded-s" data-dismiss="modal" type="button">
-//                 Invite
-//                 </button>
-//                 </span>
-//               </div>
-//             </form>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
 
 const PresentationCardComponent=({type,index, loadData})=>{
   const [openSetting,setOpenSetting]=useState(false);
@@ -84,20 +46,18 @@ const PresentationCardComponent=({type,index, loadData})=>{
 
 
   const handleDelete = () => {
-    console.log(index, index.id)
+    // console.log(index, index.id)
 
-    deletePresentation({id: index.id}).then((response) => {
+    deletePresentation({id: index.id, email: email}).then((response) => {
+      console.log(response.status)
       if(response.status === 204){
-        loadData()
+        loadData({type: type})
         Notification("Notification about remove presentation",`Remove presentation ${index.name} success`,constraintNotification.NOTIFICATION_SUCCESS)
       }
       else{
         Notification("Notification about remove presentation",`Remove presentation ${index.name} fail`,constraintNotification.NOTIFICATION_ERROR)
       }
     })
-      .catch(err=>{
-        Notification("Notification about remove presentation",`Remove presentation ${index.name} fail`,constraintNotification.NOTIFICATION_ERROR)
-      })
   }
 
   const handleAccept = () => {

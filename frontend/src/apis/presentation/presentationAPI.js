@@ -60,9 +60,10 @@ export  const inviteCollaboration = async ({id, email, emailInvited}) =>  {
     })
 }
 
-export const deletePresentation = async ({id}) => {
+export const deletePresentation = async ({id, email}) => {
     return await request.post(DELETE_PRESENTATION, {
-       "id": id
+       "id": id,
+        "email": email
     })
 }
 

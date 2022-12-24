@@ -12,6 +12,10 @@ export const addNewSlide = async ({id,question, genre}) =>{
     return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":question, "genreQuestion": genre})
 }
 
+export const addNewParagraphSlide = async ({id,text,heading, genre}) =>{
+    return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":text,heading:heading, "genreQuestion": genre})
+}
+
 export const deleteSlide = async ({id}) => {
     return await request.post(REMOVE_SLIDE, {
         "id": id
@@ -68,5 +72,13 @@ export const changeQuestion  = async ({id, text}) => {
     return await request.post(CHANGE_QUESTION, {
         "id": id,
         "text": text
+    })
+}
+
+export const updateHeader  = async ({id, heading, text}) => {
+    return await request.post(CHANGE_QUESTION, {
+        "id": id,
+        "text": text,
+        "heading": heading
     })
 }

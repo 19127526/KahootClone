@@ -8,9 +8,11 @@ import ChartPresentation from "../../components/chart/Presentation/ChartPresenta
 import ChartSider from "../../components/chart/Sider/ChartSider";
 import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
 import {useNavigate, useParams} from "react-router-dom";
-import {addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
+import {addNewParagraphSlide, addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
 import {PRESENTATION_URI} from "../../configs/url";
 import {useSelector} from "react-redux";
+import SlidePresentation from "../../components/normal_slide/SlidePresentation";
+import SlideSider from "../../components/normal_slide/SlideSider";
 
 
 const items = [
@@ -34,8 +36,8 @@ const options = [
 
 const Presentation = () => {
 
-    const {id}=useParams();
-    const navigate=useNavigate()
+    const {id} = useParams();
+    const navigate = useNavigate()
     const dataProfile = useSelector(state => state.loginPage);
     const email = dataProfile.profile.email;
     const [selectedItem, setSelectedItem] = useState(0);
@@ -60,7 +62,7 @@ const Presentation = () => {
                 addSlide({genre: "MULTI_CHOICES"})
                 break;
             case "1":
-
+                addSlide({genre: "DOCUMENT"})
                 break;
             default:
         }
@@ -74,11 +76,11 @@ const Presentation = () => {
     const removeSlide = async () => {
         let list = [...slideList]
         let deletedItem = list.splice(hoverItem, 1)
-        await deleteSlide({id:deletedItem[0]["id"]});
+        await deleteSlide({id: deletedItem[0]["id"]});
         setListSlide(list)
-        if(selectedItem === hoverItem || selectedItem > hoverItem) {
-            setSelectedValue(slideList[selectedItem-1])
-            setSelectedItem(selectedItem-1)
+        if (selectedItem === hoverItem || selectedItem > hoverItem) {
+            setSelectedValue(slideList[selectedItem - 1])
+            setSelectedItem(selectedItem - 1)
         }
         // if(hoverItem === 1 && list.length == 2){
         //     setSelectedItem(selectedItem > hoverItem ? 0 : 0)
@@ -91,46 +93,57 @@ const Presentation = () => {
     }
 
     const addSlide = ({genre}) => {
-        addNewSlide({id: id, question:"Your question", genre: genre}).then((response) => {
-            setIsLoading(true)
-            if(response.status === 201){
-                if(slideList.length === 0 ){
-                    setListSlide([response.data])
+        if (genre === "MULTI_CHOICES") {
+            addNewSlide({id: id, question: "Your question", genre: genre}).then((response) => {
+                setIsLoading(true)
+                if (response.status === 201) {
+                    if (slideList.length === 0) {
+                        setListSlide([response.data])
+                    } else {
+                        setListSlide([...slideList, response.data])
+                    }
+                    setSelectedValue(response.data)
+                    setSelectedItem(slideList.length)
+                    setIsLoading(false)
                 }
-                else{
-                    setListSlide([...slideList,response.data])
-                }
-                setSelectedValue(response.data)
-                setSelectedItem(slideList.length)
-                setIsLoading(false)
-            }
 
-        })
+            })
+        } else {
+            addNewParagraphSlide({id: id, text: "Paragraph", heading: "Heading", genre}).then((response) => {
+                setIsLoading(true)
+                if (response.status === 201) {
+                    setListSlide([...slideList, response.data])
+                    setSelectedValue(response.data)
+                    setSelectedItem(slideList.length)
+                    setIsLoading(false)
+                }
+            })
+        }
     }
 
 
     const content = (
-      <>
-          <Button size={"large"} onClick={removeSlide} disabled={slideList.length === 1}>
-              Remove
-          </Button>
-      </>
+        <>
+            <Button size={"large"} onClick={removeSlide} disabled={slideList.length === 1}>
+                Remove
+            </Button>
+        </>
     );
 
-    const presentButton=(e)=>{
+    const presentButton = (e) => {
         e.preventDefault();
 
 
-        navigate(PRESENTATION_URI + `${id}/show`,{state:{index:slideList, firstSlide: slideList[0].id}})
+        navigate(PRESENTATION_URI + `${id}/show`, {state: {index: slideList, firstSlide: slideList[0].id}})
     }
 
     useEffect(() => {
         async function getDetail() {
             setIsLoading(true)
-            let response = await getPresentationDetail({id: id, email:email })
-            if(response.status === 200){
-                if(response.data.slides.length === 0){
-                    await addSlide({genre:"MULTI_CHOICES"})
+            let response = await getPresentationDetail({id: id, email: email})
+            if (response.status === 200) {
+                if (response.data.slides.length === 0) {
+                    await addSlide({genre: "MULTI_CHOICES"})
                 } else {
                     console.log(response.data.slides)
                     setSelectedValue(response.data.slides[0])
@@ -140,86 +153,94 @@ const Presentation = () => {
             setIsLoading(false)
 
         }
+
         getDetail()
 
-    },[])
+    }, [])
 
     return (
-      <>
-          <Divider/>
-          <Layout style={{height: "100%", width:"100%",padding: "40px 10px 0 10px"}}>
-              <Header style={{backgroundColor: "white", marginBottom: "10px",position:"relative"}}>
-                  <Dropdown
-                    menu={menuProps}
-                    arrow
-                  >
-                      <Button type={"primary"} icon={<PlusOutlined/>} size={"large"}
-                              onClick={(e) => e.preventDefault()}
-                              style={{position:"absolute",top:"20%",left: "2.3%"}}>
-                          Add slide
-                      </Button>
-                  </Dropdown>
-                  <Button type={"primary"} size={"large"}
-                          onClick={presentButton}
-                          style={{position:"absolute",right:"3%",top:"20%"}}>
-                      Present
-                  </Button>
-              </Header>
-              <Layout>
-                  <Sider style={{backgroundColor: "white", overflowY: "scroll"}}>
-                      {slideList.length !== 0 ?  <List
-                        itemLayout="vertical"
-                        size="large"
-                        dataSource={slideList}
-                        renderItem={(item, index) => (
-                          <Popover placement="right" title="Menu" content={content} trigger={"contextMenu"} onOpenChange={(visible) =>{
-                              if(visible){
-                                  setHoverItem(index)
-                              }
-                          }}>
-                              <Card onClick={() => handleClickItem(index)} style={{
-                                  backgroundColor: index === selectedItem ? "lightblue" : "white",
-                                  margin: "10px",
-                                  border: "solid"
-                              }}>
-                                  <List.Item
-                                    key={item.key}
-                                  >
-                                      <Row>
-                                          <Col>
-                                              <text>
-                                                  {index + 1}
-                                              </text>
-                                          </Col>
-                                          <Col>
-                                              {/*<img src={barchart} alt={""}/>*/}
-                                              <text>
-                                                  {item.type}
-                                              </text>
-                                          </Col>
-                                      </Row>
-                                  </List.Item>
-                              </Card>
-                          </Popover>
+        <>
+            <Divider/>
+            <Layout style={{height: "100%", width: "100%", padding: "40px 10px 0 10px"}}>
+                <Header style={{backgroundColor: "white", marginBottom: "10px", position: "relative"}}>
+                    <Dropdown
+                        menu={menuProps}
+                        arrow
+                    >
+                        <Button type={"primary"} icon={<PlusOutlined/>} size={"large"}
+                                onClick={(e) => e.preventDefault()}
+                                style={{position: "absolute", top: "20%", left: "2.3%"}}>
+                            Add slide
+                        </Button>
+                    </Dropdown>
+                    <Button type={"primary"} size={"large"}
+                            onClick={presentButton}
+                            style={{position: "absolute", right: "3%", top: "20%"}}>
+                        Present
+                    </Button>
+                </Header>
+                <Layout>
+                    <Sider style={{backgroundColor: "white", overflowY: "scroll"}}>
+                        {slideList.length !== 0 ? <List
+                            itemLayout="vertical"
+                            size="large"
+                            dataSource={slideList}
+                            renderItem={(item, index) => (
+                                <Popover placement="right" title="Menu" content={content} trigger={"contextMenu"}
+                                         onOpenChange={(visible) => {
+                                             if (visible) {
+                                                 setHoverItem(index)
+                                             }
+                                         }}>
+                                    <Card onClick={() => handleClickItem(index)} style={{
+                                        backgroundColor: index === selectedItem ? "lightblue" : "white",
+                                        margin: "10px",
+                                        border: "solid"
+                                    }}>
+                                        <List.Item
+                                            key={item.key}
+                                        >
+                                            <Row>
+                                                <Col>
+                                                    <text>
+                                                        {index + 1}
+                                                    </text>
+                                                </Col>
+                                                <Col>
+                                                    {/*<img src={barchart} alt={""}/>*/}
+                                                    <text>
+                                                        {item.type}
+                                                    </text>
+                                                </Col>
+                                            </Row>
+                                        </List.Item>
+                                    </Card>
+                                </Popover>
 
-                        )}
-                      /> : <div/>}
-                  </Sider>
-                  <Content style={{backgroundColor: "white", margin: " 0 10px 0 10px", padding: "10px"}}>
-                          {isLoading || selectedValue === undefined ? <div/> : <ChartPresentation selectedValue={selectedValue}/>}
+                            )}
+                        /> : <div/>}
+                    </Sider>
+                    <Content style={{backgroundColor: "white", margin: " 0 10px 0 10px", padding: "10px"}}>
+                        {isLoading || selectedValue === undefined ?
+                            <div/> : selectedValue.genreQuestion === "MULTI_CHOICES" ?
+                                <ChartPresentation selectedValue={selectedValue}/> :
+                                <SlidePresentation selectedValue={selectedValue}/>}
 
-                  </Content>
-                  <Sider style={{backgroundColor: "white", padding: "20px", overflowY: "scroll"}} width={"400px"}>
-                      {isLoading || selectedValue === undefined ? <div/> : <ChartSider selectedValue={selectedValue}  setSelectedValue={setSelectedValue} selectedItem={selectedItem} />
-                      }
+                    </Content>
+                    <Sider style={{backgroundColor: "white", padding: "20px", overflowY: "scroll"}} width={"400px"}>
+                        {isLoading || selectedValue === undefined ?
+                            <div/> : selectedValue.genreQuestion === "MULTI_CHOICES" ?
+                                <ChartSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
+                                            selectedItem={selectedItem}/> : <SlideSider selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedItem={selectedItem}/>
+                        }
 
-                  </Sider>
-              </Layout>
-              <Footer></Footer>
+                        </Sider>
+                </Layout>
+                <Footer></Footer>
 
-          </Layout>
-      </>
-    );
+            </Layout>
+        </>
+);
 }
 
 export default Presentation

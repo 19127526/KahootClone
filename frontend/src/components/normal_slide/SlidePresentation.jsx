@@ -3,7 +3,7 @@ import Paragraph from "antd/lib/typography/Paragraph";
 import React from "react";
 import Title from "antd/es/typography/Title";
 
-const SlidePresentation = ({item}) => {
+const SlidePresentation = ({selectedValue}) => {
     return (
         <Space
             direction={"vertical"}
@@ -17,10 +17,10 @@ const SlidePresentation = ({item}) => {
 
             <div>
                 <Title>
-                    {item.content["heading"]}
+                    {selectedValue.heading}
                 </Title>
                 <Paragraph style={{textAlign: "center"}}>
-                    {item.content["paragraph"]}
+                    {selectedValue.text}
                 </Paragraph>
             </div>
         </Space>
