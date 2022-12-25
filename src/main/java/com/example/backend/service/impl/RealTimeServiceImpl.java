@@ -170,7 +170,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             UserEntity user = userRepository.findAccountEntityByEmail(interact.getEmail()).orElseThrow(() -> {
                 throw new ResourceInvalidException("permission denied");
             });
-            PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndUserId(interact.getPresentationId(), user.getId()).orElseThrow(() -> {
+            PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndUserId(interact.getPresentationId(), user.getId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("stop invalid");
             });
             present.setPresented(false);
