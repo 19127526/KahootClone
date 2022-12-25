@@ -29,7 +29,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RealTimeServiceImpl implements RealTimeService {
 
-    private static final String topic = "";
+    private static final String topic = "/private";
     private final SlideRepository slideRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
@@ -45,7 +45,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void choseVote(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentation_IdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (interact.getVotes().isEmpty()) throw new ResourceInvalidException("please chose vote");
@@ -84,17 +84,20 @@ public class RealTimeServiceImpl implements RealTimeService {
             if (!present.isPresented()) throw new ResourceInvalidException("presentation is closed");
 
         }
-        return getPresentDto(present.getSlideId(), present.getId(), present.getPresentation().getId());
+        return getPresentDto(present.getSlideId(), present.getId(), present.getPresentationId());
     }
 
     @Override
     public void changeSlide(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentation_IdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (present.getMode() == PresentationStatus.PUBLIC) {
-            String email = present.getUsers().getEmail();
-            if (!Objects.equals(email, interact.getEmail())) throw new ResourceInvalidException("permission denied");
+            UserEntity user = userRepository.findById(present.getUserId()).orElseThrow(() -> {
+                throw new ResourceInvalidException("permission denied");
+            });
+            if (!Objects.equals(user.getEmail(), interact.getEmail()))
+                throw new ResourceInvalidException("permission denied");
         }
         if (present.getMode() == PresentationStatus.PRIVATE) {
             long groupId = present.getGroupId();
@@ -103,7 +106,7 @@ public class RealTimeServiceImpl implements RealTimeService {
                 throw new ResourceInvalidException("permission denied");
             });
         }
-        List<SlideEntity> slides = slideRepository.findByPresentation_Id(present.getPresentation().getId()).stream().sorted(Comparator.comparing(SlideEntity::getId)).toList();
+        List<SlideEntity> slides = slideRepository.findByPresentation_Id(present.getPresentationId()).stream().sorted(Comparator.comparing(SlideEntity::getId)).toList();
         int i = 0;
         while (slides.get(i).getId() != present.getSlideId()) {
             ++i;
@@ -119,7 +122,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         HashMap<String, Object> payload = getPayloadSlide(slides.get(i), ActionPayload.CHANGE_SLIDE);
         payload.put("present_id", interact.getPresentationId());
         payload.put("user_change_slide", interact.getEmail());
-        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, present.getPresentId()), topic, payload);
+        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, present.getId()), topic, payload);
     }
 
     @Override
@@ -134,35 +137,43 @@ public class RealTimeServiceImpl implements RealTimeService {
         });
         List<SlideEntity> slides = slideRepository.findByPresentation_Id(presentation.getId()).stream().sorted(Comparator.comparing(SlideEntity::getId)).toList();
         if (slides.isEmpty()) throw new ResourceInvalidException("please created slide to present");
+        long slideIdFirst = slides.get(0).getId();
+        PresentHistoryEntity presentHistory;
         if (interact.getMode() == PresentationStatus.PUBLIC) {
-            presentation.addPresentHistory(user, null, slides.get(0).getId());
-            presentation = presentationRepository.save(presentation);
+            presentHistory = new PresentHistoryEntity(user.getId(), presentation.getId(), null, slideIdFirst);
+            presentHistory = presentHistoryRepository.save(presentHistory);
         } else {
             Tuple userGroup = userRepository.getUserAndGroupWithRoles(interact.getEmail(), interact.getGroupId(), List.of(Role.OWNER, Role.Co_OWNER)).orElseThrow(() -> {
                 throw new ResourceInvalidException("permission denied");
             });
             GroupEntity group = (GroupEntity) userGroup.toArray()[1];
             if (group.getPresent() != -1) throw new ResourceInvalidException("Group is presented");
-            presentation.addPresentHistory(user, group.getId(), slides.get(0).getId());
-            presentationRepository.save(presentation);
+            presentHistory = new PresentHistoryEntity(user.getId(), presentation.getId(), group.getId(), slideIdFirst);
+            presentHistory = presentHistoryRepository.save(presentHistory);
             group.setPresent(presentation.getId());
             groupRepository.save(group);
-            List<Long> users = userRepository.getListUserWithGroup(group.getId()).stream().map(UserEntity::getId).filter(id -> id != user.getId()).toList();
+            List<Long> users = userRepository.getListUserWithGroup(group.getId()).stream().filter(id -> id != user.getId()).toList();
             HashMap<String, Object> payload = new HashMap<>();
             payload.put("action", ActionPayload.START_PRESENTATION);
             payload.put("presentation", presentation.getId());
             payload.put("author", user.getEmail());
             payload.put("group", interact.getGroupId());
-            users.forEach(id -> simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_LOGIN, id), topic, payload));
+            System.out.println("------------------: " + users);
+            users.forEach(id -> {
+                System.out.println("------------------: " + String.format(Constant.TOPIC_LOGIN, id));
+                simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_LOGIN, id), topic, payload);
+            });
         }
-        PresentHistoryEntity presentHistory = presentation.getPresentHistories().get(presentation.getPresentHistories().size() - 1);
-        return getPresentDto(slides.get(0).getId(), presentHistory.getId(), presentation.getId());
+        return getPresentDto(slideIdFirst, presentHistory.getId(), presentation.getId());
     }
 
     @Override
     public void stopPresent(InteractPresentRequest interact) {
         if (interact.getGroupId() == null) {
-            PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentation_IdAndUsers_Email(interact.getPresentationId(), interact.getEmail()).orElseThrow(() -> {
+            UserEntity user = userRepository.findAccountEntityByEmail(interact.getEmail()).orElseThrow(() -> {
+                throw new ResourceInvalidException("permission denied");
+            });
+            PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndUserId(interact.getPresentationId(), user.getId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("stop invalid");
             });
             present.setPresented(false);
@@ -189,13 +200,13 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void sendMessage(ChatRequest chatRequest) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentation_IdAndPresented(chatRequest.getPresentId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(chatRequest.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("chat invalid");
         });
         ChatEntity chat = chatMapper.payloadToEntity(chatRequest);
         chat = chatRepository.save(chat);
         presentHistoryRepository.save(present);
-        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, present.getPresentId()), topic, getPayloadChat(chat));
+        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, present.getId()), topic, getPayloadChat(chat));
     }
 
     private PresentDto getPresentDto(long slideId, long presentId, long presentationId) {

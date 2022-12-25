@@ -40,8 +40,8 @@ public class PresentationEntity extends SuperEntity {
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserPresentationEntity> userPresentations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PresentHistoryEntity> presentHistories = new ArrayList<>();
+//    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PresentHistoryEntity> presentHistories = new ArrayList<>();
 
     public void addSlide(SlideEntity slide) {
         this.slides.add(slide);
@@ -69,21 +69,21 @@ public class PresentationEntity extends SuperEntity {
         }
     }
 
-    public void addPresentHistory(UserEntity user, Long groupId, long slideId) {
-        PresentHistoryEntity presentHistory = new PresentHistoryEntity(user, this, groupId, slideId);
-        presentHistories.add(presentHistory);
-    }
-
-    public void removePresentHistory(UserEntity user) {
-        for (Iterator<PresentHistoryEntity> iterator = presentHistories.iterator(); iterator.hasNext(); ) {
-            PresentHistoryEntity presentHistory = iterator.next();
-            if (presentHistory.getPresentation().equals(this) && presentHistory.getUsers().equals(user)) {
-                iterator.remove();
-                presentHistory.setPresentation(null);
-                presentHistory.setUsers(null);
-            }
-        }
-    }
+//    public void addPresentHistory(UserEntity user, Long groupId, long slideId) {
+//        PresentHistoryEntity presentHistory = new PresentHistoryEntity(user, this, groupId, slideId);
+//        presentHistories.add(presentHistory);
+//    }
+//
+//    public void removePresentHistory(UserEntity user) {
+//        for (Iterator<PresentHistoryEntity> iterator = presentHistories.iterator(); iterator.hasNext(); ) {
+//            PresentHistoryEntity presentHistory = iterator.next();
+//            if (presentHistory.getPresentationId().equals(this) && presentHistory.getUserId().equals(user)) {
+//                iterator.remove();
+//                presentHistory.setPresentationId(null);
+//                presentHistory.setUserId(null);
+//            }
+//        }
+//    }
 
     @Override
     public boolean equals(Object o) {

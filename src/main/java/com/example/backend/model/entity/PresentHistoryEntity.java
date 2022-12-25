@@ -15,20 +15,13 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "presentation_in_group")
+@Table(name = "presentation_history")
 public class PresentHistoryEntity extends SuperEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private long id;
-    @EmbeddedId
-    private PresentHistoryId presentId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("presentationId")
-    private PresentationEntity presentation;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("userId")
-    private UserEntity users;
+    private long presentationId;
+    private long userId;
 
     @Column(name = "start_on")
     private Date startOn = new Date(System.currentTimeMillis());
@@ -38,15 +31,14 @@ public class PresentHistoryEntity extends SuperEntity {
     private boolean presented;
     private PresentationStatus mode;
 
-    public PresentHistoryEntity(UserEntity user, PresentationEntity presentation, Long groupId, long slideId) {
-        this.users = user;
-        this.presentation = presentation;
+    public PresentHistoryEntity(long user, long presentationId, Long groupId, long slideId) {
+        this.userId = user;
+        this.presentationId = presentationId;
         this.groupId = groupId;
         this.slideId = slideId;
         this.presented = true;
         if (groupId == null) this.mode = PresentationStatus.PUBLIC;
         else this.mode = PresentationStatus.PRIVATE;
-        this.presentId = new PresentHistoryId(user.getId(), presentation.getId());
     }
 
 //    public void addChat(ChatEntity mess) {
@@ -64,11 +56,11 @@ public class PresentHistoryEntity extends SuperEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PresentHistoryEntity that = (PresentHistoryEntity) o;
-        return Objects.equals(users, that.users) && Objects.equals(presentation, that.presentation);
+        return Objects.equals(userId, that.userId) && Objects.equals(presentationId, that.presentationId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(presentation, users);
+        return Objects.hash(presentationId, userId);
     }
 }

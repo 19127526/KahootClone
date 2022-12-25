@@ -17,9 +17,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // BE receive message
         config.setApplicationDestinationPrefixes("/chat");
         // BE send message
-        config.setUserDestinationPrefix("/ws");
-        // /ws/application/Id/group
-        // /ws/application/Presentation/Id
+        config.setUserDestinationPrefix("/application");
+        // /application/Id/group
+        // /application/Presentation/Id
     }
 
     @Override

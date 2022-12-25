@@ -1,8 +1,6 @@
 package com.example.backend.repository;
 
 import com.example.backend.common.model.Role;
-import com.example.backend.model.entity.UserEntity;
-import com.example.backend.model.entity.UserGroupEntity;
 import com.querydsl.core.Tuple;
 
 import java.util.List;
@@ -17,5 +15,5 @@ public interface UserGroupRepositoryCustom {
      */
     Optional<Tuple> getUserAndGroupWithRoles(String email, long groupId, List<Role> roles);
 
-    List<UserEntity> getListUserWithGroup(long groupId);
+    List<Long> getListUserWithGroup(long groupId);
 }

@@ -1,8 +1,6 @@
 package com.example.backend.repository.impl;
 
 import com.example.backend.common.model.Role;
-import com.example.backend.model.entity.UserEntity;
-import com.example.backend.model.entity.UserGroupEntity;
 import com.example.backend.repository.UserGroupRepositoryCustom;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,10 +31,9 @@ public class UserGroupRepositoryCustomImpl implements UserGroupRepositoryCustom 
     }
 
     @Override
-    public List<UserEntity> getListUserWithGroup(long groupId) {
+    public List<Long> getListUserWithGroup(long groupId) {
         return new JPAQueryFactory(entityManager)
                 .from(userGroupEntity).where(userGroupEntity.group.id.eq(groupId))
-                .from(userEntity).on(userGroupEntity.users.id.eq(userEntity.id))
-                .select(userEntity).fetch();
+                .select(userGroupEntity.users.id).fetch();
     }
 }

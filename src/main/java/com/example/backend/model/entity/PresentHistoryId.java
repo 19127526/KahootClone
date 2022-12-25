@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,6 +16,9 @@ import java.util.Objects;
 @AllArgsConstructor
 @Data
 public class PresentHistoryId implements Serializable {
+    @Column(name ="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @Column(name = "presentationId")
     private long presentationId;
     @Column(name = "userId")
