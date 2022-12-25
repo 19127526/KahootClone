@@ -29,7 +29,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class RealTimeServiceImpl implements RealTimeService {
 
-    private static final String topic = "/private";
     private final SlideRepository slideRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
@@ -64,7 +63,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             votes.forEach(it -> it.addUser(user));
             voteRepository.saveAll(votes);
         }
-        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, interact.getPresentationId()), topic, getPayloadSlide(slide, ActionPayload.UPDATE_SLIDE));
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentationId()), Constant.TOPIC_PRESENTATION, getPayloadSlide(slide, ActionPayload.UPDATE_SLIDE));
     }
 
     @Override
@@ -122,7 +121,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         HashMap<String, Object> payload = getPayloadSlide(slides.get(i), ActionPayload.CHANGE_SLIDE);
         payload.put("present_id", interact.getPresentationId());
         payload.put("user_change_slide", interact.getEmail());
-        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, present.getId()), topic, payload);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, payload);
     }
 
     @Override
@@ -160,8 +159,8 @@ public class RealTimeServiceImpl implements RealTimeService {
             payload.put("group", interact.getGroupId());
             System.out.println("------------------: " + users);
             users.forEach(id -> {
-                System.out.println("------------------: " + String.format(Constant.TOPIC_LOGIN, id));
-                simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_LOGIN, id), topic, payload);
+                System.out.println("------------------: " + id);
+                simpMessagingTemplate.convertAndSendToUser(String.valueOf(id), Constant.TOPIC_LOGIN, payload);
             });
         }
         return getPresentDto(slideIdFirst, presentHistory.getId(), presentation.getId());
@@ -195,7 +194,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         }
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("action", ActionPayload.STOP_PRESENTATION);
-        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, interact.getPresentationId()), topic, payload);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentationId()), Constant.TOPIC_PRESENTATION, payload);
     }
 
     @Override
@@ -206,7 +205,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         ChatEntity chat = chatMapper.payloadToEntity(chatRequest);
         chat = chatRepository.save(chat);
         presentHistoryRepository.save(present);
-        simpMessagingTemplate.convertAndSendToUser(String.format(Constant.TOPIC_PRESENTATION, present.getId()), topic, getPayloadChat(chat));
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, getPayloadChat(chat));
     }
 
     private PresentDto getPresentDto(long slideId, long presentId, long presentationId) {
