@@ -53,17 +53,15 @@ public class RealTimeServiceImpl implements RealTimeService {
         });
         List<VoteEntity> votes = voteRepository.findVotesExistInListId(interact.getVotes());
         if (present.getMode() == PresentationStatus.PUBLIC) {
-            votes.forEach(it -> it.addUser(null));
-            voteRepository.saveAll(votes);
+            userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(vote.getId(), slide.getId(), present.getId())).toList());
         } else {
             if (interact.getEmail() == null) throw new ResourceInvalidException("please login to vote");
             UserEntity user = userRepository.findUserFromGroup(interact.getEmail(), present.getGroupId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("this account have not joined group yet");
             });
-            votes.forEach(it -> it.addUser(user));
-            voteRepository.saveAll(votes);
+            userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(user.getId(), vote.getId(), slide.getId(), present.getId())).toList());
         }
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentationId()), Constant.TOPIC_PRESENTATION, getPayloadSlide(slide, ActionPayload.UPDATE_SLIDE));
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentationId()), Constant.TOPIC_PRESENTATION, getPayloadSlide(present.getId(), slide, ActionPayload.UPDATE_SLIDE));
     }
 
     @Override
@@ -118,7 +116,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             present.setSlideId(slides.get(++i).getId());
         }
         presentHistoryRepository.save(present);
-        HashMap<String, Object> payload = getPayloadSlide(slides.get(i), ActionPayload.CHANGE_SLIDE);
+        HashMap<String, Object> payload = getPayloadSlide(present.getId(), slides.get(i), ActionPayload.CHANGE_SLIDE);
         payload.put("present_id", interact.getPresentationId());
         payload.put("user_change_slide", interact.getEmail());
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, payload);
@@ -214,7 +212,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         });
         List<VoteDto> votes = voteRepository.findVoteEntitiesBySlide_Id(slide.getId()).stream().map(vote -> {
             VoteDto dto = voteMapper.entityToDto(vote);
-            dto.setVoteCount(userVoteRepository.findUserVoteEntitiesByVote_Id(vote.getId()).size());
+            dto.setVoteCount(userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId).size());
             return dto;
         }).toList();
         PresentDto presentDto = slideMapper.toPresent(slide);
@@ -224,14 +222,14 @@ public class RealTimeServiceImpl implements RealTimeService {
         return presentDto;
     }
 
-    private HashMap<String, Object> getPayloadSlide(SlideEntity slide, ActionPayload action) {
+    private HashMap<String, Object> getPayloadSlide(long presentId, SlideEntity slide, ActionPayload action) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("action", action);
         payload.put("id_of_slide", slide.getId());
         payload.put("text_of_slide", slide.getText());
         payload.put("type_of_slide", slide.getGenreQuestion());
         payload.put("image_of_slide", slide.getImageURL());
-        payload.put("votes_of_slide", getVotes(voteRepository.findVoteEntitiesBySlide_Id(slide.getId())));
+        payload.put("votes_of_slide", getVotes(voteRepository.findVoteEntitiesBySlide_Id(slide.getId()), presentId));
         return payload;
     }
 
@@ -244,12 +242,12 @@ public class RealTimeServiceImpl implements RealTimeService {
         return payload;
     }
 
-    private List<Map<String, Object>> getVotes(List<VoteEntity> votes) {
+    private List<Map<String, Object>> getVotes(List<VoteEntity> votes, long presentId) {
         return votes.stream().map(vote -> {
             Map<String, Object> dataVote = new HashMap<>();
             dataVote.put("voteId", vote.getId());
             dataVote.put("voteText", vote.getText());
-            dataVote.put("voteCount", vote.getUsers().size());
+            dataVote.put("voteCount", userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId));
             return dataVote;
         }).toList();
     }
