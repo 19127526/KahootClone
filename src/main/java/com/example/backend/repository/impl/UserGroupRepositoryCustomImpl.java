@@ -1,6 +1,7 @@
 package com.example.backend.repository.impl;
 
 import com.example.backend.common.model.Role;
+import com.example.backend.model.entity.UserEntity;
 import com.example.backend.model.entity.UserGroupEntity;
 import com.example.backend.repository.UserGroupRepositoryCustom;
 import com.querydsl.core.Tuple;
@@ -20,16 +21,6 @@ import static com.example.backend.model.entity.QUserGroupEntity.userGroupEntity;
 public class UserGroupRepositoryCustomImpl implements UserGroupRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Override
-    public List<UserGroupEntity> fetchDataFromAccountAndRoom(Long userId, Long roomId) {
-        return null;
-//        return new JPAQueryFactory(entityManager)
-//                .from(userRoomEntity)
-//                .where(userRoomEntity.room.id.eq(roomId).and(userRoomEntity.user.id.eq(userId)))
-//                .select(userRoomEntity).fetch();
-    }
-
     @Override
     public Optional<Tuple> getUserAndGroupWithRoles(String email, long groupId, List<Role> roles) {
         return Optional.ofNullable(new JPAQueryFactory(entityManager)
@@ -39,5 +30,13 @@ public class UserGroupRepositoryCustomImpl implements UserGroupRepositoryCustom 
                 .join(groupEntity).on(userGroupEntity.group.id.eq(groupEntity.id))
                 .select(userEntity, groupEntity).fetchOne()
         );
+    }
+
+    @Override
+    public List<UserEntity> getListUserWithGroup(long groupId) {
+        return new JPAQueryFactory(entityManager)
+                .from(userGroupEntity).where(userGroupEntity.group.id.eq(groupId))
+                .from(userEntity).on(userGroupEntity.users.id.eq(userEntity.id))
+                .select(userEntity).fetch();
     }
 }

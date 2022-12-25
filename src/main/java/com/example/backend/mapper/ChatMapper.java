@@ -9,6 +9,5 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ChatMapper {
     ChatDto entityToDto(ChatEntity chatEntity);
-    @Mapping(target = "presentation", ignore = true)
     ChatEntity payloadToEntity(ChatRequest chatRequest);
 }

@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.PresentationMapper;
 import com.example.backend.mapper.SlideMapper;
+import com.example.backend.model.dto.PresentDto;
 import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.dto.SlideDto;
 import com.example.backend.model.request.ChatRequest;
@@ -30,22 +31,19 @@ public class RealTimeController extends BaseController {
     }
 
     @GetMapping("connect")
-    public ResponseEntity<SlideDto> connect(@RequestBody InteractPresentRequest interact) {
-        // checking is close present
-        return ResponseEntity.status(HttpStatus.OK).body(slideMapper.entityToDto(realTimeService.connect(interact)));
+    public ResponseEntity<PresentDto> connect(@RequestBody InteractPresentRequest interact) {
+        return ResponseEntity.status(HttpStatus.OK).body(realTimeService.connect(interact));
     }
 
     @GetMapping("changeSlide")
     public ResponseEntity<Object> playNext(@RequestBody InteractPresentRequest interact) {
-        // checking is close present
-        realTimeService.nextSlide(interact);
+        realTimeService.changeSlide(interact);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PostMapping("start")
-    public ResponseEntity<PresentationDto> present(@RequestBody InteractPresentRequest interact) {
-//        presentationService
-        return ResponseEntity.status(HttpStatus.OK).body(presentationMapper.entityToDto(realTimeService.startPresent(interact)));
+    public ResponseEntity<PresentDto> present(@RequestBody InteractPresentRequest interact) {
+        return ResponseEntity.status(HttpStatus.OK).body(realTimeService.startPresent(interact));
     }
 
     @PostMapping("stop")

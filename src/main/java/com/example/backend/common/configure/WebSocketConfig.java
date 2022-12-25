@@ -17,15 +17,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // BE receive message
         config.setApplicationDestinationPrefixes("/chat");
         // BE send message
-        config.setUserDestinationPrefix("/application");
-//        config.setUserDestinationPrefix();
+        config.setUserDestinationPrefix("/ws");
+        // /ws/application/Id/group
+        // /ws/application/Presentation/Id
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
-
-
-
 }

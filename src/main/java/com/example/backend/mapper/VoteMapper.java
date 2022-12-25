@@ -5,7 +5,7 @@ import com.example.backend.model.entity.VoteEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = UserVoteMapper.class)
+@Mapper(componentModel = "spring")
 public interface VoteMapper {
     @Mapping(target = "slide", ignore = true)
     @Mapping(target = "users", ignore = true)
