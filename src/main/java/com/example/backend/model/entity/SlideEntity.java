@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "question")
+@Table(name = "slide")
 @NoArgsConstructor
 public class SlideEntity extends SuperEntity {
     @Id

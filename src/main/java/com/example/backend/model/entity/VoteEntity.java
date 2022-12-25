@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "answer")
+@Table(name = "vote")
 @NoArgsConstructor
 public class VoteEntity extends SuperEntity {
     @Id
