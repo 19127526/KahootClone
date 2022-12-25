@@ -11,6 +11,5 @@ public interface VoteMapper {
     @Mapping(target = "users", ignore = true)
     VoteDto entityToDto(VoteEntity voteEntity);
     @Mapping(target = "slide", ignore = true)
-    @Mapping(target = "users", ignore = true)
     VoteEntity dtoToEntity(VoteDto voteDto);
 }
