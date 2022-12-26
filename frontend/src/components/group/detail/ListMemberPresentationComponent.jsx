@@ -7,7 +7,7 @@ import MemberCard from "../../card/member/MemberCard";
 import emailjs from "@emailjs/browser";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
-import {INVITE_URL_REDIRECT} from "../../../configs/url";
+import {INVITE_URL_REDIRECT, PRESENTATION_URI} from "../../../configs/url";
 import ErrorPage from "../../../pages/error/ErrorPage";
 import {Alert, Button, Input, Pagination} from "antd";
 
@@ -124,7 +124,12 @@ const ListMemberPresentationComponent = () => {
             banner
             type={"info"}
             action={
-              <Button size="small" type="primary">
+              <Button size="small" type="primary" onClick={() => {
+                // console.log(detailGroup.present)
+              navigate(PRESENTATION_URI + `${12}/show`,{state: {id: detailGroup.present}})
+
+              }
+              }>
                 JOIN RIGHT NOW
               </Button>
             }

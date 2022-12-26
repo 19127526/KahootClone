@@ -2,7 +2,7 @@ import request from "../request";
 import {
     ACCEPT_INVITATION,
     ADD_PRESENTATION, CHOOSE_OPTIONS_USER, COLLABORATING_INVITATION,
-    DELETE_PRESENTATION, GET_QUESTION_OPTION_USER, LIST_INVITATION, LIST_PRESENTATION,
+    DELETE_PRESENTATION, JOIN_PRESENTATION, LIST_INVITATION, LIST_PRESENTATION,
     LIST_PRESENTATION_FROM_GROUP,
     PRESENTATION_DETAIL, REJECT_INVITATION
 } from "../../configs/url";
@@ -73,8 +73,8 @@ export const postAnswer=async ({answer,question,email})=>{
     return await request.post(CHOOSE_OPTIONS_USER,{answers:[answer],question:question,email:email});
 }
 
-export const getListQuestionAndOptionByPreId=async ({preId,email,groupId})=>{
-    return await request.post(GET_QUESTION_OPTION_USER, {
+export const joinPresentation=async ({preId,email,groupId})=>{
+    return await request.post(JOIN_PRESENTATION, {
         "presentationId" : preId,
         "email": email,
         "groupId": groupId

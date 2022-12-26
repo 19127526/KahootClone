@@ -80,12 +80,11 @@ const ChartPresentation = ({selectedValue, width}) => {
     // }, [value, slideList])
 
     useEffect(() => {
-        console.log("RUN")
         if (selectedValue.votes === null) return;
         selectedValue.votes.forEach((index) => {
 
             l.push(index.text)
-            d.push(index.users === null ? 0 : index.users.length)
+            d.push(index.voteCount)
         })
         setData({
             labels: l,
@@ -108,12 +107,23 @@ const ChartPresentation = ({selectedValue, width}) => {
                 {selectedValue.text}
             </Typography>
 
-            {
+            {/*<div style={{minWidth: width ?? "80vh"}}>*/}
+            {/*    {*/}
+            {/*        selectedValue.votes.map((value) => {*/}
+            {/*            return <div>*/}
+            {/*                {*/}
+            {/*                    value.id*/}
+            {/*                }*/}
+            {/*            </div>*/}
+            {/*        })*/}
+            {/*    }*/}
+            {/*</div>*/}
+            {/*{*/}
                <Bar options={options} data={
                     dataChart
                 }
-                                               style={{minWidth: width ?? "80vh"}}/>
-            }
+                    style={{minWidth: width ?? "80vh"}}/>
+            {/*}*/}
 
         </Space>
     );
