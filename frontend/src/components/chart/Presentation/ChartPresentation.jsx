@@ -53,7 +53,7 @@ const options = {
 const ChartPresentation = ({selectedValue, width}) => {
     // const reRender=useDispatch();
     // const [isLoading, setLoading] = useState(true)
-
+    // console.log(selectedValue)
     let d = []
     let l = []
     const [dataChart, setData] = useState({labels: [], datasets: []})

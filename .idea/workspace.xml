@@ -6,13 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/apis/presentation/presentationAPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/presentation/presentationAPI.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/group/public/PresentationCardComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/public/PresentationCardComponent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/normal_slide/SlidePresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/normal_slide/SlidePresentation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/normal_slide/SlideSider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/normal_slide/SlideSider.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/Presentation/ChartPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/Presentation/ChartPresentation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/group/detail/ListMemberPresentationComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/loading/LoadingExample.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/loading/LoadingExample.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/notification/Notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/notification/Notification.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/layouts/MainLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/layouts/MainLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login/LoginPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/login/LoginPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login/LoginPage.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/login/LoginPage.reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/MainPresentation.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +110,8 @@
       <workItem from="1670988145688" duration="15766000" />
       <workItem from="1671244978196" duration="603000" />
       <workItem from="1671519445881" duration="8353000" />
-      <workItem from="1671605634266" duration="32113000" />
+      <workItem from="1671605634266" duration="32713000" />
+      <workItem from="1671960757716" duration="18030000" />
     </task>
     <servers />
   </component>

@@ -8,7 +8,7 @@ import emailjs from "@emailjs/browser";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
 import {INVITE_URL_REDIRECT} from "../../../configs/url";
-import {Input, Pagination} from "antd";
+import {Alert, Button, Input, Pagination} from "antd";
 
 const ModalAddMember = ({idModal, userName, nameGroup, code, id}) => {
   const [email, setEmail] = useState();
@@ -84,8 +84,12 @@ const ListMemberPresentationComponent = () => {
   const [searchEmail,setSearchEmail]=useState();
   const currentIndexPage = pageIndex * page;
   const prevIndexPage = pageIndex * (page - 1);
+  const [isPresent, setIsPresent] = useState(-1)
+
   useEffect(() => {
     getDetailGroup({email: email, id: id}).then(res => {
+      console.log(res.data)
+      setIsPresent(res.data.present)
       setIsOwner(res.data.created === email)
       setItem(res.data.users);
       setTempItem(res.data.users)
@@ -111,6 +115,19 @@ const ListMemberPresentationComponent = () => {
 
   return (
     <div>
+      {
+        isPresent === -1 ? <div/> :  <Alert
+            message={"A presentation is being run in this group."}
+            banner
+            type={"info"}
+            action={
+              <Button size="small" type="primary">
+                JOIN RIGHT NOW
+              </Button>
+            }
+            style={{marginTop: "1%", marginBottom: "1%"}}
+        />
+      }
       <div className="title-search-block">
         <div className="title-block">
           <div className="row">

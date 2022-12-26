@@ -73,6 +73,10 @@ export const postAnswer=async ({answer,question,email})=>{
     return await request.post(CHOOSE_OPTIONS_USER,{answers:[answer],question:question,email:email});
 }
 
-export const getListQuestionAndOptionByPreId=async ({preId})=>{
-    return await request.get(GET_QUESTION_OPTION_USER+`?presentationId=${preId}`);
+export const getListQuestionAndOptionByPreId=async ({preId,email,groupId})=>{
+    return await request.post(GET_QUESTION_OPTION_USER, {
+        "presentationId" : preId,
+        "email": email,
+        "groupId": groupId
+    });
 }

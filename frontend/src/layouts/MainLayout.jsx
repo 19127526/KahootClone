@@ -6,11 +6,17 @@ import {useLocation} from "react-router-dom";
 import AsideComponent from "../components/aside/AsideComponent";
 import FooterComponent from "../components/footer/FooterComponent";
 import {PRESENTATION_EDIT_URI, PRESENTATION_SEE_URI, PRESENTATION_SHOW_URI, PRESENTATION_URI} from "../configs/url";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
+import {useSelector} from "react-redux";
 
 
 const {Header, Footer, Content} = Layout;
 
+let stompClient = null
 const MainLayout = () => {
+
+
     const location = useLocation();
     return (
         /*  <Row xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>

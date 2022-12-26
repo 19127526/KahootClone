@@ -1,4 +1,4 @@
-import {List, Popover} from "antd"
+import {AutoComplete, List, Modal, Popover, Radio, Select, Space} from "antd"
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Divider, Dropdown, Layout, Row} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
@@ -8,11 +8,13 @@ import ChartPresentation from "../../components/chart/Presentation/ChartPresenta
 import ChartSider from "../../components/chart/Sider/ChartSider";
 import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
 import {useNavigate, useParams} from "react-router-dom";
-import {addNewParagraphSlide, addNewSlide, deleteSlide} from "../../apis/slide/slideAPI";
+import {addNewParagraphSlide, addNewSlide, deleteSlide, startPresentation} from "../../apis/slide/slideAPI";
 import {PRESENTATION_URI} from "../../configs/url";
 import {useSelector} from "react-redux";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import SlideSider from "../../components/normal_slide/SlideSider";
+import {Spacer} from "@chakra-ui/react";
+import {getListGroup} from "../../apis/group/groupApi";
 
 
 const items = [
@@ -33,8 +35,57 @@ const options = [
     },
 ];
 
+const plainOptions = ['Public', 'Private'];
+
 
 const Presentation = () => {
+    const [value1, setValue1] = useState('Public');
+    const [listGroup, setListGroup] = useState([]);
+    let searchValue = "";
+    const onChange1 = ({target: {value}}) => {
+        if (value === "Private") {
+            getListGroup({type: "created", email: email}).then((res) => {
+                let option = []
+                res.data.map((vl) => {
+                    option.push({
+                        value: vl.id,
+                        label: vl.name
+                    })
+                })
+                console.log(option)
+                setListGroup(option)
+            })
+        }
+        setValue1(value);
+    };
+
+    const onChange = (value) => {
+        searchValue = value
+        console.log(`selected ${searchValue}`);
+    };
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        if(value1 === "Public"){
+            startPresentation({presentationId: id, mode: "PUBLIC", email: email}).then((response) => {
+                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data}})
+            })
+        } else {
+            startPresentation({presentationId: id, mode: "PRIVATE", email: email, groupId:searchValue}).then((response) => {
+                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data}})
+            })
+        }
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     const {id} = useParams();
     const navigate = useNavigate()
@@ -45,13 +96,6 @@ const Presentation = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [hoverItem, setHoverItem] = useState(0)
     const [slideList, setListSlide] = useState([]);
-    // const [isConnected,setIsConnected]=useState(false)
-    // const [userData,setUserData]=useState({
-    //     userName:"",
-    //     receiverName:"",
-    //     connected:false,
-    //     message:""
-    // });
     const handleClickItem = (index) => {
         setSelectedValue(slideList[index])
         setSelectedItem(index)
@@ -133,7 +177,6 @@ const Presentation = () => {
     const presentButton = (e) => {
         e.preventDefault();
 
-
         navigate(PRESENTATION_URI + `${id}/show`, {state: {index: slideList, firstSlide: slideList[0].id}})
     }
 
@@ -173,11 +216,31 @@ const Presentation = () => {
                             Add slide
                         </Button>
                     </Dropdown>
-                    <Button type={"primary"} size={"large"}
-                            onClick={presentButton}
-                            style={{position: "absolute", right: "3%", top: "20%"}}>
-                        Present
+                    {/*<Button type={"primary"} size={"large"}*/}
+                    {/*        onClick={presentButton}*/}
+                    {/*        style={{position: "absolute", right: "3%", top: "20%"}}>*/}
+                    {/*    Present*/}
+                    {/*</Button>*/}
+                    <Button type="primary" onClick={showModal} style={{position: "absolute", right: "3%", top: "20%"}}>
+                        Open Modal
                     </Button>
+                    <Modal title="Basic Modal" centered
+                           open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                        <Space direction={"vertical"} style={{width: "100%"}}>
+                            <Radio.Group options={plainOptions} onChange={onChange1} value={value1}/>
+                            {
+                                value1 === "Private" ? <Select
+                                    filterOption={(input, option) =>
+                                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                    }
+                                    onChange={onChange}
+                                    optionFilterProp="children"
+                                    showSearch
+                                    placeholder="Search a group"
+                                    style={{width: "100%"}} options={listGroup}/> : <div/>
+                            }
+                        </Space>
+                    </Modal>
                 </Header>
                 <Layout>
                     <Sider style={{backgroundColor: "white", overflowY: "scroll"}}>
@@ -231,16 +294,19 @@ const Presentation = () => {
                         {isLoading || selectedValue === undefined ?
                             <div/> : selectedValue.genreQuestion === "MULTI_CHOICES" ?
                                 <ChartSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
-                                            selectedItem={selectedItem}/> : <SlideSider selectedValue={selectedValue} setSelectedValue={setSelectedValue} selectedItem={selectedItem}/>
+                                            selectedItem={selectedItem}/> :
+                                <SlideSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
+                                            selectedItem={selectedItem}/>
                         }
 
-                        </Sider>
+                    </Sider>
                 </Layout>
                 <Footer></Footer>
 
+
             </Layout>
         </>
-);
+    );
 }
 
 export default Presentation

@@ -27,6 +27,8 @@ export const LoginPageReducer=(state=initialState,action)=>
         draft.isLogin=false;
         draft.profile=null;
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("subscribed");
+
         break;
       default:
         return state;

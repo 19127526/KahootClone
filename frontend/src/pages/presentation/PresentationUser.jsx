@@ -47,7 +47,7 @@ const PresentationUser = () => {
 
 
   const registerUser = () => {
-    let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
+    let Sock = new SockJS("http://localhost:8080/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   }
@@ -85,8 +85,8 @@ const PresentationUser = () => {
 
   const onConnected=()=>{
 
-    stompClient.subscribe(`/slide/${preId}/playing`,onMessageSubmitReceived);
-    stompClient.subscribe(`/slide/${preId}/next`,onMessageNextSlideReceived)
+    stompClient.subscribe(`/application/presentation/${1}`,onMessageSubmitReceived);
+    // stompClient.subscribe(`/slide/${preId}/next`,onMessageNextSlideReceived)
   }
   const onError=(err)=>{
 
@@ -99,7 +99,7 @@ const PresentationUser = () => {
 
   useEffect(()=>{
     const getListOptionAndAnswer=async ()=>{
-      await getListQuestionAndOptionByPreId({preId:preId})
+      await getListQuestionAndOptionByPreId({preId:preId, email: profile.email, groupId: 1})
         .then(res=>{
           if(res.response?.status===400){
             if(res.response.data.message.includes("presentation is stopped")){
@@ -168,7 +168,7 @@ const PresentationUser = () => {
                 </Typography>
             </Space>
             <Radio.Group onChange={onChange} value={value} style={{width: "100%"}}  defaultValue={defaultValue}>
-                {dataPresent.answers.map((item, index) => {
+                {dataPresent.votes.map((item, index) => {
                     return (<Card
                         style={{marginLeft: "5%", marginRight: "5%", marginBottom: "1%", border: "solid"}}>
                         <Row>
