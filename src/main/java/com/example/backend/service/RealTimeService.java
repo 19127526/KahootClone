@@ -20,5 +20,5 @@ public interface RealTimeService {
 
     void sendMessage(ChatRequest chatRequest);
 
-    List<ChatEntity> getChat(long presentId, long size);
+    List<ChatEntity> getChat(long presentId, long size, long offset);
 }

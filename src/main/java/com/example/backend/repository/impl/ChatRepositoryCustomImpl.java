@@ -18,7 +18,7 @@ public class ChatRepositoryCustomImpl implements ChatRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<ChatEntity> getListChatWithSize(long presentId, long size) {
-        return new JPAQueryFactory(entityManager).selectFrom(chatEntity).orderBy(chatEntity.id.desc()).where(chatEntity.presentId.eq(presentId)).limit(size).fetch();
+    public List<ChatEntity> getListChatWithSize(long presentId, long size, long offset) {
+        return new JPAQueryFactory(entityManager).selectFrom(chatEntity).orderBy(chatEntity.id.desc()).where(chatEntity.presentId.eq(presentId)).limit(size).offset(offset).fetch();
     }
 }

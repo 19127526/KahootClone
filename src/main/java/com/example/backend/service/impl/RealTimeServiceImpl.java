@@ -207,8 +207,8 @@ public class RealTimeServiceImpl implements RealTimeService {
     }
 
     @Override
-    public List<ChatEntity> getChat(long presentId, long size) {
-        return chatRepository.getListChatWithSize(presentId,size);
+    public List<ChatEntity> getChat(long presentId, long size, long offset) {
+        return chatRepository.getListChatWithSize(presentId,size,offset);
     }
 
     private PresentDto getPresentDto(long slideId, long presentId, long presentationId) {
