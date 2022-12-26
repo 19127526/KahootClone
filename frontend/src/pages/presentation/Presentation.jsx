@@ -73,11 +73,11 @@ const Presentation = () => {
     const handleOk = () => {
         if(value1 === "Public"){
             startPresentation({presentationId: id, mode: "PUBLIC", email: email}).then((response) => {
-                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data}})
+                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data, id: id, type: "Public"}})
             })
         } else {
             startPresentation({presentationId: id, mode: "PRIVATE", email: email, groupId:searchValue}).then((response) => {
-                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data}})
+                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data, id: id, type: "Private", groupId: searchValue}})
             })
         }
         setIsModalOpen(false);
@@ -174,11 +174,11 @@ const Presentation = () => {
         </>
     );
 
-    const presentButton = (e) => {
-        e.preventDefault();
-
-        navigate(PRESENTATION_URI + `${id}/show`, {state: {index: slideList, firstSlide: slideList[0].id}})
-    }
+    // const presentButton = (e) => {
+    //     e.preventDefault();
+    //
+    //     navigate(PRESENTATION_URI + `${id}/show`, {state: {index: slideList, firstSlide: slideList[0].id}})
+    // }
 
     useEffect(() => {
         async function getDetail() {

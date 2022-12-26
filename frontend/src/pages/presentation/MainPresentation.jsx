@@ -5,7 +5,7 @@ import {Keyboard, Pagination, Navigation} from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import {
@@ -18,7 +18,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
-import {useLocation, useParams} from "react-router-dom";
+import {UNSAFE_NavigationContext, useLocation, useNavigate, useParams} from "react-router-dom";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {closePresentation, getDetailSlide, nextSlide, startPresentation} from "../../apis/slide/slideAPI";
@@ -64,12 +64,14 @@ const tabBarContent = ({data}) => {
 
 const MainPresentation = () => {
     const [activeIndex, setActiveIndex] = useState(0)
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(true)
+    const [loading1, setLoading1] = useState(false)
+
     const location = useLocation();
     const {id} = useParams()
 
-    const [selectedValue, setSelectedValue] = useState(location.state.firstSlide)
-    const [slideList, setListSlide] = useState(location.state.slide);
+    const [selectedValue, setSelectedValue] = useState(undefined)
+    const [slideList, setListSlide] = useState([]);
 
     const [openChat, setOpenChat] = useState(false);
     const [openQuestion, setOpenQuestion] = useState(false);
@@ -114,6 +116,47 @@ const MainPresentation = () => {
         }
     ]
 
+    const registerUser = () => {
+        let Sock = new SockJS("http://localhost:8080/ws");
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+    }
+    const onMessageNextSlideReceived = (payload) => {
+        /*setReceived(JSON.parse(payload?.body))*/
+        // console.log("slide",JSON.parse(payload?.body));
+        console.log(slideList.length)
+    }
+
+    const onConnected=()=>{
+        stompClient.subscribe(`/application/${id}/presentation`,onMessageNextSlideReceived);
+    }
+    const onError=(err)=>{
+        console.log(err)
+    }
+
+    useEffect(() => {
+        setLoading(true)
+        window.addEventListener('popstate', function myPop(event) {
+            if(location.state.type === "Private"){
+                closePresentation({presentationId: id, owner: email, groupId: location.state.groupId}).then((res) => {
+                    console.log(res)
+                    window.removeEventListener("popstate", myPop);
+                })
+            }
+        });
+        getPresentationDetail({id: location.state.id, email: email}).then((res) => {
+            setListSlide(res.data.slides)
+            setLoading(false)
+            setLoading1(true)
+            getDetailSlide({id: res.data.slides[0].id}).then((res) => {
+                setSelectedValue(res.data)
+                setLoading1(false)
+            })
+        })
+        registerUser()
+    },[])
+
+
     const showDrawer = ({type}) => {
         type ? setOpenChat(true) : setOpenQuestion(true);
         setUnseenMessage(0)
@@ -135,6 +178,8 @@ const MainPresentation = () => {
         }]);
         setUnseenMessage(unseenMessage + 1);
     }
+
+
 
     //
     // useEffect(()=>{
@@ -169,24 +214,25 @@ const MainPresentation = () => {
     //     startPresent();
     // },[]);
 
-    window.addEventListener('popstate', function (event) {
-        closePresentation({presentationId: id, owner: email}).then((res) => {
 
-        })
-    });
+    useEffect(() => {
+       if(slideList.length !== 0){
+           getDetailSlide({id: slideList[activeIndex].id}).then((res) => {
+               setSelectedValue(res.data)
+           })
+       }
+    }, [activeIndex])
 
     const onIndex = (e) => {
-        setLoading(true)
+        setLoading1(true)
+        console.log(location.state.id)
+        if(location.state.groupId !== null || location.state.groupId !== undefined) {
+            nextSlide({presentationId: location.state.id, email: email, groupId: location.state.groupId, action: activeIndex < e.activeIndex ? "NEXT_SLIDE" : "PREVIOUS_SLIDE"}).then((response) => {
+                // console.log(response)
+                setLoading1(false)
+            })
+        }
         setActiveIndex(e.activeIndex)
-
-        getDetailSlide({id: slideList[e.activeIndex].id}).then((res) => {
-            setSelectedValue(res.data)
-            setLoading(false)
-        })
-        console.log(slideList[e.activeIndex].id, id, email, 1)
-        nextSlide({slideId: slideList[e.activeIndex].id, presentationId: id, email: email, groupId: 1}).then((response) => {
-            console.log(response)
-        })
     }
 
 
@@ -194,7 +240,8 @@ const MainPresentation = () => {
         <>
             <Swiper
                 slidesPerView={1}
-                autoHeight={true}
+                autoHeight={false}
+                setWrapperSize={false}
                 initialSlide={activeIndex}
                 centeredSlides={true}
                 spaceBetween={30}
@@ -208,13 +255,19 @@ const MainPresentation = () => {
                 onActiveIndexChange={onIndex}
                 modules={[Keyboard, Pagination, Navigation]}
             >
-                {slideList.map((value) => {
-                    return (<SwiperSlide style={{backgroundColor: "white", height: "100%", padding: "5%"}}>
-                        {isLoading ?                         <LoadingComponent/> : value.genreQuestion === "MULTI_CHOICES" ?
-                            <ChartPresentation selectedValue={selectedValue} width={"165vh"}/> :
-                            <SlidePresentation selectedValue={selectedValue}/>}
-                    </SwiperSlide>)
-                })}
+
+                {
+                    isLoading || slideList.length === 0 ? <LoadingComponent/> : <div>
+                        {slideList.map((value) => {
+                            return (<SwiperSlide style={{backgroundColor: "white"}}>
+                                {loading1 ? <LoadingComponent/> : value.genreQuestion === "MULTI_CHOICES" ?
+                                    <ChartPresentation selectedValue={selectedValue} width={"165vh"}/> :
+                                    <SlidePresentation selectedValue={selectedValue}/>}
+                            </SwiperSlide>)
+                        })}
+                    </div>
+                }
+
             </Swiper>
 
             <FloatButton.Group shape="circle" style={{right: 24}}>

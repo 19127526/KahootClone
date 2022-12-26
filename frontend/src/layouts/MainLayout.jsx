@@ -13,7 +13,6 @@ import {useSelector} from "react-redux";
 
 const {Header, Footer, Content} = Layout;
 
-let stompClient = null
 const MainLayout = () => {
 
 

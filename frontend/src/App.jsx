@@ -8,9 +8,11 @@ import * as constraintNotification from "./components/notification/Notification.
 import {notification} from "antd";
 import {useNavigate} from "react-router-dom";
 import {GROUP_JOINED_DETAIL} from "./configs/url";
+import {useEffect} from "react";
 
 let stompClient = null
 function App() {
+  console.log("Hello")
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
   const dataProfile = useSelector(state => state.loginPage);
@@ -21,7 +23,6 @@ function App() {
   }
   const onMessageReceived = (payload) => {
     const data = JSON.parse(payload.body)
-    // console.log(data)
     api["info"]({
       message: 'Alert alert!!!',
       duration: 2.5,
@@ -38,10 +39,12 @@ function App() {
   const onError=(err)=>{
     console.log(err)
   }
+  useEffect(() => {
+    if(dataProfile.isLogin) {
+      registerUser()
+    }
+  }, [dataProfile.isLogin])
 
-  if(dataProfile.isLogin) {
-    registerUser()
-  }
 
   return (
       <>

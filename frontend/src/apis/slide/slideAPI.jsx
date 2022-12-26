@@ -52,20 +52,21 @@ export const startPresentation = async ({presentationId, mode, email,groupId})=>
     })
 }
 
-export const closePresentation = async ({presentationId, owner})=>{
+export const closePresentation = async ({presentationId, owner, groupId})=>{
     return await request.post(STOP_PRESENTATION, {
         "presentationId": presentationId,
-        "email": owner
+        "email": owner,
+        "groupId": groupId
     })
 }
 
 
-export const nextSlide = async ({slideId, presentationId, email, groupId}) => {
+export const nextSlide = async ({presentationId, email, groupId, action}) => {
     return await request.post(NEXT_SLIDE , {
-        slideId: slideId,
         presentationId: presentationId,
         email: email,
-        groupId: groupId
+        groupId: groupId,
+        action: action
     })
 }
 
