@@ -12,6 +12,7 @@ public class VoteDto {
 
     private long slide;
     private List<UserVoteDto> users;
+    private long voteCount;
     @Override
     public String toString() {
         return "VoteDto{" +

@@ -16,7 +16,5 @@ public class ChatEntity {
 
     private String mess;
     private String sender;
-    @JoinColumn
-    @ManyToOne(fetch = FetchType.LAZY)
-    private PresentationEntity presentation;
+    private long presentId;
 }

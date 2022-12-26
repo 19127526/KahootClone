@@ -69,8 +69,6 @@ public class SlideServiceImpl implements SlideService {
             throw new ResourceNotFoundException("slide not found");
         });
         PresentationEntity presentation = question.getPresentation();
-        if (presentation.getStatus() != PresentationStatus.IDLE)
-            throw new ResourceInvalidException("presentation is running");
         question.setText(slideDto.getText());
         question.setHeading(slideDto.getHeading());
         return slideRepository.save(question);

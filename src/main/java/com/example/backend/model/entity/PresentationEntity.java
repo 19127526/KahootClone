@@ -1,6 +1,5 @@
 package com.example.backend.model.entity;
 
-import com.example.backend.common.model.PresentationStatus;
 import com.example.backend.common.model.RolePresentation;
 import com.example.backend.common.model.SuperEntity;
 import lombok.AllArgsConstructor;
@@ -26,10 +25,10 @@ public class PresentationEntity extends SuperEntity {
     private long id;
     private String name;
     //    private String url;
-    private PresentationStatus status = PresentationStatus.IDLE;
-    private long currentSlide = -1;
+//    private PresentationStatus status = PresentationStatus.IDLE;
+//    private long currentSlide = -1;
     //////////////////
-    private long inGroup = -1;
+//    private long inGroup = -1;
 //    private Date created;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,10 +37,11 @@ public class PresentationEntity extends SuperEntity {
 
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
     private List<SlideEntity> slides = new ArrayList<>();
-    @OneToMany(mappedBy = "presentation", cascade = CascadeType.REMOVE)
-    private List<ChatEntity> chat = new ArrayList<>();
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserPresentationEntity> userPresentations = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PresentHistoryEntity> presentHistories = new ArrayList<>();
 
     public void addSlide(SlideEntity slide) {
         this.slides.add(slide);
@@ -51,16 +51,6 @@ public class PresentationEntity extends SuperEntity {
     public void removeSlide(SlideEntity slide) {
         this.slides.remove(slide);
         slide.setPresentation(null);
-    }
-
-    public void addChat(ChatEntity mess) {
-        this.chat.add(mess);
-        mess.setPresentation(this);
-    }
-
-    public void removeChat(ChatEntity mess) {
-        this.chat.remove(mess);
-        mess.setPresentation(null);
     }
 
     public void addCollaborate(UserEntity user, RolePresentation role) {
@@ -78,6 +68,22 @@ public class PresentationEntity extends SuperEntity {
             }
         }
     }
+
+//    public void addPresentHistory(UserEntity user, Long groupId, long slideId) {
+//        PresentHistoryEntity presentHistory = new PresentHistoryEntity(user, this, groupId, slideId);
+//        presentHistories.add(presentHistory);
+//    }
+//
+//    public void removePresentHistory(UserEntity user) {
+//        for (Iterator<PresentHistoryEntity> iterator = presentHistories.iterator(); iterator.hasNext(); ) {
+//            PresentHistoryEntity presentHistory = iterator.next();
+//            if (presentHistory.getPresentationId().equals(this) && presentHistory.getUserId().equals(user)) {
+//                iterator.remove();
+//                presentHistory.setPresentationId(null);
+//                presentHistory.setUserId(null);
+//            }
+//        }
+//    }
 
     @Override
     public boolean equals(Object o) {

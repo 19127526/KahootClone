@@ -13,12 +13,14 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "question")
+@Table(name = "slide")
 @NoArgsConstructor
 public class SlideEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "params")
+    @Lob
     private String text;
     private String heading;
     private GenreQuestion genreQuestion;
