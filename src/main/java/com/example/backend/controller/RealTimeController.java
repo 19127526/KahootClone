@@ -1,8 +1,10 @@
 package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
+import com.example.backend.mapper.ChatMapper;
 import com.example.backend.mapper.PresentationMapper;
 import com.example.backend.mapper.SlideMapper;
+import com.example.backend.model.dto.ChatDto;
 import com.example.backend.model.dto.PresentDto;
 import com.example.backend.model.dto.PresentationDto;
 import com.example.backend.model.dto.SlideDto;
@@ -16,6 +18,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("present")
@@ -23,6 +27,7 @@ public class RealTimeController extends BaseController {
     private final SlideMapper slideMapper;
     private final RealTimeService realTimeService;
     private final PresentationMapper presentationMapper;
+    private final ChatMapper chatMapper;
 
     @PostMapping("vote/chose")
     public ResponseEntity<Object> choseAnswer(@RequestBody InteractPresentRequest interact) {
@@ -30,12 +35,12 @@ public class RealTimeController extends BaseController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
-    @GetMapping("connect")
+    @PostMapping("connect")
     public ResponseEntity<PresentDto> connect(@RequestBody InteractPresentRequest interact) {
         return ResponseEntity.status(HttpStatus.OK).body(realTimeService.connect(interact));
     }
 
-    @GetMapping("changeSlide")
+    @PostMapping("changeSlide")
     public ResponseEntity<Object> playNext(@RequestBody InteractPresentRequest interact) {
         realTimeService.changeSlide(interact);
         return ResponseEntity.status(HttpStatus.OK).body(null);
@@ -55,5 +60,10 @@ public class RealTimeController extends BaseController {
     @MessageMapping("/presentation")
     public void receiveMessageChat(@Payload ChatRequest chatRequest) {
         realTimeService.sendMessage(chatRequest);
+    }
+
+    @GetMapping("/chat")
+    public ResponseEntity<List<ChatDto>> getChat(long presentId, long size) {
+        return ResponseEntity.status(HttpStatus.OK).body(realTimeService.getChat(presentId, size).stream().map(chatMapper::entityToDto).toList());
     }
 }
