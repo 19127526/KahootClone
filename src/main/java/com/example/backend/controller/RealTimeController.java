@@ -63,7 +63,7 @@ public class RealTimeController extends BaseController {
     }
 
     @GetMapping("/chat")
-    public ResponseEntity<List<ChatDto>> getChat(long presentId, long size) {
-        return ResponseEntity.status(HttpStatus.OK).body(realTimeService.getChat(presentId, size).stream().map(chatMapper::entityToDto).toList());
+    public ResponseEntity<List<ChatDto>> getChat(long presentId, long size, long offset) {
+        return ResponseEntity.status(HttpStatus.OK).body(realTimeService.getChat(presentId, size, offset).stream().map(chatMapper::entityToDto).toList());
     }
 }
