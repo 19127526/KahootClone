@@ -296,7 +296,7 @@ const Presentation = () => {
                                 <ChartSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
                                             selectedItem={selectedItem}/> :
                                 <SlideSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
-                                            selectedItem={selectedItem}/>
+                                            selectedItem={selectedItem} slideList={slideList} setListSlide={setListSlide}/>
                         }
 
                     </Sider>

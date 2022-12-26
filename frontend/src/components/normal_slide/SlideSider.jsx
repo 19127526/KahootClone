@@ -6,23 +6,21 @@ import JoditEditor from "jodit-react";
 import useDebounce from "../../hooks/useDebounce";
 import {useDispatch} from "react-redux";
 
-const SlideSider = ({selectedItem,selectedValue, setSelectedValue}) => {
-    // console.log(selectedValue)
+const SlideSider = ({selectedItem,selectedValue, setSelectedValue,setListSlide,slideList}) => {
     const debounceValue = useDebounce(selectedValue, 300);
 
     const onBlurHeader = (e) => {
-        updateHeader({id: selectedValue.id, heading:e.target.value, text: selectedValue.text}).then(() => {
-        })
+       /* updateHeader({id: selectedValue.id, heading:e.target.value, text: selectedValue.text}).then(() => {
+        })*/
     }
 
     const onBlurParagraph = (e) => {
-        updateHeader({id: selectedValue.id, text: e, heading:selectedValue.heading}).then(() => {
-        })
+     /*   updateHeader({id: selectedValue.id, text: e, heading:selectedValue.heading}).then(() => {
+        })*/
     }
 
 
     const onChangeHeader = (e) => {
-
         setSelectedValue(prevState => ({
             ...prevState,
             heading: e.target.value
@@ -43,9 +41,18 @@ const SlideSider = ({selectedItem,selectedValue, setSelectedValue}) => {
 
     useEffect(() => {
           if (debounceValue) {
+
             console.log("Saving");
               updateHeader({id: selectedValue.id, text: selectedValue?.text, heading:selectedValue.heading}).then((res) => {
-                console.log(res)
+                const temp=slideList.map((value,index)=>{
+                  if(index==selectedItem){
+                    return res.data;
+                  }
+                  else{
+                    return value;
+                  }
+                })
+                setListSlide(temp)
               })
           }
           else {

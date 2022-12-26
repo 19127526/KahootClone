@@ -8,13 +8,13 @@ import emailjs from "@emailjs/browser";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
 import {INVITE_URL_REDIRECT} from "../../../configs/url";
-import {Input, Pagination} from "antd";
 import ErrorPage from "../../../pages/error/ErrorPage";
 import {Alert, Button, Input, Pagination} from "antd";
 
 const ModalAddMember = ({idModal, userName, nameGroup, code, id}) => {
   const [email, setEmail] = useState();
   const form = useRef();
+  const navigate=useNavigate();
   const handleInviteMember = (e) => {
     e.preventDefault();
     emailjs.sendForm('service_r2vgzud', 'template_6dknugv', form.current, 'KZ2451QXsxFbGeSSS')
@@ -87,7 +87,7 @@ const ListMemberPresentationComponent = () => {
   const currentIndexPage = pageIndex * page;
   const prevIndexPage = pageIndex * (page - 1);
   const [isPresent, setIsPresent] = useState(-1)
-
+  const navigate=useNavigate();
   useEffect(() => {
     getDetailGroup({email: email, id: id}).then(res => {
       console.log(res.data)
