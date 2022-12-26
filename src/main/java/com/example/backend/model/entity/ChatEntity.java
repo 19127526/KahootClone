@@ -14,7 +14,7 @@ public class ChatEntity {
     @Id
     private long id;
 
-    private String mess;
+    private String mess ;
     private String sender;
     private long presentId;
 }
