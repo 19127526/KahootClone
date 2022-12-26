@@ -41,12 +41,11 @@ const SlideSider = ({selectedItem,selectedValue, setSelectedValue}) => {
         setSelectedValue(selectedValue);
     }, [onBlurParagraph, onChangeParagraph]);
 
-    useEffect(
-
-      () => {
+    useEffect(() => {
           if (debounceValue) {
-
-              updateHeader({id: selectedValue.id, text: selectedValue?.text, heading:selectedValue.heading}).then(() => {
+            console.log("Saving");
+              updateHeader({id: selectedValue.id, text: selectedValue?.text, heading:selectedValue.heading}).then((res) => {
+                console.log(res)
               })
           }
           else {

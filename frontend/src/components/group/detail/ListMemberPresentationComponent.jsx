@@ -2,13 +2,14 @@ import React, {useEffect, useRef, useState} from "react";
 import {useSelector} from "react-redux";
 import OwnerCard from "../../card/member/OwnerCard";
 import {getDetailGroup} from "../../../apis/group/groupApi";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import MemberCard from "../../card/member/MemberCard";
 import emailjs from "@emailjs/browser";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
 import {INVITE_URL_REDIRECT} from "../../../configs/url";
 import {Input, Pagination} from "antd";
+import ErrorPage from "../../../pages/error/ErrorPage";
 
 const ModalAddMember = ({idModal, userName, nameGroup, code, id}) => {
   const [email, setEmail] = useState();
@@ -84,14 +85,22 @@ const ListMemberPresentationComponent = () => {
   const [searchEmail,setSearchEmail]=useState();
   const currentIndexPage = pageIndex * page;
   const prevIndexPage = pageIndex * (page - 1);
+  const navigate=useNavigate();
   useEffect(() => {
     getDetailGroup({email: email, id: id}).then(res => {
-      setIsOwner(res.data.created === email)
-      setItem(res.data.users);
-      setTempItem(res.data.users)
-      setDetailGroup(res.data);
+      console.log(res)
+      if(res.status==200) {
+        setIsOwner(res.data.created === email)
+        setItem(res.data.users);
+        setTempItem(res.data.users)
+        setDetailGroup(res.data);
+      }
+      else{
+        return navigate("/error")
+      }
     })
       .catch(err => {
+        return navigate("/error")
       })
   }, [])
 

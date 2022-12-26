@@ -5,7 +5,8 @@ import {getInvitation, getListPresentation} from "../../apis/presentation/presen
 import {useSelector} from "react-redux";
 
 const PresentationList = () => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
+    const [tempData,setTempData]=useState([]);
     const dataProfile = useSelector(state => state.loginPage);
     const email = dataProfile.profile.email;
     const loadData = ({type}) => {
@@ -14,7 +15,8 @@ const PresentationList = () => {
 
                 if (response.status == 200) {
                     console.log(response.data)
-                    setData(response.data)
+                    setData(response.data);
+                    setTempData(response.data);
                 }
             })
         } else {
@@ -56,14 +58,14 @@ const PresentationList = () => {
                     <div className="card-block">
                         <div className="tab-content">
                             <div role="tabpanel" className="tab-pane fade" id="visits">
-                                <ListPresentationComponent type={"invited"} data={data} loadData={loadData}/>
+                                <ListPresentationComponent type={"invited"} data={data} tempData={tempData} loadData={loadData} setData={setData}/>
                                 <div id="dashboard-visits-chart"
                                      style={{position: "relative", "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"}}>
                                     <div className="morris-hover morris-default-style" style={{display: "none"}}></div>
                                 </div>
                             </div>
                             <div role="tabpanel" className="tab-pane fade active show" id="downloads">
-                                <ListPresentationComponent type={"created"} data={data} loadData={loadData}/>
+                                <ListPresentationComponent type={"created"} data={data}  tempData={tempData} loadData={loadData} setData={setData}/>
                                 <div id="dashboard-downloads-chart"
                                      style={{position: "relative", "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"}}>
                                     <div className="morris-hover morris-default-style" style={{display: "none"}}></div>

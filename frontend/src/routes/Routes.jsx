@@ -33,7 +33,7 @@ const PublicGroupDetailPageLazy = React.lazy(() => import("../pages/group/public
 const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
 const ForgotPageLazy = React.lazy(() => import("../pages/forgotpassword/ForgotPasswordPage"))
 const ErrorPageLazy=React.lazy(()=>import("../pages/error/ErrorPage"))
-const PresentationList=React.lazy(()=>import("../pages/presentation/PresentationList"))
+const PresentationListLazy=React.lazy(()=>import("../pages/presentation/PresentationList"))
 
 const RoutesPage = () => {
   return (
@@ -271,7 +271,7 @@ const RoutesPage = () => {
               <Authenticate path={PRESENTATION_URI}>
                 <React.Suspense fallback={<Loading/>}>
                     {" "}
-                    <PresentationList/>
+                    <PresentationListLazy/>
                 </React.Suspense>
               </Authenticate>
             }

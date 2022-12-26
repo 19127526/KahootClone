@@ -5,6 +5,8 @@ const PublicGroupDetailPage = () => {
 
     // const location=useLocation();
     // const type = location.pathname.split("/")[2];
+
+
     return (
       <>
           <article className="content items-list-page" style={{minHeight: "100vh"}}>

@@ -20,7 +20,7 @@ const SlidePresentation = ({selectedValue}) => {
                 <Title>
                     {selectedValue.heading}
                 </Title>
-                <Paragraph style={{textAlign: "center"}} >
+                <Paragraph  >
                   {Parser(selectedValue.text)}
                 </Paragraph>
             </div>

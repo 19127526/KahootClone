@@ -6,6 +6,7 @@ import {addNewPresentation, getInvitation, getListPresentation} from "../../../a
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
 import {Pagination} from "antd";
+import LoadingComponent from "../../loading/LoadingComponent";
 
 const ModalAddPresenTation = ({id, loadData}) => {
   const [value, setValue] = useState("")
@@ -24,7 +25,6 @@ const ModalAddPresenTation = ({id, loadData}) => {
 
   const handleOk = (e) => {
     e.preventDefault();
-    console.log(value)
     if (value !== "") {
       addNewPresentation({email: email, name: value}).then((response) => {
         if (response.status === 201) {
@@ -76,14 +76,33 @@ const ModalAddPresenTation = ({id, loadData}) => {
 }
 
 const pageIndex = 6;
-const ListPresentationComponent=({type, data, loadData})=>{
+const ListPresentationComponent=({type, data, loadData,setData, tempData})=>{
 
-  const [tempItem,setTempItem]=useState([]);
+
   const params = useParams();
   const [page, setPage] = useState(1);
   const currentIndexPage = pageIndex * page;
   const prevIndexPage = pageIndex * (page - 1);
 
+  const [searchValue,setSearchValue]=useState("");
+
+
+
+
+
+
+
+
+
+  const handleSearchClick=e=>{
+    if(searchValue===""){
+      setData(tempData);
+    }
+    else{
+      const a=tempData.filter(index=> index?.name.includes(searchValue))
+      setData(a);
+    }
+  }
 
 
   return (
@@ -110,8 +129,8 @@ const ListPresentationComponent=({type, data, loadData})=>{
         <div className="items-search">
           <form className="form-inline">
             <div className="input-group">
-              <input type="text" className="form-control boxed rounded-s" placeholder="Search for..."/>
-              <span className="input-group-btn">
+              <input type="text" className="form-control boxed rounded-s" placeholder="Search name ..." onChange={(e)=>setSearchValue(e.target.value)}/>
+              <span className="input-group-btn" onClick={handleSearchClick}>
                   <button className="btn btn-secondary rounded-s" type="button" style={{height:"100%"}}>
                       <i className="fa fa-search"></i>
                   </button>
