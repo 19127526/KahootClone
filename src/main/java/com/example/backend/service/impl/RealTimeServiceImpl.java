@@ -67,7 +67,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     @Override
     public PresentDto connect(InteractPresentRequest interact) {
         PresentHistoryEntity present;
-        if (interact.getGroupId() == null) {
+        if (interact.getGroupId() != null) {
             present = presentHistoryRepository.findPresentHistoryEntityByGroupIdAndPresented(interact.getGroupId(), true).orElseThrow(() -> {
                 throw new ResourceInvalidException("connect invalid");
             });
@@ -204,6 +204,11 @@ public class RealTimeServiceImpl implements RealTimeService {
         chat = chatRepository.save(chat);
         presentHistoryRepository.save(present);
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, getPayloadChat(chat));
+    }
+
+    @Override
+    public List<ChatEntity> getChat(long presentId, long size) {
+        return null;
     }
 
     private PresentDto getPresentDto(long slideId, long presentId, long presentationId) {
