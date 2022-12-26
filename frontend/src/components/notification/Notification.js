@@ -6,7 +6,7 @@ const Notification = (title, description,status) => {
   if(status===constraints.NOTIFICATION_SUCCESS){
     return notification.success({
       message: title,
-      description
+      description,
     });
   }
   else if(status===constraints.NOTIFICATION_WARN){

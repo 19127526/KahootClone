@@ -43,22 +43,30 @@ export const removeOption  = async ({optionID}) => {
     })
 }
 
-export const startPresentation = async ({presentationId, slideId})=>{
+export const startPresentation = async ({presentationId, mode, email,groupId})=>{
     return await request.post(START_PRESENTATION, {
         "presentationId": presentationId,
-        "slideId": slideId
+        "mode": mode,
+        "email": email,
+        "groupId": groupId
     })
 }
 
-export const closePresentation = async ({presentationId})=>{
+export const closePresentation = async ({presentationId, owner})=>{
     return await request.post(STOP_PRESENTATION, {
-        "presentationId": presentationId
+        "presentationId": presentationId,
+        "email": owner
     })
 }
 
 
-export const nextSlide = async ({slideId}) => {
-    return await request.get(NEXT_SLIDE + `?slideId=${slideId}`)
+export const nextSlide = async ({slideId, presentationId, email, groupId}) => {
+    return await request.post(NEXT_SLIDE , {
+        slideId: slideId,
+        presentationId: presentationId,
+        email: email,
+        groupId: groupId
+    })
 }
 
 export const changeOption = async ({id,text}) => {

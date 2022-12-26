@@ -19,6 +19,8 @@ import {
   REGISTER_URi
 } from "../../configs/url";
 import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
 
 const mapStateToProps = state => ({
 
@@ -30,7 +32,7 @@ const mapDispatchToProps = {
 
 const connector = connect(mapStateToProps,mapDispatchToProps)
 
-
+let stompClient=null
 const LoginPage = (props) => {
   const {loginNormal,loginGoogle}=props
   const [username, setUsername] = useState("");
@@ -88,6 +90,7 @@ const LoginPage = (props) => {
   const handlePassword = (event) => {
     setPassword(event.target.value)
   }
+
   const submitLogin= async (event)=>{
     event.preventDefault();
     if(username===""||password===""){
