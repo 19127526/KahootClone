@@ -232,11 +232,12 @@ public class RealTimeServiceImpl implements RealTimeService {
     private HashMap<String, Object> getPayloadSlide(long presentId, SlideEntity slide, ActionPayload action) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("action", action);
-        payload.put("id_of_slide", slide.getId());
-        payload.put("text_of_slide", slide.getText());
-        payload.put("type_of_slide", slide.getGenreQuestion());
-        payload.put("image_of_slide", slide.getImageURL());
-        payload.put("votes_of_slide", getVotes(voteRepository.findVoteEntitiesBySlide_Id(slide.getId()), presentId));
+        payload.put("id", slide.getId());
+        payload.put("heading", slide.getHeading());
+        payload.put("text", slide.getText());
+        payload.put("genreQuestion", slide.getGenreQuestion());
+        payload.put("imageURL", slide.getImageURL());
+        payload.put("votes", getVotes(voteRepository.findVoteEntitiesBySlide_Id(slide.getId()), presentId));
         return payload;
     }
 
