@@ -197,7 +197,9 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void sendMessage(ChatRequest chatRequest) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(chatRequest.getPresentId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository
+                .findPresentHistoryEntityByPresentationIdAndPresented(chatRequest.getPresentId(), true)
+                .orElseThrow(() -> {
             throw new ResourceInvalidException("chat invalid");
         });
         ChatEntity chat = chatMapper.payloadToEntity(chatRequest);
