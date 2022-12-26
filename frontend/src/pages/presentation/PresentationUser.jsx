@@ -7,6 +7,7 @@ import {getListQuestionAndOptionByPreId, postAnswer} from "../../apis/presentati
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
+import {SERVER_URL} from "../../configs/url";
 
 
 let stompClient=null
@@ -39,6 +40,7 @@ const PresentationUser = () => {
   const {preId}=useParams();
   const dataProfile=useSelector(state=> state.loginPage);
   const profile=dataProfile.profile
+  const email = dataProfile.profile.email;
 
   const [defaultValue,setDefaultValue]=useState(false);
 
@@ -47,47 +49,38 @@ const PresentationUser = () => {
 
 
   const registerUser = () => {
-    let Sock = new SockJS("http://localhost:8080/ws");
+    let Sock = new SockJS(`http://localhost:8081/ws`);
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   }
-  const onMessageNextSlideReceived = (payload) => {
-    /*setReceived(JSON.parse(payload?.body))*/
-    console.log("slide",JSON.parse(payload?.body));
-    const data=JSON.parse(payload?.body);
 
-    let isBoolean=false;
-    const result=data.answers.forEach((index)=>{
-      index?.userAnswers.forEach(index2=>{
-        if(index2.userr == profile.email) {
-          isBoolean=true;
-        }
-      })
-      if(isBoolean==true){
-        setDefaultValue(true)
-        return index
-      }
-    })
-    if(isBoolean===false){
-      setDefaultValue(false)
-    }
-
-    setDataPresent(JSON.parse(payload?.body));
-    setPresentOpen(1);
-  }
 
 
   const onMessageSubmitReceived = (payload) => {
     /*setReceived(JSON.parse(payload?.body))*/
+    const receivedValue = JSON.parse(payload?.body)
+    console.log(receivedValue)
     console.log("One",JSON.parse(payload?.body))
   }
 
 
+
   const onConnected=()=>{
 
-    stompClient.subscribe(`/application/presentation/${1}`,onMessageSubmitReceived);
+    stompClient.subscribe(`/application/${preId}/presentation`,onMessageSubmitReceived);
+    /*stompClient.subscribe(`/application/presentation/${1}`,onMessageSubmitReceived);*/
     // stompClient.subscribe(`/slide/${preId}/next`,onMessageNextSlideReceived)
+    userJoin();
   }
+  const userJoin=()=>{
+    let chatMessage = {
+      sender:email,
+      presentId:preId,
+      mess:"dsdsd",
+    };
+    stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
+  }
+
   const onError=(err)=>{
 
   }

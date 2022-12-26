@@ -29,6 +29,7 @@ import {useSelector} from "react-redux";
 import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
 import LoadingExample from "../../components/loading/LoadingExample";
 import LoadingComponent from "../../components/loading/LoadingComponent";
+import {SERVER_URL} from "../../configs/url";
 
 let stompClient = null
 const tabBarContent = ({data}) => {
@@ -71,12 +72,14 @@ const MainPresentation = () => {
     const [selectedValue, setSelectedValue] = useState(location.state.firstSlide)
     const [slideList, setListSlide] = useState(location.state.slide);
 
+    const presentId=location.state.firstSlide.presentationId;
+
     const [openChat, setOpenChat] = useState(false);
     const [openQuestion, setOpenQuestion] = useState(false);
-
     const [messageList, setMessageList] = useState([]);
     const [unseenMessage, setUnseenMessage] = useState(0)
     const dataProfile = useSelector(state => state.loginPage);
+    const [messageValue,setMessageValue]=useState("");
     const email = dataProfile.profile.email;
     const data = [
         {
@@ -131,43 +134,53 @@ const MainPresentation = () => {
                 email: "trthanhson232",
                 imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Avatar_%282009_film%29_poster.jpg/220px-Avatar_%282009_film%29_poster.jpg"
             },
-
         }]);
         setUnseenMessage(unseenMessage + 1);
     }
 
-    //
-    // useEffect(()=>{
-    //     const registerUser = () => {
-    //         let Sock = new SockJS("https://spring-heroku.herokuapp.com/ws");
-    //         stompClient = over(Sock);
-    //         stompClient.connect({}, onConnected, onError);
-    //     }
-    //     const onMessageReceived = (payload) => {
-    //         const data = JSON.parse(payload.body)
-    //         const list=slideList?.map(index=>{
-    //             if(index.id===data.id){
-    //                 return data
-    //             }
-    //             return index
-    //         })
-    //
-    //         setListSlide(list);
-    //
-    //         console.log("list",list)
-    //
-    //
-    //     }
-    //     const onConnected=()=>{
-    //         stompClient.subscribe(`/slide/${id}/playing`,onMessageReceived)
-    //     }
-    //     const onError=(err)=>{
-    //         console.log(err)
-    //     }
-    //
-    //     registerUser();
-    //     startPresent();
-    // },[]);
+    const registerUser = () => {
+        let Sock = new SockJS(`http://localhost:8081/ws`);
+        stompClient = over(Sock);
+        stompClient.connect({}, onConnected, onError);
+    }
+
+    const onConnected=()=>{
+        stompClient.subscribe(`/application/${presentId}/presentation`,onMessageReceived);
+        userJoin();
+    }
+    const userJoin=()=>{
+        let chatMessage = {
+            sender:email,
+            presentId:presentId,
+            status:"JOIN",
+        };
+        stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
+    }
+    const onMessageReceived = (payload) => {
+        const data = JSON.parse(payload.body);
+        console.log("Data",data)
+    }
+    const onError=(err)=>{
+        console.log(err)
+    }
+    useEffect(()=>{
+        registerUser();
+    },[]);
+
+    const handleMessageBtn=(event)=>{
+        if (stompClient) {
+            console.log("DSD")
+            let chatMessage = {
+                sender:email,
+                mess:messageValue,
+                presentId:presentId,
+            };
+            stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
+            setMessageList([...messageList,chatMessage]);
+        }
+    }
+
+
 
     window.addEventListener('popstate', function (event) {
         closePresentation({presentationId: id, owner: email}).then((res) => {
@@ -188,6 +201,14 @@ const MainPresentation = () => {
             console.log(response)
         })
     }
+
+    const handleMessage=(e)=>{
+        setMessageValue(e);
+    }
+
+
+
+
 
 
     return (
@@ -235,13 +256,13 @@ const MainPresentation = () => {
                                 messageList.map((value) => {
                                     return (
                                         <Message model={{
-                                            message: value.message,
-                                            sentTime: value.sentTime,
-                                            sender: value.sender.name,
-                                            direction: value.sender.email === "trthanhson232" ? "outgoing" : "incoming",
+                                            message: value.mess,
+                                           /* sentTime: value.sentTime,*/
+                                            sender: value.sender,
+                                            direction: value.sender == "19127526@student.hcmus.edu.vn" ? "outgoing" : "incoming",
                                             position: "single"
                                         }}>
-                                            {value.sender.email !== "trthanhson232" ?
+                                            {value.sender !== "19127526@student.hcmus.edu.vn" ?
                                                 <Avatar src={value.sender.imageUrl} name="Eliot"/> : <div/>}
                                         </Message>
                                     );
@@ -249,8 +270,8 @@ const MainPresentation = () => {
                             }
 
                         </MessageList>
-                        <MessageInput attachButton={false} placeholder="Type message here"
-                                      onSend={(textContent) => sendMessage({text: textContent})}
+                        <MessageInput attachButton={false} placeholder="Type message here" onChange={handleMessage}
+                                      onSend={handleMessageBtn}
                         />
                     </ChatContainer>
                 </MainContainer>
