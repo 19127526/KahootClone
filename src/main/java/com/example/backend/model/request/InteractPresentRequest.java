@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class InteractPresentRequest {
     private List<Long> votes;
+    private Long presentId;
     private Long presentationId;
     private PresentationStatus mode;
     private Long slideId;

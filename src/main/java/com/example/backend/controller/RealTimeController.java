@@ -2,12 +2,8 @@ package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.ChatMapper;
-import com.example.backend.mapper.PresentationMapper;
-import com.example.backend.mapper.SlideMapper;
 import com.example.backend.model.dto.ChatDto;
 import com.example.backend.model.dto.PresentDto;
-import com.example.backend.model.dto.PresentationDto;
-import com.example.backend.model.dto.SlideDto;
 import com.example.backend.model.request.ChatRequest;
 import com.example.backend.model.request.InteractPresentRequest;
 import com.example.backend.service.RealTimeService;
@@ -24,9 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("present")
 public class RealTimeController extends BaseController {
-    private final SlideMapper slideMapper;
     private final RealTimeService realTimeService;
-    private final PresentationMapper presentationMapper;
     private final ChatMapper chatMapper;
 
     @PostMapping("vote/chose")

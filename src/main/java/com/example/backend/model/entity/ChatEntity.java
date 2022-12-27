@@ -14,7 +14,18 @@ public class ChatEntity {
     @Id
     private long id;
 
-    private String mess ;
+    private String mess;
     private String sender;
+
+    @Override
+    public String toString() {
+        return "ChatEntity{" +
+                "id=" + id +
+                ", mess='" + mess + '\'' +
+                ", sender='" + sender + '\'' +
+                ", presentId=" + presentId +
+                '}';
+    }
+
     private long presentId;
 }
