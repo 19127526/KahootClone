@@ -5,7 +5,7 @@ import {Keyboard, Pagination, Navigation} from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 import {
@@ -22,7 +22,7 @@ import {UNSAFE_NavigationContext, useLocation, useNavigate, useParams} from "rea
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {closePresentation, getDetailSlide, nextSlide, startPresentation} from "../../apis/slide/slideAPI";
-import {Drawer, FloatButton, Badge, Button, Col, Space, Tabs, List} from "antd";
+import {Drawer, FloatButton, Badge, Button, Col, Space, Tabs, List, Empty} from "antd";
 import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {useSelector} from "react-redux";
@@ -65,7 +65,9 @@ const tabBarContent = ({data}) => {
 
 const MainPresentation = () => {
     const [activeIndex, setActiveIndex] = useState(0)
-    const [isLoading, setLoading] = useState(true)
+    const [isLoadingSlideList, setLoadingSlideList] = useState(true)
+    const [isLoadingChat, setLoadingChat] = useState(true);
+    const [isLoadingChangeChat, setLoadingChangeChat] = useState(false);
     const [loading1, setLoading1] = useState(false)
 
     const location = useLocation();
@@ -82,6 +84,7 @@ const MainPresentation = () => {
     const [unseenMessage, setUnseenMessage] = useState(0)
     const dataProfile = useSelector(state => state.loginPage);
     const [messageValue,setMessageValue]=useState("");
+    const countMessage = useRef(0);
     const email = dataProfile.profile.email;
     const data = [
         {
@@ -119,37 +122,24 @@ const MainPresentation = () => {
         }
     ]
 
-    const registerUser = () => {
-        let Sock = new SockJS("http://localhost:8080/ws");
-        stompClient = over(Sock);
-        stompClient.connect({}, onConnected, onError);
-    }
-    const onMessageNextSlideReceived = (payload) => {
-        /*setReceived(JSON.parse(payload?.body))*/
-        // console.log("slide",JSON.parse(payload?.body));
-        console.log(slideList.length)
-    }
 
-    const onConnected=()=>{
-        stompClient.subscribe(`/application/${id}/presentation`,onMessageNextSlideReceived);
-    }
-    const onError=(err)=>{
-        console.log(err)
-    }
 
     useEffect(() => {
-        setLoading(true)
+        setLoadingSlideList(true)
+        //stop
         window.addEventListener('popstate', function myPop(event) {
-            if(location.state.type === "Private"){
+            if(location.state.type == "Private"){
                 closePresentation({presentationId: id, owner: email, groupId: location.state.groupId}).then((res) => {
                     console.log(res)
                     window.removeEventListener("popstate", myPop);
                 })
             }
         });
+
+
         getPresentationDetail({id: location.state.id, email: email}).then((res) => {
             setListSlide(res.data.slides)
-            setLoading(false)
+            setLoadingSlideList(false)
             setLoading1(true)
             getDetailSlide({id: res.data.slides[0].id}).then((res) => {
                 setSelectedValue(res.data)
@@ -157,6 +147,12 @@ const MainPresentation = () => {
             })
         })
         registerUser()
+    },[])
+
+
+
+    useEffect(()=>{
+
     },[])
 
 
@@ -169,46 +165,42 @@ const MainPresentation = () => {
         type ? setOpenChat(false) : setOpenQuestion(false);
     };
 
-    const sendMessage = ({text}) => {
-        setMessageList([...messageList, {
-            message: text,
-            sentTime: "12 minutes ago",
-            sender: {
-                email: "trthanhson232",
-                imageUrl: "https://upload.wikimedia.org/wikipedia/en/thumb/d/d6/Avatar_%282009_film%29_poster.jpg/220px-Avatar_%282009_film%29_poster.jpg"
-            },
-        }]);
-        setUnseenMessage(unseenMessage + 1);
-    }
+
 
     const registerUser = () => {
-        let Sock = new SockJS(`http://localhost:8081/ws`);
+        let Sock = new SockJS(`${SERVER_URL}/ws`);
         stompClient = over(Sock);
         stompClient.connect({}, onConnected, onError);
     }
 
     const onConnected=()=>{
-        stompClient.subscribe(`/application/${presentId}/presentation`,onMessageReceived);
-        userJoin();
+        stompClient.subscribe(`/application/${id}/presentation`,onMessageReceived);
     }
-    const userJoin=()=>{
-        let chatMessage = {
-            sender:email,
-            presentId:presentId,
-            status:"JOIN",
-        };
-        stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
-    }
+
     const onMessageReceived = (payload) => {
-        const data = JSON.parse(payload.body);
-        console.log("Data",data)
+        const receivedValue = JSON.parse(payload?.body)
+        if(receivedValue.action==="CHAT"){
+            const temp=messageList;
+            temp.push(receivedValue);
+            setMessageList(temp);
+            /*if(email!=receivedValue.sender){
+                setUnseenMessage(prevState => prevState+1)
+            }*/
+            setUnseenMessage(prevState => prevState+1)
+
+        }
+        else {
+        }
     }
     const onError=(err)=>{
         console.log(err)
     }
     useEffect(()=>{
-        registerUser();
-    },[]);
+        if(isLoadingSlideList==false) {
+            registerUser();
+        }
+    },[isLoadingSlideList]);
+
 
     const handleMessageBtn=(event)=>{
         if (stompClient) {
@@ -219,10 +211,11 @@ const MainPresentation = () => {
                 presentId:presentId,
             };
             stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
-            setMessageList([...messageList,chatMessage]);
+            /*const temp=[...messageList];
+            temp.push(chatMessage)
+            setMessageList(temp);*/
         }
     }
-
 
 
 
@@ -276,7 +269,7 @@ const MainPresentation = () => {
             >
 
                 {
-                    isLoading || slideList.length === 0 ? <LoadingComponent/> : <div>
+                    isLoadingSlideList || slideList.length === 0 ? <LoadingComponent/> : <div>
                         {slideList.map((value) => {
                             return (<SwiperSlide style={{backgroundColor: "white"}}>
                                 {loading1 ? <LoadingComponent/> : value.genreQuestion === "MULTI_CHOICES" ?
@@ -293,12 +286,12 @@ const MainPresentation = () => {
                 <Badge count={unseenMessage}><FloatButton icon={<MessageOutlined/>}
                                                           onClick={() => showDrawer({type: true})}
                                                           style={{marginBottom: 24}}/> </Badge>
-                <Badge>
+                <Badge >
                     <FloatButton icon={<QuestionCircleOutlined/>} onClick={() => showDrawer({type: false})}/>
                 </Badge>
             </FloatButton.Group>
 
-            <Drawer title="Chat" placement="right" onClose={() => onClose({type: true})} open={openChat}>
+            <Drawer title="Chat" placement="right" onClose={() => {onClose({type: true});setUnseenMessage(0)}} open={openChat}>
 
                 <MainContainer>
                     <ChatContainer>
@@ -308,13 +301,16 @@ const MainPresentation = () => {
                                     return (
                                         <Message model={{
                                             message: value.mess,
-                                           /* sentTime: value.sentTime,*/
                                             sender: value.sender,
-                                            direction: value.sender == "19127526@student.hcmus.edu.vn" ? "outgoing" : "incoming",
+                                            direction: value.sender == email ? "outgoing" : "incoming",
                                             position: "single"
                                         }}>
-                                            {value.sender !== "19127526@student.hcmus.edu.vn" ?
-                                                <Avatar src={value.sender.imageUrl} name="Eliot"/> : <div/>}
+                                            {value.sender !== email ?
+                                                <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>PT</Avatar> :
+
+                                              <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
+
+                                            }
                                         </Message>
                                     );
                                 })

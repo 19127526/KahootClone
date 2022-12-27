@@ -1,5 +1,5 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8080"
+export const SERVER_URL="http://localhost:8081"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
@@ -39,7 +39,7 @@ export const CHANGE_QUESTION = "/slide/update"
 export const ASSIGN_ROLE = "/group/assignRole"
 export const REMOVE_MEMBER = "/group/remove/member"
 export const DELETE_GROUP="/group/delete"
-
+export const GET_CHAT="/present/chat"
 
 //CLIENT ROUTE
 export const REDIRECT_URI="/login/oauth2/redirect"

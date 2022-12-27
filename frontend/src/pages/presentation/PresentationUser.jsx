@@ -1,5 +1,19 @@
-import {Avatar, Button, Card, Empty, List, Radio, Row, Space, Typography} from "antd";
-import {useEffect, useState} from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  Col,
+  Drawer,
+  Empty,
+  FloatButton,
+  List,
+  Radio,
+  Row,
+  Space,
+  Tabs,
+  Typography
+} from "antd";
+import React, {useEffect, useMemo, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useParams} from "react-router-dom";
@@ -8,7 +22,41 @@ import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
+import {SERVER_URL} from "../../configs/url";
+import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {Avatar,ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
+
+const tabBarContent = ({data}) => {
+  return (
+    <div style={{height: "100%", overflowY: "scroll"}}>
+      <List
+        itemLayout="vertical"
+        dataSource={data}
+        renderItem={(item) => (
+          <List.Item>
+            <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
+            <Space size={"large"}>
+              <text fontSize={10}>Ant Design, a design language for background applications, is refined by
+                Ant UED Team
+              </text>
+              <Col>
+                <MessageOutlined/>
+                <text> 20</text>
+              </Col>
+            </Space>
+
+            <Button type="text" style={{color: "grey", padding: 0}}>
+              mark as answered
+            </Button>
+
+          </List.Item>
+        )}
+      />
+    </div>
+  );
+}
 
 let stompClient=null
 const PresentationUser = () => {
@@ -41,15 +89,32 @@ const PresentationUser = () => {
   const dataProfile=useSelector(state=> state.loginPage);
   const profile=dataProfile.profile
   const email = dataProfile.profile.email;
-
+  const [unseenMessage, setUnseenMessage] = useState(0)
   const [defaultValue,setDefaultValue]=useState(false);
-
+  const [messageList,setMessageList]=useState([]);
   const [isConnected,setIsConnected]=useState(false)
+  const [messageValue,setMessageValue]=useState("");
+  const [openChat, setOpenChat] = useState(false);
+  const [openQuestion, setOpenQuestion] = useState(false);
+  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
 
 
+  const tabBars = [
+    {
+      label: `Unread questions`,
+      key: 1,
+      children: tabBarContent({data: data}),
+    },
+
+    {
+      label: `Questions`,
+      key: 2,
+      children: tabBarContent({data: data}),
+    }
+  ]
 
   const registerUser = () => {
-    let Sock = new SockJS(`http://localhost:8081/ws`);
+    let Sock = new SockJS(`${SERVER_URL}/ws`);
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   }
@@ -74,36 +139,47 @@ const PresentationUser = () => {
     //   setDefaultValue(false)
     // }
       const receivedValue = JSON.parse(payload?.body)
-      console.log("One",receivedValue.action)
       if(receivedValue.action === "STOP_PRESENTATION") {
           setPresentOpen(0)
           return (<Empty description="This slide is end, close please" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
           // setIsEnd(true)
-      } else {
+      }
+      else if(receivedValue.action==="CHAT"){
+        const temp=messageList;
+        temp.push(receivedValue);
+        setMessageList(temp);
+        setUnseenMessage(prevState => prevState+1);
+       /* if(email!=receivedValue.sender){
+          setUnseenMessage(prevState => prevState+1);
+        }*/
+
+      }
+      else {
           setDataPresent(JSON.parse(payload?.body));
           setPresentOpen(1);
       }
   }
 
 
-  const onMessageSubmitReceived = (payload) => {
-    setReceived(JSON.parse(payload?.body))
-    console.log("One",JSON.parse(payload?.body))
+  const handleMessageBtn=(event)=>{
+    if (stompClient) {
+      let chatMessage = {
+        sender:email,
+        mess:messageValue,
+        presentId:5, // gán cứng
+      };
+      stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
+     /* setMessageList([...messageList,chatMessage]);*/
+    }
   }
 
 
 
   const onConnected=()=>{
     stompClient.subscribe(`/application/${preId}/presentation`,onMessageNextSlideReceived);
+
   }
-  const userJoin=()=>{
-    let chatMessage = {
-      sender:email,
-      presentId:preId,
-      mess:"dsdsd",
-    };
-    stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
-  }
+
 
   const onError=(err)=>{
 
@@ -111,12 +187,14 @@ const PresentationUser = () => {
 
   useEffect(()=>{
     registerUser();
-  },[])
+  },[]);
+
+
 
 
   useEffect(()=>{
     const getListOptionAndAnswer=async ()=>{
-      await joinPresentation({preId:preId, email: profile.email, groupId: 1})
+      await joinPresentation({preId:preId, email: profile.email, groupId: 2})
         .then(res=>{
           if(res.response?.status===400){
             if(res.response.data.message.includes("presentation is stopped")){
@@ -176,6 +254,20 @@ const PresentationUser = () => {
   }
 
 
+  const handleMessage=(e)=>{
+    setMessageValue(e)
+  }
+
+  const showDrawer = ({type}) => {
+    type ? setOpenChat(true) : setOpenQuestion(true);
+    setUnseenMessage(0)
+
+  };
+  const onClose = ({type}) => {
+    type ? setOpenChat(false) : setOpenQuestion(false);
+  };
+
+
 
     return (
         <div style={{backgroundColor: "white", margin: "10%", padding: "5%"}}>
@@ -209,6 +301,62 @@ const PresentationUser = () => {
                         </Row>
                     </Space></> : <SlidePresentation selectedValue={dataPresent}/>
             }
+
+
+
+
+
+
+          <FloatButton.Group shape="circle" style={{right: 24}}>
+            <Badge count={unseenMessage}><FloatButton icon={<MessageOutlined/>}
+                                                      onClick={() => showDrawer({type: true})}
+                                                      style={{marginBottom: 24}}/> </Badge>
+            <Badge>
+              <FloatButton icon={<QuestionCircleOutlined/>} onClick={() => showDrawer({type: false})}/>
+            </Badge>
+          </FloatButton.Group>
+
+          <Drawer title="Chat" placement="right" onClose={() => {onClose({type: true});setUnseenMessage(0)}} open={openChat}>
+
+            <MainContainer>
+              <ChatContainer>
+                <MessageList>
+                  {
+                    messageList?.map((value) => {
+                      return (
+                        <Message model={{
+                          message: value.mess,
+                          /* sentTime: value.sentTime,*/
+                          sender: value.sender,
+                          direction: value.sender == email ? "outgoing" : "incoming",
+                          position: "single"
+                        }}>
+                          {value.sender !== email ?
+                            <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>PT</Avatar> :
+
+                            <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
+                          }
+                        </Message>
+                      );
+                    })
+                  }
+
+                </MessageList>
+                <MessageInput attachButton={false} placeholder="Type message here" onChange={handleMessage}
+                              onSend={handleMessageBtn}
+                />
+              </ChatContainer>
+            </MainContainer>
+          </Drawer>
+
+          <Drawer title="Question" placement="right" onClose={() => onClose({type: false})} open={openQuestion}>
+            <Tabs
+              size={"large"}
+              tabPosition={"bottom"}
+              style={{height: "100%"}}
+              items={tabBars}
+            />
+          </Drawer>
         </div>
 
     )

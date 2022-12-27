@@ -2,7 +2,7 @@ import request from "../request";
 import {
     ACCEPT_INVITATION,
     ADD_PRESENTATION, CHOOSE_OPTIONS_USER, COLLABORATING_INVITATION,
-    DELETE_PRESENTATION, JOIN_PRESENTATION, LIST_INVITATION, LIST_PRESENTATION,
+    DELETE_PRESENTATION, GET_CHAT, JOIN_PRESENTATION, LIST_INVITATION, LIST_PRESENTATION,
     LIST_PRESENTATION_FROM_GROUP,
     PRESENTATION_DETAIL, REJECT_INVITATION
 } from "../../configs/url";
@@ -79,4 +79,15 @@ export const joinPresentation=async ({preId,email,groupId})=>{
         "email": email,
         "groupId": groupId
     });
+}
+
+
+export const getChat=async ({presentId,size,offset})=>{
+    return await request.get(GET_CHAT,{
+        params: {
+           "presentId":presentId,
+            "size":size,
+            "offset":offset
+        }
+    })
 }
