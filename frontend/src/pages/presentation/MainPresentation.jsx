@@ -1,35 +1,28 @@
 import {Swiper, SwiperSlide} from "swiper/react";
-import {Keyboard, Pagination, Navigation} from "swiper";
+import {Keyboard, Navigation, Pagination} from "swiper";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import React, {useContext, useEffect, useRef, useState} from "react";
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import React, {useEffect, useRef, useState} from "react";
 
-import {
-    MainContainer,
-    ChatContainer,
-    MessageList,
-    Message,
-    MessageInput,
-    Avatar
-} from "@chatscope/chat-ui-kit-react";
+import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
-import {UNSAFE_NavigationContext, useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
-import {closePresentation, getDetailSlide, nextSlide, startPresentation} from "../../apis/slide/slideAPI";
-import {Drawer, FloatButton, Badge, Button, Col, Space, Tabs, List, Empty} from "antd";
+import {closePresentation, getDetailSlide, nextSlide} from "../../apis/slide/slideAPI";
+import {Badge, Button, Col, Drawer, FloatButton, List, Space, Tabs} from "antd";
 import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {useSelector} from "react-redux";
 import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
-import LoadingExample from "../../components/loading/LoadingExample";
 import LoadingComponent from "../../components/loading/LoadingComponent";
 import {SERVER_URL} from "../../configs/url";
+import {useBeforeunload} from 'react-beforeunload';
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
 
 let stompClient = null
 const tabBarContent = ({data}) => {
@@ -121,8 +114,16 @@ const MainPresentation = () => {
             children: tabBarContent({data: data}),
         }
     ]
-
-
+   /* if(location.pathname.includes("show")) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useBeforeunload(() =>
+          (location.state.type == "Private") ?
+            closePresentation({presentationId: id, owner: email, groupId: location.state.groupId}).then((res) => {
+                console.log(res)
+            })
+            : ""
+        );
+    }*/
 
     useEffect(() => {
         setLoadingSlideList(true)

@@ -166,7 +166,7 @@ const PresentationUser = () => {
       let chatMessage = {
         sender:email,
         mess:messageValue,
-        presentId:5, // gán cứng
+        presentId:4, // gán cứng
       };
       stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
      /* setMessageList([...messageList,chatMessage]);*/
