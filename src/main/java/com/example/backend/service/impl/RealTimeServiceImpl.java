@@ -18,6 +18,7 @@ import com.example.backend.repository.*;
 import com.example.backend.service.RealTimeService;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void choseVote(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (interact.getVotes().isEmpty()) throw new ResourceInvalidException("please chose vote");
@@ -61,7 +62,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             });
             userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(user.getId(), vote.getId(), slide.getId(), present.getId())).toList());
         }
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentationId()), Constant.TOPIC_PRESENTATION, getPayloadSlide(present.getId(), slide, ActionPayload.UPDATE_SLIDE));
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentId()), Constant.TOPIC_PRESENTATION, getPayloadSlide(present.getId(), slide, ActionPayload.UPDATE_SLIDE));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class RealTimeServiceImpl implements RealTimeService {
                 throw new ResourceInvalidException("permission denied");
             });
         } else {
-            present = presentHistoryRepository.findById(interact.getPresentationId()).orElseThrow(() -> {
+            present = presentHistoryRepository.findById(interact.getPresentId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("present not found");
             });
             if (!present.isPresented()) throw new ResourceInvalidException("presentation is closed");
@@ -86,7 +87,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void changeSlide(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (present.getMode() == PresentationStatus.PUBLIC) {
@@ -117,7 +118,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         }
         presentHistoryRepository.save(present);
         HashMap<String, Object> payload = getPayloadSlide(present.getId(), slides.get(i), ActionPayload.CHANGE_SLIDE);
-        payload.put("present_id", interact.getPresentationId());
+        payload.put("present_id", interact.getPresentId());
         payload.put("user_change_slide", interact.getEmail());
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, payload);
     }
@@ -147,7 +148,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             if (group.getPresent() != -1) throw new ResourceInvalidException("Group is presented");
             presentHistory = new PresentHistoryEntity(user.getId(), presentation.getId(), group.getId(), slideIdFirst);
             presentHistory = presentHistoryRepository.save(presentHistory);
-            group.setPresent(presentation.getId());
+            group.setPresent(presentHistory.getId());
             groupRepository.save(group);
             List<Long> users = userRepository.getListUserWithGroup(group.getId()).stream().filter(id -> id != user.getId()).toList();
             HashMap<String, Object> payload = new HashMap<>();
@@ -170,7 +171,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             UserEntity user = userRepository.findAccountEntityByEmail(interact.getEmail()).orElseThrow(() -> {
                 throw new ResourceInvalidException("permission denied");
             });
-            PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndUserId(interact.getPresentationId(), user.getId()).orElseThrow(() -> {
+            PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndUserId(interact.getPresentId(), user.getId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("stop invalid");
             });
             present.setPresented(false);
@@ -180,9 +181,9 @@ public class RealTimeServiceImpl implements RealTimeService {
                 throw new ResourceInvalidException("Permission denied");
             });
             GroupEntity group = (GroupEntity) userGroup.toArray()[1];
-            if (group.getPresent() != interact.getPresentationId())
+            if (group.getPresent() != interact.getPresentId())
                 throw new ResourceInvalidException("presentation and group dont match");
-            PresentHistoryEntity present = presentHistoryRepository.findById(interact.getPresentationId()).orElseThrow(() -> {
+            PresentHistoryEntity present = presentHistoryRepository.findById(interact.getPresentId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("stop invalid");
             });
             present.setPresented(false);
@@ -192,7 +193,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         }
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("action", ActionPayload.STOP_PRESENTATION);
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentationId()), Constant.TOPIC_PRESENTATION, payload);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentId()), Constant.TOPIC_PRESENTATION, payload);
     }
 
     @Override
