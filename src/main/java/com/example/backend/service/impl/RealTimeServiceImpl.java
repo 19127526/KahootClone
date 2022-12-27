@@ -44,7 +44,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void choseVote(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (interact.getVotes().isEmpty()) throw new ResourceInvalidException("please chose vote");
@@ -86,7 +86,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void changeSlide(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (present.getMode() == PresentationStatus.PUBLIC) {
@@ -198,7 +198,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     @Override
     public void sendMessage(ChatRequest chatRequest) {
         PresentHistoryEntity present = presentHistoryRepository
-                .findPresentHistoryEntityByPresentationIdAndPresented(chatRequest.getPresentId(), true)
+                .findPresentHistoryEntityByIdAndPresented(chatRequest.getPresentId(), true)
                 .orElseThrow(() -> {
             throw new ResourceInvalidException("chat invalid");
         });
