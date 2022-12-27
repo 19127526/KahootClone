@@ -180,8 +180,8 @@ public class RealTimeServiceImpl implements RealTimeService {
                 throw new ResourceInvalidException("Permission denied");
             });
             GroupEntity group = (GroupEntity) userGroup.toArray()[1];
-            if (group.getPresent() != interact.getPresentationId())
-                throw new ResourceInvalidException("presentation and group dont match");
+            /*if (group.getPresent() != interact.getPresentationId())
+                throw new ResourceInvalidException("presentation and group dont match");*/
             PresentHistoryEntity present = presentHistoryRepository.findById(interact.getPresentationId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("stop invalid");
             });
