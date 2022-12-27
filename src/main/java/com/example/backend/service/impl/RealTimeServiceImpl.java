@@ -18,7 +18,6 @@ import com.example.backend.repository.*;
 import com.example.backend.service.RealTimeService;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +44,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void choseVote(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (interact.getVotes().isEmpty()) throw new ResourceInvalidException("please chose vote");
@@ -87,7 +86,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void changeSlide(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByPresentationIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (present.getMode() == PresentationStatus.PUBLIC) {
@@ -199,7 +198,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     @Override
     public void sendMessage(ChatRequest chatRequest) {
         PresentHistoryEntity present = presentHistoryRepository
-                .findPresentHistoryEntityByPresentationIdAndPresented(chatRequest.getPresentId(), true)
+                .findPresentHistoryEntityByIdAndPresented(chatRequest.getPresentId(), true)
                 .orElseThrow(() -> {
             throw new ResourceInvalidException("chat invalid");
         });

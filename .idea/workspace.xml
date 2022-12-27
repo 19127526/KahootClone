@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d68bc8bf-a6bd-4d3f-9388-0d6956c3ea4e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/RealTimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/RealTimeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/ChatDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/ChatDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/ChatEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/ChatEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/InteractPresentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/InteractPresentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/PresentHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/PresentHistoryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/RealTimeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/RealTimeServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
