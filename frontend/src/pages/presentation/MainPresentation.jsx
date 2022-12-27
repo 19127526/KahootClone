@@ -70,6 +70,7 @@ const MainPresentation = () => {
     const [slideList, setListSlide] = useState([]);
 
     const presentId=location.state.firstSlide.presentationId;
+    console.log(presentId)
 
     const [openChat, setOpenChat] = useState(false);
     const [openQuestion, setOpenQuestion] = useState(false);
@@ -126,8 +127,7 @@ const MainPresentation = () => {
     }*/
 
     useEffect(() => {
-        setLoadingSlideList(true)
-        //stop
+        // setLoadingSlideList(true)
         window.addEventListener('popstate', function myPop(event) {
             if(location.state.type == "Private"){
                 closePresentation({presentationId: id, owner: email, groupId: location.state.groupId}).then((res) => {
@@ -136,8 +136,6 @@ const MainPresentation = () => {
                 })
             }
         });
-
-
         getPresentationDetail({id: location.state.id, email: email}).then((res) => {
             setListSlide(res.data.slides)
             setLoadingSlideList(false)
@@ -147,6 +145,7 @@ const MainPresentation = () => {
                 setLoading1(false)
             })
         })
+
         registerUser()
     },[])
 
@@ -190,7 +189,14 @@ const MainPresentation = () => {
             setUnseenMessage(prevState => prevState+1)
 
         }
-        else {
+        else if(receivedValue.action === "CHANGE_SLIDE"){
+            // console.log(slideList)
+            slideList.forEach((value, index) => {
+                if(value.id === receivedValue.present_id){
+                    console.log(value.id, receivedValue.present_id, activeIndex)
+                    setActiveIndex(index)
+                }
+            })
         }
     }
     const onError=(err)=>{

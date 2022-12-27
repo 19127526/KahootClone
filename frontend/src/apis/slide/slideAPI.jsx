@@ -54,7 +54,7 @@ export const startPresentation = async ({presentationId, mode, email,groupId})=>
 
 export const closePresentation = async ({presentationId, owner, groupId})=>{
     return await request.post(STOP_PRESENTATION, {
-        "presentationId": presentationId,
+        "presentId": presentationId,
         "email": owner,
         "groupId": groupId
     })
@@ -63,7 +63,7 @@ export const closePresentation = async ({presentationId, owner, groupId})=>{
 
 export const nextSlide = async ({presentationId, email, groupId, action}) => {
     return await request.post(NEXT_SLIDE , {
-        presentationId: presentationId,
+        presentId: presentationId,
         email: email,
         groupId: groupId,
         action: action

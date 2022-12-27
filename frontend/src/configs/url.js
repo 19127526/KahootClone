@@ -1,5 +1,5 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8081"
+export const SERVER_URL="http://localhost:8080"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
@@ -53,6 +53,7 @@ export const JOINED_GROUP_URI="/group/joined";
 
 export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_SEE_URI="/presentation/:preId/see"
+export const PRESENTATION_SEE_URI_CO_OWNER="/presentation/co/:preId/show"
 export const PRESENTATION_EDIT_URI="/presentation/:id/edit"
 export const PRESENTATION_SHOW_URI="/presentation/:id/show"
 export const FORGOT_PASSWORD_URI="/forgot"
