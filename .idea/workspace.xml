@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d68bc8bf-a6bd-4d3f-9388-0d6956c3ea4e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/PresentHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/PresentHistoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/impl/VoteRepositoryCustomImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/impl/VoteRepositoryCustomImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/RealTimeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/RealTimeServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +66,8 @@
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
     <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -196,6 +196,7 @@
       <workItem from="1672069681496" duration="1742000" />
       <workItem from="1672076307878" duration="2465000" />
       <workItem from="1672147186215" duration="3389000" />
+      <workItem from="1672257359333" duration="652000" />
     </task>
     <servers />
   </component>
