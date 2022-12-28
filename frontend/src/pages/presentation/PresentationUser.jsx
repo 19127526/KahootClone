@@ -13,11 +13,11 @@ import {
   Tabs,
   Typography
 } from "antd";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useParams} from "react-router-dom";
-import {joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
+import {getChat, joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
@@ -96,7 +96,10 @@ const PresentationUser = () => {
   const [messageValue,setMessageValue]=useState("");
   const [openChat, setOpenChat] = useState(false);
   const [openQuestion, setOpenQuestion] = useState(false);
-  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
+  const [isLoadingChat, setIsLoadingChat] = useState(false);
+  const [isLoadingFirstChat, setIsLoadingFirstChat] = useState(false);
+  const [offSetChat,setOffSetChat]=useState(10)
+  const messageEndRef=useRef(null);
 
 
   const tabBars = [
@@ -166,7 +169,7 @@ const PresentationUser = () => {
       let chatMessage = {
         sender:email,
         mess:messageValue,
-        presentId:4, // gán cứng
+        presentId:preId,
       };
       stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
      /* setMessageList([...messageList,chatMessage]);*/
@@ -185,9 +188,62 @@ const PresentationUser = () => {
 
   }
 
+  const loadMoreChat=()=>{
+    setIsLoadingChat(true);
+    if (isLoadingFirstChat == false) {
+      const getListChat = async () => {
+        await getChat({offset: 0, presentId: preId, size: 15})
+          .then(res => {
+            setMessageList(res.data.reverse());
+            setIsLoadingFirstChat(true);
+            if(res.data.length==0){
+              setIsLoadingChat(false);
+            }
+            else{
+              setIsLoadingChat(false);
+            }
+
+          })
+          .catch(() => {
+            setIsLoadingChat(false);
+          })
+
+        ;
+      }
+      getListChat()
+    } else {
+      const getListChat = async () => {
+        await getChat({offset: offSetChat, presentId: preId, size: 15})
+          .then(res => {
+            const tempList=res.data.reverse();
+            const temp = tempList.concat(messageList);
+            if(res.data.length==0){
+
+              setIsLoadingChat(false);
+            }
+            else{
+              setIsLoadingChat(false);
+            }
+            setMessageList(temp);
+            setOffSetChat(prevState => prevState+10);
+          })
+          .catch(() => {
+            setIsLoadingChat(false);
+          })
+      }
+      getListChat()
+    }
+  }
+
+  useEffect(() => {
+    loadMoreChat()
+  }, []);
+
   useEffect(()=>{
-    registerUser();
-  },[]);
+    if(isLoadingFirstChat==true) {
+      registerUser();
+    }
+  },[messageList]);
 
 
 
@@ -271,7 +327,7 @@ const PresentationUser = () => {
 
     return (
         <div style={{backgroundColor: "white", margin: "10%", padding: "5%"}}>
-            {
+          {/*  {
                 dataPresent.genreQuestion === "MULTI_CHOICES" ?  <>
                     <Space direction={"vertical"} align={"center"} style={{width: "100%", overflowY: "scroll"}}>
                         <Typography style={{fontSize: 40}}>
@@ -300,7 +356,7 @@ const PresentationUser = () => {
                             </Button>
                         </Row>
                     </Space></> : <SlidePresentation selectedValue={dataPresent}/>
-            }
+            }*/}
 
 
 
@@ -320,7 +376,29 @@ const PresentationUser = () => {
 
             <MainContainer>
               <ChatContainer>
-                <MessageList>
+                <MessageList  style={{height:"550px",
+                  overflowY:"scroll",
+                  display:"flex",
+                  flexDirection:"column-reverse",}}
+                              loading={isLoadingChat}
+                              onScrollCapture={(e)=>{
+                              }}
+                              onYReachStart={(e)=>{
+                                loadMoreChat();
+                                if(isLoadingFirstChat==true) {
+                                  const a=messageEndRef.current.offsetTop;
+                                  console.log(a);
+                                  if(a<800) {
+                                    console.log(messageEndRef.current.offsetTop)
+                                    messageEndRef.current?.scrollIntoView({block: 'nearest'})
+                                  }
+                                  else{
+                                    console.log("dsdsd");
+                                    messageEndRef.current?.scrollIntoView(a,a-100)
+                                    /* messageEndRef.current?.scrollIntoView({  block: 'nearest' ,inline:"center"})*/
+                                  }
+                                }
+                              }}>
                   {
                     messageList?.map((value) => {
                       return (
@@ -340,6 +418,7 @@ const PresentationUser = () => {
                       );
                     })
                   }
+                  <div ref={messageEndRef}/>
 
                 </MessageList>
                 <MessageInput attachButton={false} placeholder="Type message here" onChange={handleMessage}
