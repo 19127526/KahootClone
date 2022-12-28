@@ -17,7 +17,7 @@ function App() {
   const [api, contextHolder] = notification.useNotification();
   const dataProfile = useSelector(state => state.loginPage);
   const registerUser = () => {
-    let Sock = new SockJS("http://localhost:8080/ws");
+    let Sock = new SockJS("http://localhost:8081/ws");
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   }

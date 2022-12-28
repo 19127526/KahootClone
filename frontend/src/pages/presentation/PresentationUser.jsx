@@ -25,7 +25,7 @@ import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {SERVER_URL} from "../../configs/url";
 import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {Avatar,ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 
 const tabBarContent = ({data}) => {
@@ -59,6 +59,8 @@ const tabBarContent = ({data}) => {
 }
 
 let stompClient=null
+
+let flag=0;
 const PresentationUser = () => {
     const data = [
         {
@@ -92,16 +94,14 @@ const PresentationUser = () => {
   const [unseenMessage, setUnseenMessage] = useState(0)
   const [defaultValue,setDefaultValue]=useState(false);
   const [messageList,setMessageList]=useState([]);
-  const [isConnected,setIsConnected]=useState(false)
+  const [messageInitList,setMessageInitList]=useState([]);
   const [messageValue,setMessageValue]=useState("");
   const [openChat, setOpenChat] = useState(false);
   const [openQuestion, setOpenQuestion] = useState(false);
-  const [isLoadingChat, setIsLoadingChat] = useState(false);
-  const [isLoadingFirstChat, setIsLoadingFirstChat] = useState(false);
-  const [offSetChat,setOffSetChat]=useState(10)
+  const [isLoadingChat, setIsLoadingChat] = useState(0);
+  const [offSetChat,setOffSetChat]=useState(20)
   const messageEndRef=useRef(null);
-
-  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
+  const [isLoadingInitChat,setIsLoadingInitChat]=useState(false)
   const type = location.state === null ? "Public" : "Private"
 
   const tabBars = [
@@ -150,9 +150,9 @@ const PresentationUser = () => {
           // setIsEnd(true)
       }
       else if(receivedValue.action==="CHAT"){
-        const temp=messageList;
+        const temp = messageInitList;
         temp.push(receivedValue);
-        setMessageList(temp);
+        setMessageInitList(temp);
         setUnseenMessage(prevState => prevState+1);
        /* if(email!=receivedValue.sender){
           setUnseenMessage(prevState => prevState+1);
@@ -174,7 +174,6 @@ const PresentationUser = () => {
         presentId:preId,
       };
       stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
-     /* setMessageList([...messageList,chatMessage]);*/
     }
   }
 
@@ -190,67 +189,35 @@ const PresentationUser = () => {
 
   }
 
-  const loadMoreChat=()=>{
-    setIsLoadingChat(true);
-    if (isLoadingFirstChat == false) {
-      const getListChat = async () => {
-        await getChat({offset: 0, presentId: preId, size: 15})
-          .then(res => {
-            setMessageList(res.data.reverse());
-            setIsLoadingFirstChat(true);
-            if(res.data.length==0){
-              setIsLoadingChat(false);
-            }
-            else{
-              setIsLoadingChat(false);
-            }
-
-          })
-          .catch(() => {
-            setIsLoadingChat(false);
-          })
-
-        ;
-      }
-      getListChat()
-    } else {
-      const getListChat = async () => {
-        await getChat({offset: offSetChat, presentId: preId, size: 15})
-          .then(res => {
-            const tempList=res.data.reverse();
-            const temp = tempList.concat(messageList);
-            if(res.data.length==0){
-
-              setIsLoadingChat(false);
-            }
-            else{
-              setIsLoadingChat(false);
-            }
-            setMessageList(temp);
-            setOffSetChat(prevState => prevState+10);
-          })
-          .catch(() => {
-            setIsLoadingChat(false);
-          })
-      }
-      getListChat()
-    }
-  }
-
-  useEffect(() => {
-    loadMoreChat()
-  }, []);
 
   useEffect(()=>{
-    if(isLoadingFirstChat==true) {
+      const getListChat = async () => {
+        await getChat({offset: 0, presentId: preId, size: 20})
+          .then(res => {
+            setMessageInitList(res.data.reverse())
+            flag=1;
+            setIsLoadingInitChat(true)
+            if(res.data.length==0){
+              setIsLoadingChat(-1);
+            }
+          })
+          .catch(() => {
+          })
+      }
+      getListChat()
+
+  },[]);
+  useEffect(()=>{
+    if(isLoadingInitChat){
       registerUser();
     }
-  },[messageList]);
+  },[isLoadingInitChat])
       // console.log(location.state.slide)
   useEffect(()=>{
       if(type === "Public"){
            joinPresentation({preId:preId, email: profile.email})
               .then(res=>{
+                  console.log(res)
                   if(res.response?.status===400){
                       if(res.response.data.message.includes("presentation is stopped")){
                           setPresentOpen(0);
@@ -271,6 +238,7 @@ const PresentationUser = () => {
           setPresentOpen(1);
       }
   },[]);
+
 
 
 
@@ -350,8 +318,41 @@ const PresentationUser = () => {
   };
 
 
+  const onYReachStart = async () => {
+    if (isLoadingChat == -1) {
+      return;
+    }
+    if(flag==1){
+      messageEndRef.current?.scrollIntoView({block: 'nearest'});
+      flag=-1;
+    }
+    else if(flag!=1){
+      setIsLoadingChat(1);
+      /* Fake fetch from API */
+      await getChat({offset: offSetChat, presentId: preId, size: 20})
+        .then(res => {
+          const tempList=res.data.reverse();
+          const temp = tempList.concat(messageList);
+          console.log(res.data)
+          if(res.data.length==0){
 
-    return (
+            setIsLoadingChat(-1);
+          }
+          else{
+            setIsLoadingChat(0);
+          }
+          setMessageList(temp);
+          const tempOffset=offSetChat+20
+          setOffSetChat(tempOffset);
+        })
+        .catch(() => {
+          setIsLoadingChat(0);
+        })
+    }
+
+  };
+
+  return (
         <div style={{backgroundColor: "white", margin: "10%", padding: "5%"}}>
             {
                 dataPresent.genreQuestion === "MULTI_CHOICES" ?  <>
@@ -409,31 +410,51 @@ const PresentationUser = () => {
 
             <MainContainer>
               <ChatContainer>
-                <MessageList  style={{height:"550px",
+                <MessageList  style={{height:"90%",
                   overflowY:"scroll",
                   display:"flex",
                   flexDirection:"column-reverse",}}
-                              loading={isLoadingChat}
-                              onScrollCapture={(e)=>{
-                              }}
-                              onYReachStart={(e)=>{
+                              autoScrollToBottomOnMount={true}
+                              autoScrollToBottom={true}
+                              loadingMore={isLoadingChat==0?false:isLoadingChat==1?true:false}
+                           /*   onYReachStart={(e)=>{
                                 loadMoreChat();
                                 if(isLoadingFirstChat==true) {
                                   const a=messageEndRef.current.offsetTop;
                                   console.log(a);
-                                  if(a<800) {
-                                    console.log(messageEndRef.current.offsetTop)
+                                  if(a<1000) {
                                     messageEndRef.current?.scrollIntoView({block: 'nearest'})
                                   }
                                   else{
-                                    console.log("dsdsd");
-                                    messageEndRef.current?.scrollIntoView(a,a-100)
-                                    /* messageEndRef.current?.scrollIntoView({  block: 'nearest' ,inline:"center"})*/
+                                    console.log(messageStartRef?.current.offsetTop)
+                                    messageStartRef?.current?.scrollIntoView({block: 'nearest'})
+                                    /!* messageEndRef.current?.scrollIntoView({  block: 'nearest' ,inline:"center"})*!/
                                   }
                                 }
-                              }}>
+                              }}*/
+                  onYReachStart={onYReachStart}
+                >
                   {
                     messageList?.map((value) => {
+                      return (
+                        <Message model={{
+                          message: value.mess,
+                          /* sentTime: value.sentTime,*/
+                          sender: value.sender,
+                          direction: value.sender == email ? "outgoing" : "incoming",
+                          position: "single"
+                        }} >
+                          {value.sender !== email ?
+                            <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>{email[0]}</Avatar> :
+
+                            <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
+                          }
+                        </Message>
+                      );
+                    })
+                  }
+                  {
+                    messageInitList?.map((value) => {
                       return (
                         <Message model={{
                           message: value.mess,

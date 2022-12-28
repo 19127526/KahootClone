@@ -1,5 +1,5 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8080"
+export const SERVER_URL="http://localhost:8081"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
@@ -31,6 +31,7 @@ export const ADD_OPTION = "/vote/add"
 export const REMOVE_OPTION = "/vote/delete"
 export const CHOOSE_OPTIONS_USER="/present/vote/chose"
 export const JOIN_PRESENTATION="/present/connect"
+
 export const START_PRESENTATION = "/present/start"
 export const STOP_PRESENTATION = "/present/stop"
 export const NEXT_SLIDE = "/present/changeSlide"
