@@ -52,6 +52,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             throw new ResourceInvalidException("vote invalid");
         });
         List<VoteEntity> votes = voteRepository.findVotesExistInListId(interact.getVotes());
+        if(votes.isEmpty()) throw new ResourceInvalidException("please chose least 1 vote");
         if (present.getMode() == PresentationStatus.PUBLIC) {
             userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(vote.getId(), slide.getId(), present.getId())).toList());
         } else {
