@@ -44,7 +44,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void choseVote(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (interact.getVotes().isEmpty()) throw new ResourceInvalidException("please chose vote");
@@ -52,6 +52,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             throw new ResourceInvalidException("vote invalid");
         });
         List<VoteEntity> votes = voteRepository.findVotesExistInListId(interact.getVotes());
+        if(votes.isEmpty()) throw new ResourceInvalidException("please chose least 1 vote");
         if (present.getMode() == PresentationStatus.PUBLIC) {
             userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(vote.getId(), slide.getId(), present.getId())).toList());
         } else {
@@ -86,7 +87,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void changeSlide(InteractPresentRequest interact) {
-        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentationId(), true).orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(interact.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("change invalid");
         });
         if (present.getMode() == PresentationStatus.PUBLIC) {
@@ -255,7 +256,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             Map<String, Object> dataVote = new HashMap<>();
             dataVote.put("voteId", vote.getId());
             dataVote.put("voteText", vote.getText());
-            dataVote.put("voteCount", userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId));
+            dataVote.put("voteCount", userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId).size());
             return dataVote;
         }).toList();
     }
