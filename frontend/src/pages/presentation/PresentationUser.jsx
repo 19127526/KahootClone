@@ -16,10 +16,8 @@ import {
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
-import {useParams} from "react-router-dom";
+import {useParams,useLocation} from "react-router-dom";
 import {getChat, joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
-import {useLocation, useParams} from "react-router-dom";
-import {joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
@@ -249,6 +247,7 @@ const PresentationUser = () => {
     }
   },[messageList]);
       // console.log(location.state.slide)
+  useEffect(()=>{
       if(type === "Public"){
            joinPresentation({preId:preId, email: profile.email})
               .then(res=>{
@@ -271,7 +270,6 @@ const PresentationUser = () => {
           setDataPresent(location.state.slide)
           setPresentOpen(1);
       }
-    registerUser();
   },[]);
 
 
@@ -353,7 +351,7 @@ const PresentationUser = () => {
 
     return (
         <div style={{backgroundColor: "white", margin: "10%", padding: "5%"}}>
-          {/*  {
+            {
                 dataPresent.genreQuestion === "MULTI_CHOICES" ?  <>
                     <Space direction={"vertical"} align={"center"} style={{width: "100%", overflowY: "scroll"}}>
                         <Typography style={{fontSize: 40}}>
@@ -382,7 +380,7 @@ const PresentationUser = () => {
                             </Button>
                         </Row>
                     </Space></> : <SlidePresentation selectedValue={dataPresent}/>
-            }*/}
+            }
 
 
 
