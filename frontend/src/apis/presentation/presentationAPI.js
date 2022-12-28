@@ -68,9 +68,9 @@ export const deletePresentation = async ({id, email}) => {
 }
 
 
-export const postAnswer=async ({answer,question,email})=>{
-    console.log(answer,question,email)
-    return await request.post(CHOOSE_OPTIONS_USER,{answers:[answer],question:question,email:email});
+export const postAnswer=async ({answer,slideId, presentId,email})=>{
+    // console.log(answer,question,email)
+    return await request.post(CHOOSE_OPTIONS_USER,{votes:[answer],slideId:slideId,presentId: presentId,email:email});
 }
 
 export const joinPresentation=async ({preId,email,groupId})=>{

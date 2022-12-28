@@ -29,7 +29,7 @@ export const DETAIL_SLIDE = "/slide/detail"
 
 export const ADD_OPTION = "/vote/add"
 export const REMOVE_OPTION = "/vote/delete"
-export const CHOOSE_OPTIONS_USER="/slide/play"
+export const CHOOSE_OPTIONS_USER="/present/vote/chose"
 export const JOIN_PRESENTATION="/present/connect"
 export const START_PRESENTATION = "/present/start"
 export const STOP_PRESENTATION = "/present/stop"

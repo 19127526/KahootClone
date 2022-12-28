@@ -303,10 +303,12 @@ const PresentationUser = () => {
 
 
     const onChange = (e) => {
+        // console.log(e.target.key)
         setValue(e.target.value);
     };
     const addOption=async ()=>{
-      await postAnswer({email:profile.email,question:dataPresent?.id,answer:value})
+        // console.log({email:profile.email,slideId: dataPresent.id, presentId: preId,answer:value})
+      await postAnswer({email:profile.email,slideId: dataPresent.slideId, presentId: preId,answer:value})
         .then((res=>{
           console.log(res)
           if(res.status===202) {
@@ -365,9 +367,16 @@ const PresentationUser = () => {
                         {dataPresent.votes.map((item, index) => {
                             return (<Card
                                 style={{marginLeft: "5%", marginRight: "5%", marginBottom: "1%", border: "solid"}}>
-                                <Row>
-                                    <Radio value={item.id === null || item.id === undefined ? item.voteText :item.text} key={item.id === null || item.id === undefined ? item.voteId : item.id } />
-                                    <Typography>{item.id === null || item.id === undefined ? item.voteText :item.text}</Typography>
+                                <Row style={{justifyContent: "space-between"}}>
+                                    <Row>
+                                        <Radio value={item.id === null || item.id === undefined ? item.voteId : item.id } key={item.id === null || item.id === undefined ? item.voteId : item.id }>
+                                            {/*{ item.id === null || item.id === undefined ? item.voteText :item.text}*/}
+                                        </Radio>
+                                        <Typography>{item.id === null || item.id === undefined ? item.voteText :item.text}</Typography>
+                                    </Row>
+                                    <Row>
+                                        <Typography>{item.voteCount}</Typography>
+                                    </Row>
                                 </Row>
                             </Card>)
                         })}
@@ -432,9 +441,9 @@ const PresentationUser = () => {
                           sender: value.sender,
                           direction: value.sender == email ? "outgoing" : "incoming",
                           position: "single"
-                        }}>
+                        }} >
                           {value.sender !== email ?
-                            <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>PT</Avatar> :
+                            <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>{email[0]}</Avatar> :
 
                             <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
                           }
