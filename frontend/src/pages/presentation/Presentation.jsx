@@ -73,11 +73,13 @@ const Presentation = () => {
     const handleOk = () => {
         if(value1 === "Public"){
             startPresentation({presentationId: id, mode: "PUBLIC", email: email}).then((response) => {
-                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data, id: id, type: "Public"}})
+                navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {state: { slide: response.data, type: "Public"}})
             })
         } else {
             startPresentation({presentationId: id, mode: "PRIVATE", email: email, groupId:searchValue}).then((response) => {
-                navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data, id: id, type: "Private", groupId: searchValue}})
+                navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {state: {slide: response.data, groupId: searchValue,  presentationId: response.data.presentationId, type: "Private"}})
+
+                // navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data, id: id, type: "Private", groupId: searchValue}})
             })
         }
         setIsModalOpen(false);
@@ -188,7 +190,7 @@ const Presentation = () => {
                 if (response.data.slides.length === 0) {
                     await addSlide({genre: "MULTI_CHOICES"})
                 } else {
-                    console.log(response.data.slides)
+                    // console.log(response.data.slides)
                     setSelectedValue(response.data.slides[0])
                     setListSlide(response.data.slides)
                 }

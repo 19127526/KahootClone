@@ -83,8 +83,8 @@ const ChartPresentation = ({selectedValue, width}) => {
         if (selectedValue.votes === null) return;
         selectedValue.votes.forEach((index) => {
 
-            l.push(index.text)
-            d.push(index.voteCount)
+            l.push(index.text === null || index.text === undefined ? index.voteText : index.text)
+            d.push(typeof index.voteCount === "number" ? index.voteCount : index.voteCount.length)
         })
         setData({
             labels: l,
@@ -103,27 +103,15 @@ const ChartPresentation = ({selectedValue, width}) => {
             height: "100%",
             width: "100%",
         }}>
+            <div/>
             <Typography style={{fontSize: 25}}>
                 {selectedValue.text}
             </Typography>
 
-            {/*<div style={{minWidth: width ?? "80vh"}}>*/}
-            {/*    {*/}
-            {/*        selectedValue.votes.map((value) => {*/}
-            {/*            return <div>*/}
-            {/*                {*/}
-            {/*                    value.id*/}
-            {/*                }*/}
-            {/*            </div>*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</div>*/}
-            {/*{*/}
                <Bar options={options} data={
                     dataChart
                 }
                     style={{minWidth: width ?? "80vh"}}/>
-            {/*}*/}
 
         </Space>
     );

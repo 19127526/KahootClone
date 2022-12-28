@@ -18,6 +18,8 @@ import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useParams} from "react-router-dom";
 import {getChat, joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
+import {useLocation, useParams} from "react-router-dom";
+import {joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
@@ -74,8 +76,8 @@ const PresentationUser = () => {
             title: 'Ant Design Title 4',
         },
     ];
-    const [dataPresent,setDataPresent]=useState([]);
-
+    const location = useLocation()
+    const [dataPresent,setDataPresent]=useState( undefined);
   const [received,setReceived]=useState([]);
   const [presentOpen,setPresentOpen]=useState(0);
   const [value, setValue] = useState(0);
@@ -101,6 +103,8 @@ const PresentationUser = () => {
   const [offSetChat,setOffSetChat]=useState(10)
   const messageEndRef=useRef(null);
 
+  const [isLoadingMessage, setIsLoadingMessage] = useState(false);
+  const type = location.state === null ? "Public" : "Private"
 
   const tabBars = [
     {
@@ -244,32 +248,57 @@ const PresentationUser = () => {
       registerUser();
     }
   },[messageList]);
+      // console.log(location.state.slide)
+      if(type === "Public"){
+           joinPresentation({preId:preId, email: profile.email})
+              .then(res=>{
+                  if(res.response?.status===400){
+                      if(res.response.data.message.includes("presentation is stopped")){
+                          setPresentOpen(0);
+                      }
+                      if(res.response.data.message.includes("slide not found")){
+                          setPresentOpen(0);
+                      }
+                  }
+                  else{
+                      setDataPresent(res.data);
+                      setPresentOpen(1);
+                  }
 
-
-
-
-  useEffect(()=>{
-    const getListOptionAndAnswer=async ()=>{
-      await joinPresentation({preId:preId, email: profile.email, groupId: 2})
-        .then(res=>{
-          if(res.response?.status===400){
-            if(res.response.data.message.includes("presentation is stopped")){
-              setPresentOpen(0);
-            }
-            if(res.response.data.message.includes("slide not found")){
-              setPresentOpen(0);
-            }
-          }
-          else{
-            setDataPresent(res.data);
-            setPresentOpen(1);
-          }
-
-        })
-        .catch(err=>{console.log(err)})
-    }
-    getListOptionAndAnswer();
+              })
+              .catch(err=>{console.log(err)})
+      } else {
+          setDataPresent(location.state.slide)
+          setPresentOpen(1);
+      }
+    registerUser();
   },[]);
+
+
+
+
+  // useEffect(()=>{
+  //   const getListOptionAndAnswer=async ()=>{
+  //     await joinPresentation({preId:preId, email: profile.email, groupId: 2})
+  //       .then(res=>{
+  //         if(res.response?.status===400){
+  //           if(res.response.data.message.includes("presentation is stopped")){
+  //             setPresentOpen(0);
+  //           }
+  //           if(res.response.data.message.includes("slide not found")){
+  //             setPresentOpen(0);
+  //           }
+  //         }
+  //         else{
+  //           setDataPresent(res.data);
+  //           setPresentOpen(1);
+  //         }
+  //
+  //       })
+  //       .catch(err=>{console.log(err)})
+  //   }
+  //   getListOptionAndAnswer();
+  // },[]);
 
 
 
@@ -294,9 +323,6 @@ const PresentationUser = () => {
         .catch((err)=>{})
     }
 
-    // if(presentOpen===3){
-    //     return (<Empty description="This presentation is ended" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
-    // }
   if(presentOpen===0){
     return (<Empty description="Please wait owner present slide" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
   }

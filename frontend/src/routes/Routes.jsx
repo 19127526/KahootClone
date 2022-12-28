@@ -13,7 +13,7 @@ import {
     PRESENTATION_SHOW_URI,
     CREATED_GROUP_URI,
     REDIRECT_URI,
-    VERIFY_INVITE_URI, JOINED_GROUP_URI, GROUP_JOINED_DETAIL, PRESENTATION_URI
+    VERIFY_INVITE_URI, JOINED_GROUP_URI, GROUP_JOINED_DETAIL, PRESENTATION_URI, PRESENTATION_SEE_URI_CO_OWNER
 } from "../configs/url";
 import Oauth2Page from "../authors/oauth2/Oauth2Page";
 import RegisterPage from "../pages/register/RegisterPage";
@@ -34,6 +34,7 @@ const MemberPageLazy = React.lazy(() => import("../pages/member/MemberPage"))
 const ForgotPageLazy = React.lazy(() => import("../pages/forgotpassword/ForgotPasswordPage"))
 const ErrorPageLazy=React.lazy(()=>import("../pages/error/ErrorPage"))
 const PresentationListLazy=React.lazy(()=>import("../pages/presentation/PresentationList"))
+const PresentationSeeCoOwnerLazy=React.lazy(()=>import("../pages/presentation/PresentationCoOwner"))
 
 const RoutesPage = () => {
   return (
@@ -185,8 +186,21 @@ const RoutesPage = () => {
         }
       />
 
+        <Route
+            path={PRESENTATION_SEE_URI_CO_OWNER}
+            element={
+                <React.Suspense fallback={<Loading/>}>
+                    {" "}
+                    <Authenticate path={"/"}>
+                        <PresentationSeeCoOwnerLazy/>
+                    </Authenticate>
+                </React.Suspense>
+            }
+        />
 
-      <Route
+
+
+        <Route
         path={CREATED_GROUP_URI}
         element={
           <React.Suspense fallback={<Loading/>}>
@@ -276,6 +290,7 @@ const RoutesPage = () => {
               </Authenticate>
             }
         />
+
 
 
       <Route path="*" element={<React.Suspense fallback={<Loading/>} >  <ErrorPageLazy/> </React.Suspense>}/>

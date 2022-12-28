@@ -7,9 +7,10 @@ import MemberCard from "../../card/member/MemberCard";
 import emailjs from "@emailjs/browser";
 import Notification from "../../notification/Notification";
 import * as constraintNotification from "../../notification/Notification.constraints";
-import {INVITE_URL_REDIRECT, PRESENTATION_URI} from "../../../configs/url";
+import {INVITE_URL_REDIRECT, PRESENTATION_SEE_URI, PRESENTATION_URI} from "../../../configs/url";
 import ErrorPage from "../../../pages/error/ErrorPage";
 import {Alert, Button, Input, Pagination} from "antd";
+import {joinPresentation} from "../../../apis/presentation/presentationAPI";
 
 const ModalAddMember = ({idModal, userName, nameGroup, code, id}) => {
   const [email, setEmail] = useState();
@@ -116,6 +117,33 @@ const ListMemberPresentationComponent = () => {
     }
   }
 
+  const handleOnClick =  () => {
+    // connect
+    // console.log(detailGroup)
+    detailGroup.users.forEach(value => {
+      if(value.email === email ){
+        if(value.role === "MEMBER"){
+          joinPresentation({email: email, groupId: id})
+              .then(res  => {
+                console.log(res.data.presentationId)
+                if(res.status === 200) {
+                  navigate(PRESENTATION_URI + `${res.data.id}/see`, {state: {slide: res.data, presentationId: res.data.presentationId}})
+                }
+              })
+        } else {
+          joinPresentation({email: email, groupId: id})
+              .then(res  => {
+                if(res.status === 200) {
+                  navigate(PRESENTATION_URI + `co/${res.data.id}/show`, {state: {slide: res.data, groupId: id,  presentationId: res.data.presentationId}})
+                }
+              })
+        }
+
+      }
+    })
+
+  }
+
   return (
     <div>
       {
@@ -124,12 +152,8 @@ const ListMemberPresentationComponent = () => {
             banner
             type={"info"}
             action={
-              <Button size="small" type="primary" onClick={() => {
-                // console.log(detailGroup.present)
-              navigate(PRESENTATION_URI + `${12}/show`,{state: {id: detailGroup.present}})
-
-              }
-              }>
+              <Button size="small" type="primary" onClick= {handleOnClick}
+              >
                 JOIN RIGHT NOW
               </Button>
             }

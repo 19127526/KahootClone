@@ -75,7 +75,7 @@ export const postAnswer=async ({answer,question,email})=>{
 
 export const joinPresentation=async ({preId,email,groupId})=>{
     return await request.post(JOIN_PRESENTATION, {
-        "presentationId" : preId,
+        "presentId" : preId,
         "email": email,
         "groupId": groupId
     });
