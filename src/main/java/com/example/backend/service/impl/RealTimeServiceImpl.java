@@ -255,7 +255,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             Map<String, Object> dataVote = new HashMap<>();
             dataVote.put("voteId", vote.getId());
             dataVote.put("voteText", vote.getText());
-            dataVote.put("voteCount", userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId));
+            dataVote.put("voteCount", userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId).size());
             return dataVote;
         }).toList();
     }
