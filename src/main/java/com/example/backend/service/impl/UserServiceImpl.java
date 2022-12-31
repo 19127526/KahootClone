@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,9 +43,8 @@ public class UserServiceImpl implements UserService {
 
     // done
     @Override
-    public AuthenticationDto loginSocial(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    public AuthenticationDto loginSocial(AuthRequest authRequest) {
         AuthenticationDto authenticationDto;
-        AuthRequest authRequest = convertOAuthToAccount(oAuth2AuthenticationToken.getPrincipal().getAttributes());
         Optional<UserEntity> optionUserEntity = userRepository.findAccountEntityByEmail(authRequest.getEmail());
         if (optionUserEntity.isEmpty()) {
             String otp = CodeGeneratorUtils.invoke();
@@ -59,15 +57,14 @@ public class UserServiceImpl implements UserService {
             String at = jwtTokenUtil.generateToken(optionUserEntity.get().getEmail(), JwtTokenUtil.JWT_ACCESS_TOKEN_VALIDITY);
             String rt = jwtTokenUtil.generateToken(optionUserEntity.get().getEmail(), JwtTokenUtil.JWT_REFRESH_TOKEN_VALIDITY);
             UserDto user = userMapper.entityToDto(userEntity);
-//            UserDto user = UserDto.builder().id(userEntity.getId()).userName(userEntity.getUserName()).email(userEntity.getEmail()).password(userEntity.getPassword()).imageURL(userEntity.getImageURL()).build();
             authenticationDto = AuthenticationDto.builder().accountStatus(AccountStatus.OLD_USER).userDto(user).jsonWebToken(new JsonWebToken(at, rt)).build();
         }
         return authenticationDto;
     }
 
-    private AuthRequest convertOAuthToAccount(Map<String, Object> data) {
-        return AuthRequest.builder().userName(String.valueOf(data.get("name"))).email((String) data.get("email")).imageURL((String) data.get("picture")).build();
-    }
+//    private AuthRequest convertOAuthToAccount(Map<String, Object> data) {
+//        return AuthRequest.builder().userName(String.valueOf(data.get("name"))).email((String) data.get("email")).imageURL((String) data.get("picture")).build();
+//    }
 
     @Override
     public UserEntity update(UserDto userDto) {
@@ -149,6 +146,31 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             throw new ResourceInvalidException(e.getMessage());
         }
+    }
+
+    @Override
+    public void forgetAccount(AuthRequest authRequest) {
+        UserEntity userEntity = userRepository.findAccountEntityByEmail(authRequest.getEmail()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("email invalid");
+        });
+        String otp = CodeGeneratorUtils.invoke();
+        authRequest.setOtp(otp);
+        cacheAuth.put(authRequest.getEmail(), authRequest);
+        emailUtils.sendEmailInviteToRoom("your otp is", authRequest.getEmail(), "FORGOT PASSWORD");
+    }
+
+    @Override
+    public UserEntity validateForgetAccount(AuthRequest authRequest) {
+        if(authRequest.getPassword().isEmpty()) throw new ResourceInvalidException("please fill your password");
+        AuthRequest cache = cacheAuth.get(authRequest.getEmail());
+        if (cache == null || !cache.getOtp().equals(authRequest.getOtp()))
+            throw new ResourceInvalidException("cant validate account");
+        UserEntity user = userRepository.findAccountEntityByEmail(cache.getEmail()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("account not found");
+        });
+        cacheAuth.remove(authRequest.getEmail());
+        user.setPassword(cache.getPassword());
+        return userRepository.save(user);
     }
 
     @Override

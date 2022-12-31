@@ -19,8 +19,8 @@ public class AuthController extends BaseController {
 
     private final UserService userService;
 
-    @GetMapping("loginSocial")
-    public ResponseEntity<AuthenticationDto> authentication(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+    @PostMapping("loginSocial")
+    public ResponseEntity<AuthenticationDto> authentication(@RequestBody AuthRequest oAuth2AuthenticationToken) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.loginSocial(oAuth2AuthenticationToken));
     }
 
@@ -42,5 +42,17 @@ public class AuthController extends BaseController {
     @PostMapping("refreshToken")
     public ResponseEntity<JsonWebToken> refreshToken(@RequestBody JsonWebToken jsonWebToken) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.refreshToken(jsonWebToken.getRefreshToken()));
+    }
+
+    @PostMapping("forget")
+    public ResponseEntity<Object> forgetAccount(@RequestBody AuthRequest authRequest) {
+        userService.forgetAccount(authRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @PostMapping("forget/otp")
+    public ResponseEntity<Object> validateForget(@RequestBody AuthRequest authRequest) {
+        userService.validateForgetAccount(authRequest);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 }
