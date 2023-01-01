@@ -1,6 +1,8 @@
 package com.example.backend.service;
 
+import com.example.backend.model.dto.PresentHistoryDto;
 import com.example.backend.model.dto.PresentationDto;
+import com.example.backend.model.dto.SlideDto;
 import com.example.backend.model.entity.PresentationEntity;
 import com.example.backend.model.request.PresentationRequest;
 
@@ -28,4 +30,8 @@ public interface PresentationService {
     List<PresentationDto> getListJoin(String email);
 
     List<PresentationDto> getListPending(String email);
+
+    List<PresentHistoryDto> getListHistoryPresents(long id);
+
+    SlideDto getListHistorySlide(long historyPresentId, long slideId);
 }

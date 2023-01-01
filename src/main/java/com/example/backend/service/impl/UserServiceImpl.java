@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
         if (optionUserEntity.isEmpty()) {
             String otp = CodeGeneratorUtils.invoke();
             authRequest.setOtp(otp);
+            authRequest.setPassword("12345678");
             cacheAuth.put(authRequest.getEmail(), authRequest);
             authenticationDto = AuthenticationDto.builder().email(authRequest.getEmail()).accountStatus(AccountStatus.NEW_USER).build();
             emailUtils.sendEmailInviteToRoom(otp, authRequest.getEmail(), "REGISTER");
@@ -150,7 +151,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void forgetAccount(AuthRequest authRequest) {
-        UserEntity userEntity = userRepository.findAccountEntityByEmail(authRequest.getEmail()).orElseThrow(() -> {
+        userRepository.findAccountEntityByEmail(authRequest.getEmail()).orElseThrow(() -> {
             throw new ResourceNotFoundException("email invalid");
         });
         String otp = CodeGeneratorUtils.invoke();
@@ -160,8 +161,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity validateForgetAccount(AuthRequest authRequest) {
-        if(authRequest.getPassword().isEmpty()) throw new ResourceInvalidException("please fill your password");
+    public void validateOtp(AuthRequest authRequest) {
+        AuthRequest cache = cacheAuth.get(authRequest.getEmail());
+        if (cache == null || !cache.getEmail().equals(authRequest.getEmail()) || !cache.getOtp().equals(authRequest.getOtp())) {
+            throw new ResourceInvalidException("cant validate account");
+        }
+    }
+
+    @Override
+    public void changePassword(AuthRequest authRequest) {
+        if (authRequest.getPassword().isEmpty()) throw new ResourceInvalidException("please fill your password");
         AuthRequest cache = cacheAuth.get(authRequest.getEmail());
         if (cache == null || !cache.getOtp().equals(authRequest.getOtp()))
             throw new ResourceInvalidException("cant validate account");
@@ -170,8 +179,9 @@ public class UserServiceImpl implements UserService {
         });
         cacheAuth.remove(authRequest.getEmail());
         user.setPassword(cache.getPassword());
-        return userRepository.save(user);
+        userRepository.save(user);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

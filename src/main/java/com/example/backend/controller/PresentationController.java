@@ -2,13 +2,17 @@ package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.PresentationMapper;
+import com.example.backend.model.dto.PresentHistoryDto;
 import com.example.backend.model.dto.PresentationDto;
+import com.example.backend.model.dto.SlideDto;
 import com.example.backend.model.request.PresentationRequest;
 import com.example.backend.service.PresentationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -59,6 +63,15 @@ public class PresentationController extends BaseController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 
+    @GetMapping("history")
+    public ResponseEntity<List<PresentHistoryDto>> historyPresent(long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getListHistoryPresents(id));
+    }
+
+    @GetMapping("history/slide")
+    public ResponseEntity<SlideDto> listSlideHistories(long historyPresentId, long slideId) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getListHistorySlide(historyPresentId, slideId));
+    }
 
     @PostMapping("update/clearAdvanced")
     public ResponseEntity<Boolean> clearAdvanced(@RequestBody PresentationRequest presentationRequest) {

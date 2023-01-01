@@ -21,4 +21,16 @@ public class VoteDto {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VoteDto voteDto)) return false;
+
+        return id == voteDto.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

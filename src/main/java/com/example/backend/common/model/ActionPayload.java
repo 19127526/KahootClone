@@ -7,5 +7,7 @@ public enum ActionPayload {
     PREVIOUS_SLIDE,
     NEXT_SLIDE,
     UPDATE_SLIDE,
-    CHAT
+    CHAT,
+    ASK_QUESTION,
+    UPDATE_QUESTION,
 }

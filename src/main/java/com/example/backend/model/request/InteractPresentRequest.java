@@ -18,4 +18,7 @@ public class InteractPresentRequest {
     private Long groupId;
     private String email;
     private ActionPayload action;
+
+    private String question;
+    private Long questionId;
 }

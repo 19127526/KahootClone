@@ -5,10 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d68bc8bf-a6bd-4d3f-9388-0d6956c3ea4e" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/mapper/QuestionMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/PresentHistoryDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/QuestionDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/LikeQuestionEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/QuestionEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/LikeQuestionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/QuestionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/UserVoteRepositoryCustom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/impl/UserVoteRepositoryCustomImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/common/configure/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/common/configure/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/common/model/ActionPayload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/common/model/ActionPayload.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/PresentationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/PresentationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/RealTimeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/controller/RealTimeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/SlideDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/SlideDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/UserVoteDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/UserVoteDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/VoteDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/VoteDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/InteractPresentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/request/InteractPresentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/PresentHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/PresentHistoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/UserVoteRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/repository/UserVoteRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/PresentationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/PresentationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/RealTimeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/RealTimeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/PresentationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/PresentationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/RealTimeServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/RealTimeServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/UserServiceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -20,8 +41,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
+        <option value="com.haulmont.jpb.JpaRepository" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -81,9 +103,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.example.backend.repository" />
       <recent name="com.example.backend.model.request" />
       <recent name="com.example.backend.service" />
-      <recent name="com.example.backend.repository" />
       <recent name="com.example.backend.model.dto" />
       <recent name="com.example.backend.common.model" />
     </key>
@@ -208,6 +230,7 @@
       <workItem from="1672147186215" duration="3389000" />
       <workItem from="1672162573690" duration="210000" />
       <workItem from="1672242182277" duration="1610000" />
+      <workItem from="1672580889000" duration="13999000" />
     </task>
     <servers />
   </component>

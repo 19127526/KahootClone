@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserVoteRepository extends JpaRepository<UserVoteEntity, Long> {
+public interface UserVoteRepository extends JpaRepository<UserVoteEntity, Long>, UserVoteRepositoryCustom {
     List<UserVoteEntity> findUserVoteEntitiesByVoteIdAndPresentId(long voteId, long presentId);
 }

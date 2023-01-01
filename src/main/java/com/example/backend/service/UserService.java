@@ -15,5 +15,6 @@ public interface UserService extends UserDetailsService {
     AuthenticationDto loginTraditional(UserDto userDto);
     JsonWebToken refreshToken(String refreshToken);
     void forgetAccount(AuthRequest authRequest);
-    UserEntity validateForgetAccount(AuthRequest authRequest);
+    void validateOtp(AuthRequest authRequest);
+    void changePassword(AuthRequest authRequest);
 }

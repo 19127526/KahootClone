@@ -16,6 +16,7 @@ public class SlideDto {
     private String imageURL;
     private long presentation;
     private List<VoteDto> votes;
+    private List<QuestionDto> questions;
 
     private MultipartFile imageFile;
 }

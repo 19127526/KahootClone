@@ -1,20 +1,16 @@
 package com.example.backend.service.impl;
 
+import com.example.backend.common.model.GenreQuestion;
 import com.example.backend.common.model.RolePresentation;
 import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.PresentationMapper;
+import com.example.backend.mapper.QuestionMapper;
 import com.example.backend.mapper.SlideMapper;
-import com.example.backend.model.dto.PresentationDto;
-import com.example.backend.model.dto.SlideDto;
-import com.example.backend.model.entity.PresentationEntity;
-import com.example.backend.model.entity.UserEntity;
-import com.example.backend.model.entity.UserPresentationEntity;
+import com.example.backend.model.dto.*;
+import com.example.backend.model.entity.*;
 import com.example.backend.model.request.PresentationRequest;
-import com.example.backend.repository.PresentationRepository;
-import com.example.backend.repository.SlideRepository;
-import com.example.backend.repository.UserPresentationRepository;
-import com.example.backend.repository.UserRepository;
+import com.example.backend.repository.*;
 import com.example.backend.service.PresentationService;
 import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
@@ -31,15 +27,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PresentationServiceImpl implements PresentationService {
+    private final UserVoteRepository userVoteRepository;
     private final PresentationRepository presentationRepository;
     private final SlideRepository slideRepository;
     private final UserRepository userRepository;
     private final SlideMapper slideMapper;
     private final PresentationMapper presentationMapper;
     private final UserPresentationRepository userPresentationRepository;
+    private final PresentHistoryRepository presentHistoryRepository;
+    private final QuestionRepository questionRepository;
+    private final QuestionMapper questionMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public PresentationDto getDetail(long id, String email) {
         Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(email, id, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
@@ -60,7 +61,7 @@ public class PresentationServiceImpl implements PresentationService {
         });
         PresentationEntity presentation = new PresentationEntity();
         presentation.setName(presentationRequest.getNamePresentation());
-        presentation.addCollaborate(user,RolePresentation.OWNER);
+        presentation.addCollaborate(user, RolePresentation.OWNER);
         presentation = presentationRepository.save(presentation);
         user.addPresentationCreated(presentation);
         userRepository.save(user);
@@ -69,7 +70,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public void deletePresentation(PresentationRequest presentationRequest) {
-        userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(),presentationRequest.getId(),List.of(RolePresentation.OWNER)).orElseThrow(() -> {
+        userPresentationRepository.getUserAndPresentationWithRole(presentationRequest.getEmail(), presentationRequest.getId(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
             throw new ResourceInvalidException("Permission denied");
         });
         presentationRepository.deleteById(presentationRequest.getId());
@@ -144,6 +145,53 @@ public class PresentationServiceImpl implements PresentationService {
             presentationDto.setAuthor(((UserEntity) tuple.toArray()[1]).getEmail());
             return presentationDto;
         }).toList();
+    }
+
+    @Override
+    public List<PresentHistoryDto> getListHistoryPresents(long id) {
+        List<PresentHistoryEntity> histories = presentHistoryRepository.findPresentHistoryEntitiesByPresentationId(id);
+        return histories.stream().map(it -> {
+            PresentHistoryDto presentDto = new PresentHistoryDto();
+            presentDto.setId(it.getId());
+            presentDto.setUserId(it.getUserId());
+            presentDto.setPresented(it.isPresented());
+            presentDto.setStartOn(it.getStartOn());
+            presentDto.setMode(it.getMode());
+            return presentDto;
+        }).toList();
+    }
+
+    @Override
+    public SlideDto getListHistorySlide(long historyPresentId, long slideId) {
+        SlideEntity slide = slideRepository.findById(slideId).orElseThrow(() -> {
+            throw new ResourceInvalidException("slide not found");
+        });
+        List<QuestionEntity> qa = questionRepository.findQuestionEntitiesBySlideIdAndPresentId(slideId, historyPresentId);
+        SlideDto slideDto = slideMapper.entityToDto(slide);
+        slideDto.setQuestions(qa.stream().map(questionMapper::entityToDto).toList());
+        if (slide.getGenreQuestion() != GenreQuestion.DOCUMENT) {
+            List<Tuple> votesAndUserVotes = userVoteRepository.findVotesAndUserVotes(slideId, historyPresentId);
+            List<VoteDto> votes = votesAndUserVotes.stream().map(it -> {
+                VoteEntity voteEntity = (VoteEntity) it.toArray()[0];
+                VoteDto voteDto = new VoteDto();
+                voteDto.setId(voteEntity.getId());
+                voteDto.setText(voteEntity.getText());
+                return voteDto;
+            }).toList().stream().distinct().toList();
+
+            votes.forEach(vote -> {
+                List<UserVoteDto> userVotes = votesAndUserVotes.stream().filter(it -> ((UserVoteEntity) it.toArray()[1]).getVoteId() == vote.getId()).map(it -> {
+                    UserVoteEntity userVote = (UserVoteEntity) it.toArray()[1];
+                    UserVoteDto userVoteDto = new UserVoteDto();
+                    userVoteDto.setId(userVote.getId());
+                    userVoteDto.setUserId(userVote.getUserId());
+                    return userVoteDto;
+                }).toList();
+                vote.setUsers(userVotes);
+            });
+            slideDto.setVotes(votes);
+        }
+        return slideDto;
     }
 
     @Override

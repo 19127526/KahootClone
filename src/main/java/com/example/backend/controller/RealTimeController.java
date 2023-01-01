@@ -60,4 +60,35 @@ public class RealTimeController extends BaseController {
     public ResponseEntity<List<ChatDto>> getChat(long presentId, long size, long offset) {
         return ResponseEntity.status(HttpStatus.OK).body(realTimeService.getChat(presentId, size, offset).stream().map(chatMapper::entityToDto).toList());
     }
+
+    @PostMapping("/question")
+    public ResponseEntity<Object> question(@RequestBody InteractPresentRequest interactPresentRequest) {
+        realTimeService.askQuestion(interactPresentRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @PostMapping("/question/like")
+    public ResponseEntity<Object> likeQuestion(@RequestBody InteractPresentRequest interactPresentRequest) {
+        realTimeService.likeQuestion(interactPresentRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @PostMapping("/question/dislike")
+    public ResponseEntity<Object> dislikeQuestion(@RequestBody InteractPresentRequest interactPresentRequest) {
+        realTimeService.dislikeQuestion(interactPresentRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @PostMapping("/question/mark")
+    public ResponseEntity<Object> markQuestion(@RequestBody InteractPresentRequest interactPresentRequest) {
+        realTimeService.markQuestion(interactPresentRequest, true);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    @PostMapping("/question/unmark")
+    public ResponseEntity<Object> unmarkQuestion(@RequestBody InteractPresentRequest interactPresentRequest) {
+        realTimeService.markQuestion(interactPresentRequest, false);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
 }

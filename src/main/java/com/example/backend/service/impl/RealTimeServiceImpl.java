@@ -41,6 +41,8 @@ public class RealTimeServiceImpl implements RealTimeService {
     private final ChatMapper chatMapper;
     private final ChatRepository chatRepository;
     private final UserVoteRepository userVoteRepository;
+    private final QuestionRepository questionRepository;
+    private final LikeQuestionRepository likeQuestionRepository;
 
     @Override
     public void choseVote(InteractPresentRequest interact) {
@@ -52,7 +54,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             throw new ResourceInvalidException("vote invalid");
         });
         List<VoteEntity> votes = voteRepository.findVotesExistInListId(interact.getVotes());
-        if(votes.isEmpty()) throw new ResourceInvalidException("please chose least 1 vote");
+        if (votes.isEmpty()) throw new ResourceInvalidException("please chose least 1 vote");
         if (present.getMode() == PresentationStatus.PUBLIC) {
             userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(vote.getId(), slide.getId(), present.getId())).toList());
         } else {
@@ -156,9 +158,7 @@ public class RealTimeServiceImpl implements RealTimeService {
             payload.put("presentation", presentation.getId());
             payload.put("author", user.getEmail());
             payload.put("group", interact.getGroupId());
-            System.out.println("------------------: " + users);
             users.forEach(id -> {
-                System.out.println("------------------: " + id);
                 simpMessagingTemplate.convertAndSendToUser(String.valueOf(id), Constant.TOPIC_LOGIN, payload);
             });
         }
@@ -198,9 +198,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public void sendMessage(ChatRequest chatRequest) {
-        PresentHistoryEntity present = presentHistoryRepository
-                .findPresentHistoryEntityByIdAndPresented(chatRequest.getPresentId(), true)
-                .orElseThrow(() -> {
+        PresentHistoryEntity present = presentHistoryRepository.findPresentHistoryEntityByIdAndPresented(chatRequest.getPresentId(), true).orElseThrow(() -> {
             throw new ResourceInvalidException("chat invalid");
         });
         ChatEntity chat = chatMapper.payloadToEntity(chatRequest);
@@ -211,7 +209,55 @@ public class RealTimeServiceImpl implements RealTimeService {
 
     @Override
     public List<ChatEntity> getChat(long presentId, long size, long offset) {
-        return chatRepository.getListChatWithSize(presentId,size,offset);
+        return chatRepository.getListChatWithSize(presentId, size, offset);
+    }
+
+    @Override
+    public void askQuestion(InteractPresentRequest interactPresentRequest) {
+        PresentHistoryEntity present = presentHistoryRepository.findById(interactPresentRequest.getPresentId()).orElseThrow(() -> {
+            throw new ResourceInvalidException("present not found");
+        });
+        if (!present.isPresented()) throw new ResourceInvalidException("present is Closed");
+        slideRepository.findById(interactPresentRequest.getSlideId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("slide not found");
+        });
+        QuestionEntity question = new QuestionEntity(0, interactPresentRequest.getSlideId(), interactPresentRequest.getPresentId(), interactPresentRequest.getQuestion(), false, interactPresentRequest.getEmail(), List.of());
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, getQuestion(questionRepository.save(question), ActionPayload.ASK_QUESTION));
+    }
+
+    @Override
+    public void likeQuestion(InteractPresentRequest interactPresentRequest) {
+        QuestionEntity question = questionRepository.findById(interactPresentRequest.getQuestionId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("question not found");
+        });
+        Optional<LikeQuestionEntity> optionLike = likeQuestionRepository.findLikeQuestionEntityByEmailAndQuestion_Id(interactPresentRequest.getEmail(), interactPresentRequest.getQuestionId());
+        if (optionLike.isPresent()) throw new ResourceInvalidException("you liked question");
+        LikeQuestionEntity like = likeQuestionRepository.save(new LikeQuestionEntity(0, interactPresentRequest.getEmail(), null));
+        question.addLike(like);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(question.getPresentId()), Constant.TOPIC_PRESENTATION, getQuestion(questionRepository.save(question), ActionPayload.UPDATE_QUESTION));
+    }
+
+    @Override
+    public void dislikeQuestion(InteractPresentRequest interactPresentRequest) {
+        QuestionEntity question = questionRepository.findById(interactPresentRequest.getQuestionId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("question not found");
+        });
+        LikeQuestionEntity like = likeQuestionRepository.findLikeQuestionEntityByEmailAndQuestion_Id(interactPresentRequest.getEmail(), interactPresentRequest.getQuestionId()).orElseThrow(() -> {
+            throw new ResourceInvalidException("you didn't like question");
+        });
+        question.removeLike(like);
+        likeQuestionRepository.delete(like);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(question.getPresentId()), Constant.TOPIC_PRESENTATION, getQuestion(questionRepository.save(question), ActionPayload.UPDATE_QUESTION));
+    }
+
+    @Override
+    public void markQuestion(InteractPresentRequest interactPresentRequest, boolean mark) {
+        QuestionEntity question = questionRepository.findById(interactPresentRequest.getQuestionId()).orElseThrow(() -> {
+            throw new ResourceNotFoundException("question not found");
+        });
+        if(mark == question.getIsAnswer()) throw new ResourceInvalidException("you mark " + mark);
+        question.setIsAnswer(mark);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(question.getPresentId()), Constant.TOPIC_PRESENTATION, getQuestion(questionRepository.save(question), ActionPayload.UPDATE_QUESTION));
     }
 
     private PresentDto getPresentDto(long slideId, long presentId, long presentationId) {
@@ -258,5 +304,16 @@ public class RealTimeServiceImpl implements RealTimeService {
             dataVote.put("voteCount", userVoteRepository.findUserVoteEntitiesByVoteIdAndPresentId(vote.getId(), presentId).size());
             return dataVote;
         }).toList();
+    }
+
+    private HashMap<String, Object> getQuestion(QuestionEntity questionAndAnswer, ActionPayload action) {
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("action", action);
+        payload.put("isAnswer", questionAndAnswer.getIsAnswer());
+        payload.put("id_of_slide", questionAndAnswer.getSlideId());
+        payload.put("text_of_question", questionAndAnswer.getText());
+        payload.put("like_of_question", questionAndAnswer.getLikes().size());
+        payload.put("email_of_question", questionAndAnswer.getEmail());
+        return payload;
     }
 }

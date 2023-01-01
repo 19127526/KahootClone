@@ -9,8 +9,10 @@ import com.example.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("auth")
@@ -20,8 +22,8 @@ public class AuthController extends BaseController {
     private final UserService userService;
 
     @PostMapping("loginSocial")
-    public ResponseEntity<AuthenticationDto> authentication(@RequestBody AuthRequest oAuth2AuthenticationToken) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.loginSocial(oAuth2AuthenticationToken));
+    public ResponseEntity<AuthenticationDto> authentication(@RequestBody AuthRequest AuthRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.loginSocial(AuthRequest));
     }
 
     @PostMapping("register")
@@ -50,9 +52,15 @@ public class AuthController extends BaseController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
-    @PostMapping("forget/otp")
-    public ResponseEntity<Object> validateForget(@RequestBody AuthRequest authRequest) {
-        userService.validateForgetAccount(authRequest);
+    @PostMapping("forget/validate")
+    public ResponseEntity<Object> validateOtp(@RequestBody AuthRequest authRequest) {
+        userService.validateOtp(authRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
+    @PostMapping("changePassword")
+    public ResponseEntity<Object> changePassword(@RequestBody AuthRequest authRequest) {
+        userService.changePassword(authRequest);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
     }
 }

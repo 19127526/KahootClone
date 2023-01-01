@@ -21,4 +21,12 @@ public interface RealTimeService {
     void sendMessage(ChatRequest chatRequest);
 
     List<ChatEntity> getChat(long presentId, long size, long offset);
+
+    void askQuestion(InteractPresentRequest interactPresentRequest);
+
+    void likeQuestion(InteractPresentRequest interactPresentRequest);
+
+    void dislikeQuestion(InteractPresentRequest interactPresentRequest);
+
+    void markQuestion(InteractPresentRequest interactPresentRequest, boolean mark);
 }
