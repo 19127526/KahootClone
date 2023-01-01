@@ -1,4 +1,4 @@
-import {Modal, Spin} from "antd";
+import {Button, Modal, Spin, Steps} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
 import {useNavigate} from "react-router-dom";
 import {LOGIN_URI} from "../../configs/url";
@@ -7,6 +7,11 @@ import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints";
 import {postRegisterApi} from "../../apis/register/registerApi";
 import {useState} from "react";
+import {typeLogin} from "../../utils/utils";
+import {useDispatch} from "react-redux";
+import {turnOffLoading, turnOnLoading} from "../../layouts/MainLayout.actions";
+
+
 
 const SignUpPage=()=>{
   const navigate=useNavigate()
@@ -14,8 +19,12 @@ const SignUpPage=()=>{
   const [password, setPassword] = useState("");
   const [cofirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [typeOtp,setTypeOtp]=useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch=useDispatch();
+
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -53,10 +62,12 @@ const SignUpPage=()=>{
     }
     else{
       setIsLoading(true)
+      dispatch(turnOnLoading())
       postRegisterApi({userName: userName, password: password, email: email})
         .then(res => {
           if(res.status===202){
             Notification("Thông báo đăng ký", "Vui lòng điền OTP", constraintNotification.NOTIFICATION_SUCCESS)
+            setTypeOtp(typeLogin.LOGIN_TRADITIONAL)
             showModal();
           }
           else if(res.response.status==400){
@@ -66,7 +77,7 @@ const SignUpPage=()=>{
         .catch(err => {
           console.log(err);
         })
-        .finally(() => setIsLoading(false));
+        .finally(() => {setIsLoading(false); dispatch(turnOffLoading())});
     }
   }
   return (
@@ -88,7 +99,7 @@ const SignUpPage=()=>{
             </header>
             <div className="auth-content">
               <p className="text-center">SIGNUP TO GET INSTANT ACCESS</p>
-              <form id="login-form" action="https://modularcode.io/index.html" method="GET" noValidate="">
+              <form id="login-form">
                 <div className="form-group">
                   <label htmlFor="username">Email</label>
                   <input type="email" className="form-control underlined" name="username" id="username"
@@ -118,7 +129,7 @@ const SignUpPage=()=>{
                 <div className="form-group"  >
                   <button type="submit" className="btn btn-block btn-primary"  onClick={submitRegister} disabled={isLoading===true?true:false}>Sign Up</button>
                   <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
-                    <OtpComponent onSubmit={()=>setIsModalOpen(false)} type="register" email={email}/>
+                    <OtpComponent onSubmit={()=>setIsModalOpen(false)} type={typeOtp} email={email} />
                   </Modal>
                 </div>
                 <div className="form-group">

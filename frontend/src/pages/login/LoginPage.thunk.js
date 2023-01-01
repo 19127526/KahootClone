@@ -1,8 +1,5 @@
 import * as actions from "./LoginPages.actions"
-import {postLoginNormal} from "../../apis/login/loginApi";
-import * as constraints from "./LoginPage.constraints"
-import request from "../../apis/request";
-import registerUser from "../../service/socket";
+import { postLoginNormal} from "../../apis/login/loginApi";
 
 
 
@@ -23,10 +20,6 @@ export const loginNormal = (payload) => dispatch => {
     })
 }
 
-export const loginGoogle = (payload) => dispatch => {
-  localStorage.setItem("accessToken", payload.accessToken);
-  return dispatch(actions.loginGoogleSuccess(payload.decoded))
 
-}
 
 

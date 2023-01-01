@@ -12,12 +12,14 @@ export const JOIN_INTO_GROUP="/group/join"
 export const REGISTER_URi="/auth/register"
 export const VALIDATE_OTP_URI="/auth/validate/otp"
 export const LOGIN_NORMAL="/auth/loginTraditional"
+export const LOGIN_OAUTH2="/auth/loginSocial";
 export const LIST_PRESENTATION = "/account/listPresent"
 export const LIST_INVITATION = "/account/listPresentPending"
 export const ACCEPT_INVITATION = "/presentation/acceptPending"
 export const REJECT_INVITATION = "/presentation/rejectPending"
-
-
+export const FORGET_PASSWORD_EMAIL="/auth/forget"
+export const FORGET_PASSWORD_OTP="/auth/forget/validate";
+export const FORGET_PASSWORD="/auth/changePassword"
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
 export const PRESENTATION_DETAIL = "/presentation/details"
@@ -48,10 +50,8 @@ export const HOME_URI="/home"
 export const GROUP_URI = "/group"
 export const DETAIL_GROUP_URI="/group/detail/"
 export const VERIFY_INVITE_URI="/verify/:email/:code/:id"
-export const INFORMATION_LOGIN_GOOGLE_URI="account/auth/loginSocial"
 export const CREATED_GROUP_URI="/group/created";
 export const JOINED_GROUP_URI="/group/joined";
-
 export const PRESENTATION_URI="/presentation/"
 export const PRESENTATION_SEE_URI="/presentation/:preId/see"
 export const PRESENTATION_SEE_URI_CO_OWNER="/presentation/co/:preId/show"
@@ -73,7 +73,7 @@ export const CLIENT_JOIN_GROUP_URL=CLIENT_URL+DETAIL_GROUP_URI;
 
 
 
-export const GET_LOGIN_OAUTH2="/auth/loginSocial";
+
 
 
 /*

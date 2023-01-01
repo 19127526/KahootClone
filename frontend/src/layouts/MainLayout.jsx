@@ -1,4 +1,4 @@
-import {Layout} from "antd";
+import {Layout, Spin} from "antd";
 import React from "react";
 import RoutesPage from "../routes/Routes";
 import HeaderComponent from "../components/header/HeaderComponent";
@@ -8,14 +8,16 @@ import FooterComponent from "../components/footer/FooterComponent";
 import {PRESENTATION_EDIT_URI, PRESENTATION_SEE_URI, PRESENTATION_SHOW_URI, PRESENTATION_URI} from "../configs/url";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import LoadingComponent from "../components/loading/LoadingComponent";
 
 
 const {Header, Footer, Content} = Layout;
 
 const MainLayout = () => {
 
-
+    const dispatch = useDispatch();
+    const loadingRedux = useSelector(state => state.mainReducer);
     const location = useLocation();
     return (
         /*  <Row xl={12} sm={12} md={12} xs={12} lg={12} xxl={12}>
@@ -42,14 +44,17 @@ const MainLayout = () => {
             </Col>
           </Row>*/
         <>
+
             {
                 location.pathname.includes("login") || location.pathname.includes("register") ||
                 location.pathname.includes("forgot")||
                 location.pathname.includes("test") ?
                     <div className="main-wrapper">
+                        <Spin size="large" direction="horizon" spinning={loadingRedux?.isLoading} indicator={<LoadingComponent/>}>
                         <div className="app" id="app">
                             <RoutesPage/>
                         </div>
+                        </Spin>
                     </div>
                     :
                     location.pathname.includes(PRESENTATION_SHOW_URI) ||
@@ -57,17 +62,22 @@ const MainLayout = () => {
                     (location.pathname.includes(PRESENTATION_URI) && location.pathname.includes("show"))
                       ||(location.pathname.includes(PRESENTATION_URI) && location.pathname.includes("see"))?
                         <div className="main-wrapper" >
+                            <Spin size="large" direction="horizon" spinning={loadingRedux?.isLoading} indicator={<LoadingComponent/>}>
                             <div>
                                 <RoutesPage/>
                             </div>
+                            </Spin>
                         </div>
                         :
                         location.pathname.includes(PRESENTATION_URI) && location.pathname.includes("edit") ?
                             <div className="main-wrapper" style={{overflowY: "hidden", paddingBottom: "15px"}}>
+                                <Spin size="large" direction="horizon" spinning={loadingRedux?.isLoading} indicator={<LoadingComponent/>}>
                                 <HeaderComponent index={PRESENTATION_URI}/>
                                 <RoutesPage/>
+                                </Spin>
                             </div> :
                             <div className="main-wrapper">
+                                <Spin size="large" direction="horizon" spinning={loadingRedux?.isLoading} indicator={<LoadingComponent/>}>
                                 <div className="app" id="app">
                                     <HeaderComponent/>
                                     <AsideComponent/>
@@ -77,9 +87,9 @@ const MainLayout = () => {
                                     <RoutesPage/>
                                     {/*<FooterComponent/>*/}
                                 </div>
+                                </Spin>
                             </div>
             }
-
         </>
     );
 }

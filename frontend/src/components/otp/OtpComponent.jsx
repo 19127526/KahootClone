@@ -8,11 +8,12 @@ import {connect, useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 import {postValidateOtp} from "../../apis/register/registerApi";
+import {typeLogin} from "../../utils/utils";
 
 
 const mapStateToProps = state => ({})
 const mapDispatchToProps = {
-  postOtp: postOtp
+  postOtp: postOtp,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
@@ -36,15 +37,37 @@ const OtpComponent = (props) => {
     if (otpValue.includes(null) || otpValue.includes('')) {
       Notification("Thông báo otp", "Vui lòng điền đẩy đủ mã otp", constraintNotification.NOTIFICATION_WARN)
     } else {
-      if (type == "register") {
-        let otp = "";
-        otpValue.forEach(index => {
-          otp += index
-        });
-        console.log(otp)
+      let otp = "";
+      otpValue.forEach(index => {
+        otp += index
+      });
+      if (type==typeLogin.LOGIN_OAUTH2) {
         postValidateOtp({otp: otp, email: email})
           .then((res) => {
             console.log(res)
+            if (res.status === 201) {
+              onSubmit();
+              if(dataUrl.url.includes("/login")) {
+                navigate("/");
+              }
+              else{
+                navigate(dataUrl.url);
+              }
+              dispatch(removeUrlGuard());
+              Notification("Thông báo đăng nhập", "Đăng nhập thành công", constraintNotification.NOTIFICATION_SUCCESS)
+            } else if (res.response.status == 400) {
+              Notification("Thông báo đăng nhập","Đăng nhập thất bại", constraintNotification.NOTIFICATION_ERROR)
+            }
+          })
+          .catch(err =>{
+            Notification("Thông báo đăng nhập", err.toString(), constraintNotification.NOTIFICATION_ERROR)
+          })
+          .finally(() => {
+          });
+
+      } else if(type==typeLogin.LOGIN_TRADITIONAL) {
+        postValidateOtp({otp: otp, email: email})
+          .then((res) => {
             if (res.status === 201) {
               onSubmit();
               navigate("/login")
@@ -56,15 +79,13 @@ const OtpComponent = (props) => {
           .catch(err => console.log(err))
           .finally(() => {
           });
-
-      } else {
-        postOtp(otpValue)
+      /*  postOtp(otpValue)
         if (data.isLogin === true) {
           console.log(dataUrl.url)
           navigate(dataUrl.url);
           dispatch(removeUrlGuard());
           Notification("Thông báo đăng nhập", "Đăng nhập thành công", constraintNotification.NOTIFICATION_SUCCESS)
-        }
+        }*/
       }/*
 
       Notification("Thông báo otp","Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)*/

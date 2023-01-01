@@ -1,15 +1,18 @@
 import request from "../request";
-import {GET_LOGIN_OAUTH2, INFORMATION_LOGIN_GOOGLE_URI, LOGIN_NORMAL} from "../../configs/url";
+import {
+  LOGIN_NORMAL,
+  LOGIN_OAUTH2,
+} from "../../configs/url";
 
 
-export const  getLogin= async ()=>{
-  return await request.get(GET_LOGIN_OAUTH2);
-}
 
 export const postLoginNormal=async ({email,password})=>{
   return await request.post(LOGIN_NORMAL,{email:email,password:password});
 }
 
-export const getInformationLoginGoogle=async ()=>{
-  return await request.get(INFORMATION_LOGIN_GOOGLE_URI);
+
+export const postLoginGoogle=async ({userName,email,imageURL})=>{
+  return await request.post(LOGIN_OAUTH2,{userName:userName,email:email,imageURL:imageURL})
 }
+
+

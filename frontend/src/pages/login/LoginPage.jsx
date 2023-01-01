@@ -1,7 +1,7 @@
-import {FacebookOutlined, GoogleOutlined, TwitterOutlined} from "@ant-design/icons";
+import { GoogleOutlined} from "@ant-design/icons";
 import {useEffect, useLayoutEffect, useState} from "react";
 import {connect, useDispatch, useSelector} from "react-redux";
-import {loginGoogle, loginNormal} from "./LoginPage.thunk";
+import {loginNormal} from "./LoginPage.thunk";
 import * as constraints from "./LoginPage.constraints"
 import {Link, useNavigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
@@ -9,39 +9,41 @@ import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import {Modal} from "antd";
 import OtpComponent from "../../components/otp/OtpComponent";
-import request from "../../apis/request";
 import "./LoginPage.css"
 import {
   CLIENT_LOGIN_GOOGLE,
   CLIENT_URL_REDIRECT, FORGOT_PASSWORD_URI,
   GET_LOGIN_OAUTH2,
   REGISTER_URI,
-  REGISTER_URi
 } from "../../configs/url";
 import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
+import {postLoginGoogle} from "../../apis/login/loginApi";
+import {turnOffLoading, turnOnLoading} from "../../layouts/MainLayout.actions";
+import * as actions from "./LoginPages.actions";
+import {typeLogin} from "../../utils/utils";
 
 const mapStateToProps = state => ({
 
 })
 const mapDispatchToProps = {
   loginNormal:loginNormal,
-  loginGoogle:loginGoogle
 }
 
 const connector = connect(mapStateToProps,mapDispatchToProps)
 
+
 let stompClient=null
 const LoginPage = (props) => {
-  const {loginNormal,loginGoogle}=props
+  const {loginNormal}=props
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userGoogle,setUserGoogle]=useState();
+  const [typeOtp,setTypeOtp]=useState("");
+  const [profileSocial,setProfileSocial]=useState(null);
   const navigate=useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dataUrl=useSelector((state)=>state.authenticateRoutes);
-  const dispatch=useDispatch();
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -51,30 +53,49 @@ const LoginPage = (props) => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const dispatch=useDispatch();
 
   const handleCallbackResponse=(response)=>{
     const decoded = jwt_decode(response.credential);
-    setUserGoogle(decoded);
-    console.log(decoded);
+    setProfileSocial(decoded);
+    setTypeOtp(typeLogin.LOGIN_OAUTH2)
   /*  loginGoogle({accessToken:response.credential,decoded:decoded})*/
     if(response.credential){
-      showModal();
+      dispatch(turnOnLoading());
+      return  postLoginGoogle({email:decoded.email,userName:decoded.name,imageURL:decoded.picture})
+        .then(async (res) => {
+          if (res.status == 200) {
+            /*registerUser();*/
+            showModal();
+          } else if (res.response.status == 400) {
+            Notification("Thông báo đăng nhập", "Lỗi đăng nhập",constraintNotification.NOTIFICATION_ERROR)
+          }
+        })
+        .catch((err) => {
+          Notification("Thông báo đăng nhập", err.toString(),constraintNotification.NOTIFICATION_ERROR)
+        })
+        .finally(()=>{
+          dispatch(turnOffLoading());
+        })
+    }
+    else{
+      Notification("Thông báo đăng nhập", "Lỗi đăng nhập",constraintNotification.NOTIFICATION_ERROR)
     }
     /* navigate("/home");
     // Notification("Thông báo đăng nhập", "Đăng nhập thành công",constraintNotification.NOTIFICATION_SUCCESS)*/
   }
   useLayoutEffect(()=>{
- /*   /!* global google *!/
+    /* global google */
     google.accounts.id.initialize({
-      client_id:"596589929405-vph8vt5071m8lum3t0mcio71iubciu7e.apps.googleusercontent.com",
+      client_id:"688222432576-k1s9h0gtvv9gpr18fma1gpi1t64vfb7o.apps.googleusercontent.com",
       callback:handleCallbackResponse,
     });
-    /!* global google *!/
+    /* global google */
     google.accounts.id.renderButton(
       document.getElementById("signInGoogle"),
       { theme: 'outline',
-        size: 'large'}
-    )*/
+        size: 'medium'}
+    )
   },[]);
  /* const loginByGoogle=()=>{
     console.log("haha")
@@ -110,56 +131,6 @@ const LoginPage = (props) => {
   const redirect_url=`http://localhost:8080/oauth2/authorization/google?redirect_uri=${CLIENT_URL_REDIRECT}`
 
   return (
-   /* <div className="main-container">
-      <div className="login-wrapper">
-        <div className="left-container">
-          <div className="header">
-          </div>
-          <div className="main">
-            <h2>Login</h2>
-            <p>Welcome! Please fill username and password to sign in into your account.</p>
-            <form onSubmit={submitLogin} >
-              <input type="email" name="mail" placeholder="Type your email" onChange={handleUsername}/>
-              <input type="password" name="password" placeholder="Type your password" onChange={handlePassword}/>
-              <div className="forgotPass" style={{display: "flex", justifyContent: "space-between"}}>
-                <a><Link to="/register">Sign up</Link></a>
-                <a>Forgot your password?</a>
-              </div>
-              <div className="login-now">
-                <a type="submit" onClick={submitLogin}>Login Now</a>
-                <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
-                  <OtpComponent onSubmit={()=>setIsModalOpen(false)}/>
-                </Modal>
-              </div>
-              <span className="line"></span>
-            </form>
-          </div>
-          <div className="footer">
-            <div className="social-media">
-              <h3>You can also login with</h3>
-              <div className="links-wrapper">
-                {/!*CLIENT_LOGIN_GOOGLE*!/}
-                <a id="signInGoogle"><GoogleOutlined/></a>
-                <a href={redirect_url}><GoogleOutlined/></a>
-                <a href="#"><FacebookOutlined/></a>
-                <a href="#"><TwitterOutlined/></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="side-container">
-          <div className="side-text-container">
-            <div className="short-line">
-              <hr/>
-            </div>
-            <div className="text">
-              <h3 style={{color: "white"}}>Start your Kahoot clone!</h3>
-              <p>start create your amazing website with us! login into your account now</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>*/
     <>
       <div className="auth">
         <div className="auth-container">
@@ -178,7 +149,7 @@ const LoginPage = (props) => {
             </header>
             <div className="auth-content">
               <p className="text-center">LOGIN TO CONTINUE</p>
-              <form id="login-form" action="https://modularcode.io/index.html" method="GET" noValidate="">
+              <form >
                 <div className="form-group">
                   <label htmlFor="username">Email</label>
                   <input type="email" className="form-control underlined" name="username" id="username"
@@ -197,7 +168,7 @@ const LoginPage = (props) => {
                 <div className="form-group"  onClick={submitLogin}>
                   <button type="submit" className="btn btn-block btn-primary">Login</button>
                   <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
-                    <OtpComponent onSubmit={()=>setIsModalOpen(false)}/>
+                    <OtpComponent onSubmit={()=>setIsModalOpen(false)} type={typeOtp} email={profileSocial?.email} />
                   </Modal>
                 </div>
                 <div className="form-group">
@@ -205,7 +176,7 @@ const LoginPage = (props) => {
                     <a onClick={()=>navigate(REGISTER_URI)}> Sign Up !</a>
                   </p>
                 </div>
-                <div className="form-group">
+                <div className="form-group" id={"signInGoogle"} style={{justifyContent:"center",display:"flex"}}>
                   <p className="text-muted text-center">You can also login with
                     <a ><GoogleOutlined className="logo-google" /></a>
                   </p>

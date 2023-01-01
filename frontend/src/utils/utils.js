@@ -16,3 +16,7 @@ export function randomCharacter() {
 }
 
 
+export const typeLogin={
+  LOGIN_OAUTH2:"LOGIN_OAUTH2",
+  LOGIN_TRADITIONAL:"LOGIN_TRADITIONAL"
+}

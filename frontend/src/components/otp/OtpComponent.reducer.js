@@ -9,6 +9,8 @@ export const OtpComponentReducer=(state=initialState,action)=>
     switch (action.type) {
       case types.SEND_OTP_SUCCESS:
         break;
+      case types.SEND_OTP_SOCIAL_LOGIN_SUCCESS:
+        break;
       default:
         return state;
     }

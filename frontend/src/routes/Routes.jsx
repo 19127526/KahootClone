@@ -15,7 +15,6 @@ import {
     REDIRECT_URI,
     VERIFY_INVITE_URI, JOINED_GROUP_URI, GROUP_JOINED_DETAIL, PRESENTATION_URI, PRESENTATION_SEE_URI_CO_OWNER
 } from "../configs/url";
-import Oauth2Page from "../authors/oauth2/Oauth2Page";
 import RegisterPage from "../pages/register/RegisterPage";
 
 const HomePageLazy = React.lazy(() => import("../pages/home/HomePage"));
@@ -125,15 +124,6 @@ const RoutesPage = () => {
             {/*<Authenticate path={"/group/detail"}>*/}
             <GroupDetailPageLazy/>
             {/*  </Authenticate>*/}
-          </React.Suspense>
-        }
-      />
-      <Route
-        path={REDIRECT_URI}
-        element={
-          <React.Suspense fallback={<Loading/>}>
-            {" "}
-            <Oauth2Page/>
           </React.Suspense>
         }
       />
