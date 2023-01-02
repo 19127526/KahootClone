@@ -29,28 +29,28 @@ const data = [
   {
     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
     email_of_question: "abc@gmail.com",
-    like_of_question: "0",
+    like_of_question: 0,
     isAnswer: false,
     id_of_question:null,
   },
   {
     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
     email_of_question: "abc@gmail.com",
-    like_of_question: "0",
+    like_of_question: 12,
     isAnswer: false,
     id_of_question:null,
   },
   {
     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
     email_of_question: "abc@gmail.com",
-    like_of_question: "0",
+    like_of_question: 0,
     isAnswer: true,
     id_of_question:null,
   },
   {
     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
     email_of_question: "abc@gmail.com",
-    like_of_question: "0",
+    like_of_question: 0,
     isAnswer: true,
     id_of_question:null,
   },
@@ -145,6 +145,7 @@ const PresentationUser = () => {
             id_of_question: receivedValue?.id_of_question,
           });
         setQuestionList(temp);
+        setQuestionListBeforeSort(temp);
         setUnseenQuestion(prevState => prevState + 1);
       }
       else if(receivedValue.action==="UPDATE_QUESTION"){
@@ -156,6 +157,7 @@ const PresentationUser = () => {
           }
         }
         setQuestionList(temp);
+        setQuestionListBeforeSort(temp);
         setUnseenQuestion(prevState => prevState + 1);
       }
       else {
@@ -214,7 +216,8 @@ const PresentationUser = () => {
           })
       }
       getListChat()
-      setQuestionList(data)
+      setQuestionList(data);
+      setQuestionListBeforeSort(data);
   },[]);
   useEffect(()=>{
     if(isLoadingInitChat){
@@ -364,6 +367,26 @@ const PresentationUser = () => {
     }
 
   };
+
+  const handleSortQuestion=(e)=>{
+    console.log(e);
+    if(e.includes("Unanswer")){
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+    }
+    else if(e.includes("Answered")){
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+    }
+    else if(e.includes("Vote Increase")){
+
+    }
+    else if(e.includes("Vote Descrease")){
+
+    }
+
+    else if(e.includes("Time")){
+
+    }
+  }
 
   const handleUpVote=async ({id})=> {
     await likeQuestion({email:email,questionId:id})
@@ -519,6 +542,7 @@ const PresentationUser = () => {
                       style={{
                         width:"120px"
                       }}
+                      onChange={handleSortQuestion}
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                       }
@@ -532,12 +556,16 @@ const PresentationUser = () => {
                           label: 'Answered',
                         },
                         {
-                          value: 'Total vote',
-                          label: 'Vote',
+                          value: 'Vote Descrease',
+                          label: 'Vote Descrease',
                         },
                         {
-                          value: 'Time Asked',
-                          label: 'Time',
+                          value: 'Vote Increase',
+                          label: 'Vote Increase',
+                        },
+                        {
+                          value: 'Time',
+                          label: 'Time Asked',
                         },
                       ]}
                     />
@@ -554,6 +582,7 @@ const PresentationUser = () => {
                 renderItem={(item) => (
                   <List.Item>
                     <div>
+                      <div>
                       <Space size={"small"}>
                         <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
                         <Col>
@@ -561,13 +590,13 @@ const PresentationUser = () => {
                           <text> {item?.like_of_question}</text>
                         </Col>
                       </Space>
-
+                      </div>
                       <text fontSize={10}>
                         Question: {item?.text_of_question}
                       </text>
                     </div>
                     {item?.isAnswer == true ?
-                      <text fontSize={10}>
+                      <text fontSize={10} style={{color:"green"}}>
                         Answered
                       </text>
                       :

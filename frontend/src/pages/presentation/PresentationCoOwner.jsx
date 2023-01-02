@@ -23,28 +23,28 @@ const data = [
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: "0",
+        like_of_question: 0,
         isAnswer: false,
         id_of_question:null,
     },
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: "0",
+        like_of_question: 12,
         isAnswer: false,
         id_of_question:null,
     },
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: "0",
+        like_of_question: 0,
         isAnswer: true,
         id_of_question:null,
     },
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: "0",
+        like_of_question: 0,
         isAnswer: true,
         id_of_question:null,
     },
@@ -107,6 +107,7 @@ const PresentationCoOwner = () => {
                 id_of_question: receivedValue?.id_of_question,
             });
             setQuestionList(temp);
+            setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
         else if(receivedValue.action==="UPDATE_QUESTION"){
@@ -118,6 +119,7 @@ const PresentationCoOwner = () => {
                 }
             }
             setQuestionList(temp);
+            setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
         else {
@@ -218,6 +220,7 @@ const PresentationCoOwner = () => {
               })
         }
         setQuestionList(data);
+        setQuestionListBeforeSort(data);
         getListChat()
     }, []);
 
@@ -309,6 +312,26 @@ const PresentationCoOwner = () => {
 
     };
 
+
+    const handleSortQuestion=(e)=>{
+        console.log(e);
+        if(e.includes("Unanswer")){
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+        }
+        else if(e.includes("Answered")){
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+        }
+        else if(e.includes("Vote Increase")){
+
+        }
+        else if(e.includes("Vote Descrease")){
+
+        }
+
+        else if(e.includes("Time")){
+
+        }
+    }
 
     return (
       <div style={{backgroundColor: "white"}}>
@@ -439,6 +462,7 @@ const PresentationCoOwner = () => {
                         style={{
                             width: "120px"
                         }}
+                        onChange={handleSortQuestion}
                         filterOption={(input, option) =>
                           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                         }
@@ -452,17 +476,24 @@ const PresentationCoOwner = () => {
                                 label: 'Answered',
                             },
                             {
-                                value: 'Total vote',
-                                label: 'Vote',
+                                value: 'Vote Descrease',
+                                label: 'Vote Descrease',
                             },
                             {
-                                value: 'Time Asked',
-                                label: 'Time',
+                                value: 'Vote Increase',
+                                label: 'Vote Increase',
+                            },
+                            {
+                                value: 'Time',
+                                label: 'Time Asked',
                             },
                         ]}
                       />
                   }
-                  onClose={() => onClose({type: false})} open={openQuestion}>
+                  onClose={() => {
+                      onClose({type: false});
+                      setUnseenQuestion(0);
+                  }} open={openQuestion}>
               <div style={{height: "96%", overflowY: "scroll"}}>
                   <List
                     itemLayout="vertical"
@@ -470,6 +501,7 @@ const PresentationCoOwner = () => {
                     renderItem={(item) => (
                       <List.Item>
                           <div>
+                              <div>
                           <Space size={"small"}>
                               <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
                               <Col>
@@ -477,6 +509,7 @@ const PresentationCoOwner = () => {
                                   <text> {item?.like_of_question}</text>
                               </Col>
                           </Space>
+                              </div>
 
                           <text fontSize={10}>
                               Question: {item?.text_of_question}
@@ -484,7 +517,7 @@ const PresentationCoOwner = () => {
                           </div>
 
                           {item?.isAnswer==true?
-                            <text fontSize={10}>
+                            <text fontSize={10} style={{color:"green"}}>
                                 Answered
                             </text>
                             :
