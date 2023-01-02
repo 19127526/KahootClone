@@ -7,7 +7,7 @@ import Notification from "./components/notification/Notification";
 import * as constraintNotification from "./components/notification/Notification.constraints";
 import {notification} from "antd";
 import {useNavigate} from "react-router-dom";
-import {GROUP_JOINED_DETAIL} from "./configs/url";
+import {GROUP_JOINED_DETAIL, SERVER_URL} from "./configs/url";
 import {useEffect} from "react";
 
 let stompClient = null
@@ -17,7 +17,7 @@ function App() {
   const [api, contextHolder] = notification.useNotification();
   const dataProfile = useSelector(state => state.loginPage);
   const registerUser = () => {
-    let Sock = new SockJS("http://localhost:8081/ws");
+    let Sock = new SockJS(`${SERVER_URL}/ws`);
     stompClient = over(Sock);
     stompClient.connect({}, onConnected, onError);
   }

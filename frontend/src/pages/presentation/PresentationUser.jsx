@@ -8,7 +8,7 @@ import {
   FloatButton,
   List,
   Radio,
-  Row,
+  Row, Select,
   Space,
   Tabs,
   Typography
@@ -17,46 +17,17 @@ import React, {useEffect, useMemo, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useParams,useLocation} from "react-router-dom";
-import {getChat, joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
+import {askQuestion, getChat, joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {SERVER_URL} from "../../configs/url";
-import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {MessageOutlined, QuestionCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {Avatar,ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 
 
-const tabBarContent = ({data}) => {
-  return (
-    <div style={{height: "100%", overflowY: "scroll"}}>
-      <List
-        itemLayout="vertical"
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
-            <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
-            <Space size={"large"}>
-              <text fontSize={10}>Ant Design, a design language for background applications, is refined by
-                Ant UED Team
-              </text>
-              <Col>
-                <MessageOutlined/>
-                <text> 20</text>
-              </Col>
-            </Space>
-
-            <Button type="text" style={{color: "grey", padding: 0}}>
-              mark as answered
-            </Button>
-
-          </List.Item>
-        )}
-      />
-    </div>
-  );
-}
 
 let stompClient=null
 
@@ -66,15 +37,22 @@ const PresentationUser = () => {
         {
             title: 'Ant Design Title 1',
         },
+      {
+        title: 'Ant Design Title 1',
+      },
+      {
+        title: 'Ant Design Title 1',
+      },
+      {
+        title: 'Ant Design Title 1',
+      },
+      {
+        title: 'Ant Design Title 1',
+      },
         {
             title: 'Ant Design Title 2',
         },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-        },
+
     ];
     const location = useLocation()
     const [dataPresent,setDataPresent]=useState( undefined);
@@ -96,6 +74,13 @@ const PresentationUser = () => {
   const [messageList,setMessageList]=useState([]);
   const [messageInitList,setMessageInitList]=useState([]);
   const [messageValue,setMessageValue]=useState("");
+
+
+  const[questionListBeforeSort,setQuestionListBeforeSort]=useState([])
+  const [questionList,setQuestionList]=useState([]);
+  const [questionInitList,setQuestionInitList]=useState([]);
+  const [questionValue,setQuestionValue]=useState("");
+
   const [openChat, setOpenChat] = useState(false);
   const [openQuestion, setOpenQuestion] = useState(false);
   const [isLoadingChat, setIsLoadingChat] = useState(0);
@@ -104,19 +89,6 @@ const PresentationUser = () => {
   const [isLoadingInitChat,setIsLoadingInitChat]=useState(false)
   const type = location.state === null ? "Public" : "Private"
 
-  const tabBars = [
-    {
-      label: `Unread questions`,
-      key: 1,
-      children: tabBarContent({data: data}),
-    },
-
-    {
-      label: `Questions`,
-      key: 2,
-      children: tabBarContent({data: data}),
-    }
-  ]
 
   const registerUser = () => {
     let Sock = new SockJS(`${SERVER_URL}/ws`);
@@ -176,6 +148,16 @@ const PresentationUser = () => {
       stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
     }
   }
+
+  const handleQuestionBtn=async (event)=>{
+    await askQuestion({question:questionValue,email:email,slideId:dataPresent?.slideId,presentId:preId})
+      .then(res=>{
+        if(res.status==200){
+          Notification("Nofitication question","Send Question Success",constraintNotification.NOTIFICATION_SUCCESS)
+        }
+      })
+  }
+
 
 
 
@@ -308,6 +290,10 @@ const PresentationUser = () => {
     setMessageValue(e)
   }
 
+  const handleQuestion=(e)=>{
+    setQuestionValue(e)
+  }
+
   const showDrawer = ({type}) => {
     type ? setOpenChat(true) : setOpenQuestion(true);
     setUnseenMessage(0)
@@ -351,6 +337,10 @@ const PresentationUser = () => {
     }
 
   };
+
+  const handleUpVote=(e)=> {
+
+  }
 
   return (
         <div style={{backgroundColor: "white", margin: "10%", padding: "5%"}}>
@@ -482,12 +472,66 @@ const PresentationUser = () => {
             </MainContainer>
           </Drawer>
 
-          <Drawer title="Question" placement="right" onClose={() => onClose({type: false})} open={openQuestion}>
-            <Tabs
-              size={"large"}
-              tabPosition={"bottom"}
-              style={{height: "100%"}}
-              items={tabBars}
+          <Drawer title="Question" placement="right"
+                  extra={
+                    <Select
+                      showSearch
+                      placeholder="Sort question"
+                      optionFilterProp="children"
+                      style={{
+                        width:"120px"
+                      }}
+                      filterOption={(input, option) =>
+                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                      }
+                      options={[
+                        {
+                          value: 'Unanswer',
+                          label: 'Unanswer',
+                        },
+                        {
+                          value: 'Answered',
+                          label: 'Answered',
+                        },
+                        {
+                          value: 'Total vote',
+                          label: 'Vote',
+                        },
+                        {
+                          value: 'Time Asked',
+                          label: 'Time',
+                        },
+                      ]}
+                    />
+          }
+                  onClose={() => onClose({type: false})} open={openQuestion}>
+            <div style={{height: "96%", overflowY: "scroll"}}>
+              <List
+                itemLayout="vertical"
+                dataSource={data}
+                renderItem={(item) => (
+                  <List.Item>
+                    <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
+                    <Space size={"large"}>
+                      <text fontSize={10}>Ant Design, a design language for background applications, is refined by
+                        Ant UED Team
+                      </text>
+                      <Col>
+                        <UserOutlined/>
+                        <text> 20</text>
+                      </Col>
+                    </Space>
+
+                    <Button type="text" style={{color: "grey", padding: 0}} onClick={handleUpVote}>
+                      Upvote question
+                    </Button>
+
+                  </List.Item>
+                )}
+              />
+            </div>
+            <MessageInput attachButton={false} placeholder="Type question here" onChange={handleQuestion}
+                          onSend={handleQuestionBtn}
             />
           </Drawer>
         </div>

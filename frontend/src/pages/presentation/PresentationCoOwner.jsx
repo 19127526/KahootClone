@@ -1,4 +1,4 @@
-import {Badge, Button, Col, Drawer, Empty, FloatButton, List, message, Space, Tabs} from "antd";
+import {Badge, Button, Col, Drawer, Empty, FloatButton, List, message, Select, Space, Tabs} from "antd";
 import React, {useEffect, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
@@ -9,7 +9,7 @@ import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {SERVER_URL} from "../../configs/url";
-import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {MessageOutlined, QuestionCircleOutlined,UserOutlined} from "@ant-design/icons";
 import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
 import {closePresentation, nextSlide} from "../../apis/slide/slideAPI";
@@ -66,12 +66,6 @@ const PresentationCoOwner = () => {
     const [dataPresent, setDataPresent] = useState(location.state.slide);
     const [presentOpen, setPresentOpen] = useState(1);
     const [value, setValue] = useState(0);
-    const [userData, setUserData] = useState({
-        userName: "",
-        receiverName: "",
-        connected: false,
-        message: ""
-    });
     const {preId} = useParams();
     const dataProfile = useSelector(state => state.loginPage);
     const profile = dataProfile.profile
@@ -80,6 +74,12 @@ const PresentationCoOwner = () => {
     const [defaultValue, setDefaultValue] = useState(false);
     const [messageList, setMessageList] = useState([]);
     const [messageValue, setMessageValue] = useState("");
+
+    const[questionListBeforeSort,setQuestionListBeforeSort]=useState([])
+    const [questionList,setQuestionList]=useState([]);
+    const [questionInitList,setQuestionInitList]=useState([]);
+
+
     const [openChat, setOpenChat] = useState(false);
     const [openQuestion, setOpenQuestion] = useState(false);
     const [isLoadingChat, setIsLoadingChat] = useState(0);
@@ -125,13 +125,15 @@ const PresentationCoOwner = () => {
         }
     }
 
+    const handleMarkAnswered=(e)=>{
 
+    }
     const handleMessageBtn = (event) => {
         if (stompClient) {
             let chatMessage = {
                 sender: email,
                 mess: messageValue,
-                presentId: preId, // gán cứng
+                presentId: preId,
             };
             stompClient.send("/chat/presentation", {}, JSON.stringify(chatMessage));
             /* setMessageList([...messageList,chatMessage]);*/
@@ -398,13 +400,64 @@ const PresentationCoOwner = () => {
               </MainContainer>
           </Drawer>
 
-          <Drawer title="Question" placement="right" onClose={() => onClose({type: false})} open={openQuestion}>
-              <Tabs
-                size={"large"}
-                tabPosition={"bottom"}
-                style={{height: "100%"}}
-                items={tabBars}
-              />
+          <Drawer title="Question" placement="right"
+                  extra={
+                      <Select
+                        showSearch
+                        placeholder="Sort question"
+                        optionFilterProp="children"
+                        style={{
+                            width:"120px"
+                        }}
+                        filterOption={(input, option) =>
+                          (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        options={[
+                            {
+                                value: 'Unanswer',
+                                label: 'Unanswer',
+                            },
+                            {
+                                value: 'Answered',
+                                label: 'Answered',
+                            },
+                            {
+                                value: 'Total vote',
+                                label: 'Vote',
+                            },
+                            {
+                                value: 'Time Asked',
+                                label: 'Time',
+                            },
+                        ]}
+                      />
+                  }
+                  onClose={() => onClose({type: false})} open={openQuestion}>
+              <div style={{height: "96%", overflowY: "scroll"}}>
+                  <List
+                    itemLayout="vertical"
+                    dataSource={data}
+                    renderItem={(item) => (
+                      <List.Item>
+                          <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
+                          <Space size={"large"}>
+                              <text fontSize={10}>Ant Design, a design language for background applications, is refined by
+                                  Ant UED Team
+                              </text>
+                              <Col>
+                                  <UserOutlined/>
+                                  <text> 21</text>
+                              </Col>
+                          </Space>
+
+                          <Button type="text" style={{color: "grey", padding: 0}} onClick={handleMarkAnswered}>
+                              Mark as answered
+                          </Button>
+
+                      </List.Item>
+                    )}
+                  />
+              </div>
           </Drawer>
       </div>
 

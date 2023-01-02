@@ -1,10 +1,21 @@
 import request from "../request";
 import {
     ACCEPT_INVITATION,
-    ADD_PRESENTATION, CHOOSE_OPTIONS_USER, COLLABORATING_INVITATION,
-    DELETE_PRESENTATION, GET_CHAT, JOIN_PRESENTATION, LIST_INVITATION, LIST_PRESENTATION,
+    ADD_PRESENTATION, ASK_QUESTION,
+    CHOOSE_OPTIONS_USER,
+    COLLABORATING_INVITATION,
+    DELETE_PRESENTATION,
+    DISLIKE_QUESTION,
+    GET_CHAT,
+    JOIN_PRESENTATION,
+    LIKE_QUESTION,
+    LIST_INVITATION,
+    LIST_PRESENTATION,
     LIST_PRESENTATION_FROM_GROUP,
-    PRESENTATION_DETAIL, REJECT_INVITATION
+    MARK_QUESTION,
+    PRESENTATION_DETAIL,
+    REJECT_INVITATION,
+    UNMARK_QUESTION
 } from "../../configs/url";
 
 export  const getListPresentation = async({email}) =>{
@@ -89,5 +100,41 @@ export const getChat=async ({presentId,size,offset})=>{
             "size":size,
             "offset":offset
         }
+    })
+}
+
+export const askQuestion=async ({slideId,presentId,question,email})=>{
+    return await request.post(ASK_QUESTION,{
+        "slideId":slideId,
+        "presentId":presentId,
+        "question":question,
+        "email":email
+    })
+}
+
+
+export const likeQuestion=async ({questionId,email})=>{
+    return await request.post(LIKE_QUESTION,{
+        "questionId":questionId,
+        "email":email
+    })
+}
+
+export const dislikeQuestion=async ({questionId,email})=>{
+    return await request.post(DISLIKE_QUESTION,{
+        "questionId":questionId,
+        "email":email
+    })
+}
+
+export const markQuestion=async ({questionId})=>{
+    return await request.post(MARK_QUESTION,{
+        "questionId":questionId,
+    })
+}
+
+export const unmarkQuestion=async ({questionId})=>{
+    return await request.post(UNMARK_QUESTION,{
+        "questionId":questionId,
     })
 }

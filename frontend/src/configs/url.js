@@ -44,6 +44,12 @@ export const REMOVE_MEMBER = "/group/remove/member"
 export const DELETE_GROUP="/group/delete"
 export const GET_CHAT="/present/chat"
 
+export const ASK_QUESTION="/present/question"
+export const LIKE_QUESTION="/present/question/like"
+export const DISLIKE_QUESTION="/present/question/dislike"
+export const MARK_QUESTION="/present/question/mark"
+export const UNMARK_QUESTION="/present/question/unmark"
+
 //CLIENT ROUTE
 export const REDIRECT_URI="/login/oauth2/redirect"
 export const HOME_URI="/home"
