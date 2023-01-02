@@ -1,67 +1,56 @@
-import {Badge, Button, Col, Drawer, Empty, FloatButton, List, message, Select, Space, Tabs} from "antd";
+import {Badge, Button, Col, Drawer, Empty, FloatButton, List, message, Select, Space} from "antd";
 import React, {useEffect, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useLocation, useParams} from "react-router-dom";
-import {getChat, postAnswer} from "../../apis/presentation/presentationAPI";
+import {getChat, likeQuestion, markQuestion, postAnswer} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {SERVER_URL} from "../../configs/url";
-import {MessageOutlined, QuestionCircleOutlined,UserOutlined} from "@ant-design/icons";
+import {MessageOutlined, QuestionCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
 import {closePresentation, nextSlide} from "../../apis/slide/slideAPI";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+import "./Presentation.css"
 
-const tabBarContent = ({data}) => {
-    return (
-      <div style={{height: "100%", overflowY: "scroll"}}>
-          <List
-            itemLayout="vertical"
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item>
-                  <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
-                  <Space size={"large"}>
-                      <text fontSize={10}>Ant Design, a design language for background applications, is refined by
-                          Ant UED Team
-                      </text>
-                      <Col>
-                          <MessageOutlined/>
-                          <text> 20</text>
-                      </Col>
-                  </Space>
-
-                  <Button type="text" style={{color: "grey", padding: 0}}>
-                      mark as answered
-                  </Button>
-
-              </List.Item>
-            )}
-          />
-      </div>
-    );
-}
-
-let flag=0;
+let flag = 0;
 let stompClient = null
+
+const data = [
+    {
+        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+        email_of_question: "abc@gmail.com",
+        like_of_question: "0",
+        isAnswer: false,
+        id_of_question:null,
+    },
+    {
+        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+        email_of_question: "abc@gmail.com",
+        like_of_question: "0",
+        isAnswer: false,
+        id_of_question:null,
+    },
+    {
+        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+        email_of_question: "abc@gmail.com",
+        like_of_question: "0",
+        isAnswer: true,
+        id_of_question:null,
+    },
+    {
+        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+        email_of_question: "abc@gmail.com",
+        like_of_question: "0",
+        isAnswer: true,
+        id_of_question:null,
+    },
+];
 const PresentationCoOwner = () => {
-    const data = [
-        {
-            title: 'Ant Design Title 1',
-        },
-        {
-            title: 'Ant Design Title 2',
-        },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-        },
-    ];
+
     const location = useLocation()
     const [dataPresent, setDataPresent] = useState(location.state.slide);
     const [presentOpen, setPresentOpen] = useState(1);
@@ -71,13 +60,13 @@ const PresentationCoOwner = () => {
     const profile = dataProfile.profile
     const email = dataProfile.profile.email;
     const [unseenMessage, setUnseenMessage] = useState(0)
+    const [unseenQuestion, setUnseenQuestion] = useState(0)
     const [defaultValue, setDefaultValue] = useState(false);
     const [messageList, setMessageList] = useState([]);
     const [messageValue, setMessageValue] = useState("");
 
-    const[questionListBeforeSort,setQuestionListBeforeSort]=useState([])
-    const [questionList,setQuestionList]=useState([]);
-    const [questionInitList,setQuestionInitList]=useState([]);
+    const [questionListBeforeSort, setQuestionListBeforeSort] = useState([])
+    const [questionList, setQuestionList] = useState([]);
 
 
     const [openChat, setOpenChat] = useState(false);
@@ -86,21 +75,8 @@ const PresentationCoOwner = () => {
     const [offSetChat, setOffSetChat] = useState(20)
     const messageEndRef = useRef(null);
     const [messageApi, contextHolder] = message.useMessage();
-    const [messageInitList,setMessageInitList]=useState([]);
-    const [isLoadingInitChat,setIsLoadingInitChat]=useState(false)
-    const tabBars = [
-        {
-            label: `Unread questions`,
-            key: 1,
-            children: tabBarContent({data: data}),
-        },
-
-        {
-            label: `Questions`,
-            key: 2,
-            children: tabBarContent({data: data}),
-        }
-    ]
+    const [messageInitList, setMessageInitList] = useState([]);
+    const [isLoadingInitChat, setIsLoadingInitChat] = useState(false)
 
     const registerUser = () => {
         let Sock = new SockJS(`${SERVER_URL}/ws`);
@@ -116,17 +92,50 @@ const PresentationCoOwner = () => {
         } else if (receivedValue.action === "CHAT") {
             const temp = messageInitList;
             temp.push(receivedValue);
-            console.log("temp",temp)
+            console.log("temp", temp)
             setMessageInitList(temp);
             setUnseenMessage(prevState => prevState + 1);
-        } else {
+
+        }
+        else if(receivedValue.action==="ASK_QUESTION"){
+            const temp = questionList;
+            temp.push({
+                email_of_question: receivedValue?.email_of_question,
+                text_of_question: receivedValue?.text_of_question,
+                like_of_question: receivedValue?.like_of_question,
+                isAnswer: receivedValue?.isAnswer,
+                id_of_question: receivedValue?.id_of_question,
+            });
+            setQuestionList(temp);
+            setUnseenQuestion(prevState => prevState + 1);
+        }
+        else if(receivedValue.action==="UPDATE_QUESTION"){
+            const temp = questionList;
+            for(let i=0;i<temp.length;i++){
+                if(temp[i].id_of_question==receivedValue.id_of_question){
+                    temp[i].like_of_question=receivedValue.like_of_question
+                    temp[i].isAnswer=receivedValue.isAnswer
+                }
+            }
+            setQuestionList(temp);
+            setUnseenQuestion(prevState => prevState + 1);
+        }
+        else {
             setDataPresent(receivedValue);
             setPresentOpen(1);
         }
     }
 
-    const handleMarkAnswered=(e)=>{
-
+    const handleMarkAnswered = async ({id}) => {
+        await markQuestion({questionId:id})
+          .then(res=>{
+              if(res.status==200){
+                  Notification("Nofitication question"," Mark question as answered Success",constraintNotification.NOTIFICATION_SUCCESS)
+              }
+          })
+          .catch(err=>{
+              Notification("Nofitication question",err.toString(),constraintNotification.NOTIFICATION_ERROR)
+          })
     }
     const handleMessageBtn = (event) => {
         if (stompClient) {
@@ -194,29 +203,29 @@ const PresentationCoOwner = () => {
     }, []);
 
 
-
-    useEffect(()=>{
+    useEffect(() => {
         const getListChat = async () => {
             await getChat({offset: 0, presentId: preId, size: 20})
               .then(res => {
                   setMessageInitList(res.data.reverse())
-                  flag=1;
+                  flag = 1;
                   setIsLoadingInitChat(true)
-                  if(res.data.length==0){
+                  if (res.data.length == 0) {
                       setIsLoadingChat(-1);
                   }
               })
               .catch(() => {
               })
         }
+        setQuestionList(data);
         getListChat()
-    },[]);
+    }, []);
 
-    useEffect(()=>{
-       if(isLoadingInitChat){
-           registerUser();
-       }
-    },[isLoadingInitChat])
+    useEffect(() => {
+        if (isLoadingInitChat) {
+            registerUser();
+        }
+    }, [isLoadingInitChat])
 
 
     const onChange = (e) => {
@@ -260,6 +269,7 @@ const PresentationCoOwner = () => {
     const showDrawer = ({type}) => {
         type ? setOpenChat(true) : setOpenQuestion(true);
         setUnseenMessage(0)
+        setUnseenQuestion(0);
 
     };
     const onClose = ({type}) => {
@@ -271,27 +281,25 @@ const PresentationCoOwner = () => {
         if (isLoadingChat == -1) {
             return;
         }
-        if(flag==1){
+        if (flag == 1) {
             messageEndRef.current?.scrollIntoView({block: 'nearest'});
-            flag=-1;
-        }
-        else if(flag!=1){
+            flag = -1;
+        } else if (flag != 1) {
             setIsLoadingChat(1);
             /* Fake fetch from API */
             await getChat({offset: offSetChat, presentId: preId, size: 20})
               .then(res => {
-                  const tempList=res.data.reverse();
+                  const tempList = res.data.reverse();
                   const temp = tempList.concat(messageList);
                   console.log(res.data)
-                  if(res.data.length==0){
+                  if (res.data.length == 0) {
 
                       setIsLoadingChat(-1);
-                  }
-                  else{
+                  } else {
                       setIsLoadingChat(0);
                   }
                   setMessageList(temp);
-                  const tempOffset=offSetChat+20
+                  const tempOffset = offSetChat + 20
                   setOffSetChat(tempOffset);
               })
               .catch(() => {
@@ -316,7 +324,7 @@ const PresentationCoOwner = () => {
               <Badge count={unseenMessage}><FloatButton icon={<MessageOutlined/>}
                                                         onClick={() => showDrawer({type: true})}
                                                         style={{marginBottom: 24}}/> </Badge>
-              <Badge>
+              <Badge  count={unseenQuestion}>
                   <FloatButton icon={<QuestionCircleOutlined/>} onClick={() => showDrawer({type: false})}/>
               </Badge>
           </FloatButton.Group>
@@ -328,13 +336,15 @@ const PresentationCoOwner = () => {
 
               <MainContainer>
                   <ChatContainer>
-                      <MessageList  style={{height:"90%",
-                          overflowY:"scroll",
-                          display:"flex",
-                          flexDirection:"column-reverse",}}
-                                    autoScrollToBottomOnMount={true}
-                                    autoScrollToBottom={true}
-                                    loadingMore={isLoadingChat==0?false:isLoadingChat==1?true:false}
+                      <MessageList style={{
+                          height: "90%",
+                          overflowY: "scroll",
+                          display: "flex",
+                          flexDirection: "column-reverse",
+                      }}
+                                   autoScrollToBottomOnMount={true}
+                                   autoScrollToBottom={true}
+                                   loadingMore={isLoadingChat == 0 ? false : isLoadingChat == 1 ? true : false}
                         /*   onYReachStart={(e)=>{
                              loadMoreChat();
                              if(isLoadingFirstChat==true) {
@@ -350,7 +360,7 @@ const PresentationCoOwner = () => {
                                }
                              }
                            }}*/
-                                    onYReachStart={onYReachStart}
+                                   onYReachStart={onYReachStart}
                       >
                           {
                               messageList?.map((value) => {
@@ -361,11 +371,21 @@ const PresentationCoOwner = () => {
                                         sender: value.sender,
                                         direction: value.sender == email ? "outgoing" : "incoming",
                                         position: "single"
-                                    }} >
+                                    }}>
                                         {value.sender !== email ?
-                                          <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>{email[0]}</Avatar> :
+                                          <Avatar src={value.sender} style={{
+                                              background: "aqua",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                              alignItems: "center"
+                                          }}>{email[0]}</Avatar> :
 
-                                          <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
+                                          <Avatar src={value.sender} style={{
+                                              background: "antiquewhite",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                              alignItems: "center"
+                                          }}>Me</Avatar>
                                         }
                                     </Message>
                                   );
@@ -380,11 +400,21 @@ const PresentationCoOwner = () => {
                                         sender: value.sender,
                                         direction: value.sender == email ? "outgoing" : "incoming",
                                         position: "single"
-                                    }} >
+                                    }}>
                                         {value.sender !== email ?
-                                          <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>{email[0]}</Avatar> :
+                                          <Avatar src={value.sender} style={{
+                                              background: "aqua",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                              alignItems: "center"
+                                          }}>{email[0]}</Avatar> :
 
-                                          <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
+                                          <Avatar src={value.sender} style={{
+                                              background: "antiquewhite",
+                                              display: "flex",
+                                              justifyContent: "center",
+                                              alignItems: "center"
+                                          }}>Me</Avatar>
                                         }
                                     </Message>
                                   );
@@ -407,7 +437,7 @@ const PresentationCoOwner = () => {
                         placeholder="Sort question"
                         optionFilterProp="children"
                         style={{
-                            width:"120px"
+                            width: "120px"
                         }}
                         filterOption={(input, option) =>
                           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -436,23 +466,32 @@ const PresentationCoOwner = () => {
               <div style={{height: "96%", overflowY: "scroll"}}>
                   <List
                     itemLayout="vertical"
-                    dataSource={data}
+                    dataSource={questionList}
                     renderItem={(item) => (
                       <List.Item>
-                          <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
-                          <Space size={"large"}>
-                              <text fontSize={10}>Ant Design, a design language for background applications, is refined by
-                                  Ant UED Team
-                              </text>
+                          <div>
+                          <Space size={"small"}>
+                              <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
                               <Col>
-                                  <UserOutlined/>
-                                  <text> 21</text>
+                                  <QuestionCircleOutlined className={"question-icon"}/>
+                                  <text> {item?.like_of_question}</text>
                               </Col>
                           </Space>
 
-                          <Button type="text" style={{color: "grey", padding: 0}} onClick={handleMarkAnswered}>
+                          <text fontSize={10}>
+                              Question: {item?.text_of_question}
+                          </text>
+                          </div>
+
+                          {item?.isAnswer==true?
+                            <text fontSize={10}>
+                                Answered
+                            </text>
+                            :
+                          <Button type="text" style={{color: "grey", padding: 0}} onClick={()=>handleMarkAnswered({id:item?.id_of_question})}>
                               Mark as answered
                           </Button>
+                          }
 
                       </List.Item>
                     )}

@@ -1,61 +1,65 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Drawer,
-  Empty,
-  FloatButton,
-  List,
-  Radio,
-  Row, Select,
-  Space,
-  Tabs,
-  Typography
-} from "antd";
-import React, {useEffect, useMemo, useRef, useState} from "react";
+import {Badge, Button, Card, Col, Drawer, Empty, FloatButton, List, Radio, Row, Select, Space, Typography} from "antd";
+import React, {useEffect, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
-import {useParams,useLocation} from "react-router-dom";
-import {askQuestion, getChat, joinPresentation, postAnswer} from "../../apis/presentation/presentationAPI";
+import {useLocation, useParams} from "react-router-dom";
+import {
+  askQuestion,
+  getChat,
+  joinPresentation,
+  likeQuestion,
+  postAnswer
+} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import {SERVER_URL} from "../../configs/url";
-import {MessageOutlined, QuestionCircleOutlined, UserOutlined} from "@ant-design/icons";
-import {Avatar,ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
+import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
+import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-
+import "./Presentation.css"
 
 
 let stompClient=null
 
 let flag=0;
-const PresentationUser = () => {
-    const data = [
-        {
-            title: 'Ant Design Title 1',
-        },
-      {
-        title: 'Ant Design Title 1',
-      },
-      {
-        title: 'Ant Design Title 1',
-      },
-      {
-        title: 'Ant Design Title 1',
-      },
-      {
-        title: 'Ant Design Title 1',
-      },
-        {
-            title: 'Ant Design Title 2',
-        },
 
-    ];
-    const location = useLocation()
-    const [dataPresent,setDataPresent]=useState( undefined);
+const data = [
+  {
+    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+    email_of_question: "abc@gmail.com",
+    like_of_question: "0",
+    isAnswer: false,
+    id_of_question:null,
+  },
+  {
+    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+    email_of_question: "abc@gmail.com",
+    like_of_question: "0",
+    isAnswer: false,
+    id_of_question:null,
+  },
+  {
+    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+    email_of_question: "abc@gmail.com",
+    like_of_question: "0",
+    isAnswer: true,
+    id_of_question:null,
+  },
+  {
+    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+    email_of_question: "abc@gmail.com",
+    like_of_question: "0",
+    isAnswer: true,
+    id_of_question:null,
+  },
+];
+
+const PresentationUser = () => {
+
+  const location = useLocation()
+  const [dataPresent,setDataPresent]=useState( undefined);
   const [received,setReceived]=useState([]);
   const [presentOpen,setPresentOpen]=useState(0);
   const [value, setValue] = useState(0);
@@ -70,6 +74,7 @@ const PresentationUser = () => {
   const profile=dataProfile.profile
   const email = dataProfile.profile.email;
   const [unseenMessage, setUnseenMessage] = useState(0)
+  const [unseenQuestion, setUnseenQuestion] = useState(0)
   const [defaultValue,setDefaultValue]=useState(false);
   const [messageList,setMessageList]=useState([]);
   const [messageInitList,setMessageInitList]=useState([]);
@@ -78,7 +83,6 @@ const PresentationUser = () => {
 
   const[questionListBeforeSort,setQuestionListBeforeSort]=useState([])
   const [questionList,setQuestionList]=useState([]);
-  const [questionInitList,setQuestionInitList]=useState([]);
   const [questionValue,setQuestionValue]=useState("");
 
   const [openChat, setOpenChat] = useState(false);
@@ -96,8 +100,8 @@ const PresentationUser = () => {
     stompClient.connect({}, onConnected, onError);
   }
   const onMessageNextSlideReceived = (payload) => {
-    /*setReceived(JSON.parse(payload?.body))*/
     console.log("slide",JSON.parse(payload?.body));
+    /*setReceived(JSON.parse(payload?.body))*/
     // const data=JSON.parse(payload?.body);
     //
     // let isBoolean=false;
@@ -131,6 +135,29 @@ const PresentationUser = () => {
         }*/
 
       }
+      else if(receivedValue.action==="ASK_QUESTION"){
+        const temp = questionList;
+          temp.push({
+            email_of_question: receivedValue?.email_of_question,
+            text_of_question: receivedValue?.text_of_question,
+            like_of_question: receivedValue?.like_of_question,
+            isAnswer: receivedValue?.isAnswer,
+            id_of_question: receivedValue?.id_of_question,
+          });
+        setQuestionList(temp);
+        setUnseenQuestion(prevState => prevState + 1);
+      }
+      else if(receivedValue.action==="UPDATE_QUESTION"){
+        const temp = questionList;
+        for(let i=0;i<temp.length;i++){
+          if(temp[i].id_of_question==receivedValue.id_of_question){
+            temp[i].like_of_question=receivedValue.like_of_question
+            temp[i].isAnswer=receivedValue.isAnswer
+          }
+        }
+        setQuestionList(temp);
+        setUnseenQuestion(prevState => prevState + 1);
+      }
       else {
           setDataPresent(JSON.parse(payload?.body));
           setPresentOpen(1);
@@ -149,7 +176,7 @@ const PresentationUser = () => {
     }
   }
 
-  const handleQuestionBtn=async (event)=>{
+  const handleQuestionBtn=async ({})=>{
     await askQuestion({question:questionValue,email:email,slideId:dataPresent?.slideId,presentId:preId})
       .then(res=>{
         if(res.status==200){
@@ -187,7 +214,7 @@ const PresentationUser = () => {
           })
       }
       getListChat()
-
+      setQuestionList(data)
   },[]);
   useEffect(()=>{
     if(isLoadingInitChat){
@@ -338,8 +365,19 @@ const PresentationUser = () => {
 
   };
 
-  const handleUpVote=(e)=> {
-
+  const handleUpVote=async ({id})=> {
+    await likeQuestion({email:email,questionId:id})
+      .then(res=>{
+        if(res.status==200){
+          Notification("Nofitication question","Upvote Question Success",constraintNotification.NOTIFICATION_SUCCESS)
+        }
+        else if(res?.response?.status==400){
+          Notification("Nofitication question","You Had Upvote Question !!",constraintNotification.NOTIFICATION_TITLE)
+        }
+      })
+      .catch(err=>{
+        Notification("Nofitication question",err.toString(),constraintNotification.NOTIFICATION_ERROR)
+      })
   }
 
   return (
@@ -391,8 +429,8 @@ const PresentationUser = () => {
             <Badge count={unseenMessage}><FloatButton icon={<MessageOutlined/>}
                                                       onClick={() => showDrawer({type: true})}
                                                       style={{marginBottom: 24}}/> </Badge>
-            <Badge>
-              <FloatButton icon={<QuestionCircleOutlined/>} onClick={() => showDrawer({type: false})}/>
+            <Badge count={unseenQuestion}>
+              <FloatButton  icon={<QuestionCircleOutlined/>} onClick={() => showDrawer({type: false})}/>
             </Badge>
           </FloatButton.Group>
 
@@ -504,27 +542,40 @@ const PresentationUser = () => {
                       ]}
                     />
           }
-                  onClose={() => onClose({type: false})} open={openQuestion}>
+                  onClose={() => {
+                    onClose({type: false});
+                    setUnseenQuestion(0);
+                  }}
+                  open={openQuestion}>
             <div style={{height: "96%", overflowY: "scroll"}}>
               <List
                 itemLayout="vertical"
-                dataSource={data}
+                dataSource={questionList}
                 renderItem={(item) => (
                   <List.Item>
-                    <text style={{color: "blue", fontWeight: "bold"}}>John Hill</text>
-                    <Space size={"large"}>
-                      <text fontSize={10}>Ant Design, a design language for background applications, is refined by
-                        Ant UED Team
-                      </text>
-                      <Col>
-                        <UserOutlined/>
-                        <text> 20</text>
-                      </Col>
-                    </Space>
+                    <div>
+                      <Space size={"small"}>
+                        <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
+                        <Col>
+                          <QuestionCircleOutlined className={"question-icon"}/>
+                          <text> {item?.like_of_question}</text>
+                        </Col>
+                      </Space>
 
-                    <Button type="text" style={{color: "grey", padding: 0}} onClick={handleUpVote}>
-                      Upvote question
-                    </Button>
+                      <text fontSize={10}>
+                        Question: {item?.text_of_question}
+                      </text>
+                    </div>
+                    {item?.isAnswer == true ?
+                      <text fontSize={10}>
+                        Answered
+                      </text>
+                      :
+                      <Button type="text" style={{color: "grey", padding: 0}}
+                              onClick={() => handleUpVote({id: item?.id_of_question})}>
+                        Upvote question
+                      </Button>
+                    }
 
                   </List.Item>
                 )}
