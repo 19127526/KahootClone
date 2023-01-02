@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -19,13 +19,15 @@ public class UserVoteEntity extends SuperEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long userId;
+    private String email;
     private long voteId;
     private long slideId;
     private long presentId;
+    @Column(name = "vote_on")
+    private Date voteOn = new Date(System.currentTimeMillis());
 
-    public UserVoteEntity(long userId, long voteId, long slideId, long presentId) {
-        this.userId = userId;
+    public UserVoteEntity(String email, long voteId, long slideId, long presentId) {
+        this.email = email;
         this.voteId = voteId;
         this.slideId = slideId;
         this.presentId = presentId;

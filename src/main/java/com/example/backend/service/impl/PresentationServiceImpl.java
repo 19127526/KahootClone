@@ -184,7 +184,8 @@ public class PresentationServiceImpl implements PresentationService {
                     UserVoteEntity userVote = (UserVoteEntity) it.toArray()[1];
                     UserVoteDto userVoteDto = new UserVoteDto();
                     userVoteDto.setId(userVote.getId());
-                    userVoteDto.setUserId(userVote.getUserId());
+                    userVoteDto.setEmail(userVote.getEmail());
+                    userVoteDto.setVoteOn(userVote.getVoteOn());
                     return userVoteDto;
                 }).toList();
                 vote.setUsers(userVotes);

@@ -56,13 +56,16 @@ public class RealTimeServiceImpl implements RealTimeService {
         List<VoteEntity> votes = voteRepository.findVotesExistInListId(interact.getVotes());
         if (votes.isEmpty()) throw new ResourceInvalidException("please chose least 1 vote");
         if (present.getMode() == PresentationStatus.PUBLIC) {
-            userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(vote.getId(), slide.getId(), present.getId())).toList());
+            UserEntity user = userRepository.findAccountEntityByEmail(interact.getEmail()).orElseThrow(() -> {
+                throw new ResourceInvalidException("please login");
+            });
+            userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(user.getEmail(), vote.getId(), slide.getId(), present.getId())).toList());
         } else {
             if (interact.getEmail() == null) throw new ResourceInvalidException("please login to vote");
             UserEntity user = userRepository.findUserFromGroup(interact.getEmail(), present.getGroupId()).orElseThrow(() -> {
                 throw new ResourceInvalidException("this account have not joined group yet");
             });
-            userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(user.getId(), vote.getId(), slide.getId(), present.getId())).toList());
+            userVoteRepository.saveAll(votes.stream().map(vote -> new UserVoteEntity(user.getEmail(), vote.getId(), slide.getId(), present.getId())).toList());
         }
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(interact.getPresentId()), Constant.TOPIC_PRESENTATION, getPayloadSlide(present.getId(), slide, ActionPayload.UPDATE_SLIDE));
     }
@@ -255,7 +258,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         QuestionEntity question = questionRepository.findById(interactPresentRequest.getQuestionId()).orElseThrow(() -> {
             throw new ResourceNotFoundException("question not found");
         });
-        if(mark == question.getIsAnswer()) throw new ResourceInvalidException("you mark " + mark);
+        if (mark == question.getIsAnswer()) throw new ResourceInvalidException("you mark " + mark);
         question.setIsAnswer(mark);
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(question.getPresentId()), Constant.TOPIC_PRESENTATION, getQuestion(questionRepository.save(question), ActionPayload.UPDATE_QUESTION));
     }
