@@ -283,7 +283,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("action", action);
         payload.put("heading", slide.getHeading());
-        payload.put("id", slide.getId());
+        payload.put("slideId", slide.getId());
         payload.put("text", slide.getText());
         payload.put("genreQuestion", slide.getGenreQuestion());
         payload.put("imageURL", slide.getImageURL());
