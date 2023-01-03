@@ -313,6 +313,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     private HashMap<String, Object> getQuestion(QuestionEntity questionAndAnswer, ActionPayload action) {
         HashMap<String, Object> payload = new HashMap<>();
         payload.put("action", action);
+        payload.put("id_of_question",questionAndAnswer.getId());
         payload.put("isAnswer", questionAndAnswer.getIsAnswer());
         payload.put("id_of_slide", questionAndAnswer.getSlideId());
         payload.put("text_of_question", questionAndAnswer.getText());
