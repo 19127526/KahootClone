@@ -196,6 +196,20 @@ public class PresentationServiceImpl implements PresentationService {
     }
 
     @Override
+    public List<QuestionDto> getListQuestions(long presentId) {
+        return questionRepository.findQuestionEntitiesByPresentId(presentId).stream().map(questionMapper::entityToDto).toList();
+    }
+
+    @Override
+    public List<UserPresentationDto> getListCollab(long presentationId) {
+        return userPresentationRepository.getListCollaborationsAndRole(presentationId, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB, RolePresentation.PENDING)).stream().map(tuple -> {
+            UserEntity user = (UserEntity) tuple.toArray()[0];
+            RolePresentation roles = (RolePresentation) tuple.toArray()[1];
+            return new UserPresentationDto(user.getEmail(),user.getImageURL(), roles);
+        }).toList();
+    }
+
+    @Override
     public PresentationEntity updatePresentation(PresentationDto presentationDto) {
         return null;
     }

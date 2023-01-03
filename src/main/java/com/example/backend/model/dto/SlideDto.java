@@ -19,4 +19,5 @@ public class SlideDto {
     private List<QuestionDto> questions;
 
     private MultipartFile imageFile;
+    private String email;
 }

@@ -2,9 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.common.controller.BaseController;
 import com.example.backend.mapper.PresentationMapper;
-import com.example.backend.model.dto.PresentHistoryDto;
-import com.example.backend.model.dto.PresentationDto;
-import com.example.backend.model.dto.SlideDto;
+import com.example.backend.model.dto.*;
 import com.example.backend.model.request.PresentationRequest;
 import com.example.backend.service.PresentationService;
 import lombok.RequiredArgsConstructor;
@@ -76,5 +74,15 @@ public class PresentationController extends BaseController {
     @PostMapping("update/clearAdvanced")
     public ResponseEntity<Boolean> clearAdvanced(@RequestBody PresentationRequest presentationRequest) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(presentationService.clearAdvanced(presentationRequest));
+    }
+
+    @GetMapping("question/list")
+    public ResponseEntity<List<QuestionDto>> getListQuestion(long presentId) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getListQuestions(presentId));
+    }
+
+    @GetMapping("collaboration/list")
+    public ResponseEntity<List<UserPresentationDto>> getListCollaborates(long presentationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(presentationService.getListCollab(presentationId));
     }
 }

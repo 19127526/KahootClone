@@ -1,7 +1,6 @@
 package com.example.backend.repository.impl;
 
 import com.example.backend.common.model.RolePresentation;
-import com.example.backend.model.entity.PresentationEntity;
 import com.example.backend.repository.PresentationRepository;
 import com.example.backend.repository.UserPresentationRepositoryCustom;
 import com.querydsl.core.Tuple;
@@ -45,5 +44,15 @@ public class UserPresentationRepositoryCustomImpl implements UserPresentationRep
                 .join(presentationEntity).on(presentationEntity.id.eq(userPresentationEntity.presentation.id))
                 .join(userEntity).on(userEntity.id.eq(presentationEntity.author.id))
                 .select(presentationEntity, userEntity).fetch();
+    }
+
+    @Override
+    public List<Tuple> getListCollaborationsAndRole(long presentationId, List<RolePresentation> roles) {
+        return new JPAQueryFactory(entityManager)
+                .from(userPresentationEntity)
+                .join(userEntity).on(userPresentationEntity.users.id.eq(userEntity.id))
+                .where(userPresentationEntity.presentation.id.eq(presentationId).and(userPresentationEntity.role.in(roles)))
+                .select(userEntity, userPresentationEntity.role)
+                .fetch();
     }
 }

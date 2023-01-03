@@ -2,6 +2,8 @@ package com.example.backend.model.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class QuestionDto {
     private long id;
@@ -12,4 +14,5 @@ public class QuestionDto {
     private String text;
     private Boolean isAnswer;
     private String email;
+    private Date on;
 }
