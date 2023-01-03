@@ -25,36 +25,36 @@ let stompClient=null
 
 let flag=0;
 
-const data = [
-  {
-    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-    email_of_question: "abc@gmail.com",
-    like_of_question: 0,
-    isAnswer: false,
-    id_of_question:null,
-  },
-  {
-    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-    email_of_question: "abc@gmail.com",
-    like_of_question: 12,
-    isAnswer: false,
-    id_of_question:null,
-  },
-  {
-    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-    email_of_question: "abc@gmail.com",
-    like_of_question: 0,
-    isAnswer: true,
-    id_of_question:null,
-  },
-  {
-    text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-    email_of_question: "abc@gmail.com",
-    like_of_question: 0,
-    isAnswer: true,
-    id_of_question:null,
-  },
-];
+// const data = [
+//   {
+//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+//     email_of_question: "abc@gmail.com",
+//     like_of_question: 0,
+//     isAnswer: false,
+//     id_of_question:null,
+//   },
+//   {
+//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+//     email_of_question: "abc@gmail.com",
+//     like_of_question: 12,
+//     isAnswer: false,
+//     id_of_question:null,
+//   },
+//   {
+//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+//     email_of_question: "abc@gmail.com",
+//     like_of_question: 0,
+//     isAnswer: true,
+//     id_of_question:null,
+//   },
+//   {
+//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
+//     email_of_question: "abc@gmail.com",
+//     like_of_question: 0,
+//     isAnswer: true,
+//     id_of_question:null,
+//   },
+// ];
 
 const PresentationUser = () => {
 
@@ -90,9 +90,10 @@ const PresentationUser = () => {
   const [isLoadingChat, setIsLoadingChat] = useState(0);
   const [offSetChat,setOffSetChat]=useState(20)
   const messageEndRef=useRef(null);
-  const [isLoadingInitChat,setIsLoadingInitChat]=useState(false)
-  const type = location.state === null ? "Public" : "Private"
-
+  const [isLoadingInitChat,setIsLoadingInitChat]=useState(false);
+  const [checked,setChecked] = useState([])
+  const type = location.state === null ? "Public" : "Private";
+  const [disable, setDisable] = useState(false)
 
   const registerUser = () => {
     let Sock = new SockJS(`${SERVER_URL}/ws`);
@@ -161,6 +162,8 @@ const PresentationUser = () => {
         setUnseenQuestion(prevState => prevState + 1);
       }
       else {
+          setDisable(false)
+          // setDisable(checked.findIndex((value) => value === receivedValue.id) !== -1)
           setDataPresent(JSON.parse(payload?.body));
           setPresentOpen(1);
       }
@@ -216,8 +219,8 @@ const PresentationUser = () => {
           })
       }
       getListChat()
-      setQuestionList(data);
-      setQuestionListBeforeSort(data);
+      setQuestionList([]);
+      setQuestionListBeforeSort([]);
   },[]);
   useEffect(()=>{
     if(isLoadingInitChat){
@@ -287,20 +290,29 @@ const PresentationUser = () => {
         setValue(e.target.value);
     };
     const addOption=async ()=>{
-        // console.log({email:profile.email,slideId: dataPresent.id, presentId: preId,answer:value})
-      await postAnswer({email:profile.email,slideId: dataPresent.slideId, presentId: preId,answer:value})
-        .then((res=>{
-          console.log(res)
-          if(res.status===202) {
-            if (res.data === true) {
-                setPresentOpen(2)
-            }
-            else{
-              Notification("Notification submit","Host disable present, please waiting host",constraintNotification.NOTIFICATION_WARN)
-            }
-          }
-        }))
-        .catch((err)=>{})
+        console.log(dataPresent)
+        console.log(checked)
+        if(checked.findIndex((value) => value === dataPresent.slideId) === -1){
+            await postAnswer({email:profile.email,slideId: dataPresent.slideId, presentId: preId,answer:value})
+                .then((res=>{
+                    console.log(res)
+                    setChecked([...checked,dataPresent.slideId])
+                    setDisable(true)
+                    if(res.status===202) {
+                        if (res.data === true) {
+                            setPresentOpen(2)
+                        }
+                        else{
+                            Notification("Notification submit","Host disable present, please waiting host",constraintNotification.NOTIFICATION_WARN)
+                        }
+                    }
+                }))
+                .catch((err)=>{})
+        } else {
+            Notification("Notification submit","Already voted",constraintNotification.NOTIFICATION_ERROR)
+            setDisable(true)
+        }
+
     }
 
   if(presentOpen===0){
@@ -436,7 +448,7 @@ const PresentationUser = () => {
                     </Radio.Group>
                     <Space direction={"vertical"} align={"center"} style={{width:"100%"}}>
                         <Row>
-                            <Button onClick={addOption} disabled={defaultValue===true?true:false}>
+                            <Button onClick={addOption} disabled={disable}>
                                 Submit
                             </Button>
                         </Row>

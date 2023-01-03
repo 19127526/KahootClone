@@ -1,4 +1,4 @@
-import {AutoComplete, List, Modal, Popover, Radio, Select, Space} from "antd"
+import {List, Modal, Popover, Radio, Select, Space, Table} from "antd"
 import React, {useEffect, useState} from 'react';
 import {Button, Card, Col, Divider, Dropdown, Layout, Row} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
@@ -6,7 +6,7 @@ import Sider from "antd/es/layout/Sider";
 import {Content, Footer, Header} from "antd/es/layout/layout";
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
 import ChartSider from "../../components/chart/Sider/ChartSider";
-import {getPresentationDetail} from "../../apis/presentation/presentationAPI";
+import {getHistory, getHistorySlide, getPresentationDetail} from "../../apis/presentation/presentationAPI";
 import {useNavigate, useParams} from "react-router-dom";
 import {addNewParagraphSlide, addNewSlide, deleteSlide, startPresentation} from "../../apis/slide/slideAPI";
 import {PRESENTATION_URI} from "../../configs/url";
@@ -15,7 +15,7 @@ import SlidePresentation from "../../components/normal_slide/SlidePresentation";
 import SlideSider from "../../components/normal_slide/SlideSider";
 import {Spacer} from "@chakra-ui/react";
 import {getListGroup} from "../../apis/group/groupApi";
-
+// import {barchart} from "../../assets/img/barchart.png"
 
 const items = [
     {
@@ -71,13 +71,30 @@ const Presentation = () => {
     };
 
     const handleOk = () => {
-        if(value1 === "Public"){
+        if (value1 === "Public") {
             startPresentation({presentationId: id, mode: "PUBLIC", email: email}).then((response) => {
-                navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {state: { slide: response.data, type: "Public"}})
+                navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {
+                    state: {
+                        slide: response.data,
+                        type: "Public"
+                    }
+                })
             })
         } else {
-            startPresentation({presentationId: id, mode: "PRIVATE", email: email, groupId:searchValue}).then((response) => {
-                navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {state: {slide: response.data, groupId: searchValue,  presentationId: response.data.presentationId, type: "Private"}})
+            startPresentation({
+                presentationId: id,
+                mode: "PRIVATE",
+                email: email,
+                groupId: searchValue
+            }).then((response) => {
+                navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {
+                    state: {
+                        slide: response.data,
+                        groupId: searchValue,
+                        presentationId: response.data.presentationId,
+                        type: "Private"
+                    }
+                })
 
                 // navigate(PRESENTATION_URI + `${response.data.id}/show`, {state: {slide: slideList, firstSlide: response.data, id: id, type: "Private", groupId: searchValue}})
             })
@@ -176,11 +193,77 @@ const Presentation = () => {
         </>
     );
 
-    // const presentButton = (e) => {
-    //     e.preventDefault();
-    //
-    //     navigate(PRESENTATION_URI + `${id}/show`, {state: {index: slideList, firstSlide: slideList[0].id}})
-    // }
+    const [history, setHistory] = useState([]);
+    const [historyModal, setHistoryModal] = useState(false);
+    const [selectedHistoryValue, setSelectedHistoryValue] = useState(-1);
+    const [result, setResult] = useState([])
+    const [columns, setColumns] = useState([
+        {
+            title: 'No.',
+            dataIndex: 'no',
+            key: 'no'
+        },
+        {
+            title: 'Option',
+            dataIndex: 'option',
+            key: 'option',
+        },
+        {
+            title: 'Voted by',
+            dataIndex: 'votedBy',
+            key: 'votedBy',
+        },
+        {
+            title: 'Date',
+            dataIndex: 'date',
+            key: 'date',
+        },
+    ]);
+    const showHistoryModal = () => {
+        setHistoryModal(true);
+    };
+
+
+    const handleHistoryModalOk = (e) => {
+        getHistorySlide({slideId: selectedValue.id, historyPresentId: e}).then((res) => {
+            let temp = []
+            let temp2 = []
+            let index = 0
+            res.data.votes.forEach((value) => {
+                temp2.push({
+                    text: value.text,
+                    value: value.text
+                })
+                value.users.forEach((sValue) => {
+                    index += 1
+                    var time = new Date().getTime(); // get your number
+                    var date = new Date(sValue.voteOn);
+                    temp.push({
+                        key: index,
+                        no: index,
+                        option: value.text,
+                        votedBy: sValue.email,
+                        date: date.toLocaleString()
+                    })
+                })
+            })
+            let temp3 = [...columns]
+            temp3[1] = {
+                title: 'Option',
+                dataIndex: 'option',
+                key: 'option',
+                filters: temp2,
+                onFilter: (value, record) => record.option === value,
+            }
+            setColumns(temp3)
+            setResult(temp)
+        })
+        // setHistoryModal(false);
+    };
+
+    const handleHistoryCancel = () => {
+        setHistoryModal(false);
+    };
 
     useEffect(() => {
         async function getDetail() {
@@ -198,6 +281,21 @@ const Presentation = () => {
             setIsLoading(false)
 
         }
+
+        getHistory({id: id}).then((res) => {
+            if (res.status === 200) {
+                let option = []
+                res.data.map((vl) => {
+                    var time = new Date().getTime(); // get your number
+                    var date = new Date(vl.startOn);
+                    option.push({
+                        value: vl.id,
+                        label: date.toLocaleString('vi-VN')
+                    })
+                })
+                setHistory(option)
+            }
+        })
 
         getDetail()
 
@@ -218,11 +316,6 @@ const Presentation = () => {
                             Add slide
                         </Button>
                     </Dropdown>
-                    {/*<Button type={"primary"} size={"large"}*/}
-                    {/*        onClick={presentButton}*/}
-                    {/*        style={{position: "absolute", right: "3%", top: "20%"}}>*/}
-                    {/*    Present*/}
-                    {/*</Button>*/}
                     <Button type="primary" onClick={showModal} style={{position: "absolute", right: "3%", top: "20%"}}>
                         Open Modal
                     </Button>
@@ -235,7 +328,7 @@ const Presentation = () => {
                                     filterOption={(input, option) =>
                                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                                     }
-                                    onChange={onChange}
+                                    onSelect={onChange}
                                     optionFilterProp="children"
                                     showSearch
                                     placeholder="Search a group"
@@ -262,22 +355,36 @@ const Presentation = () => {
                                         margin: "10px",
                                         border: "solid"
                                     }}>
+                                        {
+                                            history.length !== 0 && item.genreQuestion === "MULTI_CHOICES" ?
+                                                <Button size={'small'} shape={'circle'}
+                                                        style={{position: "absolute", right: "3%", top: "2%"}}
+                                                        onClick={() => {
+                                                            showHistoryModal()
+                                                        }
+                                                        }/> : <div/>
+                                        }
                                         <List.Item
                                             key={item.key}
                                         >
-                                            <Row>
+                                            <Spacer>
                                                 <Col>
                                                     <text>
                                                         {index + 1}
                                                     </text>
                                                 </Col>
                                                 <Col>
-                                                    {/*<img src={barchart} alt={""}/>*/}
+                                                    <b>
+                                                        {item.genreQuestion === "MULTI_CHOICES" ? "Chart" : "Heading"}
+                                                    </b>
+                                                </Col>
+                                                <Col>
                                                     <text>
                                                         {item.type}
                                                     </text>
                                                 </Col>
-                                            </Row>
+
+                                            </Spacer>
                                         </List.Item>
                                     </Card>
                                 </Popover>
@@ -298,7 +405,8 @@ const Presentation = () => {
                                 <ChartSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
                                             selectedItem={selectedItem}/> :
                                 <SlideSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
-                                            selectedItem={selectedItem} slideList={slideList} setListSlide={setListSlide}/>
+                                            selectedItem={selectedItem} slideList={slideList}
+                                            setListSlide={setListSlide}/>
                         }
 
                     </Sider>
@@ -307,6 +415,31 @@ const Presentation = () => {
 
 
             </Layout>
+
+            <Modal
+                title="Result" centered
+                width={"70%"}
+                open={historyModal}
+                closable={true}
+                onCancel={handleHistoryCancel}
+                footer={null}
+            >
+                <Spacer>
+                    <Select
+                        onSelect={(e) => {
+                            handleHistoryModalOk(e)
+                        }}
+                        optionFilterProp="children"
+                        placeholder="Choose date"
+                        style={{width: "100%"}} options={history}/>
+                    <Table dataSource={result} columns={columns} style={{
+
+                        width: "100%",
+                        marginTop: "2%"
+                    }}/>
+
+                </Spacer>
+            </Modal>
         </>
     );
 }

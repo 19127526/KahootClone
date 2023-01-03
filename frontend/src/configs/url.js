@@ -1,5 +1,5 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8081"
+export const SERVER_URL="http://localhost:8080"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
@@ -17,6 +17,9 @@ export const LIST_PRESENTATION = "/account/listPresent"
 export const LIST_INVITATION = "/account/listPresentPending"
 export const ACCEPT_INVITATION = "/presentation/acceptPending"
 export const REJECT_INVITATION = "/presentation/rejectPending"
+export const GET_HISTORY = "/presentation/history"
+export const GET_HISTORY_SLIDE = "/presentation/history/slide"
+
 export const FORGET_PASSWORD_EMAIL="/auth/forget"
 export const FORGET_PASSWORD_OTP="/auth/forget/validate";
 export const FORGET_PASSWORD="/auth/changePassword"

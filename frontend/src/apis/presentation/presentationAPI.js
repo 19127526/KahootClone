@@ -6,12 +6,11 @@ import {
     COLLABORATING_INVITATION,
     DELETE_PRESENTATION,
     DISLIKE_QUESTION,
-    GET_CHAT,
+    GET_CHAT, GET_HISTORY, GET_HISTORY_SLIDE,
     JOIN_PRESENTATION,
     LIKE_QUESTION,
     LIST_INVITATION,
     LIST_PRESENTATION,
-    LIST_PRESENTATION_FROM_GROUP,
     MARK_QUESTION,
     PRESENTATION_DETAIL,
     REJECT_INVITATION,
@@ -134,7 +133,23 @@ export const markQuestion=async ({questionId})=>{
 }
 
 export const unmarkQuestion=async ({questionId})=>{
-    return await request.post(UNMARK_QUESTION,{
-        "questionId":questionId,
+    return await request.post(UNMARK_QUESTION, {
+        "questionId": questionId,
+    })}
+
+export const getHistory=async ({id})=>{
+    return await request.get(GET_HISTORY,{
+        params: {
+            "id": id
+        }
+    })
+}
+
+export const getHistorySlide =async ({historyPresentId,slideId})=>{
+    return await request.get(GET_HISTORY_SLIDE,{
+        params: {
+            "historyPresentId": historyPresentId,
+            "slideId": slideId
+        }
     })
 }
