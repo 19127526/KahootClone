@@ -6,7 +6,7 @@ import {
     COLLABORATING_INVITATION,
     DELETE_PRESENTATION,
     DISLIKE_QUESTION,
-    GET_CHAT, GET_HISTORY, GET_HISTORY_SLIDE,
+    GET_CHAT, GET_HISTORY, GET_HISTORY_SLIDE, GET_QUESTION_LIST,
     JOIN_PRESENTATION,
     LIKE_QUESTION,
     LIST_INVITATION,
@@ -98,6 +98,14 @@ export const getChat=async ({presentId,size,offset})=>{
            "presentId":presentId,
             "size":size,
             "offset":offset
+        }
+    })
+}
+
+export const getQuestion=async ({presentId})=>{
+    return await request.get(GET_QUESTION_LIST,{
+        params:{
+            "presentId":presentId
         }
     })
 }

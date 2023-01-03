@@ -46,7 +46,7 @@ export const ASSIGN_ROLE = "/group/assignRole"
 export const REMOVE_MEMBER = "/group/remove/member"
 export const DELETE_GROUP="/group/delete"
 export const GET_CHAT="/present/chat"
-
+export const GET_QUESTION_LIST="presentation/question/list"
 export const ASK_QUESTION="/present/question"
 export const LIKE_QUESTION="/present/question/like"
 export const DISLIKE_QUESTION="/present/question/dislike"

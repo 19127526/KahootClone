@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useLocation, useParams} from "react-router-dom";
-import {getChat, likeQuestion, markQuestion, postAnswer} from "../../apis/presentation/presentationAPI";
+import {getChat, getQuestion, likeQuestion, markQuestion, postAnswer} from "../../apis/presentation/presentationAPI";
 import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
@@ -15,40 +15,10 @@ import ChartPresentation from "../../components/chart/Presentation/ChartPresenta
 import {closePresentation, nextSlide} from "../../apis/slide/slideAPI";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./Presentation.css"
-
+import dateFormat from "dateformat";
 let flag = 0;
 let stompClient = null
-
-const data = [
-    {
-        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-        email_of_question: "abc@gmail.com",
-        like_of_question: 19,
-        isAnswer: false,
-        id_of_question:null,
-    },
-    {
-        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-        email_of_question: "abc@gmail.com",
-        like_of_question: 12,
-        isAnswer: false,
-        id_of_question:null,
-    },
-    {
-        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-        email_of_question: "abc@gmail.com",
-        like_of_question: 13,
-        isAnswer: true,
-        id_of_question:null,
-    },
-    {
-        text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-        email_of_question: "abc@gmail.com",
-        like_of_question: 15,
-        isAnswer: true,
-        id_of_question:null,
-    },
-];
+let slideId=-1;
 const PresentationCoOwner = () => {
 
     const location = useLocation()
@@ -79,6 +49,8 @@ const PresentationCoOwner = () => {
     const [isLoadingInitChat, setIsLoadingInitChat] = useState(false)
     const  [valueFilterQuestion,setValueFilterQuestion]=useState("Unanswer");
     const  [valueSortQuestion,setValueSortQuestion]=useState("Time");
+    const [isLoadingInitQuestion,setIsLoadingInitQuestion]=useState(false);
+
 
     const registerUser = () => {
         let Sock = new SockJS(`${SERVER_URL}/ws`);
@@ -86,7 +58,14 @@ const PresentationCoOwner = () => {
         stompClient.connect({}, onConnected, onError);
     }
     const onMessageNextSlideReceived = (payload) => {
-        const receivedValue = JSON.parse(payload?.body)
+        const receivedValue = JSON.parse(payload?.body);
+        let slideIdTemp=null;
+        if(slideId==-1){
+            slideIdTemp=dataPresent?.slideId
+        }
+        else{
+            slideIdTemp=slideId
+        }
         if (receivedValue.action === "STOP_PRESENTATION") {
             setPresentOpen(0)
             return (<Empty description="This slide is end, close please"
@@ -106,25 +85,17 @@ const PresentationCoOwner = () => {
                 like_of_question: receivedValue?.like_of_question,
                 isAnswer: receivedValue?.isAnswer,
                 id_of_question: receivedValue?.id_of_question,
+                slideId:receivedValue?.slideId,
+                d:receivedValue?.createOn
             });
+
             setQuestionList(temp.filter(index=>{
                 if(valueFilterQuestion.includes("Answered")){
-                    return index?.isAnswer==true
+                    return index?.isAnswer==true&&index?.slideId==slideIdTemp
                 }
                 else if(valueFilterQuestion.includes("Unanswer")){
-                    return index?.isAnswer==false
+                    return index?.isAnswer==false&&index?.slideId==slideIdTemp
                 }
-            }).filter(index=>{
-                if(valueSortQuestion.includes("Time")){
-
-                }
-                else if(valueSortQuestion.includes("Increase")){
-
-                }
-                else if(valueSortQuestion.includes("Descrease")){
-
-                }
-                return index;
             }))
             setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
@@ -139,27 +110,17 @@ const PresentationCoOwner = () => {
             }
             setQuestionList(temp.filter(index=>{
                 if(valueFilterQuestion.includes("Answered")){
-                    return index?.isAnswer==true
+                    return index?.isAnswer==true&&index?.slideId==slideIdTemp
                 }
                 else if(valueFilterQuestion.includes("Unanswer")){
-                    return index?.isAnswer==false
+                    return index?.isAnswer==false&&index?.slideId==slideIdTemp
                 }
-            }).filter(index=>{
-                if(valueSortQuestion.includes("Time")){
-
-                }
-                else if(valueSortQuestion.includes("Increase")){
-
-                }
-                else if(valueSortQuestion.includes("Descrease")){
-
-                }
-                return index;
             }))
             setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
         else {
+            slideId=receivedValue?.slideId
             setDataPresent(receivedValue);
             setPresentOpen(1);
         }
@@ -242,30 +203,54 @@ const PresentationCoOwner = () => {
     }, []);
 
     useEffect(()=>{
+        let slideIdTemp=null;
+        if(slideId==-1){
+            slideIdTemp=dataPresent?.slideId
+        }
+        else{
+            slideIdTemp=slideId
+        }
         if(valueFilterQuestion.includes("Unanswer")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+            setQuestionList(questionListBeforeSort
+              .filter(index=>index?.isAnswer==false&&index?.slideId==slideIdTemp))
         }
         else if(valueFilterQuestion.includes("Answered")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+            setQuestionList(questionListBeforeSort
+              .filter(index=>index?.isAnswer==true&&index?.slideId==slideIdTemp))
         }
     },[valueFilterQuestion,valueSortQuestion]);
 
     useEffect(()=>{
+        let slideIdTemp=null;
+        if(slideId==-1){
+            slideIdTemp=dataPresent?.slideId
+        }
+        else{
+            slideIdTemp=slideId
+        }
         if(valueFilterQuestion.includes("Unanswer")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false&&index?.slideId==slideIdTemp))
         }
         else if(valueFilterQuestion.includes("Answered")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true&&index?.slideId==slideIdTemp))
         }
     },[questionListBeforeSort])
 
+
     useEffect(()=>{
+        let slideIdTemp=null;
+        if(slideId==-1){
+            slideIdTemp=dataPresent?.slideId
+        }
+        else{
+            slideIdTemp=slideId
+        }
         const temp= questionListBeforeSort.filter(index=>{
             if(valueFilterQuestion.includes("Answered")) {
-                return index?.isAnswer==true
+                return index?.isAnswer==true&&index?.slideId==slideIdTemp
             }
             else{
-                return index?.isAnswer==false
+                return index?.isAnswer==false&&index?.slideId==slideIdTemp
             }
         })
         if(valueSortQuestion.includes("Increase")){
@@ -279,9 +264,11 @@ const PresentationCoOwner = () => {
             }))
         }
         else if(valueSortQuestion.includes("Time")){
-            setQuestionList(temp)
+            setQuestionList(temp.sort(function (a,b){
+                return a?.createOn - b?.createOn;
+            }))
         }
-    },[valueSortQuestion,valueFilterQuestion])
+    },[valueSortQuestion,valueFilterQuestion,dataPresent])
 
 
     useEffect(() => {
@@ -298,16 +285,42 @@ const PresentationCoOwner = () => {
               .catch(() => {
               })
         }
-        setQuestionList(data);
-        setQuestionListBeforeSort(data);
-        getListChat()
+
+        const getListQuestion= async ()=>{
+            await getQuestion({presentId:preId})
+              .then(res=>{
+                  if(res?.status==200){
+                      console.log(res?.data)
+                      const temp=res?.data.map(index=>{
+                          return{
+                              text_of_question: index?.text,
+                              email_of_question: index?.email,
+                              like_of_question: index?.like,
+                              isAnswer: index?.isAnswer,
+                              id_of_question: index?.id,
+                              createOn:index?.createdOn,
+                              slideId:index?.slideId,
+                          }
+                      })
+                      setIsLoadingInitQuestion(true)
+                      setQuestionList(temp);
+                      setQuestionListBeforeSort(temp);
+                  }
+              })
+              .catch(()=>{
+
+              })
+        }
+
+        getListChat();
+        getListQuestion();
     }, []);
 
-    useEffect(() => {
-        if (isLoadingInitChat) {
+    useEffect(()=>{
+        if(isLoadingInitChat&&isLoadingInitQuestion){
             registerUser();
         }
-    }, [isLoadingInitChat])
+    },[isLoadingInitChat,isLoadingInitQuestion])
 
 
 
@@ -355,7 +368,6 @@ const PresentationCoOwner = () => {
               .then(res => {
                   const tempList = res.data.reverse();
                   const temp = tempList.concat(messageList);
-                  console.log(res.data)
                   if (res.data.length == 0) {
 
                       setIsLoadingChat(-1);
@@ -568,6 +580,9 @@ const PresentationCoOwner = () => {
                       <List.Item>
                           <div>
                               <div>
+                                  <div>
+                                      <text>Time Asked: {dateFormat(item?.createOn,"dd/mm/yyyy hh:mm:ss")}</text>
+                                  </div>
                           <Space size={"small"}>
                               <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
                               <Col>

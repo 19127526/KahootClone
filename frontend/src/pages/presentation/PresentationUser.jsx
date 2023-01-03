@@ -5,7 +5,7 @@ import {over} from "stompjs";
 import {useLocation, useParams} from "react-router-dom";
 import {
   askQuestion, dislikeQuestion,
-  getChat,
+  getChat, getQuestion,
   joinPresentation,
   likeQuestion,
   postAnswer
@@ -19,43 +19,14 @@ import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./Presentation.css"
+import dateFormat from "dateformat";
 
 
 let stompClient=null
 
 let flag=0;
 
-// const data = [
-//   {
-//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-//     email_of_question: "abc@gmail.com",
-//     like_of_question: 0,
-//     isAnswer: false,
-//     id_of_question:null,
-//   },
-//   {
-//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-//     email_of_question: "abc@gmail.com",
-//     like_of_question: 12,
-//     isAnswer: false,
-//     id_of_question:null,
-//   },
-//   {
-//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-//     email_of_question: "abc@gmail.com",
-//     like_of_question: 0,
-//     isAnswer: true,
-//     id_of_question:null,
-//   },
-//   {
-//     text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
-//     email_of_question: "abc@gmail.com",
-//     like_of_question: 0,
-//     isAnswer: true,
-//     id_of_question:null,
-//   },
-// ];
-
+let slideId=-1;
 const PresentationUser = () => {
 
   const location = useLocation()
@@ -90,6 +61,7 @@ const PresentationUser = () => {
   const [isLoadingChat, setIsLoadingChat] = useState(0);
   const [offSetChat,setOffSetChat]=useState(20)
   const messageEndRef=useRef(null);
+  const [isLoadingInitQuestion,setIsLoadingInitQuestion]=useState(false);
   const [isLoadingInitChat,setIsLoadingInitChat]=useState(false);
   const [checked,setChecked] = useState([])
   const type = location.state === null ? "Public" : "Private";
@@ -102,86 +74,72 @@ const PresentationUser = () => {
     stompClient.connect({}, onConnected, onError);
   }
   const onMessageNextSlideReceived = (payload) => {
-    console.log("slide",JSON.parse(payload?.body));
-    /*setReceived(JSON.parse(payload?.body))*/
-    // const data=JSON.parse(payload?.body);
-    //
-    // let isBoolean=false;
-    // const result=data.answers.forEach((index)=>{
-    //   index?.userAnswers.forEach(index2=>{
-    //     if(index2.userr == profile.email) {
-    //       isBoolean=true;
-    //     }
-    //   })
-    //   if(isBoolean==true){
-    //     setDefaultValue(true)
-    //     return index
-    //   }
-    // })
-    // if(isBoolean===false){
-    //   setDefaultValue(false)
-    // }
-      const receivedValue = JSON.parse(payload?.body)
-      if(receivedValue.action === "STOP_PRESENTATION") {
-          setPresentOpen(0)
-          return (<Empty description="This slide is end, close please" style={{display:"flex",justifyContent:"center",alignItems:"center"}}/>)
-          // setIsEnd(true)
-      }
-      else if(receivedValue.action==="CHAT"){
-        const temp = messageInitList;
-        temp.push(receivedValue);
-        setMessageInitList(temp);
-        setUnseenMessage(prevState => prevState+1);
-       /* if(email!=receivedValue.sender){
-          setUnseenMessage(prevState => prevState+1);
-        }*/
+    const receivedValue = JSON.parse(payload?.body);
+    let slideIdTemp=null;
+    if(slideId==-1){
+      slideIdTemp=dataPresent?.slideId
+    }
+    else{
+      slideIdTemp=slideId
+    }
+    if (receivedValue.action === "STOP_PRESENTATION") {
+      setPresentOpen(0)
+      return (<Empty description="This slide is end, close please"
+                     style={{display: "flex", justifyContent: "center", alignItems: "center"}}/>)
+    } else if (receivedValue.action === "CHAT") {
+      const temp = messageInitList;
+      temp.push(receivedValue);
+      setMessageInitList(temp);
+      setUnseenMessage(prevState => prevState + 1);
 
-      }
-      else if(receivedValue.action==="ASK_QUESTION"){
-        const temp = questionListBeforeSort;
-        temp.push({
-          email_of_question: receivedValue?.email_of_question,
-          text_of_question: receivedValue?.text_of_question,
-          like_of_question: receivedValue?.like_of_question,
-          isAnswer: receivedValue?.isAnswer,
-          id_of_question: receivedValue?.id_of_question,
-        });
-        setQuestionList(temp.filter(index=>{
-          if(valueFilterQuestion.includes("Answered")){
-            return index?.isAnswer==true
-          }
-          else if(valueFilterQuestion.includes("Unanswer")){
-            return index?.isAnswer==false
-          }
-        }))
-        setQuestionListBeforeSort(temp);
-        setUnseenQuestion(prevState => prevState + 1);
-      }
-      else if(receivedValue.action==="UPDATE_QUESTION"){
-        const temp = questionListBeforeSort;
-        for(let i=0;i<temp.length;i++){
-          if(temp[i].id_of_question==receivedValue.id_of_question){
-            temp[i].like_of_question=receivedValue.like_of_question
-            temp[i].isAnswer=receivedValue.isAnswer
-          }
+    }
+    else if(receivedValue.action==="ASK_QUESTION"){
+      const temp = questionListBeforeSort;
+      temp.push({
+        email_of_question: receivedValue?.email_of_question,
+        text_of_question: receivedValue?.text_of_question,
+        like_of_question: receivedValue?.like_of_question,
+        isAnswer: receivedValue?.isAnswer,
+        id_of_question: receivedValue?.id_of_question,
+        slideId:receivedValue?.slideId,
+        d:receivedValue?.createOn
+      });
+
+      setQuestionList(temp.filter(index=>{
+        if(valueFilterQuestion.includes("Answered")){
+          return index?.isAnswer==true&&index?.slideId==slideIdTemp
         }
-        setQuestionList(temp.filter(index=>{
-          if(valueFilterQuestion.includes("Answered")){
-            return index?.isAnswer==true
-          }
-          else if(valueFilterQuestion.includes("Unanswer")){
-            return index?.isAnswer==false
-          }
-        }))
-        setQuestionListBeforeSort(temp);
-        setUnseenQuestion(prevState => prevState + 1);
+        else if(valueFilterQuestion.includes("Unanswer")){
+          return index?.isAnswer==false&&index?.slideId==slideIdTemp
+        }
+      }))
+      setQuestionListBeforeSort(temp);
+      setUnseenQuestion(prevState => prevState + 1);
+    }
+    else if(receivedValue.action==="UPDATE_QUESTION"){
+      const temp = questionListBeforeSort;
+      for(let i=0;i<temp.length;i++){
+        if(temp[i].id_of_question==receivedValue.id_of_question){
+          temp[i].like_of_question=receivedValue.like_of_question
+          temp[i].isAnswer=receivedValue.isAnswer
+        }
       }
-      else {
-          setDisable(false)
-          // setDisable(checked.findIndex((value) => value === receivedValue.id) !== -1)
-          setDataPresent(JSON.parse(payload?.body));
-          setPresentOpen(1);
-      }
+      setQuestionList(temp.filter(index=>{
+        if(valueFilterQuestion.includes("Answered")){
+          return index?.isAnswer==true&&index?.slideId==slideIdTemp
+        }
+        else if(valueFilterQuestion.includes("Unanswer")){
+          return index?.isAnswer==false&&index?.slideId==slideIdTemp
+        }
+      }))
+      setQuestionListBeforeSort(temp);
+      setUnseenQuestion(prevState => prevState + 1);
+    }
+    else {
+      slideId=receivedValue?.slideId
+      setDataPresent(receivedValue);
+      setPresentOpen(1);
+    }
   }
 
 
@@ -219,21 +177,37 @@ const PresentationUser = () => {
   }
 
   useEffect(()=>{
+    let slideIdTemp=null;
+    if(slideId==-1){
+      slideIdTemp=dataPresent?.slideId
+    }
+    else{
+      slideIdTemp=slideId
+    }
     if(valueFilterQuestion.includes("Unanswer")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+      setQuestionList(questionListBeforeSort
+        .filter(index=>index?.isAnswer==false&&index?.slideId==slideIdTemp))
     }
     else if(valueFilterQuestion.includes("Answered")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+      setQuestionList(questionListBeforeSort
+        .filter(index=>index?.isAnswer==true&&index?.slideId==slideIdTemp))
     }
   },[valueFilterQuestion,valueSortQuestion]);
 
   useEffect(()=>{
+    let slideIdTemp=null;
+    if(slideId==-1){
+      slideIdTemp=dataPresent?.slideId
+    }
+    else{
+      slideIdTemp=slideId
+    }
     const temp= questionListBeforeSort.filter(index=>{
       if(valueFilterQuestion.includes("Answered")) {
-        return index?.isAnswer==true
+        return index?.isAnswer==true&&index?.slideId==slideIdTemp
       }
       else{
-        return index?.isAnswer==false
+        return index?.isAnswer==false&&index?.slideId==slideIdTemp
       }
     })
     if(valueSortQuestion.includes("Increase")){
@@ -247,17 +221,26 @@ const PresentationUser = () => {
       }))
     }
     else if(valueSortQuestion.includes("Time")){
-      setQuestionList(temp)
+      setQuestionList(temp.sort(function (a,b){
+        return a?.createOn - b?.createOn;
+      }))
     }
-  },[valueSortQuestion,valueFilterQuestion])
+  },[valueSortQuestion,valueFilterQuestion,dataPresent])
 
 
   useEffect(()=>{
+    let slideIdTemp=null;
+    if(slideId==-1){
+      slideIdTemp=dataPresent?.slideId
+    }
+    else{
+      slideIdTemp=slideId
+    }
     if(valueFilterQuestion.includes("Unanswer")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false&&index?.slideId==slideIdTemp))
     }
     else if(valueFilterQuestion.includes("Answered")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true&&index?.slideId==slideIdTemp))
     }
   },[questionListBeforeSort])
 
@@ -275,15 +258,40 @@ const PresentationUser = () => {
           .catch(() => {
           })
       }
-    setQuestionList([]);
-    setQuestionListBeforeSort([]);
-      getListChat()
+    const getListQuestion= async ()=>{
+      await getQuestion({presentId:preId})
+        .then(res=>{
+          if(res?.status==200){
+            console.log(res?.data)
+            const temp=res?.data.map(index=>{
+              return{
+                text_of_question: index?.text,
+                email_of_question: index?.email,
+                like_of_question: index?.like,
+                isAnswer: index?.isAnswer,
+                id_of_question: index?.id,
+                createOn:index?.createdOn,
+                slideId:index?.slideId,
+              }
+            })
+            setIsLoadingInitQuestion(true)
+            setQuestionList(temp);
+            setQuestionListBeforeSort(temp);
+          }
+        })
+        .catch(()=>{
+
+        })
+    }
+
+    getListChat();
+    getListQuestion();
   },[]);
   useEffect(()=>{
-    if(isLoadingInitChat){
+    if(isLoadingInitChat&&isLoadingInitQuestion){
       registerUser();
     }
-  },[isLoadingInitChat])
+  },[isLoadingInitChat,isLoadingInitQuestion])
       // console.log(location.state.slide)
   useEffect(()=>{
       if(type === "Public"){
@@ -674,6 +682,9 @@ const PresentationUser = () => {
                   <List.Item>
                     <div>
                       <div>
+                        <div>
+                          <text>Time Asked: {dateFormat(item?.createOn,"dd/mm/yyyy hh:mm:ss")}</text>
+                        </div>
                       <Space size={"small"}>
                         <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
                         <Col>
