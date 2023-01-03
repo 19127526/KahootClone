@@ -11,5 +11,5 @@ public class UserVoteDto {
     private long slide;
     private String email;
     private String vote;
-    private Date voteOn;
+    private Long voteOn;
 }

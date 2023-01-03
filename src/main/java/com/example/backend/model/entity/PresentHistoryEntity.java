@@ -24,7 +24,7 @@ public class PresentHistoryEntity extends SuperEntity {
     private long userId;
 
     @Column(name = "start_on")
-    private Date startOn = new Date(System.currentTimeMillis());
+    private Long startOn = System.currentTimeMillis();
 
     private long slideId;
     private Long groupId;
