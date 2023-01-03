@@ -452,7 +452,7 @@ const PresentationUser = () => {
                                 Submit
                             </Button>
                         </Row>
-                    </Space></> : <SlidePresentation selectedValue={dataPresent}/>
+                    </Space></> : <SlidePresentation selectedValue={dataPresent} height={"45%"} width={"100%"}/>
             }
 
 

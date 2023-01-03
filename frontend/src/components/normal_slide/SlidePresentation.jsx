@@ -4,16 +4,17 @@ import React from "react";
 import Title from "antd/es/typography/Title";
 import Parser from 'html-react-parser';
 
-const SlidePresentation = ({selectedValue}) => {
+const SlidePresentation = ({selectedValue, height, width}) => {
     return (
         <Space
             direction={"vertical"}
             style={{
+                // overflow: "hidden",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "100%",
-                width:"100%"
+                height: height ?? "100%",
+                width: width ?? "100%"
             }}>
 
             <div>
