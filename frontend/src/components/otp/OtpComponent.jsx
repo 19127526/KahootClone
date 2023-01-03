@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom";
 import {removeUrlGuard} from "../../guards/AuthenticateRoutes.actions";
 import {postValidateOtp} from "../../apis/register/registerApi";
 import {typeLogin} from "../../utils/utils";
+import {loginGoogleSuccess} from "../../pages/login/LoginPages.actions";
 
 
 const mapStateToProps = state => ({})
@@ -19,7 +20,7 @@ const mapDispatchToProps = {
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
 const OtpComponent = (props) => {
-  const {postOtp, onSubmit, type, email} = props;
+  const {postOtp, onSubmit, type, email,payloadSocial} = props;
   const [otpValue, setOtpValue] = useState([null, null, null, null, null, null]);
   const data = useSelector(state => state.loginPage);
   const dispatch = useDispatch()
@@ -44,9 +45,16 @@ const OtpComponent = (props) => {
       if (type==typeLogin.LOGIN_OAUTH2) {
         postValidateOtp({otp: otp, email: email})
           .then((res) => {
-            console.log(res)
             if (res.status === 201) {
               onSubmit();
+              const objectProfile={
+                id:null,
+                userName:payloadSocial?.name,
+                email:payloadSocial?.email,
+                imageURL:payloadSocial?.picture,
+              }
+              localStorage.setItem("accessToken", payloadSocial?.jti);
+              dispatch(loginGoogleSuccess(objectProfile))
               if(dataUrl.url.includes("/login")) {
                 navigate("/");
               }

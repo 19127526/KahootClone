@@ -73,6 +73,7 @@ const Presentation = () => {
     const handleOk = () => {
         if (value1 === "Public") {
             startPresentation({presentationId: id, mode: "PUBLIC", email: email}).then((response) => {
+                console.log(response)
                 navigate(PRESENTATION_URI + `co/${response.data.id}/show`, {
                     state: {
                         slide: response.data,

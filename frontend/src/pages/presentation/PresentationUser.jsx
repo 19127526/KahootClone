@@ -4,7 +4,7 @@ import SockJS from "sockjs-client";
 import {over} from "stompjs";
 import {useLocation, useParams} from "react-router-dom";
 import {
-  askQuestion,
+  askQuestion, dislikeQuestion,
   getChat,
   joinPresentation,
   likeQuestion,
@@ -94,7 +94,8 @@ const PresentationUser = () => {
   const [checked,setChecked] = useState([])
   const type = location.state === null ? "Public" : "Private";
   const [disable, setDisable] = useState(false)
-
+  const  [valueFilterQuestion,setValueFilterQuestion]=useState("Unanswer");
+  const  [valueSortQuestion,setValueSortQuestion]=useState("Time");
   const registerUser = () => {
     let Sock = new SockJS(`${SERVER_URL}/ws`);
     stompClient = over(Sock);
@@ -137,27 +138,41 @@ const PresentationUser = () => {
 
       }
       else if(receivedValue.action==="ASK_QUESTION"){
-        const temp = questionList;
-          temp.push({
-            email_of_question: receivedValue?.email_of_question,
-            text_of_question: receivedValue?.text_of_question,
-            like_of_question: receivedValue?.like_of_question,
-            isAnswer: receivedValue?.isAnswer,
-            id_of_question: receivedValue?.id_of_question,
-          });
-        setQuestionList(temp);
+        const temp = questionListBeforeSort;
+        temp.push({
+          email_of_question: receivedValue?.email_of_question,
+          text_of_question: receivedValue?.text_of_question,
+          like_of_question: receivedValue?.like_of_question,
+          isAnswer: receivedValue?.isAnswer,
+          id_of_question: receivedValue?.id_of_question,
+        });
+        setQuestionList(temp.filter(index=>{
+          if(valueFilterQuestion.includes("Answered")){
+            return index?.isAnswer==true
+          }
+          else if(valueFilterQuestion.includes("Unanswer")){
+            return index?.isAnswer==false
+          }
+        }))
         setQuestionListBeforeSort(temp);
         setUnseenQuestion(prevState => prevState + 1);
       }
       else if(receivedValue.action==="UPDATE_QUESTION"){
-        const temp = questionList;
+        const temp = questionListBeforeSort;
         for(let i=0;i<temp.length;i++){
           if(temp[i].id_of_question==receivedValue.id_of_question){
             temp[i].like_of_question=receivedValue.like_of_question
             temp[i].isAnswer=receivedValue.isAnswer
           }
         }
-        setQuestionList(temp);
+        setQuestionList(temp.filter(index=>{
+          if(valueFilterQuestion.includes("Answered")){
+            return index?.isAnswer==true
+          }
+          else if(valueFilterQuestion.includes("Unanswer")){
+            return index?.isAnswer==false
+          }
+        }))
         setQuestionListBeforeSort(temp);
         setUnseenQuestion(prevState => prevState + 1);
       }
@@ -185,7 +200,7 @@ const PresentationUser = () => {
     await askQuestion({question:questionValue,email:email,slideId:dataPresent?.slideId,presentId:preId})
       .then(res=>{
         if(res.status==200){
-          Notification("Nofitication question","Send Question Success",constraintNotification.NOTIFICATION_SUCCESS)
+
         }
       })
   }
@@ -203,6 +218,48 @@ const PresentationUser = () => {
 
   }
 
+  useEffect(()=>{
+    if(valueFilterQuestion.includes("Unanswer")){
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+    }
+    else if(valueFilterQuestion.includes("Answered")){
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+    }
+  },[valueFilterQuestion,valueSortQuestion]);
+
+  useEffect(()=>{
+    const temp= questionListBeforeSort.filter(index=>{
+      if(valueFilterQuestion.includes("Answered")) {
+        return index?.isAnswer==true
+      }
+      else{
+        return index?.isAnswer==false
+      }
+    })
+    if(valueSortQuestion.includes("Increase")){
+      setQuestionList(temp.sort(function (a,b){
+        return a?.like_of_question - b?.like_of_question;
+      }))
+    }
+    else if(valueSortQuestion.includes("Descrease")){
+      setQuestionList(temp.sort(function (a,b){
+        return b?.like_of_question - a?.like_of_question;
+      }))
+    }
+    else if(valueSortQuestion.includes("Time")){
+      setQuestionList(temp)
+    }
+  },[valueSortQuestion,valueFilterQuestion])
+
+
+  useEffect(()=>{
+    if(valueFilterQuestion.includes("Unanswer")){
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+    }
+    else if(valueFilterQuestion.includes("Answered")){
+      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+    }
+  },[questionListBeforeSort])
 
   useEffect(()=>{
       const getListChat = async () => {
@@ -218,9 +275,9 @@ const PresentationUser = () => {
           .catch(() => {
           })
       }
+    setQuestionList([]);
+    setQuestionListBeforeSort([]);
       getListChat()
-      setQuestionList([]);
-      setQuestionListBeforeSort([]);
   },[]);
   useEffect(()=>{
     if(isLoadingInitChat){
@@ -380,31 +437,12 @@ const PresentationUser = () => {
 
   };
 
-  const handleSortQuestion=(e)=>{
-    console.log(e);
-    if(e.includes("Unanswer")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
-    }
-    else if(e.includes("Answered")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
-    }
-    else if(e.includes("Vote Increase")){
-
-    }
-    else if(e.includes("Vote Descrease")){
-
-    }
-
-    else if(e.includes("Time")){
-
-    }
-  }
 
   const handleUpVote=async ({id})=> {
     await likeQuestion({email:email,questionId:id})
       .then(res=>{
         if(res.status==200){
-          Notification("Nofitication question","Upvote Question Success",constraintNotification.NOTIFICATION_SUCCESS)
+
         }
         else if(res?.response?.status==400){
           Notification("Nofitication question","You Had Upvote Question !!",constraintNotification.NOTIFICATION_TITLE)
@@ -414,6 +452,31 @@ const PresentationUser = () => {
         Notification("Nofitication question",err.toString(),constraintNotification.NOTIFICATION_ERROR)
       })
   }
+
+  const handleDownVote=async ({id})=> {
+    await dislikeQuestion({email:email,questionId:id})
+      .then(res=>{
+        if(res.status==200){
+
+        }
+        else if(res?.response?.status==400){
+          Notification("Nofitication question","You Had Downvote Question !!",constraintNotification.NOTIFICATION_TITLE)
+        }
+      })
+      .catch(err=>{
+        Notification("Nofitication question",err.toString(),constraintNotification.NOTIFICATION_ERROR)
+      })
+  }
+
+  const handleFilterQuestion=(e)=>{
+    setValueFilterQuestion(e)
+  }
+
+  const handleSortQuestion=(e)=>{
+    setValueSortQuestion(e)
+  }
+
+
 
   return (
         <div style={{backgroundColor: "white", margin: "10%", padding: "5%"}}>
@@ -508,8 +571,8 @@ const PresentationUser = () => {
                           position: "single"
                         }} >
                           {value.sender !== email ?
-                            <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>{email[0]}</Avatar> :
-
+                            <Avatar src={value.sender} style={{background:"aqua",display:"flex",justifyContent:"center",alignItems:"center"}}>{email[0]}</Avatar>
+                            :
                             <Avatar src={value.sender} style={{background:"antiquewhite",display:"flex",justifyContent:"center",alignItems:"center"}}>Me</Avatar>
                           }
                         </Message>
@@ -552,9 +615,10 @@ const PresentationUser = () => {
                       placeholder="Sort question"
                       optionFilterProp="children"
                       style={{
-                        width:"120px"
+                        width: "120px"
                       }}
-                      onChange={handleSortQuestion}
+                      value={valueFilterQuestion}
+                      onChange={handleFilterQuestion}
                       filterOption={(input, option) =>
                         (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                       }
@@ -567,18 +631,6 @@ const PresentationUser = () => {
                           value: 'Answered',
                           label: 'Answered',
                         },
-                        {
-                          value: 'Vote Descrease',
-                          label: 'Vote Descrease',
-                        },
-                        {
-                          value: 'Vote Increase',
-                          label: 'Vote Increase',
-                        },
-                        {
-                          value: 'Time',
-                          label: 'Time Asked',
-                        },
                       ]}
                     />
           }
@@ -588,6 +640,33 @@ const PresentationUser = () => {
                   }}
                   open={openQuestion}>
             <div style={{height: "96%", overflowY: "scroll"}}>
+              <Select
+                showSearch
+                placeholder="Sort question"
+                optionFilterProp="children"
+                style={{
+                  width: "150px"
+                }}
+                value={valueSortQuestion}
+                onChange={handleSortQuestion}
+                filterOption={(input, option) =>
+                  (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                }
+                options={[
+                  {
+                    value: 'Descrease',
+                    label: 'Vote Descrease',
+                  },
+                  {
+                    value: 'Increase',
+                    label: 'Vote Increase',
+                  },
+                  {
+                    value: 'Time',
+                    label: 'Time Asked',
+                  },
+                ]}
+              />
               <List
                 itemLayout="vertical"
                 dataSource={questionList}
@@ -612,10 +691,17 @@ const PresentationUser = () => {
                         Answered
                       </text>
                       :
+                      <Space size={"small"}>
                       <Button type="text" style={{color: "grey", padding: 0}}
                               onClick={() => handleUpVote({id: item?.id_of_question})}>
                         Upvote question
                       </Button>
+
+                      <Button type="text" style={{color: "grey", padding: 0}}
+                      onClick={() => handleDownVote({id: item?.id_of_question})}>
+                      Downvote question
+                      </Button>
+                      </Space>
                     }
 
                   </List.Item>

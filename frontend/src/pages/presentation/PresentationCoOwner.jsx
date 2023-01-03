@@ -23,7 +23,7 @@ const data = [
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: 0,
+        like_of_question: 19,
         isAnswer: false,
         id_of_question:null,
     },
@@ -37,14 +37,14 @@ const data = [
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: 0,
+        like_of_question: 13,
         isAnswer: true,
         id_of_question:null,
     },
     {
         text_of_question: "HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello",
         email_of_question: "abc@gmail.com",
-        like_of_question: 0,
+        like_of_question: 15,
         isAnswer: true,
         id_of_question:null,
     },
@@ -77,6 +77,8 @@ const PresentationCoOwner = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [messageInitList, setMessageInitList] = useState([]);
     const [isLoadingInitChat, setIsLoadingInitChat] = useState(false)
+    const  [valueFilterQuestion,setValueFilterQuestion]=useState("Unanswer");
+    const  [valueSortQuestion,setValueSortQuestion]=useState("Time");
 
     const registerUser = () => {
         let Sock = new SockJS(`${SERVER_URL}/ws`);
@@ -92,13 +94,12 @@ const PresentationCoOwner = () => {
         } else if (receivedValue.action === "CHAT") {
             const temp = messageInitList;
             temp.push(receivedValue);
-            console.log("temp", temp)
             setMessageInitList(temp);
             setUnseenMessage(prevState => prevState + 1);
 
         }
         else if(receivedValue.action==="ASK_QUESTION"){
-            const temp = questionList;
+            const temp = questionListBeforeSort;
             temp.push({
                 email_of_question: receivedValue?.email_of_question,
                 text_of_question: receivedValue?.text_of_question,
@@ -106,19 +107,55 @@ const PresentationCoOwner = () => {
                 isAnswer: receivedValue?.isAnswer,
                 id_of_question: receivedValue?.id_of_question,
             });
-            setQuestionList(temp);
+            setQuestionList(temp.filter(index=>{
+                if(valueFilterQuestion.includes("Answered")){
+                    return index?.isAnswer==true
+                }
+                else if(valueFilterQuestion.includes("Unanswer")){
+                    return index?.isAnswer==false
+                }
+            }).filter(index=>{
+                if(valueSortQuestion.includes("Time")){
+
+                }
+                else if(valueSortQuestion.includes("Increase")){
+
+                }
+                else if(valueSortQuestion.includes("Descrease")){
+
+                }
+                return index;
+            }))
             setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
         else if(receivedValue.action==="UPDATE_QUESTION"){
-            const temp = questionList;
+            const temp = questionListBeforeSort;
             for(let i=0;i<temp.length;i++){
                 if(temp[i].id_of_question==receivedValue.id_of_question){
                     temp[i].like_of_question=receivedValue.like_of_question
                     temp[i].isAnswer=receivedValue.isAnswer
                 }
             }
-            setQuestionList(temp);
+            setQuestionList(temp.filter(index=>{
+                if(valueFilterQuestion.includes("Answered")){
+                    return index?.isAnswer==true
+                }
+                else if(valueFilterQuestion.includes("Unanswer")){
+                    return index?.isAnswer==false
+                }
+            }).filter(index=>{
+                if(valueSortQuestion.includes("Time")){
+
+                }
+                else if(valueSortQuestion.includes("Increase")){
+
+                }
+                else if(valueSortQuestion.includes("Descrease")){
+
+                }
+                return index;
+            }))
             setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
@@ -132,6 +169,7 @@ const PresentationCoOwner = () => {
         await markQuestion({questionId:id})
           .then(res=>{
               if(res.status==200){
+                  setValueFilterQuestion("Answered")
                   Notification("Nofitication question"," Mark question as answered Success",constraintNotification.NOTIFICATION_SUCCESS)
               }
           })
@@ -196,13 +234,54 @@ const PresentationCoOwner = () => {
     useEffect(() => {
         window.addEventListener('popstate', function myPop(event) {
             closePresentation({presentationId: preId, owner: email, groupId: location.state.groupId}).then((res) => {
-                console.log(res)
                 window.removeEventListener("popstate", myPop);
                 window.removeEventListener("keydown", handleKey);
             })
         });
         window.addEventListener('keydown', handleKey);
     }, []);
+
+    useEffect(()=>{
+        if(valueFilterQuestion.includes("Unanswer")){
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+        }
+        else if(valueFilterQuestion.includes("Answered")){
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+        }
+    },[valueFilterQuestion,valueSortQuestion]);
+
+    useEffect(()=>{
+        if(valueFilterQuestion.includes("Unanswer")){
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
+        }
+        else if(valueFilterQuestion.includes("Answered")){
+            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
+        }
+    },[questionListBeforeSort])
+
+    useEffect(()=>{
+        const temp= questionListBeforeSort.filter(index=>{
+            if(valueFilterQuestion.includes("Answered")) {
+                return index?.isAnswer==true
+            }
+            else{
+                return index?.isAnswer==false
+            }
+        })
+        if(valueSortQuestion.includes("Increase")){
+            setQuestionList(temp.sort(function (a,b){
+                return a?.like_of_question - b?.like_of_question;
+            }))
+        }
+        else if(valueSortQuestion.includes("Descrease")){
+            setQuestionList(temp.sort(function (a,b){
+                return b?.like_of_question - a?.like_of_question;
+            }))
+        }
+        else if(valueSortQuestion.includes("Time")){
+            setQuestionList(temp)
+        }
+    },[valueSortQuestion,valueFilterQuestion])
 
 
     useEffect(() => {
@@ -231,24 +310,6 @@ const PresentationCoOwner = () => {
     }, [isLoadingInitChat])
 
 
-    const onChange = (e) => {
-        setValue(e.target.value);
-    };
-    const addOption = async () => {
-        await postAnswer({email: profile.email, question: dataPresent?.id, answer: value})
-          .then((res => {
-              console.log(res)
-              if (res.status === 202) {
-                  if (res.data === true) {
-                      setPresentOpen(2)
-                  } else {
-                      Notification("Notification submit", "Host disable present, please waiting host", constraintNotification.NOTIFICATION_WARN)
-                  }
-              }
-          }))
-          .catch((err) => {
-          })
-    }
 
     if (presentOpen === 0) {
         return (<Empty description="Please wait owner present slide"
@@ -313,24 +374,13 @@ const PresentationCoOwner = () => {
     };
 
 
+
+    const handleFilterQuestion=(e)=>{
+        setValueFilterQuestion(e)
+    }
+
     const handleSortQuestion=(e)=>{
-        console.log(e);
-        if(e.includes("Unanswer")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false))
-        }
-        else if(e.includes("Answered")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true))
-        }
-        else if(e.includes("Vote Increase")){
-
-        }
-        else if(e.includes("Vote Descrease")){
-
-        }
-
-        else if(e.includes("Time")){
-
-        }
+        setValueSortQuestion(e)
     }
 
     return (
@@ -462,7 +512,8 @@ const PresentationCoOwner = () => {
                         style={{
                             width: "120px"
                         }}
-                        onChange={handleSortQuestion}
+                        value={valueFilterQuestion}
+                        onChange={handleFilterQuestion}
                         filterOption={(input, option) =>
                           (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
                         }
@@ -475,18 +526,6 @@ const PresentationCoOwner = () => {
                                 value: 'Answered',
                                 label: 'Answered',
                             },
-                            {
-                                value: 'Vote Descrease',
-                                label: 'Vote Descrease',
-                            },
-                            {
-                                value: 'Vote Increase',
-                                label: 'Vote Increase',
-                            },
-                            {
-                                value: 'Time',
-                                label: 'Time Asked',
-                            },
                         ]}
                       />
                   }
@@ -495,6 +534,33 @@ const PresentationCoOwner = () => {
                       setUnseenQuestion(0);
                   }} open={openQuestion}>
               <div style={{height: "96%", overflowY: "scroll"}}>
+                  <Select
+                    showSearch
+                    placeholder="Sort question"
+                    optionFilterProp="children"
+                    style={{
+                        width: "150px"
+                    }}
+                    value={valueSortQuestion}
+                    onChange={handleSortQuestion}
+                    filterOption={(input, option) =>
+                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                    options={[
+                          {
+                              value: 'Descrease',
+                              label: 'Vote Descrease',
+                          },
+                          {
+                              value: 'Increase',
+                              label: 'Vote Increase',
+                          },
+                          {
+                              value: 'Time',
+                              label: 'Time Asked',
+                          },
+                    ]}
+                  />
                   <List
                     itemLayout="vertical"
                     dataSource={questionList}

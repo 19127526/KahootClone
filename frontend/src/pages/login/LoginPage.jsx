@@ -58,6 +58,7 @@ const LoginPage = (props) => {
   const handleCallbackResponse=(response)=>{
     const decoded = jwt_decode(response.credential);
     setProfileSocial(decoded);
+    console.log(decoded)
     setTypeOtp(typeLogin.LOGIN_OAUTH2)
   /*  loginGoogle({accessToken:response.credential,decoded:decoded})*/
     if(response.credential){
@@ -168,7 +169,7 @@ const LoginPage = (props) => {
                 <div className="form-group"  onClick={submitLogin}>
                   <button type="submit" className="btn btn-block btn-primary">Login</button>
                   <Modal  title="OTP"  open={isModalOpen} onOk={handleOk} onCancel={handleCancel}  centered style={{background:"red"}}>
-                    <OtpComponent onSubmit={()=>setIsModalOpen(false)} type={typeOtp} email={profileSocial?.email} />
+                    <OtpComponent onSubmit={()=>setIsModalOpen(false)} type={typeOtp} email={profileSocial?.email} payloadSocial={profileSocial} />
                   </Modal>
                 </div>
                 <div className="form-group">
