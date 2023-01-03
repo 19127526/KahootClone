@@ -9,7 +9,7 @@ import java.util.Date;
 public class PresentHistoryDto {
     private long id;
     private long userId;
-    private Date startOn;
+    private Long startOn;
     private Boolean presented;
     private PresentationStatus mode;
 }

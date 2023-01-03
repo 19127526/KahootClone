@@ -24,7 +24,7 @@ public class UserVoteEntity extends SuperEntity {
     private long slideId;
     private long presentId;
     @Column(name = "vote_on")
-    private Date voteOn = new Date(System.currentTimeMillis());
+    private Long voteOn = System.currentTimeMillis();
 
     public UserVoteEntity(String email, long voteId, long slideId, long presentId) {
         this.email = email;

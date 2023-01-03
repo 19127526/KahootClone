@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
         String otp = CodeGeneratorUtils.invoke();
         authRequest.setOtp(otp);
         cacheAuth.put(authRequest.getEmail(), authRequest);
-        emailUtils.sendEmailInviteToRoom("your otp is", authRequest.getEmail(), "FORGOT PASSWORD");
+        emailUtils.sendEmailInviteToRoom("your otp is: "+otp, authRequest.getEmail(), "FORGOT PASSWORD");
     }
 
     @Override
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("account not found");
         });
         cacheAuth.remove(authRequest.getEmail());
-        user.setPassword(cache.getPassword());
+        user.setPassword(authRequest.getPassword());
         userRepository.save(user);
     }
 
