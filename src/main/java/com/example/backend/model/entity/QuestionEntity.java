@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "question")
+@Table(name = "questions")
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionEntity {
@@ -25,10 +25,21 @@ public class QuestionEntity {
     private String text;
     private Boolean isAnswer;
     private String email;
-    private Date on = new Date(System.currentTimeMillis());
+    private Date createdOn;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<LikeQuestionEntity> likes;
+
+    public QuestionEntity(long id, long slideId, long presentId, String text, Boolean isAnswer, String email, List<LikeQuestionEntity> likes) {
+        this.id = id;
+        this.slideId = slideId;
+        this.presentId = presentId;
+        this.text = text;
+        this.isAnswer = isAnswer;
+        this.email = email;
+        this.likes = likes;
+        this.createdOn = new Date(System.currentTimeMillis());
+    }
 
     public void addLike(LikeQuestionEntity like) {
         this.likes.add(like);
