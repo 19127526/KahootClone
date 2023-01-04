@@ -15,7 +15,9 @@ import ChartPresentation from "../../components/chart/Presentation/ChartPresenta
 import {closePresentation, nextSlide} from "../../apis/slide/slideAPI";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./Presentation.css"
-import dateFormat from "dateformat";
+import { format } from 'date-fns';
+
+
 let flag = 0;
 let stompClient = null
 let slideId=-1;
@@ -87,17 +89,44 @@ const PresentationCoOwner = () => {
                 isAnswer: receivedValue?.isAnswer,
                 id_of_question: receivedValue?.id_of_question,
                 slideId:receivedValue?.slideId,
-                d:receivedValue?.createOn
+                createOn:receivedValue?.createOn
             });
 
-            setQuestionList(temp.filter(index=>{
+           /* setQuestionList(temp.filter(index=>{
                 if(valueFilterQuestion.includes("Answered")){
                     return index?.isAnswer==true&&index?.slideId==slideIdTemp
                 }
                 else if(valueFilterQuestion.includes("Unanswer")){
                     return index?.isAnswer==false&&index?.slideId==slideIdTemp
                 }
-            }))
+            }))*/
+
+            const tempFilter=temp.filter(index=>{
+                if(valueFilterQuestion.includes("Answered")){
+                    return index?.isAnswer==true&&index?.slideId==slideIdTemp
+                }
+                else if(valueFilterQuestion.includes("Unanswer")){
+                    return index?.isAnswer==false&&index?.slideId==slideIdTemp
+                }
+            });
+
+            console.log(valueSortQuestion,tempFilter)
+            if(valueSortQuestion.includes("Increase")){
+                setQuestionList(tempFilter.sort(function (a,b){
+                    return a?.like_of_question - b?.like_of_question;
+                }))
+            }
+            else if(valueSortQuestion.includes("Descrease")){
+                console.log(tempFilter)
+                setQuestionList(tempFilter.sort(function (a,b){
+                    return b?.like_of_question - a?.like_of_question;
+                }))
+            }
+            else if(valueSortQuestion.includes("Time")){
+                setQuestionList(tempFilter.sort(function (a,b){
+                    return Number(a?.createOn) - Number(b?.createOn);
+                }))
+            }
             setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
@@ -222,18 +251,18 @@ const PresentationCoOwner = () => {
     },[valueFilterQuestion,valueSortQuestion]);
 
     useEffect(()=>{
-        let slideIdTemp=null;
-        if(slideId==-1){
-            slideIdTemp=dataPresent?.slideId
-        }
-        else{
-            slideIdTemp=slideId
-        }
-        if(valueFilterQuestion.includes("Unanswer")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false&&index?.slideId==slideIdTemp))
-        }
-        else if(valueFilterQuestion.includes("Answered")){
-            setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true&&index?.slideId==slideIdTemp))
+        if(questionListBeforeSort.toString()==questionList.toString()) {
+            let slideIdTemp = null;
+            if (slideId == -1) {
+                slideIdTemp = dataPresent?.slideId
+            } else {
+                slideIdTemp = slideId
+            }
+            if (valueFilterQuestion.includes("Unanswer")) {
+                setQuestionList(questionListBeforeSort.filter(index => index?.isAnswer == false && index?.slideId == slideIdTemp))
+            } else if (valueFilterQuestion.includes("Answered")) {
+                setQuestionList(questionListBeforeSort.filter(index => index?.isAnswer == true && index?.slideId == slideIdTemp))
+            }
         }
     },[questionListBeforeSort])
 
@@ -266,7 +295,7 @@ const PresentationCoOwner = () => {
         }
         else if(valueSortQuestion.includes("Time")){
             setQuestionList(temp.sort(function (a,b){
-                return a?.createOn - b?.createOn;
+                return Number(a?.createOn) - Number(b?.createOn);
             }))
         }
     },[valueSortQuestion,valueFilterQuestion,dataPresent])
@@ -592,7 +621,7 @@ const PresentationCoOwner = () => {
                           <div>
                               <div>
                                   <div>
-                                      <text>Time Asked: {dateFormat(item?.createOn,"dd/mm/yyyy hh:mm:ss")}</text>
+                                      <text>Time Asked: {format(new Date(parseInt(item?.createOn, 10)),'dd/MM/yyyy kk:mm:ss')}</text>
                                   </div>
                           <Space size={"small"}>
                               <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>

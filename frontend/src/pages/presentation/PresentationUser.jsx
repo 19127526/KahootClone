@@ -19,7 +19,7 @@ import {MessageOutlined, QuestionCircleOutlined} from "@ant-design/icons";
 import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./Presentation.css"
-import dateFormat from "dateformat";
+import { format } from 'date-fns';
 
 
 let stompClient=null
@@ -75,6 +75,7 @@ const PresentationUser = () => {
   }
   const onMessageNextSlideReceived = (payload) => {
     const receivedValue = JSON.parse(payload?.body);
+    console.log("dsdds",slideId,dataPresent?.slideId)
     let slideIdTemp=null;
     if(slideId==-1){
       slideIdTemp=dataPresent?.slideId
@@ -102,17 +103,34 @@ const PresentationUser = () => {
         isAnswer: receivedValue?.isAnswer,
         id_of_question: receivedValue?.id_of_question,
         slideId:receivedValue?.slideId,
-        d:receivedValue?.createOn
+        createOn:receivedValue?.createOn
       });
 
-      setQuestionList(temp.filter(index=>{
+      const tempFilter=temp.filter(index=>{
         if(valueFilterQuestion.includes("Answered")){
           return index?.isAnswer==true&&index?.slideId==slideIdTemp
         }
         else if(valueFilterQuestion.includes("Unanswer")){
           return index?.isAnswer==false&&index?.slideId==slideIdTemp
         }
-      }))
+      });
+
+      if(valueSortQuestion.includes("Increase")){
+        setQuestionList(tempFilter.sort(function (a,b){
+          return a?.like_of_question - b?.like_of_question;
+        }))
+      }
+      else if(valueSortQuestion.includes("Descrease")){
+        setQuestionList(tempFilter.sort(function (a,b){
+          return b?.like_of_question - a?.like_of_question;
+        }))
+      }
+      else if(valueSortQuestion.includes("Time")){
+        setQuestionList(tempFilter.sort(function (a,b){
+          return Number(a?.createOn) - Number(b?.createOn);
+        }))
+      }
+
       setQuestionListBeforeSort(temp);
       setUnseenQuestion(prevState => prevState + 1);
     }
@@ -222,25 +240,25 @@ const PresentationUser = () => {
     }
     else if(valueSortQuestion.includes("Time")){
       setQuestionList(temp.sort(function (a,b){
-        return a?.createOn - b?.createOn;
+        return Number(a?.createOn) - Number(b?.createOn);
       }))
     }
   },[valueSortQuestion,valueFilterQuestion,dataPresent])
 
 
   useEffect(()=>{
-    let slideIdTemp=null;
-    if(slideId==-1){
-      slideIdTemp=dataPresent?.slideId
-    }
-    else{
-      slideIdTemp=slideId
-    }
-    if(valueFilterQuestion.includes("Unanswer")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==false&&index?.slideId==slideIdTemp))
-    }
-    else if(valueFilterQuestion.includes("Answered")){
-      setQuestionList(questionListBeforeSort.filter(index=>index?.isAnswer==true&&index?.slideId==slideIdTemp))
+    if(questionListBeforeSort.toString()==questionList.toString()) {
+      let slideIdTemp = null;
+      if (slideId == -1) {
+        slideIdTemp = dataPresent?.slideId
+      } else {
+        slideIdTemp = slideId
+      }
+      if (valueFilterQuestion.includes("Unanswer")) {
+        setQuestionList(questionListBeforeSort.filter(index => index?.isAnswer == false && index?.slideId == slideIdTemp))
+      } else if (valueFilterQuestion.includes("Answered")) {
+        setQuestionList(questionListBeforeSort.filter(index => index?.isAnswer == true && index?.slideId == slideIdTemp))
+      }
     }
   },[questionListBeforeSort])
 
@@ -262,7 +280,6 @@ const PresentationUser = () => {
       await getQuestion({presentId:preId})
         .then(res=>{
           if(res?.status==200){
-            console.log(res?.data)
             const temp=res?.data.map(index=>{
               return{
                 text_of_question: index?.text,
@@ -683,7 +700,7 @@ const PresentationUser = () => {
                     <div>
                       <div>
                         <div>
-                          <text>Time Asked: {dateFormat(item?.createOn,"dd/mm/yyyy hh:mm:ss")}</text>
+                          <text>Time Asked: {format(new Date(parseInt(item?.createOn, 10)),'dd/MM/yyyy kk:mm:ss')}</text>
                         </div>
                       <Space size={"small"}>
                         <text style={{color: "blue", fontWeight: "bold"}}>{item?.email_of_question}</text>
