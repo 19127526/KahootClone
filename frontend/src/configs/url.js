@@ -1,5 +1,5 @@
 // export const SERVER_URL="https://spring-heroku.herokuapp.com"
-export const SERVER_URL="http://localhost:8081"
+export const SERVER_URL="https://spring-heroku.herokuapp.com"
 export const CLIENT_URL="http://localhost:3000"
 
 //SERVER
