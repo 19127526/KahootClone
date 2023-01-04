@@ -13,6 +13,7 @@ import {PRESENTATION_URI} from "../../../configs/url";
 import {Input, List, Modal} from "antd";
 import EmailComponent from "../../email/EmailComponent";
 import {useSelector} from "react-redux";
+import {NOTIFICATION_ERROR} from "../../notification/Notification.constraints";
 
 const PresentationCardComponent = ({type, index, loadData}) => {
     const [openSetting, setOpenSetting] = useState(false);
@@ -194,13 +195,16 @@ const PresentationCardComponent = ({type, index, loadData}) => {
                             />
                             {
                                 item.roles !== "OWNER" ? <UserDeleteOutlined onClick={() => {
-                                  removeCollab({id: index.id, email: email, emailRemoved: item.email}).then((res) => {
-                                      getCollaborators({presentId: index.id}).then((res) => {
-                                          setListCollab(res.data)
-                                          loadData({type: type})
+                                  if(item.roles === "OWNER" || item.email === email) {
+                                      removeCollab({id: index.id, email: email, emailRemoved: item.email}).then((res) => {
+                                          getCollaborators({presentId: index.id}).then((res) => {
+                                              setListCollab(res.data)
+                                              loadData({type: type})
+                                          })
                                       })
-
-                                  })
+                                  } else {
+                                      Notification("Error", "No permission to kick a member out", NOTIFICATION_ERROR)
+                                  }
                                 }
                                 }/> : <div/>
                             }
