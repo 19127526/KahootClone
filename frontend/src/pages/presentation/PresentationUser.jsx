@@ -25,7 +25,7 @@ import { format } from 'date-fns';
 let stompClient=null
 
 let flag=0;
-
+let sortQuestion="Time"
 let slideId=-1;
 const PresentationUser = () => {
 
@@ -115,17 +115,17 @@ const PresentationUser = () => {
         }
       });
 
-      if(valueSortQuestion.includes("Increase")){
+      if(sortQuestion.includes("Increase")){
         setQuestionList(tempFilter.sort(function (a,b){
           return a?.like_of_question - b?.like_of_question;
         }))
       }
-      else if(valueSortQuestion.includes("Descrease")){
+      else if(sortQuestion.includes("Descrease")){
         setQuestionList(tempFilter.sort(function (a,b){
           return b?.like_of_question - a?.like_of_question;
         }))
       }
-      else if(valueSortQuestion.includes("Time")){
+      else if(sortQuestion.includes("Time")){
         setQuestionList(tempFilter.sort(function (a,b){
           return Number(a?.createOn) - Number(b?.createOn);
         }))
@@ -142,14 +142,31 @@ const PresentationUser = () => {
           temp[i].isAnswer=receivedValue.isAnswer
         }
       }
-      setQuestionList(temp.filter(index=>{
+
+      const tempFilter=temp.filter(index=>{
         if(valueFilterQuestion.includes("Answered")){
           return index?.isAnswer==true&&index?.slideId==slideIdTemp
         }
         else if(valueFilterQuestion.includes("Unanswer")){
           return index?.isAnswer==false&&index?.slideId==slideIdTemp
         }
-      }))
+      });
+
+      if(sortQuestion.includes("Increase")){
+        setQuestionList(tempFilter.sort(function (a,b){
+          return a?.like_of_question - b?.like_of_question;
+        }))
+      }
+      else if(sortQuestion.includes("Descrease")){
+        setQuestionList(tempFilter.sort(function (a,b){
+          return b?.like_of_question - a?.like_of_question;
+        }))
+      }
+      else if(sortQuestion.includes("Time")){
+        setQuestionList(tempFilter.sort(function (a,b){
+          return Number(a?.createOn) - Number(b?.createOn);
+        }))
+      }
       setQuestionListBeforeSort(temp);
       setUnseenQuestion(prevState => prevState + 1);
     }
@@ -498,7 +515,8 @@ const PresentationUser = () => {
   }
 
   const handleSortQuestion=(e)=>{
-    setValueSortQuestion(e)
+    setValueSortQuestion(e);
+    sortQuestion=e;
   }
 
 

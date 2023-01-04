@@ -16,11 +16,13 @@ import {closePresentation, nextSlide} from "../../apis/slide/slideAPI";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./Presentation.css"
 import { format } from 'date-fns';
+import usePrevious from "../../hooks/usePrevious";
 
 
 let flag = 0;
 let stompClient = null
 let slideId=-1;
+let sortQuestion="Time"
 const PresentationCoOwner = () => {
 
     const location = useLocation()
@@ -53,7 +55,7 @@ const PresentationCoOwner = () => {
     const  [valueSortQuestion,setValueSortQuestion]=useState("Time");
     const [isLoadingInitQuestion,setIsLoadingInitQuestion]=useState(false);
 
-
+    console.log("Loop",valueFilterQuestion,valueSortQuestion)
     const registerUser = () => {
         let Sock = new SockJS(`${SERVER_URL}/ws`);
         stompClient = over(Sock);
@@ -109,19 +111,18 @@ const PresentationCoOwner = () => {
                 }
             });
 
-            console.log(valueSortQuestion,tempFilter)
-            if(valueSortQuestion.includes("Increase")){
+            if(sortQuestion.includes("Increase")){
                 setQuestionList(tempFilter.sort(function (a,b){
                     return a?.like_of_question - b?.like_of_question;
                 }))
             }
-            else if(valueSortQuestion.includes("Descrease")){
+            else if(sortQuestion.includes("Descrease")){
                 console.log(tempFilter)
                 setQuestionList(tempFilter.sort(function (a,b){
                     return b?.like_of_question - a?.like_of_question;
                 }))
             }
-            else if(valueSortQuestion.includes("Time")){
+            else if(sortQuestion.includes("Time")){
                 setQuestionList(tempFilter.sort(function (a,b){
                     return Number(a?.createOn) - Number(b?.createOn);
                 }))
@@ -137,14 +138,31 @@ const PresentationCoOwner = () => {
                     temp[i].isAnswer=receivedValue.isAnswer
                 }
             }
-            setQuestionList(temp.filter(index=>{
+
+            const tempFilter=temp.filter(index=>{
                 if(valueFilterQuestion.includes("Answered")){
                     return index?.isAnswer==true&&index?.slideId==slideIdTemp
                 }
                 else if(valueFilterQuestion.includes("Unanswer")){
                     return index?.isAnswer==false&&index?.slideId==slideIdTemp
                 }
-            }))
+            });
+
+            if(sortQuestion.includes("Increase")){
+                setQuestionList(tempFilter.sort(function (a,b){
+                    return a?.like_of_question - b?.like_of_question;
+                }))
+            }
+            else if(sortQuestion.includes("Descrease")){
+                setQuestionList(tempFilter.sort(function (a,b){
+                    return b?.like_of_question - a?.like_of_question;
+                }))
+            }
+            else if(sortQuestion.includes("Time")){
+                setQuestionList(tempFilter.sort(function (a,b){
+                    return Number(a?.createOn) - Number(b?.createOn);
+                }))
+            }
             setQuestionListBeforeSort(temp);
             setUnseenQuestion(prevState => prevState + 1);
         }
@@ -319,7 +337,6 @@ const PresentationCoOwner = () => {
             await getQuestion({presentId:preId})
               .then(res=>{
                   if(res?.status==200){
-                      console.log(res?.data)
                       const temp=res?.data.map(index=>{
                           return{
                               text_of_question: index?.text,
@@ -421,7 +438,8 @@ const PresentationCoOwner = () => {
     }
 
     const handleSortQuestion=(e)=>{
-        setValueSortQuestion(e)
+        setValueSortQuestion(e);
+        sortQuestion=e
     }
 
     return (
