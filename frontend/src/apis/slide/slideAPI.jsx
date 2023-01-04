@@ -16,9 +16,10 @@ export const addNewParagraphSlide = async ({id,text,heading, genre}) =>{
     return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":text,heading:heading, "genreQuestion": genre})
 }
 
-export const deleteSlide = async ({id}) => {
+export const deleteSlide = async ({id, email}) => {
     return await request.post(REMOVE_SLIDE, {
-        "id": id
+        "id": id,
+        "email": email
     })
 }
 

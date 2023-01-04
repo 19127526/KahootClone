@@ -1,4 +1,4 @@
-import {Badge, Button, Col, Drawer, Empty, FloatButton, List, message, Select, Space} from "antd";
+import {Badge, Button, Col, Drawer, Empty, FloatButton, List, message, Row, Select, Space} from "antd";
 import React, {useEffect, useRef, useState} from "react";
 import SockJS from "sockjs-client";
 import {over} from "stompjs";
@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import Notification from "../../components/notification/Notification";
 import * as constraintNotification from "../../components/notification/Notification.constraints"
 import SlidePresentation from "../../components/normal_slide/SlidePresentation";
-import {SERVER_URL} from "../../configs/url";
+import {CLIENT_URL, PRESENTATION_URI, SERVER_URL} from "../../configs/url";
 import {MessageOutlined, QuestionCircleOutlined, UserOutlined} from "@ant-design/icons";
 import {Avatar, ChatContainer, MainContainer, Message, MessageInput, MessageList} from "@chatscope/chat-ui-kit-react";
 import ChartPresentation from "../../components/chart/Presentation/ChartPresentation";
@@ -55,7 +55,8 @@ const PresentationCoOwner = () => {
     const  [valueSortQuestion,setValueSortQuestion]=useState("Time");
     const [isLoadingInitQuestion,setIsLoadingInitQuestion]=useState(false);
 
-    console.log("Loop",valueFilterQuestion,valueSortQuestion)
+
+
     const registerUser = () => {
         let Sock = new SockJS(`${SERVER_URL}/ws`);
         stompClient = over(Sock);
@@ -364,6 +365,9 @@ const PresentationCoOwner = () => {
     useEffect(()=>{
         if(isLoadingInitChat&&isLoadingInitQuestion){
             registerUser();
+           // if(location.state.type === "Public"){
+           //     message.info(`${CLIENT_URL + PRESENTATION_URI + preId + "/see"}`, [9999999]);
+           // }
         }
     },[isLoadingInitChat,isLoadingInitQuestion])
 
@@ -443,11 +447,18 @@ const PresentationCoOwner = () => {
 
     return (
       <div style={{backgroundColor: "white"}}>
-          {contextHolder}
+
+
+          {/*{contextHolder}*/}
+          {
+              location.state.type === "Public" ?  <Row style={{justifyContent: "center", margin: 0}}>
+                  Link to join: {CLIENT_URL + PRESENTATION_URI + preId +"/see"}
+              </Row> : <div/>
+          }
           {
               dataPresent.genreQuestion === "MULTI_CHOICES" ?
-                <ChartPresentation selectedValue={dataPresent} width={"165vh"}/> :
-                <SlidePresentation selectedValue={dataPresent}/>
+                <ChartPresentation selectedValue={dataPresent} width={"165vh"} height={location.state.type === "Public" ? "90%" : "100%"}/> :
+                <SlidePresentation selectedValue={dataPresent} height={location.state.type === "Public" ? "90%" : "100%"}/>
           }
 
 
