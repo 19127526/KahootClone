@@ -6,12 +6,12 @@ import {
     COLLABORATING_INVITATION,
     DELETE_PRESENTATION,
     DISLIKE_QUESTION,
-    GET_CHAT, GET_HISTORY, GET_HISTORY_SLIDE, GET_QUESTION_LIST,
+    GET_CHAT, GET_COLLAB, GET_HISTORY, GET_HISTORY_SLIDE, GET_QUESTION_LIST,
     JOIN_PRESENTATION,
     LIKE_QUESTION,
     LIST_INVITATION,
     LIST_PRESENTATION,
-    MARK_QUESTION,
+    MARK_QUESTION, OUT_COLLAB,
     PRESENTATION_DETAIL,
     REJECT_INVITATION,
     UNMARK_QUESTION
@@ -77,6 +77,12 @@ export const deletePresentation = async ({id, email}) => {
     })
 }
 
+export const outCollab = async ({id, email}) => {
+    return await request.post(DELETE_PRESENTATION, {
+        "id": id,
+        "email": email
+    })
+}
 
 export const postAnswer=async ({answer,slideId, presentId,email})=>{
     // console.log(answer,question,email)
@@ -159,5 +165,21 @@ export const getHistorySlide =async ({historyPresentId,slideId})=>{
             "historyPresentId": historyPresentId,
             "slideId": slideId
         }
+    })
+}
+
+export const getCollaborators =async ({presentId})=>{
+    return await request.get(GET_COLLAB,{
+        params: {
+            "presentationId": presentId
+        }
+    })
+}
+
+export const removeCollab = async ({id, email, emailRemoved}) => {
+    return await request.post(OUT_COLLAB, {
+        id: id,
+        email: email,
+        emailRemoved: emailRemoved
     })
 }

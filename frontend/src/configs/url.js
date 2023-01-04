@@ -25,6 +25,9 @@ export const FORGET_PASSWORD_OTP="/auth/forget/validate";
 export const FORGET_PASSWORD="/auth/changePassword"
 export const ADD_PRESENTATION = "/presentation/add"
 export const DELETE_PRESENTATION = "/presentation/delete"
+export const GET_COLLAB = "/presentation/collaboration/list"
+export const OUT_COLLAB = "/presentation/remove"
+
 export const PRESENTATION_DETAIL = "/presentation/details"
 export const COLLABORATING_INVITATION = "/presentation/invite"
 
