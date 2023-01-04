@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Getter
@@ -24,7 +25,7 @@ public class UserGroupEntity extends SuperEntity {
     @MapsId("groupId")
     private GroupEntity group;
     @Column(name = "join_on")
-    private Date joinOn = new Date(System.currentTimeMillis());
+    private Timestamp joinOn = new Timestamp(System.currentTimeMillis());
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     private UserEntity users;

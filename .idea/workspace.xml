@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d68bc8bf-a6bd-4d3f-9388-0d6956c3ea4e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/PresentHistoryDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/PresentHistoryDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/UserVoteDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/dto/UserVoteDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/PresentHistoryEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/PresentHistoryEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/QuestionEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/QuestionEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/UserGroupEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/UserGroupEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/UserVoteEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/model/entity/UserVoteEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/PresentationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/PresentationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/SlideServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/backend/service/impl/SlideServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -196,7 +202,7 @@
       <workItem from="1672242182277" duration="1610000" />
       <workItem from="1672580889000" duration="14800000" />
       <workItem from="1672676916892" duration="479000" />
-      <workItem from="1672768150285" duration="427000" />
+      <workItem from="1672768150285" duration="6729000" />
     </task>
     <servers />
   </component>

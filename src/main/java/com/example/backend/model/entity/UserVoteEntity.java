@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -24,7 +25,7 @@ public class UserVoteEntity extends SuperEntity {
     private long slideId;
     private long presentId;
     @Column(name = "vote_on")
-    private Long voteOn = System.currentTimeMillis();
+    private Timestamp voteOn = new Timestamp(System.currentTimeMillis());
 
     public UserVoteEntity(String email, long voteId, long slideId, long presentId) {
         this.email = email;

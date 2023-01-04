@@ -2,6 +2,7 @@ package com.example.backend.service.impl;
 
 import com.example.backend.common.model.GenreQuestion;
 import com.example.backend.common.model.RolePresentation;
+import com.example.backend.exception.ResourceInvalidException;
 import com.example.backend.exception.ResourceNotFoundException;
 import com.example.backend.mapper.SlideMapper;
 import com.example.backend.mapper.VoteMapper;
@@ -14,6 +15,7 @@ import com.example.backend.repository.SlideRepository;
 import com.example.backend.repository.UserPresentationRepository;
 import com.example.backend.repository.VoteRepository;
 import com.example.backend.service.SlideService;
+import com.querydsl.core.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,6 @@ public class SlideServiceImpl implements SlideService {
     private final PresentationRepository presentationRepository;
     private final VoteRepository voteRepository;
     private final SlideMapper slideMapper;
-
     private final VoteMapper voteMapper;
     private final UserPresentationRepository userPresentationRepository;
 
@@ -47,17 +48,24 @@ public class SlideServiceImpl implements SlideService {
 
     @Override
     public void deleteSlide(SlideDto slideDto) {
-        userPresentationRepository.getUserAndPresentationWithRole(slideDto.getEmail(), slideDto.getPresentation(), List.of(RolePresentation.OWNER)).orElseThrow(() -> {
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(slideDto.getEmail(), slideDto.getPresentation(), List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
             throw new ResourceNotFoundException("permission denied");
         });
-        slideRepository.deleteById(slideDto.getId());
+        SlideEntity slide = slideRepository.findById(slideDto.getId()).orElseThrow(() -> {
+            throw new ResourceInvalidException("slide not found");
+        });
+        PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
+        presentation.removeSlide(slide);
+        presentationRepository.save(presentation);
+        slideRepository.delete(slide);
     }
 
     @Override
     public SlideEntity createSlide(SlideDto slideDto) {
-        PresentationEntity presentation = presentationRepository.findById(slideDto.getPresentation()).orElseThrow(() -> {
-            throw new ResourceNotFoundException("presentation not found");
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(slideDto.getEmail(), slideDto.getPresentation(), List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
+            throw new ResourceInvalidException("permission denied");
         });
+        PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
         SlideEntity slide = new SlideEntity();
         slide.setText(slideDto.getText());
         slide.setHeading(slideDto.getHeading());
@@ -69,10 +77,15 @@ public class SlideServiceImpl implements SlideService {
 
     @Override
     public SlideEntity updateSlide(SlideDto slideDto) {
+        Tuple userPresentation = userPresentationRepository.getUserAndPresentationWithRole(slideDto.getEmail(), slideDto.getPresentation(), List.of(RolePresentation.OWNER, RolePresentation.Co_LAB)).orElseThrow(() -> {
+            throw new ResourceInvalidException("permission denied");
+        });
         SlideEntity question = slideRepository.findById(slideDto.getId()).orElseThrow(() -> {
             throw new ResourceNotFoundException("slide not found");
         });
-        PresentationEntity presentation = question.getPresentation();
+        if (question.getPresentation().getId() != ((PresentationEntity) userPresentation.toArray()[1]).getId()) {
+            throw new ResourceInvalidException("slide invalid");
+        }
         question.setText(slideDto.getText());
         question.setHeading(slideDto.getHeading());
         return slideRepository.save(question);

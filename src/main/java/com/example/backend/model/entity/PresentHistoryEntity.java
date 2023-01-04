@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 
@@ -24,7 +25,7 @@ public class PresentHistoryEntity extends SuperEntity {
     private long userId;
 
     @Column(name = "start_on")
-    private Long startOn = System.currentTimeMillis();
+    private Timestamp startOn = new Timestamp(System.currentTimeMillis());
 
     private long slideId;
     private Long groupId;

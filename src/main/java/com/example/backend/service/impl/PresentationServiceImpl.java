@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,8 +40,6 @@ public class PresentationServiceImpl implements PresentationService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     public PresentationDto getDetail(long id, String email) {
@@ -47,7 +47,7 @@ public class PresentationServiceImpl implements PresentationService {
             throw new ResourceNotFoundException("presentation not found");
         });
         PresentationEntity presentation = (PresentationEntity) userPresentation.toArray()[1];
-        List<SlideDto> slides = slideRepository.findByPresentation_Id(id).stream().map(slideMapper::entityToDto).toList();
+        List<SlideDto> slides = slideRepository.findByPresentation_Id(id).stream().map(slideMapper::entityToDto).sorted(Comparator.comparing(SlideDto::getId)).toList();
         PresentationDto presentationDto = presentationMapper.entityToDto(presentation);
         presentationDto.setSlides(slides);
         presentationDto.setAuthor(presentation.getAuthor().getEmail());
@@ -197,7 +197,11 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public List<QuestionDto> getListQuestions(long presentId) {
-        return questionRepository.findQuestionEntitiesByPresentId(presentId).stream().map(questionMapper::entityToDto).toList();
+        return questionRepository.findQuestionEntitiesByPresentId(presentId).stream().map(it -> {
+            QuestionDto question = questionMapper.entityToDto(it);
+            question.setLike(it.getLikes().size());
+            return question;
+        }).sorted(Comparator.comparing(QuestionDto::getId)).toList();
     }
 
     @Override
@@ -205,8 +209,8 @@ public class PresentationServiceImpl implements PresentationService {
         return userPresentationRepository.getListCollaborationsAndRole(presentationId, List.of(RolePresentation.OWNER, RolePresentation.Co_LAB, RolePresentation.PENDING)).stream().map(tuple -> {
             UserEntity user = (UserEntity) tuple.toArray()[0];
             RolePresentation roles = (RolePresentation) tuple.toArray()[1];
-            return new UserPresentationDto(user.getEmail(),user.getImageURL(), roles);
-        }).toList();
+            return new UserPresentationDto(user.getEmail(), user.getImageURL(), roles);
+        }).sorted(Comparator.comparing(UserPresentationDto::getRoles)).toList();
     }
 
     @Override

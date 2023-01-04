@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Getter
@@ -25,7 +26,7 @@ public class QuestionEntity {
     private String text;
     private Boolean isAnswer;
     private String email;
-    private Date createdOn;
+    private Timestamp createdOn = new Timestamp(System.currentTimeMillis());
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<LikeQuestionEntity> likes;
@@ -38,7 +39,6 @@ public class QuestionEntity {
         this.isAnswer = isAnswer;
         this.email = email;
         this.likes = likes;
-        this.createdOn = new Date(System.currentTimeMillis());
     }
 
     public void addLike(LikeQuestionEntity like) {
