@@ -547,7 +547,7 @@ const PresentationCoOwner = () => {
                   }} open={openQuestion}>
               <div style={{height: "96%", overflowY: "scroll"}}>
                   <Select
-                    showSearch
+                    // showSearch
                     placeholder="Sort question"
                     optionFilterProp="children"
                     style={{
@@ -555,9 +555,9 @@ const PresentationCoOwner = () => {
                     }}
                     value={valueSortQuestion}
                     onChange={handleSortQuestion}
-                    filterOption={(input, option) =>
-                      (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                    }
+                    // filterOption={(input, option) =>
+                    //   (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    // }
                     options={[
                           {
                               value: 'Descrease',
