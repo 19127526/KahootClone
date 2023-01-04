@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 @Getter
@@ -25,7 +28,8 @@ public class QuestionEntity {
     private String text;
     private Boolean isAnswer;
     private String email;
-    private Date createdOn;
+
+    private long createdOn;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<LikeQuestionEntity> likes;
@@ -38,7 +42,7 @@ public class QuestionEntity {
         this.isAnswer = isAnswer;
         this.email = email;
         this.likes = likes;
-        this.createdOn = new Date(System.currentTimeMillis());
+        this.createdOn = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     public void addLike(LikeQuestionEntity like) {

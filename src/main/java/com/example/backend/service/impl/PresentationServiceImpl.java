@@ -197,6 +197,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public List<QuestionDto> getListQuestions(long presentId) {
+        System.out.println(questionRepository.findQuestionEntitiesByPresentId(presentId).stream().map(questionMapper::entityToDto).toList());
         return questionRepository.findQuestionEntitiesByPresentId(presentId).stream().map(questionMapper::entityToDto).toList();
     }
 

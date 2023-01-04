@@ -224,7 +224,9 @@ public class RealTimeServiceImpl implements RealTimeService {
         slideRepository.findById(interactPresentRequest.getSlideId()).orElseThrow(() -> {
             throw new ResourceNotFoundException("slide not found");
         });
-        QuestionEntity question = new QuestionEntity(0, interactPresentRequest.getSlideId(), interactPresentRequest.getPresentId(), interactPresentRequest.getQuestion(), false, interactPresentRequest.getEmail(), List.of());
+        QuestionEntity question = new QuestionEntity(0, interactPresentRequest.getSlideId(),
+                interactPresentRequest.getPresentId(), interactPresentRequest.getQuestion(), false, interactPresentRequest.getEmail(), List.of());
+        System.out.println("dsdasdsa"+question.getCreatedOn());
         simpMessagingTemplate.convertAndSendToUser(String.valueOf(present.getId()), Constant.TOPIC_PRESENTATION, getQuestion(questionRepository.save(question), ActionPayload.ASK_QUESTION));
     }
 
@@ -319,6 +321,8 @@ public class RealTimeServiceImpl implements RealTimeService {
         payload.put("text_of_question", questionAndAnswer.getText());
         payload.put("like_of_question", questionAndAnswer.getLikes().size());
         payload.put("email_of_question", questionAndAnswer.getEmail());
+        payload.put("slideId", questionAndAnswer.getSlideId());
+        payload.put("createOn",questionAndAnswer.getCreatedOn());
         return payload;
     }
 }
