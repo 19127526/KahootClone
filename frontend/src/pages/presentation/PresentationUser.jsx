@@ -172,6 +172,7 @@ const PresentationUser = () => {
     }
     else {
       slideId=receivedValue?.slideId
+      setDisable(false)
       setDataPresent(receivedValue);
       setPresentOpen(1);
     }

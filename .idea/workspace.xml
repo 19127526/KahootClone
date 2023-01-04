@@ -7,9 +7,9 @@
     <list default="true" id="9b08bac7-61f0-43c5-9d33-827184af8565" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/apis/slide/slideAPI.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/chart/Presentation/ChartPresentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/chart/Presentation/ChartPresentation.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/configs/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/configs/url.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/Presentation.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationCoOwner.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationCoOwner.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/presentation/PresentationUser.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,6 +103,7 @@
       <workItem from="1671519445881" duration="8353000" />
       <workItem from="1671605634266" duration="32713000" />
       <workItem from="1671960757716" duration="36500000" />
+      <workItem from="1672854677612" duration="808000" />
     </task>
     <servers />
   </component>

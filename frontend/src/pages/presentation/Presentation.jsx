@@ -140,7 +140,7 @@ const Presentation = () => {
     const removeSlide = async () => {
         let list = [...slideList]
         let deletedItem = list.splice(hoverItem, 1)
-        await deleteSlide({id: deletedItem[0]["id"], email: email});
+        await deleteSlide({id: deletedItem[0]["id"], presentation: id,email: email});
         setListSlide(list)
         if (selectedItem === hoverItem || selectedItem > hoverItem) {
             setSelectedValue(slideList[selectedItem - 1])
@@ -158,7 +158,7 @@ const Presentation = () => {
 
     const addSlide = ({genre}) => {
         if (genre === "MULTI_CHOICES") {
-            addNewSlide({id: id, question: "Your question", genre: genre}).then((response) => {
+            addNewSlide({id: id, question: "Your question", genre: genre, email: email}).then((response) => {
                 setIsLoading(true)
                 if (response.status === 201) {
                     if (slideList.length === 0) {
@@ -173,7 +173,7 @@ const Presentation = () => {
 
             })
         } else {
-            addNewParagraphSlide({id: id, text: "Paragraph", heading: "Heading", genre}).then((response) => {
+            addNewParagraphSlide({id: id, text: "Paragraph", heading: "Heading", genre, email}).then((response) => {
                 setIsLoading(true)
                 if (response.status === 201) {
                     setListSlide([...slideList, response.data])

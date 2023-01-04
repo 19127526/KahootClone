@@ -8,17 +8,18 @@ import {
     START_PRESENTATION, STOP_PRESENTATION
 } from "../../configs/url";
 
-export const addNewSlide = async ({id,question, genre}) =>{
-    return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":question, "genreQuestion": genre})
+export const addNewSlide = async ({id,question, genre, email}) =>{
+    return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":question, "genreQuestion": genre, "email": email})
 }
 
-export const addNewParagraphSlide = async ({id,text,heading, genre}) =>{
-    return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":text,heading:heading, "genreQuestion": genre})
+export const addNewParagraphSlide = async ({id,text,heading, genre, email}) =>{
+    return await request.post(ADD_NEW_SLIDE,{"presentation":id,"text":text,heading:heading, "genreQuestion": genre, "email": email})
 }
 
-export const deleteSlide = async ({id, email}) => {
+export const deleteSlide = async ({id,presentation, email}) => {
     return await request.post(REMOVE_SLIDE, {
         "id": id,
+        "presentation": presentation,
         "email": email
     })
 }
