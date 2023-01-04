@@ -50,7 +50,7 @@ const options = {
     }
 };
 
-const ChartPresentation = ({selectedValue, width}) => {
+const ChartPresentation = ({selectedValue, width, height}) => {
     // const reRender=useDispatch();
     // const [isLoading, setLoading] = useState(true)
     // console.log(selectedValue)
@@ -100,7 +100,7 @@ const ChartPresentation = ({selectedValue, width}) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100%",
+            height: height ?? "100%",
             width: "100%",
         }}>
             <div/>

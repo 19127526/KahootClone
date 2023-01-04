@@ -140,7 +140,7 @@ const Presentation = () => {
     const removeSlide = async () => {
         let list = [...slideList]
         let deletedItem = list.splice(hoverItem, 1)
-        await deleteSlide({id: deletedItem[0]["id"]});
+        await deleteSlide({id: deletedItem[0]["id"], email: email});
         setListSlide(list)
         if (selectedItem === hoverItem || selectedItem > hoverItem) {
             setSelectedValue(slideList[selectedItem - 1])
