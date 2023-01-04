@@ -14,5 +14,5 @@ public class QuestionDto {
     private String text;
     private Boolean isAnswer;
     private String email;
-    private long createdOn;
+    private Date createdOn;
 }
