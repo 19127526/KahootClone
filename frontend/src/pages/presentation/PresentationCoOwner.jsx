@@ -177,8 +177,7 @@ const PresentationCoOwner = () => {
         await markQuestion({questionId:id})
           .then(res=>{
               if(res.status==200){
-                  setValueFilterQuestion("Answered")
-                  Notification("Nofitication question"," Mark question as answered Success",constraintNotification.NOTIFICATION_SUCCESS)
+                /*  setValueFilterQuestion("Answered")*/
               }
           })
           .catch(err=>{

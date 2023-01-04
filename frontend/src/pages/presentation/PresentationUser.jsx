@@ -341,6 +341,7 @@ const PresentationUser = () => {
                       }
                   }
                   else{
+                      slideId=res.data.slideId;
                       setDataPresent(res.data);
                       setPresentOpen(1);
                   }
@@ -348,6 +349,7 @@ const PresentationUser = () => {
               })
               .catch(err=>{console.log(err)})
       } else {
+          slideId=location.state.slide.slideId;
           setDataPresent(location.state.slide)
           setPresentOpen(1);
       }
