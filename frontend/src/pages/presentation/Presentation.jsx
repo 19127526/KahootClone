@@ -173,8 +173,9 @@ const Presentation = () => {
 
             })
         } else {
-            addNewParagraphSlide({id: id, text: "Paragraph", heading: "Heading", genre, email}).then((response) => {
+            addNewParagraphSlide({id: id, text: "Paragraph", heading: "Heading", genre: genre, email: email}).then((response) => {
                 setIsLoading(true)
+                console.log(response)
                 if (response.status === 201) {
                     setListSlide([...slideList, response.data])
                     setSelectedValue(response.data)
@@ -407,7 +408,7 @@ const Presentation = () => {
                                             selectedItem={selectedItem}/> :
                                 <SlideSider selectedValue={selectedValue} setSelectedValue={setSelectedValue}
                                             selectedItem={selectedItem} slideList={slideList}
-                                            setListSlide={setListSlide}/>
+                                            setListSlide={setListSlide} email={email} presentationId={id}/>
                         }
 
                     </Sider>

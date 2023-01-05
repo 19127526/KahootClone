@@ -6,7 +6,7 @@ import JoditEditor from "jodit-react";
 import useDebounce from "../../hooks/useDebounce";
 import {useDispatch} from "react-redux";
 
-const SlideSider = ({selectedItem,selectedValue, setSelectedValue,setListSlide,slideList}) => {
+const SlideSider = ({selectedItem,selectedValue, setSelectedValue,setListSlide,slideList, email, presentationId}) => {
     const debounceValue = useDebounce(selectedValue, 300);
 
     const onBlurHeader = (e) => {
@@ -43,7 +43,7 @@ const SlideSider = ({selectedItem,selectedValue, setSelectedValue,setListSlide,s
           if (debounceValue) {
 
             console.log("Saving");
-              updateHeader({id: selectedValue.id, text: selectedValue?.text, heading:selectedValue.heading}).then((res) => {
+              updateHeader({id: selectedValue.id, text: selectedValue?.text, heading:selectedValue.heading, email: email, presentation: presentationId}).then((res) => {
                 const temp=slideList.map((value,index)=>{
                   if(index==selectedItem){
                     return res.data;
