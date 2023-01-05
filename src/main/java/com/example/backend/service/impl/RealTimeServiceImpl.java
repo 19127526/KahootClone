@@ -322,7 +322,7 @@ public class RealTimeServiceImpl implements RealTimeService {
         payload.put("like_of_question", questionAndAnswer.getLikes().size());
         payload.put("email_of_question", questionAndAnswer.getEmail());
         payload.put("slideId", questionAndAnswer.getSlideId());
-        payload.put("createOn",questionAndAnswer.getCreatedOn());
+        payload.put("createOn",questionAndAnswer.getCreatedOn().getTime());
         return payload;
     }
 }
